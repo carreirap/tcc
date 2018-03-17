@@ -45,19 +45,20 @@ import { HomeComponent } from './home/index';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { routing } from './app.routing';
 
 import { AppComponent } from './app.component';
 import { AuthGuard } from './_guards';
-import { AuthenticationService, UserService } from './_services';
-import { fakeBackendProvider } from './_helpers';
+import { AuthenticationService } from './_services';
+// import { fakeBackendProvider } from './_helpers';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { BaseRequestOptions } from '@angular/http';
 import { LoginComponent } from './login/index';
 import { HomeComponent } from './home/index';
-
-
+import { DataService, CustomInterceptor } from './_services/http.service';
+import { Configuration } from './app.constants';
 
 
 
@@ -71,17 +72,23 @@ import { HomeComponent } from './home/index';
     BrowserModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     routing
+
   ],
   providers: [
         AuthGuard,
         AuthenticationService,
-        UserService,
+        // UserService,
+        // DataService,
 
         // providers used to create fake backend
-        fakeBackendProvider,
+        // fakeBackendProvider,
         MockBackend,
-        BaseRequestOptions
+        BaseRequestOptions,
+        HttpClientModule,
+        Configuration
+        // { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

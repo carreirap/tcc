@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+﻿/*import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
@@ -23,3 +23,4 @@ export class UserService {
             .map((response: Response) => response.json());
     }
 }
+*/

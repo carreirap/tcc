@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { User } from '../_models/index';
 
 
 import { AuthenticationService } from '../_services/index';
@@ -14,6 +15,7 @@ export class LoginComponent implements OnInit {
     model: any = {};
     loading = false;
     error = '';
+    user: User;
 
     constructor(
         private router: Router,
@@ -26,14 +28,17 @@ export class LoginComponent implements OnInit {
 
     login() {
         this.loading = true;
-        this.authenticationService.login(this.model.username, this.model.password)
-            .subscribe(result => {
+        this.user = new User();
+        this.user.usuario = this.model.usuario;
+        this.user.senha = this.model.senha;
+        this.authenticationService.authenticate(this.user);
+            /*.subscribe(result => {
                 if (result === true) {
                     this.router.navigate(['/']);
                 } else {
-                    this.error = 'Username or password is incorrect';
+                    this.error = 'Usuario ou senha incorretos';
                     this.loading = false;
                 }
-            });
+            });*/
     }
 }
