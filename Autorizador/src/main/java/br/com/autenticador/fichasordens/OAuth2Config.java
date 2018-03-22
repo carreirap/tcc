@@ -6,8 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -18,10 +16,14 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
+import br.com.fichasordens.repository.UsuarioRespository;
+
 @Configuration
 @EnableAuthorizationServer
 public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
+	@Autowired 
+	private OAuthUserService repo;
 	
 	@Autowired
 	private Environment environment;
@@ -31,8 +33,9 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 	
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.inMemory().withClient("paulo").secret("123456")
-				.authorizedGrantTypes("client_credentials").scopes("resource-server-read").accessTokenValiditySeconds(120);
+		clients.withClientDetails(repo);
+//		clients.inMemory().withClient("paulo").secret("123456")
+//				.authorizedGrantTypes("client_credentials").scopes("resource-server-read").accessTokenValiditySeconds(120);
 	}
 
 

@@ -8,16 +8,21 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+@ComponentScan({"br.com"})
+@EntityScan("br.com.fichasordens")
+@EnableJpaRepositories("br.com.fichasordens.repository")
 @CrossOrigin(allowedHeaders="*",allowCredentials="true")
 @SpringBootApplication
 @RestController
-
 public class AutorizadorServer {
    private static final Log logger = LogFactory.getLog(AutorizadorServer.class);
 

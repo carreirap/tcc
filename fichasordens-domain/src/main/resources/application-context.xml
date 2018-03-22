@@ -1,0 +1,28 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+ 	<!-- Indica ao spring que as classes estão sendo gerenciadas por annotation -->
+    <context:annotation-config />
+	<!-- Aonde o spring vai buscar as anotações de classes referente aos componentes do sistema-->
+	<context:component-scan base-package="br.com.arena.*" />
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="test"/>
+        <property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl" value="true" />
+				<property name="database" value="POSTGRESQL" />
+			</bean>
+		</property>
+    </bean>
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+	<!-- Informar ao spring onde esta as classes de repositorio, para o spring-data fazer a mágica -->
+	<jpa:repositories base-package="br.com.fichasordens.repository" />
+</beans>
