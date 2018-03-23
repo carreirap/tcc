@@ -59,6 +59,7 @@ import { LoginComponent } from './login/index';
 import { HomeComponent } from './home/index';
 import { DataService, CustomInterceptor } from './_services/http.service';
 import { Configuration } from './app.constants';
+import { HeadermenuComponentComponent } from './headermenu.component/headermenu.component.component';
 
 
 
@@ -66,8 +67,9 @@ import { Configuration } from './app.constants';
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
-  ],
+    HomeComponent,
+    HeadermenuComponentComponent
+   ],
   imports: [
     BrowserModule,
     FormsModule,
