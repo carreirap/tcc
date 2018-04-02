@@ -31,14 +31,15 @@ export class LoginComponent implements OnInit {
         this.user = new User();
         this.user.usuario = this.model.usuario;
         this.user.senha = this.model.senha;
-        this.authenticationService.authenticate(this.user);
-            /*.subscribe(result => {
-                if (result === true) {
-                    this.router.navigate(['/']);
-                } else {
-                    this.error = 'Usuario ou senha incorretos';
-                    this.loading = false;
-                }
-            });*/
+        this.authenticationService.authenticate(this.user)
+            .map(res => res.json()).subscribe(response => {
+                this.authenticationService.accessToken = response.access_token;
+                localStorage.setItem('currentUser', JSON.stringify({usuario: this.user.usuario, token: response.access_token }));
+                this.router.navigateByUrl('/home');
+            }, (error) => {
+                console.log('error in', error);
+                this.error = 'Usuario ou senha incorretos';
+                this.loading = false;
+            });
     }
 }
