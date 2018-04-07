@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { DataService } from './http.service';
 import { User } from '../_models/index';
+import { Subscription } from 'rxjs/Subscription';
 
 @Injectable()
 export class AuthenticationService {
@@ -24,29 +25,8 @@ export class AuthenticationService {
         // this.token = currentUser && currentUser.token;
     }
 
-    /*login(usuario: string, senha: string): Observable<boolean> {
-        return this.http.add(JSON.stringify({ usuario: usuario, senha: senha }))
-            .map((response: Response) => {
-                // login successful if there's a jwt token in the response
-                alert(response);
-                const token = response.json() && response.json().token;
-                if (token) {
-                    // set token property
-                    this.token = token;
-
-                    // store username and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify({ usuario: usuario, token: token }));
-
-                    // return true to indicate successful login
-                    return true;
-                } else {
-                    // return false to indicate failed login
-                    return false;
-                }
-            });
-    }*/
-
     authenticate(user: User) {
+        var resp = '';
         this.url = 'http://localhost:8080/auth/oauth/token';
         this.headers = new Headers({
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -54,16 +34,8 @@ export class AuthenticationService {
         });
         this.options = new RequestOptions({ headers: this.headers });
         this.creds = 'grant_type=client_credentials';
-        this.http.post(this.url, this.creds, this.options)
-          .map(res => res.json()).subscribe(response => {
-            this.accessToken = response.access_token;
-            localStorage.setItem('currentUser', JSON.stringify({usuario: user.usuario, token: response.access_token }));
-            this.router.navigateByUrl('/home');
-          }, (error) => {
-            console.log('error in', error);
-            // this.error = 'Usuario ou senha incorretos';
-            // this.loading = false;
-          });
+        return this.http.post(this.url, this.creds, this.options);
+         
       }
 
     logout(): void {

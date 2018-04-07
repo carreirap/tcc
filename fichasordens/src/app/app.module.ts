@@ -59,6 +59,9 @@ import { LoginComponent } from './login/index';
 import { HomeComponent } from './home/index';
 import { DataService, CustomInterceptor } from './_services/http.service';
 import { Configuration } from './app.constants';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HeadermenuComponentComponent } from './headermenu.component/headermenu.component.component';
+//import { DropdownDirective } from './headermenu.component/appDropdown';
 
 
 
@@ -66,13 +69,16 @@ import { Configuration } from './app.constants';
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
-  ],
+    HomeComponent,
+    HeadermenuComponentComponent
+    
+   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     HttpClientModule,
+    NgbModule,
     routing
 
   ],
@@ -90,6 +96,6 @@ import { Configuration } from './app.constants';
         Configuration
         // { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent,HomeComponent,HeadermenuComponentComponent]
 })
 export class AppModule { }
