@@ -40,6 +40,7 @@ public class AutorizadorServer {
    public HttpServletResponse hello() {
       return new HttpHttpServletResponse.SC_OK;
       https://medium.com/@ct7/the-simple-way-to-make-a-mobile-angular-2-bootstrap-navbar-without-jquery-d6b3f67b037b
+      https://getbootstrap.com/docs/4.0/components/navbar/
    }*/
    
 }
