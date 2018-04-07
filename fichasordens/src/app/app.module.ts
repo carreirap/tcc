@@ -61,7 +61,7 @@ import { DataService, CustomInterceptor } from './_services/http.service';
 import { Configuration } from './app.constants';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HeadermenuComponentComponent } from './headermenu.component/headermenu.component.component';
-//import { DropdownDirective } from './headermenu.component/appDropdown';
+import { DropdownDirective } from './headermenu.component/appDropdown';
 
 
 
@@ -71,14 +71,13 @@ import { HeadermenuComponentComponent } from './headermenu.component/headermenu.
     LoginComponent,
     HomeComponent,
     HeadermenuComponentComponent
-    
    ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     HttpClientModule,
-    NgbModule,
+    NgbModule.forRoot(),
     routing
 
   ],
@@ -96,6 +95,6 @@ import { HeadermenuComponentComponent } from './headermenu.component/headermenu.
         Configuration
         // { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true }
   ],
-  bootstrap: [AppComponent,HomeComponent,HeadermenuComponentComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

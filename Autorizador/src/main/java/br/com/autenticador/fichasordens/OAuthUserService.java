@@ -132,6 +132,7 @@ public class OAuthUserService implements ClientDetailsService,
        clientDetails.setResourceIds(Arrays.asList("oauth2-resource"));
        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
        authorities.add(new SimpleGrantedAuthority("ROLE_CLIENT"));
+       clientDetails.setAccessTokenValiditySeconds(60);
        clientDetails.setAuthorities(authorities);
 
         return clientDetails;
