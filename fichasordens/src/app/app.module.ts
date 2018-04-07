@@ -60,6 +60,7 @@ import { HomeComponent } from './home/index';
 import { DataService, CustomInterceptor } from './_services/http.service';
 import { Configuration } from './app.constants';
 import { HeadermenuComponentComponent } from './headermenu.component/headermenu.component.component';
+import { DropdownDirective } from './headermenu.component/appDropdown';
 
 
 
@@ -68,7 +69,8 @@ import { HeadermenuComponentComponent } from './headermenu.component/headermenu.
     AppComponent,
     LoginComponent,
     HomeComponent,
-    HeadermenuComponentComponent
+    HeadermenuComponentComponent,
+    DropdownDirective
    ],
   imports: [
     BrowserModule,

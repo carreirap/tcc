@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'app-headermenu.component',
+  selector: 'app-headermenu-component',
   templateUrl: './headermenu.component.component.html',
   styleUrls: ['./headermenu.component.component.css']
 })
