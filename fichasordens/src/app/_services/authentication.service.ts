@@ -17,6 +17,7 @@ export class AuthenticationService {
     options: RequestOptions;
     creds: String;
     updatedUser: string;
+    user: User;
 
     constructor(private http: Http, private router: Router) {
         // constructor(private http: DataService) {
@@ -26,7 +27,6 @@ export class AuthenticationService {
     }
 
     authenticate(user: User) {
-        var resp = '';
         this.url = 'http://localhost:8080/auth/oauth/token';
         this.headers = new Headers({
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -35,18 +35,20 @@ export class AuthenticationService {
         this.options = new RequestOptions({ headers: this.headers });
         this.creds = 'grant_type=client_credentials';
         return this.http.post(this.url, this.creds, this.options);
-         
       }
 
     logout(): void {
         // clear token remove user from local storage to log user out
-        this.accessToken = null;
-        localStorage.removeItem('currentUser');
+        this.accessToken = JSON.parse(localStorage.getItem('currentUser')).token;
+        if (this.accessToken !== null) {
+            localStorage.removeItem('currentUser');
+            location.reload();
+        }
     }
 
 
     getUpdatedUser(user: User): Observable<User> {
-        alert(user.usuario);
+        //alert(user.usuario);
         this.url = 'http://localhost:9090/getUpdatedUser';
         this.headers = new Headers({
           'Content-Type': 'application/json',

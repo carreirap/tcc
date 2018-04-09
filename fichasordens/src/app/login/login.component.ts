@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
         this.authenticationService.logout();
     }
 
-    login() {
+    login(): void {
         this.loading = true;
         this.user = new User();
         this.user.usuario = this.model.usuario;
@@ -40,6 +40,6 @@ export class LoginComponent implements OnInit {
                 console.log('error in', error);
                 this.error = 'Usuario ou senha incorretos';
                 this.loading = false;
-            });
+        });
     }
 }

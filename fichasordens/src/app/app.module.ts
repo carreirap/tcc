@@ -62,6 +62,7 @@ import { Configuration } from './app.constants';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HeadermenuComponentComponent } from './headermenu.component/headermenu.component.component';
 import { DropdownDirective } from './headermenu.component/appDropdown';
+import { PerfilComponentComponent } from './perfil-component/perfil-component.component';
 
 
 
@@ -70,7 +71,8 @@ import { DropdownDirective } from './headermenu.component/appDropdown';
     AppComponent,
     LoginComponent,
     HomeComponent,
-    HeadermenuComponentComponent
+    HeadermenuComponentComponent,
+    PerfilComponentComponent
    ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { User } from '../_models/index';
 
 @Component({
   selector: 'app-headermenu-component',
@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 })
 
 export class HeadermenuComponentComponent implements OnInit {
+  user: User;
 
   public isCollapsed = true;
 
@@ -20,5 +21,11 @@ export class HeadermenuComponentComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  isUserLogger() {
+    this.user = JSON.parse(localStorage.getItem('currentUser')).usuario;
+    //alert(this.user);
+    return this.user != null;
+}
 
 }
