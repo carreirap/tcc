@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { User } from '../_models/index';
 
@@ -17,15 +17,19 @@ export class HeadermenuComponentComponent implements OnInit {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  constructor() { }
-
   ngOnInit() {
   }
 
   isUserLogger() {
     this.user = JSON.parse(localStorage.getItem('currentUser')).usuario;
-    //alert(this.user);
     return this.user != null;
-}
+  }
+
+  constructor(private el: ElementRef, private renderer: Renderer) {
+  }
+
+  onMenuClick() {
+    this.el.nativeElement.querySelector('.navbar-toggler').click();
+  }
 
 }

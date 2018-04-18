@@ -5,17 +5,24 @@ import { HomeComponent } from './home/index';
 import { AuthGuard } from './_guards/index';
 import { HeadermenuComponentComponent } from './headermenu.component/headermenu.component.component';
 import { PerfilComponentComponent } from './perfil-component/perfil-component.component';
+import { ClienteComponentComponent } from './cliente-component/cliente-component.component';
+import { ParamComponentComponent } from './param-component/param-component.component';
+import { DadosempresaComponentComponent } from './dadosempresa-component/dadosempresa-component.component';
+import { FichaAtendimentoComponentComponent } from './ficha-atendimento-component/ficha-atendimento-component.component';
 
 const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
-    { path: 'home', component: HomeComponent },
-    { path: 'about', component: HomeComponent },
-    { path: 'courses', component: HomeComponent },
-    { path: 'perfil', component: PerfilComponentComponent },
+    { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+    { path: 'about', component: HomeComponent, canActivate: [AuthGuard] },
+    { path: 'perfil', component: PerfilComponentComponent, canActivate: [AuthGuard] },
+    { path: 'cliente', component: ClienteComponentComponent, canActivate: [AuthGuard] },
+    { path: 'param', component: ParamComponentComponent, canActivate: [AuthGuard]},
+    { path: 'dadosempresa', component: DadosempresaComponentComponent, canActivate: [AuthGuard]},
+    { path: 'fichas', component: FichaAtendimentoComponentComponent, canActivate: [AuthGuard]},
 
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
 
-    // otherwise redirect to home
+    // otherwise redirect to homed
     { path: '**', redirectTo: '' }
 ];
 

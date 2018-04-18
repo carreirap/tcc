@@ -41,14 +41,13 @@ export class AuthenticationService {
         // clear token remove user from local storage to log user out
         this.accessToken = JSON.parse(localStorage.getItem('currentUser')).token;
         if (this.accessToken !== null) {
-            localStorage.removeItem('currentUser');
             location.reload();
+            localStorage.removeItem('currentUser');
         }
     }
 
 
     getUpdatedUser(user: User): Observable<User> {
-        //alert(user.usuario);
         this.url = 'http://localhost:9090/getUpdatedUser';
         this.headers = new Headers({
           'Content-Type': 'application/json',

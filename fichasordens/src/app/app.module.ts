@@ -63,6 +63,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HeadermenuComponentComponent } from './headermenu.component/headermenu.component.component';
 import { DropdownDirective } from './headermenu.component/appDropdown';
 import { PerfilComponentComponent } from './perfil-component/perfil-component.component';
+import { ClienteComponentComponent } from './cliente-component/cliente-component.component';
+import { ParamComponentComponent } from './param-component/param-component.component';
+import { DadosempresaComponentComponent } from './dadosempresa-component/dadosempresa-component.component';
+import { FichaAtendimentoComponentComponent } from './ficha-atendimento-component/ficha-atendimento-component.component';
 
 
 
@@ -72,7 +76,11 @@ import { PerfilComponentComponent } from './perfil-component/perfil-component.co
     LoginComponent,
     HomeComponent,
     HeadermenuComponentComponent,
-    PerfilComponentComponent
+    PerfilComponentComponent,
+    ClienteComponentComponent,
+    ParamComponentComponent,
+    DadosempresaComponentComponent,
+    FichaAtendimentoComponentComponent
    ],
   imports: [
     BrowserModule,
