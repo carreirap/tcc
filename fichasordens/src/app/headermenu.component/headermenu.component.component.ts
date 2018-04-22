@@ -9,6 +9,8 @@ import { User } from '../_models/index';
 
 export class HeadermenuComponentComponent implements OnInit {
   user: User;
+  papel: String;
+
 
   public isCollapsed = true;
 
@@ -18,14 +20,35 @@ export class HeadermenuComponentComponent implements OnInit {
   }
 
   ngOnInit() {
+
   }
 
   isUserLogger() {
-    this.user = JSON.parse(localStorage.getItem('currentUser')).usuario;
+    try {
+      this.user = JSON.parse(localStorage.getItem(this.newMethod())).usuario;
+    } catch (e) {
+    }
+    this.isAdmin();
     return this.user != null;
   }
 
+  isAdmin() {
+    try {
+      this.papel = JSON.parse(localStorage.getItem(this.newMethod())).role;
+    } catch (e) {
+    }
+    if (this.papel === 'Admin') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   constructor(private el: ElementRef, private renderer: Renderer) {
+  }
+
+  private newMethod(): string {
+    return 'currentUser';
   }
 
   onMenuClick() {

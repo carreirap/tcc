@@ -30,6 +30,13 @@ export class HomeComponent implements OnInit {
     // tslint:disable-next-line:member-ordering
 
     getUpdatedUser(): void {
+
+        if (this.backEndService.isTokenExpired()) {
+            alert('token expired');
+        } else {
+            alert('token ok');
+        }
+
         this.user.usuario = JSON.parse(localStorage.getItem('currentUser')).usuario;
         this.backEndService.getUpdatedUser(this.user).subscribe(response => {
           this.loggedInUser = response.usuario;

@@ -1,4 +1,4 @@
-package br.com.fichasordens;
+package br.com.fichasordens.entities;
 // Generated 03/03/2018 14:18:32 by Hibernate Tools 4.3.5.Final
 
 import java.util.Date;
@@ -23,7 +23,7 @@ public class FichaAtendLanc implements java.io.Serializable {
 
 	private FichaAtendLancId id;
 	private FichaAtendimento fichaAtendimento;
-	private Usuario usuario;
+	private UsuarioEntity usuario;
 	private String situacao;
 	private Date data;
 	private String observacao;
@@ -31,7 +31,7 @@ public class FichaAtendLanc implements java.io.Serializable {
 	public FichaAtendLanc() {
 	}
 
-	public FichaAtendLanc(FichaAtendLancId id, FichaAtendimento fichaAtendimento, Usuario usuario, String situacao,
+	public FichaAtendLanc(FichaAtendLancId id, FichaAtendimento fichaAtendimento, UsuarioEntity usuario, String situacao,
 			Date data, String observacao) {
 		this.id = id;
 		this.fichaAtendimento = fichaAtendimento;
@@ -67,11 +67,11 @@ public class FichaAtendLanc implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_id", nullable = false, insertable = false, updatable = false)
-	public Usuario getUsuario() {
+	public UsuarioEntity getUsuario() {
 		return this.usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(UsuarioEntity usuario) {
 		this.usuario = usuario;
 	}
 

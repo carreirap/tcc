@@ -1,0 +1,20 @@
+<div class="table-responsive-sm">
+  <table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">usuario</th>
+        <th scope="col">Nome</th>
+        <th scope="col">papel</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let u of user">
+        <td>{{ u.usuario }}</td>
+        <td>{{ u.nome }}</td>
+        <td>{{ u.papel }}</td>
+        <td>Alterar Senha}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -4,10 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.fichasordens.Usuario;
+import br.com.fichasordens.entities.UsuarioEntity;
 
 @Repository
 @Transactional
-public interface UsuarioRespository extends JpaRepository<Usuario, String> {
+public interface UsuarioRepository extends JpaRepository<UsuarioEntity, String> {
 	
 }

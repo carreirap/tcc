@@ -18,29 +18,29 @@ import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.stereotype.Component;
 
-import br.com.fichasordens.Usuario;
-import br.com.fichasordens.repository.UsuarioRespository;
+import br.com.fichasordens.entities.UsuarioEntity;
+import br.com.fichasordens.repository.UsuarioRepository;
 
 @Component
 public class OAuthUserService implements ClientDetailsService,
         UserDetailsService {
 
-    private @Autowired UsuarioRespository userDetailsDao;
+    private @Autowired UsuarioRepository userDetailsDao;
 
     @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException 
     {
-        Usuario user=userDetailsDao.findOne(username);
+        UsuarioEntity user=userDetailsDao.findOne(username);
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User %s does not exist!", username));
         }
         return new UserRepositoryUserDetails(user);
     }
 
-    private final static class UserRepositoryUserDetails extends Usuario implements UserDetails
+    private final static class UserRepositoryUserDetails extends UsuarioEntity implements UserDetails
     {
-    	Usuario user;
+    	UsuarioEntity user;
 
         /**
          * 
@@ -51,7 +51,7 @@ public class OAuthUserService implements ClientDetailsService,
 
         }
 
-        private UserRepositoryUserDetails(Usuario user) {
+        private UserRepositoryUserDetails(UsuarioEntity user) {
             super();
             this.user = user;
         }
@@ -103,7 +103,7 @@ public class OAuthUserService implements ClientDetailsService,
     public ClientDetails loadClientByClientId(String clientId)
             throws ClientRegistrationException 
     {
-       Usuario oauthClientDetails= userDetailsDao.findOne(clientId);
+       UsuarioEntity oauthClientDetails= userDetailsDao.findOne(clientId);
        if (oauthClientDetails == null) {
            throw new UsernameNotFoundException(String.format("ClientDetails %s does not exist!", clientId));
        }
@@ -132,7 +132,10 @@ public class OAuthUserService implements ClientDetailsService,
        clientDetails.setResourceIds(Arrays.asList("oauth2-resource"));
        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
        authorities.add(new SimpleGrantedAuthority("ROLE_CLIENT"));
-       clientDetails.setAccessTokenValiditySeconds(60);
+       if (oauthClientDetails.getPapel().equals("admin")) {
+    	   authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+       }
+       clientDetails.setAccessTokenValiditySeconds(1200);
        clientDetails.setAuthorities(authorities);
 
         return clientDetails;

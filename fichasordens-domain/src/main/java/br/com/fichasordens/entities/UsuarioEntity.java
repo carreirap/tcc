@@ -1,4 +1,4 @@
-package br.com.fichasordens;
+package br.com.fichasordens.entities;
 // Generated 03/03/2018 14:18:32 by Hibernate Tools 4.3.5.Final
 
 import java.util.Date;
@@ -18,19 +18,21 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "usuario", schema = "public")
-public class Usuario implements java.io.Serializable {
+public class UsuarioEntity implements java.io.Serializable {
 
 	private String usuario;
 	private String nome;
 	private String senha;
 	private Date dataCad;
 	private int situacao;
+	private String papel;
+	
 	private Set<FichaAtendLanc> fichaAtendLancs = new HashSet<FichaAtendLanc>(0);
 
-	public Usuario() {
+	public UsuarioEntity() {
 	}
 
-	public Usuario(String usuario, String nome, String senha, Date dataCad, int situacao) {
+	public UsuarioEntity(String usuario, String nome, String senha, Date dataCad, int situacao) {
 		this.usuario = usuario;
 		this.nome = nome;
 		this.senha = senha;
@@ -38,7 +40,7 @@ public class Usuario implements java.io.Serializable {
 		this.situacao = situacao;
 	}
 
-	public Usuario(String usuario, String nome, String senha, Date dataCad, int situacao,
+	public UsuarioEntity(String usuario, String nome, String senha, Date dataCad, int situacao,
 			Set<FichaAtendLanc> fichaAtendLancs) {
 		this.usuario = usuario;
 		this.nome = nome;
@@ -103,6 +105,15 @@ public class Usuario implements java.io.Serializable {
 	public void setFichaAtendLancs(Set<FichaAtendLanc> fichaAtendLancs) {
 		this.fichaAtendLancs = fichaAtendLancs;
 	}
+	
+	@Column(name = "papel", nullable = false, length = 5)
+	public String getPapel() {
+		return papel;
+	}
+
+	public void setPapel(String papel) {
+		this.papel = papel;
+	}
 
 	@Override
 	public String toString() {
@@ -126,7 +137,7 @@ public class Usuario implements java.io.Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Usuario other = (Usuario) obj;
+		UsuarioEntity other = (UsuarioEntity) obj;
 		if (usuario == null) {
 			if (other.usuario != null)
 				return false;

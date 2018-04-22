@@ -1,5 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import * as jwt_decode from 'jwt-decode';
 import { FormsModule } from '@angular/forms';
 import { User } from '../_models/index';
 
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private authenticationService: AuthenticationService) { }
+        private authenticationService: AuthenticationService) {
+    }
 
     ngOnInit() {
         // reset login status
@@ -34,7 +36,10 @@ export class LoginComponent implements OnInit {
         this.authenticationService.authenticate(this.user)
             .map(res => res.json()).subscribe(response => {
                 this.authenticationService.accessToken = response.access_token;
-                localStorage.setItem('currentUser', JSON.stringify({usuario: this.user.usuario, token: response.access_token }));
+                const papel = this.authenticationService.getRule();
+                localStorage.setItem('currentUser', JSON.stringify({usuario: this.user.usuario,
+                    token: response.access_token, role: papel
+                 }));
                 this.router.navigateByUrl('/home');
             }, (error) => {
                 console.log('error in', error);

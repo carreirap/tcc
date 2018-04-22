@@ -1,4 +1,4 @@
-package br.com.fichasordens;
+package br.com.fichasordens.entities;
 // Generated 03/03/2018 14:18:32 by Hibernate Tools 4.3.5.Final
 
 import javax.persistence.Column;

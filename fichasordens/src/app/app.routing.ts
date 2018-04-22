@@ -4,7 +4,7 @@ import { LoginComponent } from './login/index';
 import { HomeComponent } from './home/index';
 import { AuthGuard } from './_guards/index';
 import { HeadermenuComponentComponent } from './headermenu.component/headermenu.component.component';
-import { PerfilComponentComponent } from './perfil-component/perfil-component.component';
+import { PerfilComponent } from './perfil-component/perfil.component';
 import { ClienteComponentComponent } from './cliente-component/cliente-component.component';
 import { ParamComponentComponent } from './param-component/param-component.component';
 import { DadosempresaComponentComponent } from './dadosempresa-component/dadosempresa-component.component';
@@ -14,7 +14,7 @@ const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'about', component: HomeComponent, canActivate: [AuthGuard] },
-    { path: 'perfil', component: PerfilComponentComponent, canActivate: [AuthGuard] },
+    { path: 'perfil', component: PerfilComponent, canActivate: [AuthGuard] },
     { path: 'cliente', component: ClienteComponentComponent, canActivate: [AuthGuard] },
     { path: 'param', component: ParamComponentComponent, canActivate: [AuthGuard]},
     { path: 'dadosempresa', component: DadosempresaComponentComponent, canActivate: [AuthGuard]},

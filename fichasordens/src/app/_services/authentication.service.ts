@@ -1,4 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
+import * as jwt_decode from 'jwt-decode';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Base64 } from 'js-base64';
@@ -26,6 +27,10 @@ export class AuthenticationService {
         // this.token = currentUser && currentUser.token;
     }
 
+    getToken(): string {
+        return localStorage.getItem('currentUser');
+    }
+
     authenticate(user: User) {
         this.url = 'http://localhost:8080/auth/oauth/token';
         this.headers = new Headers({
@@ -39,11 +44,50 @@ export class AuthenticationService {
 
     logout(): void {
         // clear token remove user from local storage to log user out
-        this.accessToken = JSON.parse(localStorage.getItem('currentUser')).token;
-        if (this.accessToken !== null) {
-            location.reload();
-            localStorage.removeItem('currentUser');
+        try {
+            this.accessToken = JSON.parse(localStorage.getItem('currentUser')).token;
+            if (this.accessToken !== null) {
+                location.reload();
+                localStorage.removeItem('currentUser');
+            }
+        } catch (e) {
+            console.log('Mensagem de Logout');
         }
+    }
+
+    getRule(): String {
+       const decoded = jwt_decode(this.accessToken);
+       let papel: String = '';
+       // tslint:disable-next-line:prefer-const
+       for (let aux of decoded.authorities) {
+            if (aux === 'ROLE_ADMIN') {
+                papel = 'Admin';
+                break;
+            }
+            if (aux === 'ROLE_CLIENT') {
+                papel = 'User';
+                break;
+            }
+       }
+       return papel;
+    }
+
+    getTokenExpirationDate(token: string): Date {
+        const decoded = jwt_decode(token);
+        if (decoded.exp === undefined) { return null; }
+        const date = new Date(0);
+        date.setUTCSeconds(decoded.exp);
+        return date;
+
+    }
+
+    isTokenExpired(token?: string): boolean {
+        if (!token) { token = this.getToken(); }
+        if (!token) { return true; }
+
+        const date = this.getTokenExpirationDate(token);
+        if (date === undefined) { return false; }
+        return !(date.valueOf() > new Date().valueOf());
     }
 
 
@@ -56,5 +100,5 @@ export class AuthenticationService {
         this.options = new RequestOptions({ headers: this.headers });
         return this.http.post(this.url, user, this.options)
           .map(res => res.json());
-      }
+    }
 }

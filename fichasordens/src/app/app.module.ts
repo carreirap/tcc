@@ -62,11 +62,13 @@ import { Configuration } from './app.constants';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HeadermenuComponentComponent } from './headermenu.component/headermenu.component.component';
 import { DropdownDirective } from './headermenu.component/appDropdown';
-import { PerfilComponentComponent } from './perfil-component/perfil-component.component';
+import { PerfilComponent } from './perfil-component/perfil.component';
+import { PerfilTableComponent } from './perfil-component/perfil-table.component';
 import { ClienteComponentComponent } from './cliente-component/cliente-component.component';
 import { ParamComponentComponent } from './param-component/param-component.component';
 import { DadosempresaComponentComponent } from './dadosempresa-component/dadosempresa-component.component';
 import { FichaAtendimentoComponentComponent } from './ficha-atendimento-component/ficha-atendimento-component.component';
+import { PerfiService } from './perfil-component/perfil-service';
 
 
 
@@ -76,7 +78,8 @@ import { FichaAtendimentoComponentComponent } from './ficha-atendimento-componen
     LoginComponent,
     HomeComponent,
     HeadermenuComponentComponent,
-    PerfilComponentComponent,
+    PerfilComponent,
+    PerfilTableComponent,
     ClienteComponentComponent,
     ParamComponentComponent,
     DadosempresaComponentComponent,
@@ -94,6 +97,7 @@ import { FichaAtendimentoComponentComponent } from './ficha-atendimento-componen
   providers: [
         AuthGuard,
         AuthenticationService,
+        PerfiService,
         // UserService,
         // DataService,
 
@@ -102,8 +106,8 @@ import { FichaAtendimentoComponentComponent } from './ficha-atendimento-componen
         MockBackend,
         BaseRequestOptions,
         HttpClientModule,
-        Configuration
-        // { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true }
+        Configuration,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

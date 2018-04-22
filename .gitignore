@@ -2,3 +2,11 @@ Autorizador/.settings/
 Autorizador/.project
 Autorizador/.classpath
 fichasordens-domain/.classpath
+fichasordens-web/.settings/org.hibernate.eclipse.console.prefs
+fichasordens-web/.settings/org.eclipse.wst.validation.prefs
+fichasordens-web/.settings/org.eclipse.wst.common.project.facet.core.xml
+fichasordens-web/.settings/org.eclipse.core.resources.prefs
+fichasordens-web/.project
+fichasordens-web/.settings/org.eclipse.wst.common.component
+fichasordens-web/.settings/org.eclipse.m2e.core.prefs
+fichasordens-web/.settings/org.eclipse.jdt.core.prefs
