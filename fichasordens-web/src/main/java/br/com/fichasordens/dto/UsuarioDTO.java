@@ -7,14 +7,22 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 public class UsuarioDTO {
 	
+	private long id;
 	private String usuario;
 	private String nome;
 	private String senha;
 	private String novaSenha;
 	private String confirmaSenha;
-	private int situacao;
+	private String situacao;
 	private String papel;
 	
+	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
 	public String getUsuario() {
 		return usuario;
 	}
@@ -45,23 +53,26 @@ public class UsuarioDTO {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	public int getSituacao() {
+	
+	
+	public String getSituacao() {
 		return situacao;
 	}
-	public void setSituacao(int situacao) {
+	public void setSituacao(String situacao) {
 		this.situacao = situacao;
 	}
-	
 	public String getPapel() {
 		return papel;
 	}
 	public void setPapel(String papel) {
 		this.papel = papel;
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
 		return result;
 	}
@@ -74,6 +85,8 @@ public class UsuarioDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		UsuarioDTO other = (UsuarioDTO) obj;
+		if (id != other.id)
+			return false;
 		if (usuario == null) {
 			if (other.usuario != null)
 				return false;
@@ -81,4 +94,5 @@ public class UsuarioDTO {
 			return false;
 		return true;
 	}
+	
 }

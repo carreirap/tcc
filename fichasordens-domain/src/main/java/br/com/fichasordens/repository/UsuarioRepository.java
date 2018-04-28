@@ -8,6 +8,8 @@ import br.com.fichasordens.entities.UsuarioEntity;
 
 @Repository
 @Transactional
-public interface UsuarioRepository extends JpaRepository<UsuarioEntity, String> {
+public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Long> {
+	
+	UsuarioEntity findByUsuario(final String usuario);
 	
 }

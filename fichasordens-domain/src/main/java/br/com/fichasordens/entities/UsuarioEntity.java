@@ -7,8 +7,11 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,7 +22,8 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "usuario", schema = "public")
 public class UsuarioEntity implements java.io.Serializable {
-
+	
+	private long id;
 	private String usuario;
 	private String nome;
 	private String senha;
@@ -49,8 +53,18 @@ public class UsuarioEntity implements java.io.Serializable {
 		this.situacao = situacao;
 		this.fichaAtendLancs = fichaAtendLancs;
 	}
-
+	
 	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="usuario_sequencia")
+	@SequenceGenerator(name="usuario_sequencia", sequenceName="usuario_sequencia", allocationSize=1)
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+	
 	@Column(name = "usuario", unique = true, nullable = false, length = 10)
 	public String getUsuario() {
 		return this.usuario;

@@ -1,58 +1,76 @@
-<form>
-    <div class="row align-items-center justify-content-center">
-        <div ><h2 style="align-content: center">
-            Cadastro de Usuário
-          </h2></div>
+<form (submit)="onSubmit()">
+  <div class="row align-items-center justify-content-center">
+    <div>
+      <h2 style="align-content: center">
+        Cadastro de Usuário
+      </h2>
     </div>
-    <div class="form-row">
-      <div class="form-group col-md-11">
-        <label for="inputEmail3">Usuário</label>
-        <input type="email" class="form-control" id="inputEmail3" placeholder="usuário">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group col-md-11">
-        <label for="nome">Nome</label>
-        <input type="text" class="form-control" id="nome" placeholder="Nome do usuário">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group col-md-11">
-        <label for="inputPassword">Senha</label>
-        <input type="password" class="form-control" id="inputPassword" placeholder="senha">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group col-md-11">
-        <label for="inputPassword1">Nova Senha</label>
-        <input type="password" class="form-control" id="inputPassword1" placeholder="Nova Senha">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group col-md-11">
-        <label for="inputPassword2">Confirmar Senha</label>
-        <input type="password" class="form-control" id="inputPassword2" placeholder="Confirme Senha">
-      </div>  
-    </div>
-    
-    <div class="form-row">
-      <div class="form-group col-md-11">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="gridCheck1">
-          <label class="form-check-label" for="gridCheck1">
-            Ativo
-          </label>
-        </div>
-      </div>
-    </div>
-    <div class="form-group row">
-      <div class="col-sm-10">
-        <button type="submit" class="btn btn-primary">Salvar</button>
-      </div>
-    </div>
-   
-  </form>
-
-  <div class="col-sm-10">
-    <app-perfil-table-component></app-perfil-table-component>
   </div>
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <label for="inputUsuario">Usuário</label>
+      <input type="text" [(ngModel)]="formUsuario.usuario" [ngModelOptions]="{standalone: true}" class="form-control" id="inputUsuario"
+        placeholder="usuário">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <label for="nome">Nome</label>
+      <input type="text" [(ngModel)]="formUsuario.nome" [ngModelOptions]="{standalone: true}" class="form-control" id="nome" placeholder="Nome do usuário">
+    </div>
+  </div>
+  <div class="form-row" *ngIf="isOperacaoInserir()">
+    <div class="form-group col-md-11">
+      <label for="inputPassword">Senha</label>
+      <input type="password" [(ngModel)]="formUsuario.senha" [ngModelOptions]="{standalone: true}" class="form-control" id="inputPassword"
+        placeholder="senha">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <label for="inputPassword1">Nova Senha</label>
+      <input type="password" [(ngModel)]="formUsuario.novaSenha" [ngModelOptions]="{standalone: true}" class="form-control" id="inputPassword1"
+        placeholder="Nova Senha">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <label for="inputPassword2">Confirmar Senha</label>
+      <input type="password" [(ngModel)]="formUsuario.confirmaSenha" [ngModelOptions]="{standalone: true}" class="form-control"
+        id="inputPassword2" placeholder="Confirme Senha">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <label for="papel">Perfil</label>
+      <select  [(ngModel)]="formUsuario.papel" [ngModelOptions]="{standalone: true}" class="form-control custom-select" id="papel">
+        <option *ngFor="let title of optionsSelect" [value]="title.value">
+          {{title.label}}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <div class="form-check">
+        <input class="form-check-input" [(ngModel)]="formUsuario.situacao" [ngModelOptions]="{standalone: true}" type="checkbox"
+          id="gridCheck1">
+        <label class="form-check-label" for="gridCheck1">
+          Ativo
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+  </div>
+
+</form>
+
+<div class="col-sm-10">
+  <app-perfil-table-component (valueChange)='loadUsuario($event)'></app-perfil-table-component>
+</div>

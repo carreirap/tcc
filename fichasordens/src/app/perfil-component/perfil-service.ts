@@ -31,4 +31,24 @@ export class PerfiService {
             .map((response: Response) => response.json());
     }
 
+    post(user: User) {
+        this.headers = new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token
+        });
+        return this.http.post(this._configuration.ServerService +
+            '/usuario', user, this.options)
+            .map((response: Response) => response.json());
+    }
+
+    put(user: User) {
+        this.headers = new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token
+        });
+        return this.http.put(this._configuration.ServerService +
+            '/usuario', user, this.options)
+            .map((response: Response) => response.json());
+    }
+
 }

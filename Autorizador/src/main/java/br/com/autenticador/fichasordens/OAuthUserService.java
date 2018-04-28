@@ -31,7 +31,7 @@ public class OAuthUserService implements ClientDetailsService,
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException 
     {
-        UsuarioEntity user=userDetailsDao.findOne(username);
+        UsuarioEntity user=userDetailsDao.findByUsuario(username);
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User %s does not exist!", username));
         }
@@ -103,7 +103,7 @@ public class OAuthUserService implements ClientDetailsService,
     public ClientDetails loadClientByClientId(String clientId)
             throws ClientRegistrationException 
     {
-       UsuarioEntity oauthClientDetails= userDetailsDao.findOne(clientId);
+       UsuarioEntity oauthClientDetails= userDetailsDao.findByUsuario(clientId);
        if (oauthClientDetails == null) {
            throw new UsernameNotFoundException(String.format("ClientDetails %s does not exist!", clientId));
        }
@@ -132,7 +132,7 @@ public class OAuthUserService implements ClientDetailsService,
        clientDetails.setResourceIds(Arrays.asList("oauth2-resource"));
        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
        authorities.add(new SimpleGrantedAuthority("ROLE_CLIENT"));
-       if (oauthClientDetails.getPapel().equals("admin")) {
+       if (oauthClientDetails.getPapel().equals("Admin")) {
     	   authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
        }
        clientDetails.setAccessTokenValiditySeconds(1200);

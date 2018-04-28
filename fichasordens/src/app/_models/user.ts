@@ -2,5 +2,9 @@
     usuario: string;
     senha: string;
     nome: string;
-    lastName: string;
+    novaSenha: string;
+    confirmaSenha: String;
+    papel: String;
+    situacao: String;
+    id: Number;
 }

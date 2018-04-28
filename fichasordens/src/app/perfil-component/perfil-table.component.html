@@ -9,8 +9,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let u of user">
-        <td>{{ u.usuario }}</td>
+      <tr *ngFor="let u of user" (click)="getRow(u)" >
+        <td>{{ u.usuario }} <input type="hidden" value="{{u.id}}" /></td>
         <td>{{ u.nome }}</td>
         <td>{{ u.papel }}</td>
         <td>Alterar Senha}</td>
