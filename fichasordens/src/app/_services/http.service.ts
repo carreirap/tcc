@@ -15,6 +15,16 @@ export class DataService {
         this.actionUrl = _configuration.ServerWithApiUrl + 'usuario/';
     }
 
+    public post<T>(path: String, T) {
+        return this.http.post(this._configuration.ServerService +
+            path, T);
+    }
+
+    public get<T>(path: String) {
+        return this.http.get(this._configuration.ServerService +
+            path);
+    }
+
     public getAll<T>(): Observable<T> {
         return this.http.get<T>(this.actionUrl);
     }

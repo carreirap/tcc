@@ -65,11 +65,12 @@ import { DropdownDirective } from './headermenu.component/appDropdown';
 import { PerfilComponent } from './perfil-component/perfil.component';
 import { PerfilTableComponent } from './perfil-component/perfil-table.component';
 import { ClienteComponentComponent } from './cliente-component/cliente-component.component';
-import { ParamComponentComponent } from './param-component/param-component.component';
 import { DadosempresaComponentComponent } from './dadosempresa-component/dadosempresa-component.component';
 import { FichaAtendimentoComponentComponent } from './ficha-atendimento-component/ficha-atendimento-component.component';
 import { PerfiService } from './perfil-component/perfil-service';
-
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ToasterModule, ToasterService} from 'angular5-toaster';
+import { ParametroComponent } from './parametro/parametro.component';
 
 
 @NgModule({
@@ -81,9 +82,9 @@ import { PerfiService } from './perfil-component/perfil-service';
     PerfilComponent,
     PerfilTableComponent,
     ClienteComponentComponent,
-    ParamComponentComponent,
     DadosempresaComponentComponent,
-    FichaAtendimentoComponentComponent
+    FichaAtendimentoComponentComponent,
+    ParametroComponent
    ],
   imports: [
     BrowserModule,
@@ -91,15 +92,16 @@ import { PerfiService } from './perfil-component/perfil-service';
     HttpModule,
     HttpClientModule,
     NgbModule.forRoot(),
-    routing
+    routing,
+    BrowserAnimationsModule, ToasterModule
 
   ],
   providers: [
         AuthGuard,
         AuthenticationService,
         PerfiService,
-        // UserService,
-        // DataService,
+        ToasterService,
+        DataService,
 
         // providers used to create fake backend
         // fakeBackendProvider,
@@ -111,4 +113,5 @@ import { PerfiService } from './perfil-component/perfil-service';
   ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

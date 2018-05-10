@@ -14,20 +14,20 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "empresa", schema = "public")
-public class Empresa implements java.io.Serializable {
+public class EmpresaEntity implements java.io.Serializable {
 
 	private long id;
-	private Endereco endereco;
+	private EnderecoEntity endereco;
 	private String nome;
 	private String cnpj;
 	private String fone;
 	private String emai;
 	private String site;
 
-	public Empresa() {
+	public EmpresaEntity() {
 	}
 
-	public Empresa(long id, Endereco endereco, String nome, String cnpj, String fone, String emai, String site) {
+	public EmpresaEntity(long id, EnderecoEntity endereco, String nome, String cnpj, String fone, String emai, String site) {
 		this.id = id;
 		this.endereco = endereco;
 		this.nome = nome;
@@ -50,11 +50,11 @@ public class Empresa implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "endereco_id", nullable = false)
-	public Endereco getEndereco() {
+	public EnderecoEntity getEndereco() {
 		return this.endereco;
 	}
 
-	public void setEndereco(Endereco endereco) {
+	public void setEndereco(EnderecoEntity endereco) {
 		this.endereco = endereco;
 	}
 

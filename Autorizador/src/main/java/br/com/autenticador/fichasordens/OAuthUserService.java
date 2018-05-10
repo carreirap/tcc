@@ -104,8 +104,11 @@ public class OAuthUserService implements ClientDetailsService,
             throws ClientRegistrationException 
     {
        UsuarioEntity oauthClientDetails= userDetailsDao.findByUsuario(clientId);
+       if (oauthClientDetails.getSituacao() == 0) {
+    	   throw new UsernameNotFoundException(String.format("Usuario id %s desativado!", clientId));
+       }
        if (oauthClientDetails == null) {
-           throw new UsernameNotFoundException(String.format("ClientDetails %s does not exist!", clientId));
+           throw new UsernameNotFoundException(String.format("Usuario id %s não cadastrado!", clientId));
        }
        BaseClientDetails clientDetails=new BaseClientDetails();
 
@@ -135,7 +138,7 @@ public class OAuthUserService implements ClientDetailsService,
        if (oauthClientDetails.getPapel().equals("Admin")) {
     	   authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
        }
-       clientDetails.setAccessTokenValiditySeconds(1200);
+       clientDetails.setAccessTokenValiditySeconds(3600);
        clientDetails.setAuthorities(authorities);
 
         return clientDetails;

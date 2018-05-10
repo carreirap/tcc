@@ -1,4 +1,4 @@
-<form>
+<form id="empform" (submit)="onSubmit()">
     <div class="row align-items-center justify-content-center">
         <div ><h2 style="align-content: center">
             Cadastro da Empresa
@@ -8,88 +8,87 @@
   <div class="form-row">
     <div class="form-group col-md-11">
       <label for="nome">Nome</label>
-      <input class="form-control" type="text" value="" id="nome">
+      <input class="form-control" maxlength="50" type="text" value="" id="nome" [(ngModel)]="formEmpresa.nome" [ngModelOptions]="{standalone: true}">
     </div>
   </div>
 
   <div class="form-row">
     <div class="form-group col-md-11">
       <label for="cnpjcpf">CNPJ/CPF</label>
-      <input class="form-control" type="search" value="" id="cnpjcpf">
+      <input class="form-control" maxlength="14" type="search" value="" id="cnpjcpf" [(ngModel)]="formEmpresa.cnpj" [ngModelOptions]="{standalone: true}">
     </div>  
   </div>
 
   <div class="form-row">
     <div class="form-group col-md-11">
       <label for="email">Email</label>
-      <input class="form-control" type="email" value="" id="email">
+      <input class="form-control" maxlength="80" type="email" value="" id="email" [(ngModel)]="formEmpresa.email" [ngModelOptions]="{standalone: true}">
     </div>  
   </div>
 
   <div class="form-row">
     <div class="form-group col-md-11">
       <label for="fone">Fone</label>
-      <input class="form-control" type="tel" value="" id="fone">
+      <input class="form-control" maxlength="15" type="tel" value="" id="fone" [(ngModel)]="formEmpresa.fone" [ngModelOptions]="{standalone: true}">
     </div>
   </div>
 
   <div class="form-row">
     <div class="form-group col-md-8">
       <label for="rua">Rua</label>
-      <input type="text" class="form-control" id="rua" placeholder="Email">
+      <input type="text" maxlength="60" class="form-control" id="rua" placeholder="" [(ngModel)]="formEmpresa.logradouro" [ngModelOptions]="{standalone: true}">
     </div>
     <div class="form-group col-md-3">
       <label for="numero">Número</label>
-      <input type="number" class="form-control" id="numero" placeholder="Número">
+      <input type="number" maxlength="10" class="form-control" id="numero" placeholder="" [(ngModel)]="formEmpresa.numero" [ngModelOptions]="{standalone: true}">
     </div>
 </div>
 
 <div class="form-row">
-  <div class="form-group col-md-11">
+  <div class="form-group col-md-3">
     <label for="cep">CEP</label>
-    <input class="form-control" type="text" value="" id="cep">
+    <input class="form-control" maxlength="10" type="text" value="" id="cep" [(ngModel)]="formEmpresa.cep" [ngModelOptions]="{standalone: true}">
   </div>
-</div>
-<div class="form-row">
-  <div class="form-group col-md-11">
+  <div class="form-group col-md-8">
     <label for="bairro">Bairro</label>
-    <input class="form-control" type="text" value="" id="bairro">
+    <input class="form-control" maxlength="40" type="text" value="" required id="bairro" [(ngModel)]="formEmpresa.bairro" [ngModelOptions]="{standalone: true}">
+    <h1>{{empform.bairro.$valid}}</h1>
   </div>
 </div>
 <div class="form-row">
   <div class="form-group col-md-11">
     <label for="complemento">Complemento</label>
-    <input class="form-control" type="text" value="" id="complemento">
+    <input class="form-control" maxlength="15" type="text" value="" id="complemento" [(ngModel)]="formEmpresa.complemento" [ngModelOptions]="{standalone: true}">
   </div>
 </div>
 <div class="form-row">
   <div class="form-group col-md-8">
     <label for="cidade">Cidade</label>
-    <input class="form-control" type="text" value="" id="cidade">
+    <input class="form-control" maxlength="40" type="text" value="" id="cidade" [(ngModel)]="formEmpresa.cidade" [ngModelOptions]="{standalone: true}">
   </div>
   <div class="form-group col-md-3">
       <label for="estado">Estado</label>
-      <select class="form-control custom-select" id="estado">
+      <select class="form-control custom-select" id="estado" [(ngModel)]="formEmpresa.estado" [ngModelOptions]="{standalone: true}">
           <option *ngFor="let title of optionsSelect" [value]="title.value">
               {{title.label}}             
             </option>
         </select>
     </div>
 </div>
+<div class="form-row">
+  <div class="form-group col-md-11">
+    <label for="fone">Site</label>
+    <input class="form-control" maxlength="80" type="text" value="" id="site" [(ngModel)]="formEmpresa.site" [ngModelOptions]="{standalone: true}">
+  </div>
+</div>
+
+
 <div class="form-group row">
     <div class="col-sm-10">
       <button type="submit" class="btn btn-primary">Salvar</button>
     </div>
 </div>
-<!-- <div class="row">
-    <div class="col">
-      <input type="text" class="form-control" placeholder="First name">
-    </div>
-    <div class="col">
-      <input type="text" class="form-control" placeholder="Last name">
-    </div>
-  </div> -->
-
 </form>
+<toaster-container></toaster-container>
 
 

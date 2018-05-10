@@ -1,3 +1,4 @@
+<toaster-container></toaster-container>
 <form (submit)="onSubmit()">
   <div class="row align-items-center justify-content-center">
     <div>
@@ -9,34 +10,34 @@
   <div class="form-row">
     <div class="form-group col-md-11">
       <label for="inputUsuario">Usuário</label>
-      <input type="text" [(ngModel)]="formUsuario.usuario" [ngModelOptions]="{standalone: true}" class="form-control" id="inputUsuario"
+      <input type="text" maxlength="10" [(ngModel)]="formUsuario.usuario" [ngModelOptions]="{standalone: true}" class="form-control" id="inputUsuario"
         placeholder="usuário">
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-11">
       <label for="nome">Nome</label>
-      <input type="text" [(ngModel)]="formUsuario.nome" [ngModelOptions]="{standalone: true}" class="form-control" id="nome" placeholder="Nome do usuário">
+      <input type="text" maxlength="50" [(ngModel)]="formUsuario.nome" [ngModelOptions]="{standalone: true}" class="form-control" id="nome" placeholder="">
     </div>
   </div>
   <div class="form-row" *ngIf="isOperacaoInserir()">
     <div class="form-group col-md-11">
       <label for="inputPassword">Senha</label>
-      <input type="password" [(ngModel)]="formUsuario.senha" [ngModelOptions]="{standalone: true}" class="form-control" id="inputPassword"
+      <input type="password" maxlength="8" [(ngModel)]="formUsuario.senha" [ngModelOptions]="{standalone: true}" class="form-control" id="inputPassword"
         placeholder="senha">
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-11">
+    <div class="form-group col-md-11" *ngIf="isAlterarSenha()">
       <label for="inputPassword1">Nova Senha</label>
-      <input type="password" [(ngModel)]="formUsuario.novaSenha" [ngModelOptions]="{standalone: true}" class="form-control" id="inputPassword1"
+      <input type="password" maxlength="8" [(ngModel)]="formUsuario.novaSenha" [ngModelOptions]="{standalone: true}" class="form-control" id="inputPassword1"
         placeholder="Nova Senha">
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-11">
+    <div class="form-group col-md-11" *ngIf="isAlterarSenha()">
       <label for="inputPassword2">Confirmar Senha</label>
-      <input type="password" [(ngModel)]="formUsuario.confirmaSenha" [ngModelOptions]="{standalone: true}" class="form-control"
+      <input type="password" maxlength="8" [(ngModel)]="formUsuario.confirmaSenha" [ngModelOptions]="{standalone: true}" class="form-control"
         id="inputPassword2" placeholder="Confirme Senha">
     </div>
   </div>
@@ -66,6 +67,7 @@
   <div class="form-group row">
     <div class="col-sm-10">
       <button type="submit" class="btn btn-primary">Salvar</button>
+      <button type="button" (click)="mostrarCampos()" *ngIf="mostrarLinkSenha()" class="btn btn-link">Alterar Senha</button>
     </div>
   </div>
 

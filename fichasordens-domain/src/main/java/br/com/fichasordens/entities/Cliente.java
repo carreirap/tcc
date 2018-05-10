@@ -21,7 +21,7 @@ import javax.persistence.Table;
 public class Cliente implements java.io.Serializable {
 
 	private BigDecimal id;
-	private Endereco endereco;
+	private EnderecoEntity endereco;
 	private String nome;
 	private String cnpjCpf;
 	private String celular;
@@ -33,7 +33,7 @@ public class Cliente implements java.io.Serializable {
 	public Cliente() {
 	}
 
-	public Cliente(BigDecimal id, Endereco endereco, String nome, String cnpjCpf, String celular) {
+	public Cliente(BigDecimal id, EnderecoEntity endereco, String nome, String cnpjCpf, String celular) {
 		this.id = id;
 		this.endereco = endereco;
 		this.nome = nome;
@@ -41,7 +41,7 @@ public class Cliente implements java.io.Serializable {
 		this.celular = celular;
 	}
 
-	public Cliente(BigDecimal id, Endereco endereco, String nome, String cnpjCpf, String celular, String fone,
+	public Cliente(BigDecimal id, EnderecoEntity endereco, String nome, String cnpjCpf, String celular, String fone,
 			String email, Set<OrdemServico> ordemServicos, Set<FichaAtendimento> fichaAtendimentos) {
 		this.id = id;
 		this.endereco = endereco;
@@ -67,11 +67,11 @@ public class Cliente implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "endereco_id", nullable = false)
-	public Endereco getEndereco() {
+	public EnderecoEntity getEndereco() {
 		return this.endereco;
 	}
 
-	public void setEndereco(Endereco endereco) {
+	public void setEndereco(EnderecoEntity endereco) {
 		this.endereco = endereco;
 	}
 

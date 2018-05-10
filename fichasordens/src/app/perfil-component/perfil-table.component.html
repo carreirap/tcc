@@ -9,11 +9,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let u of user" (click)="getRow(u)" >
+      <tr *ngFor="let u of user">
         <td>{{ u.usuario }} <input type="hidden" value="{{u.id}}" /></td>
         <td>{{ u.nome }}</td>
         <td>{{ u.papel }}</td>
-        <td>Alterar Senha}</td>
+        <td><button type="button" (click)="getRow(u)" class="btn btn-link">Alterar</button></td>
       </tr>
     </tbody>
   </table>

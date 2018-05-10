@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.fichasordens.Usuario;
 import br.com.fichasordens.dto.MensagemRetornoDto;
 import br.com.fichasordens.dto.PapelEnum;
-import br.com.fichasordens.dto.UsuarioDTO;
+import br.com.fichasordens.dto.UsuarioDto;
 import br.com.fichasordens.exception.ExcecaoRetorno;
 
 @RestController
@@ -25,9 +25,11 @@ import br.com.fichasordens.exception.ExcecaoRetorno;
 public class UsuarioController {
 	
 	@Autowired private Usuario usuario;
+	
+	private static String TRUE = "true";
 
 	 @RequestMapping(method = RequestMethod.POST)
-	 public ResponseEntity adicionarUsuario(@RequestBody UsuarioDTO dto) {
+	 public ResponseEntity adicionarUsuario(@RequestBody UsuarioDto dto) {
 		 Usuario newUsuario = this.convertToUsuario(dto);
 		 try {
 			newUsuario = usuario.adicionarUsuario(newUsuario);
@@ -39,48 +41,48 @@ public class UsuarioController {
 	 }
 	 
 	 @RequestMapping(method = RequestMethod.PUT)
-	 public ResponseEntity alterarSenha(@RequestBody UsuarioDTO dto) {
+	 public ResponseEntity alterarSenha(@RequestBody UsuarioDto dto) {
 		 Usuario newUsuario = this.convertToUsuario(dto);
 		 try {
-			newUsuario = usuario.adicionarUsuario(newUsuario);
+			newUsuario = usuario.alterarUsuario(newUsuario);
 			return new ResponseEntity<>(newUsuario, HttpStatus.OK);
 		} catch (ExcecaoRetorno e) {
 			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
-			//e.printStackTrace();
 		}
 	 }
 	 
 	 @RequestMapping(method = RequestMethod.GET)
-	 public ResponseEntity<List<UsuarioDTO>> getUsuario(@RequestParam(required=false) final String user) {
+	 public ResponseEntity<List<UsuarioDto>> getUsuario(@RequestParam(required=false) final String user) {
 		 final List<Usuario> lst = usuario.listarUsuario();
 		 
-		 return new ResponseEntity<List<UsuarioDTO>>(convertToDto(lst),HttpStatus.OK);
+		 return new ResponseEntity<List<UsuarioDto>>(convertToDto(lst),HttpStatus.OK);
 	 }
 	 
-	 private List<UsuarioDTO> convertToDto(final List<Usuario> lst) {
-		 final List<UsuarioDTO> dtos = new ArrayList<UsuarioDTO>();
+	 private List<UsuarioDto> convertToDto(final List<Usuario> lst) {
+		 final List<UsuarioDto> dtos = new ArrayList<UsuarioDto>();
 		 lst.forEach(e->{ 
-			 UsuarioDTO dto = new UsuarioDTO();
+			 UsuarioDto dto = new UsuarioDto();
 			 dto.setNome(e.getNome());
 			 dto.setUsuario(e.getUsuario());
 			 dto.setPapel(PapelEnum.convertEnum(e.getPapel()).getNome());
 			 dto.setId(e.getId());
-			 dto.setSituacao(e.getSituacao() == 1 ? "true" : null);
+			 dto.setSituacao(e.getSituacao() == 1 ? UsuarioController.TRUE : null);
 			 dtos.add(dto);
 		 });
 		 return dtos;
 	 }
 	 
-	 private Usuario convertToUsuario(final UsuarioDTO dto) {
+	 private Usuario convertToUsuario(final UsuarioDto dto) {
 		 final Usuario usuario = new Usuario();
 		 usuario.setNome(dto.getNome());
 		 usuario.setUsuario(dto.getUsuario());
 		 usuario.setPapel(dto.getPapel());
 		 usuario.setNovaSenha(dto.getNovaSenha());
 		 usuario.setConfirmaSenha(dto.getConfirmaSenha());
+		 usuario.setSenha(dto.getSenha());
 		 usuario.setPapel(dto.getPapel());
 		 usuario.setId(dto.getId());
-		 usuario.setSituacao(dto.getSituacao() != null ? 1 : 0);
+		 usuario.setSituacao(dto.getSituacao().equals(UsuarioController.TRUE) ? 1 : 0);
 			 
 		 return usuario;
 	 }

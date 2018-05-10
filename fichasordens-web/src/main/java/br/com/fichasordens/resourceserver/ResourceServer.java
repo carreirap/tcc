@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.fichasordens.dto.UsuarioDTO;
+import br.com.fichasordens.dto.UsuarioDto;
 
 
 @ComponentScan({"br.com"})
@@ -28,7 +28,7 @@ public class ResourceServer {
    }
 
    @RequestMapping(value = "/getUpdatedUser", method = RequestMethod.POST)
-   public UsuarioDTO login(@RequestBody UsuarioDTO user) {
+   public UsuarioDto login(@RequestBody UsuarioDto user) {
       
 	   user.setUsuario("Hello "+ user.getUsuario()+ " !! ");
 	   

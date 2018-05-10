@@ -31,13 +31,7 @@ public class Usuario {
 			if (this.verificarSenhas(usuario.getNovaSenha(), usuario.getConfirmaSenha())) {
 				usuario.setSenha(usuario.getNovaSenha());
 				
-				final UsuarioEntity entity = new UsuarioEntity();
-				entity.setNome(usuario.nome);
-				entity.setSenha(usuario.senha);
-				entity.setUsuario(usuario.getUsuario());
-				entity.setSituacao(1);
-				entity.setPapel(usuario.getPapel());
-				entity.setDataCad(new Date());
+				final UsuarioEntity entity = converterParaEntity(usuario);
 				try {
 					usuarioRepository.save(entity);
 					usuario.setId(entity.getId());
@@ -49,29 +43,41 @@ public class Usuario {
 		
 		return usuario;
 	}
+
+	private UsuarioEntity converterParaEntity(final Usuario usuario) {
+		final UsuarioEntity entity = new UsuarioEntity();
+		entity.setNome(usuario.nome);
+		entity.setSenha(usuario.senha);
+		entity.setUsuario(usuario.getUsuario());
+		entity.setSituacao(1);
+		entity.setPapel(usuario.getPapel());
+		entity.setDataCad(new Date());
+		return entity;
+	}
 	
-	public Usuario altearUsuario (final Usuario usuario) throws ExcecaoRetorno {
+	public Usuario alterarUsuario (final Usuario usuario) throws ExcecaoRetorno {
 		
-		usuarioRepository.findOne(usuario.getId());
-		if (!usuario.confirmaSenha.equals("")) {
-			if (this.verificarSenhas(usuario.getNovaSenha(), usuario.getConfirmaSenha())) {
-				usuario.setSenha(usuario.getNovaSenha());
-				
-				final UsuarioEntity entity = new UsuarioEntity();
-				entity.setNome(usuario.nome);
-				entity.setSenha(usuario.senha);
-				entity.setUsuario(usuario.getUsuario());
-				entity.setSituacao(1);
-				entity.setPapel(usuario.getPapel());
-				entity.setDataCad(new Date());
-				try {
-					usuarioRepository.save(entity);
-					usuario.setId(entity.getId());
-				} catch (Exception ex) {
-					throw new ExcecaoRetorno("Erro ao tentar cadastrar o usuario");
+		UsuarioEntity entity = usuarioRepository.findOne(usuario.getId());
+		if (usuario.getSenha() != null && entity.getSenha().equals(usuario.getSenha())) {
+			if (!usuario.confirmaSenha.equals("")) {
+				if (this.verificarSenhas(usuario.getNovaSenha(), usuario.getConfirmaSenha())) {
+					entity.setSenha(usuario.getNovaSenha());
 				}
 			}
 		}
+		
+		entity.setNome(usuario.nome);
+		entity.setUsuario(usuario.getUsuario());
+		entity.setSituacao(usuario.getSituacao());
+		entity.setPapel(usuario.getPapel());
+		
+		
+		try {
+			usuarioRepository.save(entity);
+		} catch (Exception ex) {
+			throw new ExcecaoRetorno("Erro ao tentar cadastrar o usuario");
+		}
+		
 		
 		return usuario;
 	}

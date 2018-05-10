@@ -12,20 +12,20 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "parametro", schema = "public")
-public class Parametro implements java.io.Serializable {
+public class ParametroEntity implements java.io.Serializable {
 
 	private byte id;
 	private String descricao;
 	private BigDecimal valor;
 
-	public Parametro() {
+	public ParametroEntity() {
 	}
 
-	public Parametro(byte id) {
+	public ParametroEntity(byte id) {
 		this.id = id;
 	}
 
-	public Parametro(byte id, String descricao, BigDecimal valor) {
+	public ParametroEntity(byte id, String descricao, BigDecimal valor) {
 		this.id = id;
 		this.descricao = descricao;
 		this.valor = valor;

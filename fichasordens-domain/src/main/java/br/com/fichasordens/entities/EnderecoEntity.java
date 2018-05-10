@@ -7,8 +7,11 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -16,9 +19,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "endereco", schema = "public")
-public class Endereco implements java.io.Serializable {
+public class EnderecoEntity implements java.io.Serializable {
 
-	private BigDecimal id;
+	private Long id;
 	private String logradouro;
 	private String bairro;
 	private String cidade;
@@ -26,13 +29,13 @@ public class Endereco implements java.io.Serializable {
 	private int numero;
 	private String cep;
 	private String complemento;
-	private Set<Empresa> empresas = new HashSet<Empresa>(0);
+	private Set<EmpresaEntity> empresas = new HashSet<EmpresaEntity>(0);
 	private Set<Cliente> clientes = new HashSet<Cliente>(0);
 
-	public Endereco() {
+	public EnderecoEntity() {
 	}
 
-	public Endereco(BigDecimal id, String logradouro, String bairro, String cidade, String estado, int numero) {
+	public EnderecoEntity(Long id, String logradouro, String bairro, String cidade, String estado, int numero) {
 		this.id = id;
 		this.logradouro = logradouro;
 		this.bairro = bairro;
@@ -41,8 +44,8 @@ public class Endereco implements java.io.Serializable {
 		this.numero = numero;
 	}
 
-	public Endereco(BigDecimal id, String logradouro, String bairro, String cidade, String estado, int numero,
-			String cep, String complemento, Set<Empresa> empresas, Set<Cliente> clientes) {
+	public EnderecoEntity(Long id, String logradouro, String bairro, String cidade, String estado, int numero,
+			String cep, String complemento, Set<EmpresaEntity> empresas, Set<Cliente> clientes) {
 		this.id = id;
 		this.logradouro = logradouro;
 		this.bairro = bairro;
@@ -56,13 +59,14 @@ public class Endereco implements java.io.Serializable {
 	}
 
 	@Id
-
-	@Column(name = "id", unique = true, nullable = false, precision = 131089, scale = 0)
-	public BigDecimal getId() {
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="endereco_sequencia")
+	@SequenceGenerator(name="endereco_sequencia", sequenceName="endereco_sequencia", allocationSize=1)
+	//@Column(name = "id", unique = true, nullable = false, precision = 131089, scale = 0)
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(BigDecimal id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -130,11 +134,11 @@ public class Endereco implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "endereco")
-	public Set<Empresa> getEmpresas() {
+	public Set<EmpresaEntity> getEmpresas() {
 		return this.empresas;
 	}
 
-	public void setEmpresas(Set<Empresa> empresas) {
+	public void setEmpresas(Set<EmpresaEntity> empresas) {
 		this.empresas = empresas;
 	}
 

@@ -8,13 +8,13 @@
 		<class>br.com.fichasordens.entities.AtendimentoFicha</class>
 		<class>br.com.fichasordens.entities.AtendimentoFichaId</class>
 		<class>br.com.fichasordens.entities.Cliente</class>
-		<class>br.com.fichasordens.entities.Empresa</class>
-		<class>br.com.fichasordens.entities.Endereco</class>
+		<class>br.com.fichasordens.entities.EmpresaEntity</class>
+		<class>br.com.fichasordens.entities.EnderecoEntity</class>
 		<class>br.com.fichasordens.entities.FichaAtendLanc</class>
 		<class>br.com.fichasordens.entities.FichaAtendLancId</class>
 		<class>br.com.fichasordens.entities.FichaAtendimento</class>
 		<class>br.com.fichasordens.entities.OrdemServico</class>
-		<class>br.com.fichasordens.entities.Parametro</class>
+		<class>br.com.fichasordens.entities.ParametroEntity</class>
 		<class>br.com.fichasordens.entities.PecaServicoFicha</class>
 		<class>br.com.fichasordens.entities.PecaServicoFichaId</class>
 		<class>br.com.fichasordens.entities.PecaServicoOrdem</class>

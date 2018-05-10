@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 
 @JsonInclude(Include.NON_NULL)
-public class UsuarioDTO {
+public class UsuarioDto {
 	
 	private long id;
 	private String usuario;
@@ -84,7 +84,7 @@ public class UsuarioDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UsuarioDTO other = (UsuarioDTO) obj;
+		UsuarioDto other = (UsuarioDto) obj;
 		if (id != other.id)
 			return false;
 		if (usuario == null) {
