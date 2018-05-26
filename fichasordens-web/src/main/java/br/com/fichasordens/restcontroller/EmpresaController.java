@@ -1,5 +1,7 @@
 package br.com.fichasordens.restcontroller;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +20,13 @@ import br.com.fichasordens.dto.EmpresaDto;
 @EnableResourceServer 
 public class EmpresaController {
 	
+	private static final Logger LOGGER = LogManager.getLogger(EmpresaController.class);
+	
 	@Autowired private Empresa empresa;
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity salvarEmpresa(@RequestBody final EmpresaDto dto	) {
-		
+		LOGGER.info("Salvar dados da empresa");
 		final Empresa emp = this.empresa.salvarEmpresa(this.convertDtoParaEmpresa(dto));
 		
 		return new ResponseEntity<>(this.convertEmpresaParaDto(emp), HttpStatus.OK);
@@ -30,7 +34,7 @@ public class EmpresaController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	 public ResponseEntity<EmpresaDto> getEmpresa() {
-		
+		LOGGER.info("Buscar dados da empresa");
 		this.empresa.buscarEmpresa();
 		
 		final Empresa empresa = this.empresa.buscarEmpresa();

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +25,7 @@ public class Parametro {
 	@Transactional
 	public List<Parametro> buscarParametros() {
 		
-		List<ParametroEntity> list = parametroRepository.findAll();
+		List<ParametroEntity> list = parametroRepository.findAll(new Sort(Sort.Direction.ASC, "id"));
 		List<Parametro> lstParametro = new ArrayList<>();
 		list.forEach(p-> {
 			Parametro param = new Parametro();
@@ -36,6 +37,14 @@ public class Parametro {
 		
 		return lstParametro;
 		
+	}
+	
+	public void salvarParametro(List<Parametro> parametrosList) {
+		for (Parametro p : parametrosList) {
+			ParametroEntity ent = this.parametroRepository.findOne(p.getId());
+			ent.setValor(p.getValor());
+			this.parametroRepository.save(ent);
+		}
 	}
 
 	public byte getId() {

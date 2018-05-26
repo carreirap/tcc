@@ -1,3 +1,48 @@
-<p>
-  parametro works!
-</p>
+<form (submit)="onSubmit()" class="container" #f="ngForm" novalidate>
+  <div class="row align-items-center justify-content-center">
+          <div ><h2 style="align-content: center">
+              Cadastro de Parametro
+            </h2></div>
+      </div>
+    
+  <div class="form-row">
+    <div class="form-group col-md-11" [ngClass]="{'was-validated': !vlr.valid  && (vlr.dirty || vlr.touched)}">
+      <label for="visita">Visita Técnica</label>
+      <input type="hidden" id="id-vista" name="id-visita" [(ngModel)]="formValue.idVisita">
+      <input class="form-control" type="text" value="" id="visita" name="visita" [ngModel]="formValue.valorVisita | number:'1.2-2'" 
+        (ngModelChange)="formValue.valorVisita=$event" #vlr="ngModel" required>
+      <div class="invalid-feedback" *ngIf="vlr.errors && (vlr.dirty || vlr.touched)">
+        <ul >
+          <li *ngIf="vlr.errors.required">
+            O campo é obrigatório
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="form-row">
+    <div class="form-group col-md-11" [ngClass]="{'was-validated': !custoHora.valid  && (custoHora.dirty || custoHora.touched)}">
+      <label for="hora">Custo Hora Técnica</label>
+      <input class="form-control" type="text" value="" id="hora" name="hora" [ngModel]="formValue.valorHora | number:'1.2-2'" 
+      (ngModelChange)="formValue.valorHora=$event" #custoHora="ngModel" required>
+      <input type="hidden" value="" id="id-hora" name="id-hora" [(ngModel)]="formValue.idHora">
+      <div class="invalid-feedback" *ngIf="custoHora.errors && (custoHora.dirty || custoHora.touched)">
+        <ul >
+          <li *ngIf="custoHora.errors.required">
+            O campo é obrigatório
+          </li>
+        </ul>
+      </div>
+    </div>  
+  </div>
+  
+  <div class="form-group row">
+      <div class="col-sm-10">
+        <button type="submit" class="btn btn-primary" [disabled]="!f.valid">Salvar</button>
+      </div>
+  </div>
+</form>
+<toaster-container></toaster-container>  
+
