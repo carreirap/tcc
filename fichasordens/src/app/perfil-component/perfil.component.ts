@@ -3,6 +3,7 @@ import { User } from '../_models';
 import { PerfiService } from './perfil-service';
 import { ToasterService} from 'angular5-toaster';
 import * as CryptoJS from 'crypto-js';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-perfil-component',

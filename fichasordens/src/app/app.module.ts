@@ -46,14 +46,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { routing } from './app.routing';
 
 import { AppComponent } from './app.component';
 import { AuthGuard } from './_guards';
 import { AuthenticationService } from './_services';
 // import { fakeBackendProvider } from './_helpers';
-import { MockBackend, MockConnection } from '@angular/http/testing';
+// import { MockBackend, MockConnection } from '@angular/http/testing';
 import { BaseRequestOptions } from '@angular/http';
 import { LoginComponent } from './login/index';
 import { HomeComponent } from './home/index';
@@ -105,7 +105,7 @@ import { ParametroComponent } from './parametro/parametro.component';
 
         // providers used to create fake backend
         // fakeBackendProvider,
-        MockBackend,
+        //MockBackend,
         BaseRequestOptions,
         HttpClientModule,
         Configuration,

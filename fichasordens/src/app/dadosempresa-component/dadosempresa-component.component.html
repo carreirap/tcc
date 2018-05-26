@@ -1,74 +1,134 @@
-<form id="empform" (submit)="onSubmit()">
+<form  (submit)="onSubmit()" class="container" #myform="ngForm" novalidate>
     <div class="row align-items-center justify-content-center">
         <div ><h2 style="align-content: center">
             Cadastro da Empresa
           </h2></div>
     </div>
-  
+
   <div class="form-row">
-    <div class="form-group col-md-11">
+    <div class="form-group col-md-11" [ngClass]="{'was-validated': !name.valid  && (name.dirty || name.touched)}">
       <label for="nome">Nome</label>
-      <input class="form-control" maxlength="50" type="text" value="" id="nome" [(ngModel)]="formEmpresa.nome" [ngModelOptions]="{standalone: true}">
+      <input class="form-control" maxlength="50" type="text" value="" id="nome" name="nome" [(ngModel)]="formEmpresa.nome" 
+      #name="ngModel" required>
+      <div class="invalid-feedback" *ngIf="name.errors && (name.dirty || name.touched)">
+        <ul >
+          <li *ngIf="name.errors.required">
+            O campo nome é obrigatório
+          </li>
+        </ul>
+      </div>
+      
     </div>
   </div>
 
+
   <div class="form-row">
-    <div class="form-group col-md-11">
+    <div class="form-group col-md-11" >
       <label for="cnpjcpf">CNPJ/CPF</label>
-      <input class="form-control" maxlength="14" type="search" value="" id="cnpjcpf" [(ngModel)]="formEmpresa.cnpj" [ngModelOptions]="{standalone: true}">
+      <input class="form-control" maxlength="14" type="search" value="" id="cnpjcpf" name="cnpjcpf" [(ngModel)]="formEmpresa.cnpj"/> 
     </div>  
   </div>
 
   <div class="form-row">
-    <div class="form-group col-md-11">
-      <label for="email">Email</label>
-      <input class="form-control" maxlength="80" type="email" value="" id="email" [(ngModel)]="formEmpresa.email" [ngModelOptions]="{standalone: true}">
+    <div class="form-group col-md-11" [ngClass]="{'was-validated': !emailVal.valid  && (emailVal.dirty || emailVal.touched)}">
+      <label for="emailEmp">Email</label>
+      <input class="form-control" maxlength="80" type="email" value="" id="emailEmp" name="emailEmp" #emailVal="ngModel" [(ngModel)]="formEmpresa.email" 
+       email required>
+      <div class="invalid-feedback" *ngIf="emailVal.errors && (emailVal.dirty || emailVal.touched)">
+        <ul >
+          <li *ngIf="emailVal.errors.required">
+            O campo email é obrigatório
+          </li>
+          <li *ngIf="emailVal.errors.email && emailVal.errors.required == false">
+            Email inválido
+          </li>
+        </ul>
+      </div>
     </div>  
   </div>
 
   <div class="form-row">
-    <div class="form-group col-md-11">
+    <div class="form-group col-md-11" [ngClass]="{'was-validated': !fone.valid  && (fone.dirty || fone.touched)}">
       <label for="fone">Fone</label>
-      <input class="form-control" maxlength="15" type="tel" value="" id="fone" [(ngModel)]="formEmpresa.fone" [ngModelOptions]="{standalone: true}">
+      <input class="form-control" maxlength="15" type="tel" value="" id="fone" name="fone" #fone="ngModel"
+      [(ngModel)]="formEmpresa.fone" required>
+      <div class="invalid-feedback" *ngIf="fone.errors && (fone.dirty || fone.touched)">
+        <ul >
+          <li *ngIf="fone.errors.required">
+            Fone é obrigatório
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 
   <div class="form-row">
-    <div class="form-group col-md-8">
+    <div class="form-group col-md-8" [ngClass]="{'was-validated': !rua.valid  && (rua.dirty || rua.touched)}">
       <label for="rua">Rua</label>
-      <input type="text" maxlength="60" class="form-control" id="rua" placeholder="" [(ngModel)]="formEmpresa.logradouro" [ngModelOptions]="{standalone: true}">
+      <input type="text" maxlength="60" class="form-control" id="rua" placeholder="" name="rua" #rua="ngModel" 
+      [(ngModel)]="formEmpresa.logradouro" required>
+      <div class="invalid-feedback" *ngIf="rua.errors && (rua.dirty || rua.touched)">
+        <ul >
+          <li *ngIf="rua.errors.required">
+            Rua é obrigatório
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-3" [ngClass]="{'was-validated': !numero.valid  && (numero.dirty || numero.touched)}">
       <label for="numero">Número</label>
-      <input type="number" maxlength="10" class="form-control" id="numero" placeholder="" [(ngModel)]="formEmpresa.numero" [ngModelOptions]="{standalone: true}">
+      <input type="number" maxlength="10" class="form-control" id="numero" placeholder="" name="numero"  #numero="ngModel"
+      [(ngModel)]="formEmpresa.numero" required>
+      <div class="invalid-feedback" *ngIf="numero.errors && (numero.dirty || numero.touched)">
+        <ul >
+          <li *ngIf="numero.errors.required">
+            Numero é obrigatório
+          </li>
+        </ul>
+      </div>
     </div>
 </div>
 
 <div class="form-row">
   <div class="form-group col-md-3">
     <label for="cep">CEP</label>
-    <input class="form-control" maxlength="10" type="text" value="" id="cep" [(ngModel)]="formEmpresa.cep" [ngModelOptions]="{standalone: true}">
+    <input class="form-control" maxlength="10" type="text" value="" id="cep" name="cep" [(ngModel)]="formEmpresa.cep">
   </div>
-  <div class="form-group col-md-8">
+  <div class="form-group col-md-8" [ngClass]="{'was-validated': !bairro.valid  && (bairro.dirty || bairro.touched)}">
     <label for="bairro">Bairro</label>
-    <input class="form-control" maxlength="40" type="text" value="" required id="bairro" [(ngModel)]="formEmpresa.bairro" [ngModelOptions]="{standalone: true}">
-    <h1>{{empform.bairro.$valid}}</h1>
+    <input class="form-control" maxlength="40" type="text" value="" required id="bairro" name="bairro" #bairro="ngModel"
+    [(ngModel)]="formEmpresa.bairro">
+    <div class="invalid-feedback" *ngIf="bairro.errors && (bairro.dirty || bairro.touched)">
+      <ul >
+        <li *ngIf="bairro.errors.required">
+          Bairro é obrigatório
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 <div class="form-row">
   <div class="form-group col-md-11">
     <label for="complemento">Complemento</label>
-    <input class="form-control" maxlength="15" type="text" value="" id="complemento" [(ngModel)]="formEmpresa.complemento" [ngModelOptions]="{standalone: true}">
+    <input class="form-control" maxlength="15" type="text" value="" id="complemento" name="complemento" [(ngModel)]="formEmpresa.complemento">
   </div>
 </div>
 <div class="form-row">
-  <div class="form-group col-md-8">
+  <div class="form-group col-md-8" [ngClass]="{'was-validated': !cidade.valid  && (cidade.dirty || cidade.touched)}">
     <label for="cidade">Cidade</label>
-    <input class="form-control" maxlength="40" type="text" value="" id="cidade" [(ngModel)]="formEmpresa.cidade" [ngModelOptions]="{standalone: true}">
+    <input class="form-control" maxlength="40" type="text" id="cidade" name="cidade" #cidade="ngModel"
+    [(ngModel)]="formEmpresa.cidade" required>
+    <div class="invalid-feedback" *ngIf="cidade.errors && (cidade.dirty || cidade.touched)">
+      <ul >
+        <li *ngIf="cidade.errors.required">
+          Cidade é obrigatório
+        </li>
+      </ul>
+    </div>
   </div>
   <div class="form-group col-md-3">
       <label for="estado">Estado</label>
-      <select class="form-control custom-select" id="estado" [(ngModel)]="formEmpresa.estado" [ngModelOptions]="{standalone: true}">
+      <select class="form-control custom-select" id="estado" name="estado" [(ngModel)]="formEmpresa.estado">
           <option *ngFor="let title of optionsSelect" [value]="title.value">
               {{title.label}}             
             </option>
@@ -76,19 +136,28 @@
     </div>
 </div>
 <div class="form-row">
-  <div class="form-group col-md-11">
+  <div class="form-group col-md-11"  [ngClass]="{'was-validated': !site.valid  && (site.dirty || site.touched)}">
     <label for="fone">Site</label>
-    <input class="form-control" maxlength="80" type="text" value="" id="site" [(ngModel)]="formEmpresa.site" [ngModelOptions]="{standalone: true}">
+    <input class="form-control" maxlength="80" type="text" value="" id="site" name="site" #site="ngModel"
+    [(ngModel)]="formEmpresa.site" required>
+    <div class="invalid-feedback" *ngIf="site.errors && (site.dirty || site.touched)">
+      <ul >
+        <li *ngIf="site.errors.required">
+          O campo site é obrigatório
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 
 
 <div class="form-group row">
     <div class="col-sm-10">
-      <button type="submit" class="btn btn-primary">Salvar</button>
+      <button class="btn btn-primary" type="submit" [disabled]="!myform.valid" >Salvar</button>
     </div>
 </div>
 </form>
 <toaster-container></toaster-container>
+<p>Form valid: {{ myform.form.invalid }}</p>
 
 

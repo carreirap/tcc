@@ -1,5 +1,5 @@
 <toaster-container></toaster-container>
-<form (submit)="onSubmit()">
+<form  #formUsuario="ngForm" (submit)="onSubmit()" ngNativeValidate novalidate>
   <div class="row align-items-center justify-content-center">
     <div>
       <h2 style="align-content: center">
@@ -8,55 +8,99 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-11">
+    <div class="form-group col-md-11" [ngClass]="{'was-validated': !usuario.valid  && (usuario.dirty || usuario.touched)}">
       <label for="inputUsuario">Usuário</label>
-      <input type="text" maxlength="10" [(ngModel)]="formUsuario.usuario" [ngModelOptions]="{standalone: true}" class="form-control" id="inputUsuario"
-        placeholder="usuário">
+      <input type="text" maxlength="10" name="usuario" id="usuario" [(ngModel)]="formUsuario.usuario" class="form-control" id="inputUsuario"
+        required #usuario="ngModel">
+      <div class="invalid-feedback" *ngIf="usuario.errors && (usuario.dirty || usuario.touched)">
+        <ul >
+          <li *ngIf="usuario.errors.required">
+            O usuario é obrigatório
+          </li>
+        </ul>
+      </div>  
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-11">
+    <div class="form-group col-md-11" [ngClass]="{'was-validated': !nome.valid  && (nome.dirty || nome.touched)}">
       <label for="nome">Nome</label>
-      <input type="text" maxlength="50" [(ngModel)]="formUsuario.nome" [ngModelOptions]="{standalone: true}" class="form-control" id="nome" placeholder="">
+      <input type="text" maxlength="50" name="nome" id="nome" [(ngModel)]="formUsuario.nome"
+      class="form-control" id="nome" placeholder="" required #nome="ngModel">
+      <div class="invalid-feedback" *ngIf="nome.errors && (nome.dirty || nome.touched)">
+        <ul >
+          <li *ngIf="nome.errors.required">
+            O nome é obrigatório
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <div class="form-row" *ngIf="isOperacaoInserir()">
-    <div class="form-group col-md-11">
+    <div class="form-group col-md-11" [ngClass]="{'was-validated': !senha.valid  && (senha.dirty || senha.touched)}">
       <label for="inputPassword">Senha</label>
-      <input type="password" maxlength="8" [(ngModel)]="formUsuario.senha" [ngModelOptions]="{standalone: true}" class="form-control" id="inputPassword"
-        placeholder="senha">
+      <input type="password" maxlength="8" name="senha" id="senha" [(ngModel)]="formUsuario.senha" class="form-control" id="inputPassword"
+        required #senha="ngModel">
+        <div class="invalid-feedback" *ngIf="senha.errors && (senha.dirty || senha.touched)">
+          <ul >
+            <li *ngIf="senha.errors.required">
+              A senha é obrigatória
+            </li>
+          </ul>
+        </div>  
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-11" *ngIf="isAlterarSenha()">
+    <div class="form-group col-md-11" *ngIf="isAlterarSenha()" [ngClass]="{'was-validated': !novaSenha.valid  && (novaSenha.dirty || novaSenha.touched)}">
       <label for="inputPassword1">Nova Senha</label>
-      <input type="password" maxlength="8" [(ngModel)]="formUsuario.novaSenha" [ngModelOptions]="{standalone: true}" class="form-control" id="inputPassword1"
-        placeholder="Nova Senha">
+      <input type="password" maxlength="8" name="novaSenha" id="novaSenha" [(ngModel)]="formUsuario.novaSenha" class="form-control" id="inputPassword1"
+        required #novaSenha="ngModel">
+      <div class="invalid-feedback" *ngIf="novaSenha.errors && (novaSenha.dirty || novaSenha.touched)">
+          <ul >
+            <li *ngIf="novaSenha.errors.required">
+              A nova senha é obrigatória
+            </li>
+          </ul>
+      </div>
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-11" *ngIf="isAlterarSenha()">
+    <div class="form-group col-md-11" *ngIf="isAlterarSenha()" [ngClass]="{'was-validated': !confSenha.valid  && (confSenha.dirty || confSenha.touched)}">
       <label for="inputPassword2">Confirmar Senha</label>
-      <input type="password" maxlength="8" [(ngModel)]="formUsuario.confirmaSenha" [ngModelOptions]="{standalone: true}" class="form-control"
-        id="inputPassword2" placeholder="Confirme Senha">
+      <input type="password" maxlength="8" name="confSenha" is="confSenha" [(ngModel)]="formUsuario.confirmaSenha" class="form-control"
+        id="inputPassword2" required #confSenha="ngModel">
+      <div class="invalid-feedback" *ngIf="confSenha.errors && (confSenha.dirty || confSenha.touched)">
+          <ul >
+            <li *ngIf="confSenha.errors.required">
+              Confirmar a nova senha é obrigatório
+            </li>
+          </ul>
+      </div>
     </div>
   </div>
 
   <div class="form-row">
-    <div class="form-group col-md-11">
+    <div class="form-group col-md-11" [ngClass]="{'was-validated': !papel.valid  && (papel.dirty || papel.touched)}">
       <label for="papel">Perfil</label>
-      <select  [(ngModel)]="formUsuario.papel" [ngModelOptions]="{standalone: true}" class="form-control custom-select" id="papel">
+      <select  [(ngModel)]="formUsuario.papel" name="papel" id="papel"
+      class="form-control custom-select" id="papel" required #papel="ngModel">
         <option *ngFor="let title of optionsSelect" [value]="title.value">
           {{title.label}}
         </option>
       </select>
+      <div class="invalid-feedback" *ngIf="papel.errors && (papel.dirty || papel.touched)">
+        <ul >
+          <li *ngIf="papel.errors.required">
+            Selecione o papel do usuário
+          </li>
+        </ul>
+    </div>
     </div>
   </div>
 
   <div class="form-row">
     <div class="form-group col-md-11">
       <div class="form-check">
-        <input class="form-check-input" [(ngModel)]="formUsuario.situacao" [ngModelOptions]="{standalone: true}" type="checkbox"
+        <input class="form-check-input" name="situacao" id="situacao" #situacao="ngModel" [(ngModel)]="formUsuario.situacao" type="checkbox"
           id="gridCheck1">
         <label class="form-check-label" for="gridCheck1">
           Ativo
@@ -66,11 +110,11 @@
   </div>
   <div class="form-group row">
     <div class="col-sm-10">
-      <button type="submit" class="btn btn-primary">Salvar</button>
+      <button type="submit" class="btn btn-primary" [disabled]='formUsuario.invalid'>Salvar</button>
       <button type="button" (click)="mostrarCampos()" *ngIf="mostrarLinkSenha()" class="btn btn-link">Alterar Senha</button>
     </div>
   </div>
-
+  <p>Form valid: {{ formUsuario.form.valid }}</p>
 </form>
 
 <div class="col-sm-10">
