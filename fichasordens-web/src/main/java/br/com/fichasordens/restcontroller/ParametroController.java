@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.fichasordens.Empresa;
 import br.com.fichasordens.Parametro;
-import br.com.fichasordens.dto.EmpresaDto;
 import br.com.fichasordens.dto.ParametroDto;
+import br.com.fichasordens.exception.ExcecaoRetorno;
 
 @RestController
 @RequestMapping("/parametro")
@@ -31,7 +30,7 @@ public class ParametroController {
 	private Parametro parametro;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<ParametroDto>> getUsuario(@RequestParam(required = false) final String user) {
+	public ResponseEntity<List<ParametroDto>> getParametros(@RequestParam(required = false) final String user) {
 		final List<Parametro> lst = parametro.buscarParametros();
 		LOGGER.info("Listando todos parametros");
 		return new ResponseEntity<List<ParametroDto>>(converterParaDto(lst), HttpStatus.OK);
@@ -40,7 +39,13 @@ public class ParametroController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity salvarParametro(@RequestBody final List<ParametroDto> listDto) {
 		LOGGER.info("Salvar dados da empresa");
-		this.parametro.salvarParametro(this.convertDtoParaParametro(listDto));
+		try {
+			this.validarParametros(listDto);
+			this.parametro.salvarParametro(this.convertDtoParaParametro(listDto));
+		} catch (ExcecaoRetorno e) {
+			LOGGER.error("Erro salvando parametros", e);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
@@ -67,5 +72,16 @@ public class ParametroController {
 			listDto.add(dto);
 		});
 		return listDto;
+	}
+	
+	private void validarParametros(final List<ParametroDto> listDto) throws ExcecaoRetorno {
+		for(ParametroDto p : listDto) {
+			if (p.getId() == 0) {
+				throw new ExcecaoRetorno("Parametro inválido");
+			}
+			if (p.getValor() == null || p.getValor().doubleValue() == 0) {
+				throw new ExcecaoRetorno("Valor do parametro é inválido");
+			}
+		}
 	}
 }

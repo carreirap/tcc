@@ -35,8 +35,7 @@ public class EmpresaController {
 	@RequestMapping(method = RequestMethod.GET)
 	 public ResponseEntity<EmpresaDto> getEmpresa() {
 		LOGGER.info("Buscar dados da empresa");
-		this.empresa.buscarEmpresa();
-		
+				
 		final Empresa empresa = this.empresa.buscarEmpresa();
 		 
 		return new ResponseEntity<EmpresaDto>(this.convertEmpresaParaDto(empresa),HttpStatus.OK);

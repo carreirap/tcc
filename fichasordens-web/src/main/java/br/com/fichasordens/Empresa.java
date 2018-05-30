@@ -28,6 +28,13 @@ public class Empresa {
 	@Transactional
 	public Empresa buscarEmpresa() {
 		EmpresaEntity entity = this.repository.findOne(Empresa.ID_EMPRESA);
+		
+		Empresa empresa = converter(entity);
+		
+		return empresa;
+	}
+
+	private Empresa converter(EmpresaEntity entity) {
 		Empresa empresa = new Empresa();
 		empresa.setCnpj(entity.getCnpj());
 		empresa.setEmail(entity.getEmai());
@@ -45,7 +52,6 @@ public class Empresa {
 		empresa.setFone(entity.getFone());
 		empresa.setNome(entity.getNome());
 		empresa.setSite(entity.getSite());
-		
 		return empresa;
 	}
 	

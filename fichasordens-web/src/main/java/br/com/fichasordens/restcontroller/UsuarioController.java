@@ -40,7 +40,7 @@ public class UsuarioController {
 			return new ResponseEntity<>(newUsuario, HttpStatus.OK);
 		} catch (ExcecaoRetorno e) {
 			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
-			//e.printStackTrace();
+			LOGGER.error("Error adicionando um novo usuario", e);
 		}
 	 }
 	 
