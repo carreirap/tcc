@@ -1,16 +1,19 @@
 package br.com.fichasordens.entities;
 // Generated 03/03/2018 14:18:32 by Hibernate Tools 4.3.5.Final
 
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -18,9 +21,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "cliente", schema = "public")
-public class Cliente implements java.io.Serializable {
-
-	private BigDecimal id;
+public class ClienteEntity implements java.io.Serializable {
+	private static final long serialVersionUID = 2945683658337030647L;
+	
+	private Long id;
 	private EnderecoEntity endereco;
 	private String nome;
 	private String cnpjCpf;
@@ -30,10 +34,10 @@ public class Cliente implements java.io.Serializable {
 	private Set<OrdemServico> ordemServicos = new HashSet<OrdemServico>(0);
 	private Set<FichaAtendimento> fichaAtendimentos = new HashSet<FichaAtendimento>(0);
 
-	public Cliente() {
+	public ClienteEntity() {
 	}
 
-	public Cliente(BigDecimal id, EnderecoEntity endereco, String nome, String cnpjCpf, String celular) {
+	public ClienteEntity(Long id, EnderecoEntity endereco, String nome, String cnpjCpf, String celular) {
 		this.id = id;
 		this.endereco = endereco;
 		this.nome = nome;
@@ -41,7 +45,7 @@ public class Cliente implements java.io.Serializable {
 		this.celular = celular;
 	}
 
-	public Cliente(BigDecimal id, EnderecoEntity endereco, String nome, String cnpjCpf, String celular, String fone,
+	public ClienteEntity(Long id, EnderecoEntity endereco, String nome, String cnpjCpf, String celular, String fone,
 			String email, Set<OrdemServico> ordemServicos, Set<FichaAtendimento> fichaAtendimentos) {
 		this.id = id;
 		this.endereco = endereco;
@@ -55,13 +59,14 @@ public class Cliente implements java.io.Serializable {
 	}
 
 	@Id
-
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="cliente_sequencia")
+	@SequenceGenerator(name="cliente_sequencia", sequenceName="cliente_sequencia", allocationSize=1)
 	@Column(name = "id", unique = true, nullable = false, precision = 131089, scale = 0)
-	public BigDecimal getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(BigDecimal id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

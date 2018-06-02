@@ -20,7 +20,7 @@ import javax.persistence.Table;
 public class FichaAtendimento implements java.io.Serializable {
 
 	private long id;
-	private Cliente cliente;
+	private ClienteEntity cliente;
 	private String tipoServico;
 	private Set<PecaServicoFicha> pecaServicoFichas = new HashSet<PecaServicoFicha>(0);
 	private Set<FichaAtendLanc> fichaAtendLancs = new HashSet<FichaAtendLanc>(0);
@@ -29,13 +29,13 @@ public class FichaAtendimento implements java.io.Serializable {
 	public FichaAtendimento() {
 	}
 
-	public FichaAtendimento(long id, Cliente cliente, String tipoServico) {
+	public FichaAtendimento(long id, ClienteEntity cliente, String tipoServico) {
 		this.id = id;
 		this.cliente = cliente;
 		this.tipoServico = tipoServico;
 	}
 
-	public FichaAtendimento(long id, Cliente cliente, String tipoServico, Set<PecaServicoFicha> pecaServicoFichas,
+	public FichaAtendimento(long id, ClienteEntity cliente, String tipoServico, Set<PecaServicoFicha> pecaServicoFichas,
 			Set<FichaAtendLanc> fichaAtendLancs, Set<AtendimentoFicha> atendimentoFichas) {
 		this.id = id;
 		this.cliente = cliente;
@@ -58,11 +58,11 @@ public class FichaAtendimento implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cliente_id", nullable = false)
-	public Cliente getCliente() {
+	public ClienteEntity getCliente() {
 		return this.cliente;
 	}
 
-	public void setCliente(Cliente cliente) {
+	public void setCliente(ClienteEntity cliente) {
 		this.cliente = cliente;
 	}
 

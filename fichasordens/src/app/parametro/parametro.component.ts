@@ -46,7 +46,7 @@ export class ParametroComponent implements OnInit {
 
     this.service.post('/parametro', array).subscribe(response => {
         console.log(response);
-        this.toasterService.pop('success', 'Parametros', 'Parametros alterada com sucesso!');
+        this.toasterService.pop('success', 'Parametros', 'Parâmetros alterados com sucesso!');
       }, (error) => {
         console.log('error in', error);
         this.toasterService.pop('error', 'Parametros', JSON.parse(error._body).mensagem);

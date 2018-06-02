@@ -39,8 +39,9 @@ public class UsuarioController {
 			newUsuario = usuario.adicionarUsuario(newUsuario);
 			return new ResponseEntity<>(newUsuario, HttpStatus.OK);
 		} catch (ExcecaoRetorno e) {
-			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
 			LOGGER.error("Error adicionando um novo usuario", e);
+			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+			
 		}
 	 }
 	 

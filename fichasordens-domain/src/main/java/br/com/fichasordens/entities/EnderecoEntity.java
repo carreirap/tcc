@@ -30,7 +30,7 @@ public class EnderecoEntity implements java.io.Serializable {
 	private String cep;
 	private String complemento;
 	private Set<EmpresaEntity> empresas = new HashSet<EmpresaEntity>(0);
-	private Set<Cliente> clientes = new HashSet<Cliente>(0);
+	private Set<ClienteEntity> clientes = new HashSet<ClienteEntity>(0);
 
 	public EnderecoEntity() {
 	}
@@ -45,7 +45,7 @@ public class EnderecoEntity implements java.io.Serializable {
 	}
 
 	public EnderecoEntity(Long id, String logradouro, String bairro, String cidade, String estado, int numero,
-			String cep, String complemento, Set<EmpresaEntity> empresas, Set<Cliente> clientes) {
+			String cep, String complemento, Set<EmpresaEntity> empresas, Set<ClienteEntity> clientes) {
 		this.id = id;
 		this.logradouro = logradouro;
 		this.bairro = bairro;
@@ -143,11 +143,11 @@ public class EnderecoEntity implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "endereco")
-	public Set<Cliente> getClientes() {
+	public Set<ClienteEntity> getClientes() {
 		return this.clientes;
 	}
 
-	public void setClientes(Set<Cliente> clientes) {
+	public void setClientes(Set<ClienteEntity> clientes) {
 		this.clientes = clientes;
 	}
 

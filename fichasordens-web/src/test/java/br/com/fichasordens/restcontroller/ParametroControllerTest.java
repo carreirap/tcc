@@ -36,9 +36,9 @@ public class ParametroControllerTest {
 		List<Parametro> list = new ArrayList<Parametro>();
 		list.add(carregarParametro());
 		
-		when(this.mockParametro.buscarParametros()).thenReturn(list);
+		when(this.mockParametro.recuperarParametros()).thenReturn(list);
 		
-		ResponseEntity<List<ParametroDto>> paramList = this.parametroController.getParametros("user_test");
+		ResponseEntity<List<ParametroDto>> paramList = this.parametroController.recuperarParametros("user_test");
 		
 		assertNotNull(paramList.getBody());
 	}

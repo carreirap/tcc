@@ -30,8 +30,8 @@ public class ParametroController {
 	private Parametro parametro;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<ParametroDto>> getParametros(@RequestParam(required = false) final String user) {
-		final List<Parametro> lst = parametro.buscarParametros();
+	public ResponseEntity<List<ParametroDto>> recuperarParametros(@RequestParam(required = false) final String user) {
+		final List<Parametro> lst = parametro.recuperarParametros();
 		LOGGER.info("Listando todos parametros");
 		return new ResponseEntity<List<ParametroDto>>(converterParaDto(lst), HttpStatus.OK);
 	}

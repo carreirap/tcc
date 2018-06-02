@@ -39,7 +39,7 @@
           <li *ngIf="emailVal.errors.required">
             O campo email é obrigatório
           </li>
-          <li *ngIf="emailVal.errors.email && emailVal.errors.required == false">
+          <li *ngIf="emailVal.errors.email && !emailVal.errors.required">
             Email inválido
           </li>
         </ul>
@@ -158,6 +158,6 @@
 </div>
 </form>
 <toaster-container></toaster-container>
-<p>Form valid: {{ myform.form.invalid }}</p>
+
 
 

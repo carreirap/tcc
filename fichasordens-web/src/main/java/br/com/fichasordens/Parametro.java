@@ -23,7 +23,7 @@ public class Parametro {
 	private ParametroRepository parametroRepository;
 	
 	@Transactional
-	public List<Parametro> buscarParametros() {
+	public List<Parametro> recuperarParametros() {
 		
 		List<ParametroEntity> list = parametroRepository.findAll(new Sort(Sort.Direction.ASC, "id"));
 		List<Parametro> lstParametro = new ArrayList<>();

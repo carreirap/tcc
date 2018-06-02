@@ -17,7 +17,7 @@ import javax.persistence.Table;
 public class OrdemServico implements java.io.Serializable {
 
 	private long id;
-	private Cliente cliente;
+	private ClienteEntity cliente;
 	private String tipoServico;
 	private String frabricante;
 	private String modelo;
@@ -35,7 +35,7 @@ public class OrdemServico implements java.io.Serializable {
 		this.tipoServico = tipoServico;
 	}
 
-	public OrdemServico(long id, Cliente cliente, String tipoServico, String frabricante, String modelo, String serie,
+	public OrdemServico(long id, ClienteEntity cliente, String tipoServico, String frabricante, String modelo, String serie,
 			String descEquip, String descDefeito, String estadoItensAcomp, String descServico) {
 		this.id = id;
 		this.cliente = cliente;
@@ -62,11 +62,11 @@ public class OrdemServico implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cliente_id")
-	public Cliente getCliente() {
+	public ClienteEntity getCliente() {
 		return this.cliente;
 	}
 
-	public void setCliente(Cliente cliente) {
+	public void setCliente(ClienteEntity cliente) {
 		this.cliente = cliente;
 	}
 
