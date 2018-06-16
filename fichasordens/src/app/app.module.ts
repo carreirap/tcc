@@ -71,6 +71,7 @@ import { PerfiService } from './perfil-component/perfil-service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToasterModule, ToasterService} from 'angular5-toaster';
 import { ParametroComponent } from './parametro/parametro.component';
+import { CpfCnpjDirective } from './util/cnpj-cpf-validator';
 
 
 @NgModule({
@@ -84,7 +85,8 @@ import { ParametroComponent } from './parametro/parametro.component';
     ClienteComponentComponent,
     DadosempresaComponentComponent,
     FichaAtendimentoComponentComponent,
-    ParametroComponent
+    ParametroComponent,
+    CpfCnpjDirective
    ],
   imports: [
     BrowserModule,
@@ -102,10 +104,9 @@ import { ParametroComponent } from './parametro/parametro.component';
         PerfiService,
         ToasterService,
         DataService,
-
         // providers used to create fake backend
         // fakeBackendProvider,
-        //MockBackend,
+        // MockBackend,
         BaseRequestOptions,
         HttpClientModule,
         Configuration,

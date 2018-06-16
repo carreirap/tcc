@@ -9,22 +9,21 @@ import br.com.fichasordens.entities.EnderecoEntity;
 import br.com.fichasordens.repository.EmpresaRepository;
 
 @Component
-public class Empresa {
+public class Empresa extends Pessoa{
 	
 	private static long ID_EMPRESA = 1L;
 	
 	private long id;
 	private String nome;
 	private String cnpj;
-	private String fone;
 	private String email;
 	private String site;
 	
 	@Autowired private Endereco endereco;
 	
-	@Autowired private EmpresaRepository repository;
+	@Autowired 
+	private EmpresaRepository repository;
 	
-
 	@Transactional
 	public Empresa buscarEmpresa() {
 		EmpresaEntity entity = this.repository.findOne(Empresa.ID_EMPRESA);
@@ -107,14 +106,6 @@ public class Empresa {
 
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
-	}
-
-	public String getFone() {
-		return fone;
-	}
-
-	public void setFone(String fone) {
-		this.fone = fone;
 	}
 
 	public String getEmail() {

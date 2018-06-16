@@ -67,7 +67,7 @@ public class EmpresaEntity implements java.io.Serializable {
 		this.nome = nome;
 	}
 
-	@Column(name = "cnpj", nullable = false, length = 14)
+	@Column(name = "cnpj", nullable = false, length = 18)
 	public String getCnpj() {
 		return this.cnpj;
 	}

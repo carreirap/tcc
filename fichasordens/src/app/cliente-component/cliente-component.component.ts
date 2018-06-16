@@ -55,9 +55,13 @@ export class ClienteComponentComponent implements OnInit {
         console.log(response);
         this.toasterService.pop('success', 'Cliente', 'Cliente cadastrado com sucesso!');
       }, (error) => {
-        console.log('error in', error);
+        console.log('error in', error.body);
         this.toasterService.pop('error', 'Cliente', JSON.parse(error._body).mensagem);
       });
+  }
+
+  setValue(value: string) {
+    this.formCliente.cnpj = value;
   }
 
 }

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.fichasordens.Cliente;
 import br.com.fichasordens.Endereco;
 import br.com.fichasordens.dto.ClienteDto;
+import br.com.fichasordens.dto.MensagemRetornoDto;
+import br.com.fichasordens.exception.ExcecaoRetorno;
 
 @RestController
 @RequestMapping("/cliente")
@@ -24,7 +26,11 @@ public class ClienteController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity salvarCliente(@RequestBody final ClienteDto clienteDto) {
 		final Cliente cliente = this.converterClienteDtoParaCliente(clienteDto); 
-		this.cliente.salvarCliente(cliente);
+		try {
+			this.cliente.salvarCliente(cliente);
+		} catch (ExcecaoRetorno e) {
+			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
@@ -52,6 +58,9 @@ public class ClienteController {
 		end.setEstado(dto.getEstado());
 		end.setLogradouro(dto.getLogradouro());
 		end.setNumero(dto.getNumero());
+		if (dto.getIdEndereco() != 0) {
+			end.setId(dto.getIdEndereco());
+		}
 		return end;
 	}
 	

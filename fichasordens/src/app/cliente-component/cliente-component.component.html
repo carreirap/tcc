@@ -23,8 +23,10 @@
   <div class="form-row">
     <div class="form-group col-md-11" [ngClass]="{'was-validated': !cpfcnpj.valid  && (cpfcnpj.dirty || cpfcnpj.touched)}">
       <label for="cnpjcpf">CNPJ/CPF</label>
-      <input class="form-control" type="search" value="" id="cnpjcpf" name="cpfcnpj" [(ngModel)]="formCliente.cnpj" #cpfcnpj="ngModel" required>
+      <input  class="form-control" maxlength="18" validarCnpjCpf type="search" id="cnpjcpf" name="cpfcnpj" 
+      [(ngModel)]="formCliente.cnpj" (valueChange)='setValue($event)' #cpfcnpj="ngModel" required>
       <div class="invalid-feedback" *ngIf="cpfcnpj.errors && (cpfcnpj.dirty || cpfcnpj.touched)">
+          
         <ul >
           <li *ngIf="cpfcnpj.errors.required">
             O campo CPF/CNPJ é obrigatório
@@ -127,7 +129,7 @@
 <div class="form-row">
   <div class="form-group col-md-11">
     <label for="complemento">Complemento</label>
-    <input class="form-control" type="text" value="" id="complemento">
+    <input class="form-control" maxlength="15" type="text" value="" id="complemento" name="complemento" [(ngModel)]="formCliente.complemento">
   </div>
 </div>
 <div class="form-row">

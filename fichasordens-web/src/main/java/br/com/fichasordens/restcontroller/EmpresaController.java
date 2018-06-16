@@ -45,17 +45,19 @@ public class EmpresaController {
 		final EmpresaDto dto = new EmpresaDto();		
 		
 		dto.setNome(empresa.getNome());
-		 dto.setCnpj(empresa.getCnpj());
-		 dto.setBairro(empresa.getEndereco().getBairro());
-		 dto.setCep(empresa.getEndereco().getCep());
-		 dto.setCidade(empresa.getEndereco().getCidade());
-		 dto.setComplemento(empresa.getEndereco().getComplemento());
-		 dto.setEmail(empresa.getEmail());
-		 dto.setEstado(empresa.getEndereco().getEstado());
-		 dto.setFone(empresa.getFone());
-		 dto.setLogradouro(empresa.getEndereco().getLogradouro());
-		 dto.setNumero(empresa.getEndereco().getNumero());
-		 dto.setSite(empresa.getSite());
+		dto.setCnpj(empresa.getCnpj());
+		dto.setBairro(empresa.getEndereco().getBairro());
+		dto.setCep(empresa.getEndereco().getCep());
+		dto.setCidade(empresa.getEndereco().getCidade());
+		dto.setComplemento(empresa.getEndereco().getComplemento());
+		dto.setEmail(empresa.getEmail());
+		dto.setEstado(empresa.getEndereco().getEstado());
+		dto.setFone(empresa.getFone());
+		dto.setLogradouro(empresa.getEndereco().getLogradouro());
+		dto.setNumero(empresa.getEndereco().getNumero());
+		dto.setSite(empresa.getSite());
+		dto.setIdEndereco(empresa.getEndereco().getId());
+		 
 		 
 //		 dto.setNome("IslucNet");
 //		 dto.setCnpj("76189406000126");
@@ -93,6 +95,9 @@ public class EmpresaController {
 		end.setEstado(dto.getEstado());
 		end.setLogradouro(dto.getLogradouro());
 		end.setNumero(dto.getNumero());
+		if (dto.getIdEndereco() != 0) {
+			end.setId(dto.getIdEndereco());
+		}
 		return end;
 	}
 	

@@ -5,6 +5,7 @@ export class Empresa {
     fone: String;
     email: String;
     site: String;
+    idEndereco: Number;
     logradouro: String;
     numero: Number;
     cidade: String;

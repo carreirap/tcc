@@ -9,5 +9,7 @@ import br.com.fichasordens.entities.ClienteEntity;
 @Repository
 @Transactional
 public interface ClienteRepository extends JpaRepository<ClienteEntity, Long>{
+	
+	ClienteEntity findByCnpjCpf(final String cnpjCpf);
 
 }

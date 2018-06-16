@@ -2,9 +2,11 @@ package br.com.fichasordens;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.fichasordens.entities.ClienteEntity;
 import br.com.fichasordens.entities.EnderecoEntity;
+import br.com.fichasordens.exception.ExcecaoRetorno;
 import br.com.fichasordens.repository.ClienteRepository;
 
 @Component
@@ -17,11 +19,26 @@ public class Cliente extends Pessoa {
 	@Autowired 
 	private ClienteRepository clienteRepository;
 	
-	public void salvarCliente(final Cliente cliente) {
+	@Transactional
+	public void salvarCliente(final Cliente cliente) throws ExcecaoRetorno {
+		
+		if (this.isClienteCadastrado(cliente.getCnpjCpf())) {
+			throw new ExcecaoRetorno("Cliente já cadastrado com CNPJ/CPF informado");
+		}
+		
 		ClienteEntity entity = this.convertParaEntity(cliente);
 		this.getEndereco().salvarEndereco(cliente.getEndereco());
 		entity.getEndereco().setId(cliente.getEndereco().getId());
 		this.clienteRepository.save(entity);
+	}
+	
+	public boolean isClienteCadastrado(final String cnpjCpf) {
+		final ClienteEntity entity = this.clienteRepository.findByCnpjCpf(cnpjCpf);
+		if (entity != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	private ClienteEntity convertParaEntity(final Cliente cliente) {

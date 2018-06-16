@@ -89,7 +89,7 @@ public class ClienteEntity implements java.io.Serializable {
 		this.nome = nome;
 	}
 
-	@Column(name = "cnpj_cpf", nullable = false, length = 14)
+	@Column(name = "cnpj_cpf", nullable = false, length = 18)
 	public String getCnpjCpf() {
 		return this.cnpjCpf;
 	}

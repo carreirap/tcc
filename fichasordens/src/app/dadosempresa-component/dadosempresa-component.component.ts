@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Empresa } from '../_models/empresa';
 import { DataService, CustomInterceptor } from '../_services/http.service';
 import { ToasterService} from 'angular5-toaster';
+import { CpfCnpjDirective } from '../util/cnpj-cpf-validator';
 
 
 @Component({
@@ -12,6 +13,7 @@ import { ToasterService} from 'angular5-toaster';
 export class DadosempresaComponentComponent implements OnInit {
     formEmpresa: Empresa = new Empresa();
     toasterService: ToasterService;
+    diretiva: CpfCnpjDirective;
 
     constructor(private service: DataService, toasterService: ToasterService) {
         this.toasterService = toasterService;
@@ -50,6 +52,7 @@ export class DadosempresaComponentComponent implements OnInit {
         this.formEmpresa.fone = data.fone;
         this.formEmpresa.numero = data.numero;
         this.formEmpresa.site = data.site;
+        this.formEmpresa.idEndereco = data.idEndereco;
     }
 
     onSubmit() {
