@@ -1,8 +1,10 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { Empresa } from '../_models/empresa';
 import { DataService, CustomInterceptor } from '../_services/http.service';
-import { ToasterService} from 'angular5-toaster';
+import { ToasterService } from 'angular5-toaster';
 import { CpfCnpjDirective } from '../util/cnpj-cpf-validator';
+import { Estados } from '../_models/TodosEstados';
+import { NgModel } from '@angular/forms';
 
 
 @Component({
@@ -14,7 +16,9 @@ export class DadosempresaComponentComponent implements OnInit {
     formEmpresa: Empresa = new Empresa();
     toasterService: ToasterService;
     diretiva: CpfCnpjDirective;
+    estados: Estados = new Estados();
 
+    @ViewChild('cpfcnpjvalidation') pwConfirmModel: NgModel;
     constructor(private service: DataService, toasterService: ToasterService) {
         this.toasterService = toasterService;
     }
@@ -22,21 +26,15 @@ export class DadosempresaComponentComponent implements OnInit {
     optionsSelect: Array<any>;
 
     ngOnInit() {
-        this.optionsSelect = [
-            { value: 'PR', label: 'Paraná' },
-            { value: 'SP', label: 'São Paulo' },
-            { value: 'RJ', label: 'Rio de Janeiro' },
-            { value: 'PE', label: 'Pernanbuco' },
-            { value: 'BH', label: 'Bahia' }
-        ];
+        this.optionsSelect = this.estados.getTodosEstados();
 
         this.service.get('/empresa').subscribe(response => {
             console.log(response);
             this.loadData(response);
-          }, (error) => {
+        }, (error) => {
             console.log('error in', error);
             this.toasterService.pop('error', 'Empresa', error.mensagem);
-          });
+        });
     }
 
     loadData(data: any) {
@@ -47,7 +45,7 @@ export class DadosempresaComponentComponent implements OnInit {
         this.formEmpresa.bairro = data.bairro;
         this.formEmpresa.cep = data.cep;
         this.formEmpresa.cidade = data.cidade;
-        this.formEmpresa.cnpj =  data.cnpj;
+        this.formEmpresa.cnpj = data.cnpj;
         this.formEmpresa.email = data.email;
         this.formEmpresa.fone = data.fone;
         this.formEmpresa.numero = data.numero;
@@ -59,10 +57,21 @@ export class DadosempresaComponentComponent implements OnInit {
         this.service.post('/empresa', this.formEmpresa).subscribe(response => {
             console.log(response);
             this.toasterService.pop('success', 'Empresa', 'Empresa alterada com sucesso!');
-          }, (error) => {
+        }, (error) => {
             console.log('error in', error);
             this.toasterService.pop('error', 'Empresa', JSON.parse(error._body).mensagem);
-          });
+        });
+    }
+
+    setValue(value: string) {
+        this.formEmpresa.cnpj = value;
+    }
+
+    setCnpjCpfInvalido(mensagem: String) {
+        console.log(mensagem);
+        if (mensagem !== 'OK') {
+            this.pwConfirmModel.control.setErrors({ 'cnpj-cpf': true });
+        }
     }
 
 }

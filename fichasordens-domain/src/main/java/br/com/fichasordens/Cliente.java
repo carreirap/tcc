@@ -23,7 +23,7 @@ public class Cliente extends Pessoa {
 	public void salvarCliente(final Cliente cliente) throws ExcecaoRetorno {
 		
 		if (this.isClienteCadastrado(cliente.getCnpjCpf())) {
-			throw new ExcecaoRetorno("Cliente já cadastrado com CNPJ/CPF informado");
+			throw new ExcecaoRetorno("Cliente ja cadastrado com CNPJ/CPF informado");
 		}
 		
 		ClienteEntity entity = this.convertParaEntity(cliente);

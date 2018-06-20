@@ -68,7 +68,7 @@ public class UsuarioController {
 		 lst.forEach(e->{ 
 			 UsuarioDto dto = new UsuarioDto();
 			 dto.setNome(e.getNome());
-			 dto.setUsuario(e.getUsuario());
+			 dto.setUsuario(e.getNomeUsuario());
 			 dto.setPapel(PapelEnum.convertEnum(e.getPapel()).getNome());
 			 dto.setId(e.getId());
 			 dto.setSituacao(e.getSituacao() == 1 ? UsuarioController.TRUE : null);
@@ -80,7 +80,7 @@ public class UsuarioController {
 	 private Usuario convertToUsuario(final UsuarioDto dto) {
 		 final Usuario usuario = new Usuario();
 		 usuario.setNome(dto.getNome());
-		 usuario.setUsuario(dto.getUsuario());
+		 usuario.setNomeUsuario(dto.getUsuario());
 		 usuario.setPapel(dto.getPapel());
 		 usuario.setNovaSenha(dto.getNovaSenha());
 		 usuario.setConfirmaSenha(dto.getConfirmaSenha());

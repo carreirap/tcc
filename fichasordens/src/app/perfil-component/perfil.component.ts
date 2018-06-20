@@ -65,7 +65,7 @@ export class PerfilComponent implements OnInit {
     console.log(this.formUsuario);
 
     if (this.operacao === 'inserir') {
-      //console.log('cripto: ' + CryptoJS.enc.Base64.parse(this.formUsuario.novaSenha).toString());
+      // console.log('cripto: ' + CryptoJS.enc.Base64.parse(this.formUsuario.novaSenha).toString());
       this.formUsuario.novaSenha = CryptoJS.enc.Base64.parse(this.formUsuario.novaSenha);
       this.perfil.post(this.formUsuario).subscribe(response => {
         console.log(response);
@@ -76,7 +76,7 @@ export class PerfilComponent implements OnInit {
         this.toasterService.pop('error', 'Usuário', JSON.parse(error._body).mensagem);
       });
     } else {
-      //this.formUsuario.novaSenha = CryptoJS.enc.Base64.parse(this.formUsuario.novaSenha).toString();
+      // this.formUsuario.novaSenha = CryptoJS.enc.Base64.parse(this.formUsuario.novaSenha).toString();
       console.log('cripto: ' + this.formUsuario.novaSenha);
       this.perfil.put(this.formUsuario).subscribe(response => {
         console.log(response);

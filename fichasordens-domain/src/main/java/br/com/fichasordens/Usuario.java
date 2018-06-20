@@ -17,7 +17,7 @@ public class Usuario {
 	@Autowired private UsuarioRepository usuarioRepository;
 	
 	private long id;
-	private String usuario;
+	private String nomeUsuario;
 	private String nome;
 	private String senha;
 	private String novaSenha;
@@ -25,22 +25,21 @@ public class Usuario {
 	private String papel;
 	private int situacao;
 	
-	public Usuario adicionarUsuario (final Usuario usuario) throws ExcecaoRetorno {
-		
-		if (!usuario.confirmaSenha.equals("")) {
-			if (this.verificarSenhas(usuario.getNovaSenha(), usuario.getConfirmaSenha())) {
-				usuario.setSenha(usuario.getNovaSenha());
-				
-				final UsuarioEntity entity = converterParaEntity(usuario);
-				try {
-					usuarioRepository.save(entity);
-					usuario.setId(entity.getId());
-				} catch (Exception ex) {
-					throw new ExcecaoRetorno("Erro ao tentar cadastrar o usuario");
-				}
+	public Usuario adicionarUsuario(final Usuario usuario) throws ExcecaoRetorno {
+
+		if (!usuario.confirmaSenha.equals("")
+				&& this.verificarSenhas(usuario.getNovaSenha(), usuario.getConfirmaSenha())) {
+			usuario.setSenha(usuario.getNovaSenha());
+
+			final UsuarioEntity entity = converterParaEntity(usuario);
+			try {
+				usuarioRepository.save(entity);
+				usuario.setId(entity.getId());
+			} catch (Exception ex) {
+				throw new ExcecaoRetorno("Erro ao tentar cadastrar o usuario");
 			}
 		}
-		
+
 		return usuario;
 	}
 
@@ -48,7 +47,7 @@ public class Usuario {
 		final UsuarioEntity entity = new UsuarioEntity();
 		entity.setNome(usuario.nome);
 		entity.setSenha(usuario.senha);
-		entity.setUsuario(usuario.getUsuario());
+		entity.setUsuario(usuario.getNomeUsuario());
 		entity.setSituacao(1);
 		entity.setPapel(usuario.getPapel());
 		entity.setDataCad(new Date());
@@ -59,15 +58,11 @@ public class Usuario {
 		
 		UsuarioEntity entity = usuarioRepository.findOne(usuario.getId());
 		if (usuario.getSenha() != null && entity.getSenha().equals(usuario.getSenha())) {
-			if (!usuario.confirmaSenha.equals("")) {
-				if (this.verificarSenhas(usuario.getNovaSenha(), usuario.getConfirmaSenha())) {
-					entity.setSenha(usuario.getNovaSenha());
-				}
-			}
+			setNovaSenhaSeNovaSenhaEConfirmeSenhaBatem(usuario, entity);
 		}
 		
 		entity.setNome(usuario.nome);
-		entity.setUsuario(usuario.getUsuario());
+		entity.setUsuario(usuario.getNomeUsuario());
 		entity.setSituacao(usuario.getSituacao());
 		entity.setPapel(usuario.getPapel());
 		
@@ -81,6 +76,12 @@ public class Usuario {
 		
 		return usuario;
 	}
+
+	private void setNovaSenhaSeNovaSenhaEConfirmeSenhaBatem(final Usuario usuario, UsuarioEntity entity) {
+		if (!usuario.confirmaSenha.equals("") && this.verificarSenhas(usuario.getNovaSenha(), usuario.getConfirmaSenha())) {
+				entity.setSenha(usuario.getNovaSenha());
+		}
+	}
 	
 	public List<Usuario> listarUsuario(String... usuario) {
 		List<UsuarioEntity> usuarios = usuarioRepository.findAll();
@@ -92,10 +93,10 @@ public class Usuario {
 	}
 	
 	private List<Usuario> convert(final List<UsuarioEntity> user) {
-		List<Usuario> lst = new ArrayList<Usuario>();
+		List<Usuario> lst = new ArrayList<>();
 		for(UsuarioEntity e: user) {
 			Usuario u = new Usuario();
-			u.setUsuario(e.getUsuario());
+			u.setNomeUsuario(e.getUsuario());
 			u.setSenha(e.getSenha());
 			u.setNome(e.getNome());
 			u.setPapel(e.getPapel());
@@ -104,15 +105,6 @@ public class Usuario {
 			lst.add(u);
 		}
 		return lst;
-		/*Field[] fields = cls.getDeclaredFields();
-		Object o = clsDest.newInstance();
-		for( int i = 0 ; i < fields.length ; i++ )
-		{
-			fields[i].setAccessible(true);
-			System.out.println("Field Name-->"+fields[i].getName()+"\t" 
-					+"Field Type-->"+ fields[i].getType().getName()+"\t"
-					+"Field Value-->"+ fields[i].get(a));
-		}*/
 	}
 
 	public long getId() {
@@ -127,36 +119,29 @@ public class Usuario {
 		return nome;
 	}
 
-
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
 
 	public String getSenha() {
 		return senha;
 	}
 
-
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-
-
-	public String getUsuario() {
-		return usuario;
+	
+	public String getNomeUsuario() {
+		return nomeUsuario;
 	}
 
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setNomeUsuario(String nomeUsuario) {
+		this.nomeUsuario = nomeUsuario;
 	}
-
 
 	public String getNovaSenha() {
 		return novaSenha;
 	}
-
 
 	public void setNovaSenha(String novaSenha) {
 		this.novaSenha = novaSenha;

@@ -22,9 +22,9 @@ public class FichaAtendimento implements java.io.Serializable {
 	private long id;
 	private ClienteEntity cliente;
 	private String tipoServico;
-	private Set<PecaServicoFicha> pecaServicoFichas = new HashSet<PecaServicoFicha>(0);
-	private Set<FichaAtendLanc> fichaAtendLancs = new HashSet<FichaAtendLanc>(0);
-	private Set<AtendimentoFicha> atendimentoFichas = new HashSet<AtendimentoFicha>(0);
+	private Set<PecaServicoFicha> pecaServicoFichas = new HashSet<>(0);
+	private Set<FichaAtendLanc> fichaAtendLancs = new HashSet<>(0);
+	private Set<AtendimentoFicha> atendimentoFichas = new HashSet<>(0);
 
 	public FichaAtendimento() {
 	}

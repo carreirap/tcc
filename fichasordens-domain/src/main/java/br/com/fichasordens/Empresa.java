@@ -11,7 +11,7 @@ import br.com.fichasordens.repository.EmpresaRepository;
 @Component
 public class Empresa extends Pessoa{
 	
-	private static long ID_EMPRESA = 1L;
+	private static final long ID_EMPRESA = 1L;
 	
 	private long id;
 	private String nome;
@@ -28,9 +28,7 @@ public class Empresa extends Pessoa{
 	public Empresa buscarEmpresa() {
 		EmpresaEntity entity = this.repository.findOne(Empresa.ID_EMPRESA);
 		
-		Empresa empresa = converter(entity);
-		
-		return empresa;
+		return converter(entity);
 	}
 
 	private Empresa converter(EmpresaEntity entity) {
@@ -62,7 +60,7 @@ public class Empresa extends Pessoa{
 		entity.setEndereco(new EnderecoEntity());
 		entity.getEndereco().setId(ender.getId());
 		entity.setId(ID_EMPRESA);
-		entity = this.repository.save(entity);
+		this.repository.save(entity);
 		return empresa;
 	}
 
@@ -84,10 +82,12 @@ public class Empresa extends Pessoa{
 		this.id = id;
 	}
 
+	@Override
 	public Endereco getEndereco() {
 		return endereco;
 	}
-
+	
+	@Override
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}

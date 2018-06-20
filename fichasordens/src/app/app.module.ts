@@ -46,7 +46,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { routing } from './app.routing';
 
 import { AppComponent } from './app.component';
@@ -104,6 +104,7 @@ import { CpfCnpjDirective } from './util/cnpj-cpf-validator';
         PerfiService,
         ToasterService,
         DataService,
+        FormBuilder,
         // providers used to create fake backend
         // fakeBackendProvider,
         // MockBackend,

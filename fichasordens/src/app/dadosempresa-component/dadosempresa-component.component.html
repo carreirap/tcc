@@ -23,9 +23,25 @@
 
 
   <div class="form-row">
-    <div class="form-group col-md-11" >
+    <div class="form-group col-md-11" [ngClass]="{'was-validated': !cpfcnpjvalidation.valid  && (cpfcnpjvalidation.dirty || cpfcnpjvalidation.touched)}">
       <label for="cnpjcpf">CNPJ/CPF</label>
-      <input class="form-control" validarCnpjCpf maxlength="18" type="search" value="" id="cnpjcpf" name="cnpjcpf" [(ngModel)]="formEmpresa.cnpj"/> 
+      <input class="form-control" validarCnpjCpf maxlength="18" type="search" value="" id="cnpjcpf" name="cnpjcpf" 
+      (cnpjvaluetyped)='setValue($event)' (focusoutcnpj)="setCnpjCpfInvalido($event)" #cpfcnpjvalidation="ngModel" [(ngModel)]="formEmpresa.cnpj"/> 
+      <div [hidden]="cpfcnpjvalidation.valid || cpfcnpjvalidation.pristine" class="alert-danger" >
+        <ul >
+          <li>
+            O campo CPF/CNPJ é invalido
+          </li>
+        </ul>
+     </div>
+      <div class="invalid-feedback" *ngIf="cpfcnpjvalidation.errors && (cpfcnpjvalidation.dirty || cpfcnpjvalidation.touched )">
+          
+        <ul >
+          <li *ngIf="cpfcnpjvalidation.errors.required">
+            O campo CPF/CNPJ é obrigatório
+          </li>
+        </ul>
+      </div>
     </div>  
   </div>
 

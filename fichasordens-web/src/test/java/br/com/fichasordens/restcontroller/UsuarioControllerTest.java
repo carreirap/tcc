@@ -125,7 +125,7 @@ public class UsuarioControllerTest {
 		user.setNome("test");
 		user.setPapel("Admin");
 		user.setSituacao(1);
-		user.setUsuario("usuario");
+		user.setNomeUsuario("usuario");
 		return user;
 	}
 	

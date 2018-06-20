@@ -1,4 +1,5 @@
 import { Directive, ElementRef, Input, HostListener, Output, EventEmitter } from '@angular/core';
+import { DataService } from '../_services';
 // import { ConverterService } from '../service/converter.service';
 
 declare var $: any;
@@ -13,15 +14,14 @@ export class CpfCnpjDirective {
     @Output()
     onPressEnter: EventEmitter<any> = new EventEmitter();
 
-    @Output() valueChange = new EventEmitter();
+    @Output() cnpjvaluetyped = new EventEmitter();
 
-    //input: any;
-    // converter:ConverterService = new ConverterService();
+    @Output() focusoutcnpj = new EventEmitter<string>();
 
     arrayNumber: any[] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     arrayFunction: any[] = [, 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']
 
-    constructor(private el: ElementRef) {}
+    constructor(private el: ElementRef, private service: DataService) {}
 
     // tslint:disable-next-line:use-life-cycle-interface
     ngAfterViewInit() {
@@ -33,9 +33,33 @@ export class CpfCnpjDirective {
         if (event.key === 'Enter') {
             this.onPressEnter.emit();
         } else if (this.arrayFunction.indexOf(event.key) < 0) {
+            console.log(event);
             this.el.nativeElement.value = this.convertToCpfCnpj(this.el.nativeElement.value);
-            this.valueChange.emit(this.el.nativeElement.value);
+            this.cnpjvaluetyped.emit(this.el.nativeElement.value);
         }
+    }
+
+    @HostListener('focusout', ['$event'])
+    onFocusout(event: EventTarget) {
+        console.log(event);
+        const val = this.el.nativeElement.value;
+        if (val === '') {
+            return;
+        }
+        let endpoint = '/validador/cpf';
+        if (val.length > 14 ) {
+            endpoint = '/validador/cnpj';
+        }
+        this.service.post(endpoint, this.el.nativeElement.value).subscribe(response => {
+            this.transmitirRetorno(response);
+          }, (error) => {
+            console.log('error in', error.mensagem);
+            this.focusoutcnpj.emit(error.error.mensagem);
+        });
+    }
+
+    transmitirRetorno(mensagem: any) {
+        this.focusoutcnpj.emit(mensagem.mensagem);
     }
 
     convertToCpfCnpj(num) {
