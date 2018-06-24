@@ -33,12 +33,12 @@ public class Cliente extends Pessoa {
 	}
 	
 	public boolean isClienteCadastrado(final String cnpjCpf) {
+		boolean clienteEstaCadastrado = false;
 		final ClienteEntity entity = this.clienteRepository.findByCnpjCpf(cnpjCpf);
 		if (entity != null) {
-			return true;
-		} else {
-			return false;
-		}
+			clienteEstaCadastrado =  true;
+		} 
+		return clienteEstaCadastrado;
 	}
 	
 	private ClienteEntity convertParaEntity(final Cliente cliente) {

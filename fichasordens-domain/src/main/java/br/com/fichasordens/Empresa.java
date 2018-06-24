@@ -14,9 +14,7 @@ public class Empresa extends Pessoa{
 	private static final long ID_EMPRESA = 1L;
 	
 	private long id;
-	private String nome;
 	private String cnpj;
-	private String email;
 	private String site;
 	
 	@Autowired private Endereco endereco;
@@ -92,28 +90,12 @@ public class Empresa extends Pessoa{
 		this.endereco = endereco;
 	}
 
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
 	public String getCnpj() {
 		return cnpj;
 	}
 
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getSite() {

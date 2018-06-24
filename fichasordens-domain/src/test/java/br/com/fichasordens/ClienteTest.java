@@ -39,6 +39,17 @@ public class ClienteTest {
 		Mockito.verify(this.mockClienteRepository, Mockito.times(1)).save(org.mockito.Mockito.any(ClienteEntity.class));
 	}
 	
+	@Test(expected=ExcecaoRetorno.class)
+	public void test_clienteCadastrado_fail() throws ExcecaoRetorno {
+		when(this.mockClienteRepository.save(org.mockito.Mockito.any(ClienteEntity.class))).thenReturn(new ClienteEntity());
+		when(this.endereco.salvarEndereco(loadEndereco())).thenReturn(loadEndereco());
+		ClienteEntity clienteCadastrado = new ClienteEntity();
+		clienteCadastrado.setId(1L);
+		when(this.mockClienteRepository.findByCnpjCpf(org.mockito.Mockito.any(String.class))).thenReturn(clienteCadastrado);
+		
+		this.cliente.salvarCliente(loadCliente());
+	}
+	
 	private Cliente loadCliente() {
 		Cliente cli = new Cliente();
 		cli.setCelular("99999999999999");

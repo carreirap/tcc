@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fichasordens.dto.MensagemRetornoDto;
-import br.com.fichasordens.util.ValidatorCNPJ;
-import br.com.fichasordens.util.ValidatorCPF;
+import br.com.fichasordens.util.ValidadorCNPJ;
+import br.com.fichasordens.util.ValidadorCPF;
 
 @RestController
 @RequestMapping("/validador")
@@ -19,7 +19,7 @@ public class ValidadorController {
 
 	@RequestMapping(method = RequestMethod.POST, value="/cpf")
 	public ResponseEntity validarCpf(@RequestBody final String cpf) {
-		if (ValidatorCPF.isCPF(cpf)) {
+		if (ValidadorCPF.isCPF(cpf)) {
 			return new ResponseEntity<>(new MensagemRetornoDto("OK"), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(new MensagemRetornoDto("CPF informado inválido"), HttpStatus.BAD_REQUEST);
@@ -28,7 +28,7 @@ public class ValidadorController {
 	
 	@RequestMapping(method = RequestMethod.POST, value="/cnpj")
 	public ResponseEntity validarCnpj(@RequestBody final String cnpj) {
-		if (ValidatorCNPJ.isCNPJ(cnpj)) {
+		if (ValidadorCNPJ.isCNPJ(cnpj)) {
 			return new ResponseEntity<>(new MensagemRetornoDto("OK"), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(new MensagemRetornoDto("CNPJ informado inválido"), HttpStatus.BAD_REQUEST);

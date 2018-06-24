@@ -89,7 +89,6 @@ export class PerfilComponent implements OnInit {
   }
 
   loadUsuario(userLine: any) {
-    console.log('no parent');
     console.log(userLine);
     this.formUsuario.usuario = userLine.usuario;
     this.formUsuario.nome = userLine.nome;

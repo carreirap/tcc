@@ -8,11 +8,10 @@ public class Pessoa {
 	
 	private String nome;
 	private String fone;
-	
+	private String email;
 	@Autowired
 	private Endereco endereco;
 	
-	private String email;
 	
 	public String getNome() {
 		return nome;

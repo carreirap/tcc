@@ -2,19 +2,21 @@ package br.com.fichasordens.exception;
 
 public class ExcecaoRetorno extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6078848466858387381L;
+
 	public ExcecaoRetorno() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public ExcecaoRetorno(String message, Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 
 	public ExcecaoRetorno(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 	
 	
