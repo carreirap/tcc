@@ -72,6 +72,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToasterModule, ToasterService} from 'angular5-toaster';
 import { ParametroComponent } from './parametro/parametro.component';
 import { CpfCnpjDirective } from './util/cnpj-cpf-validator';
+import { NgxSmartModalModule } from 'ngx-smart-modal';
+import { PesquisarDirective } from './util/cliente-search';
 
 
 @NgModule({
@@ -86,7 +88,8 @@ import { CpfCnpjDirective } from './util/cnpj-cpf-validator';
     DadosempresaComponentComponent,
     FichaAtendimentoComponentComponent,
     ParametroComponent,
-    CpfCnpjDirective
+    CpfCnpjDirective,
+    PesquisarDirective
    ],
   imports: [
     BrowserModule,
@@ -94,6 +97,7 @@ import { CpfCnpjDirective } from './util/cnpj-cpf-validator';
     HttpModule,
     HttpClientModule,
     NgbModule.forRoot(),
+    NgxSmartModalModule.forRoot(),
     routing,
     BrowserAnimationsModule, ToasterModule
 

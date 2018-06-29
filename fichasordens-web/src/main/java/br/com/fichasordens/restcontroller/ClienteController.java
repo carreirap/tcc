@@ -1,19 +1,26 @@
 package br.com.fichasordens.restcontroller;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fichasordens.Cliente;
 import br.com.fichasordens.Endereco;
 import br.com.fichasordens.dto.ClienteDto;
 import br.com.fichasordens.dto.MensagemRetornoDto;
+import br.com.fichasordens.entities.ClienteEntity;
 import br.com.fichasordens.exception.ExcecaoRetorno;
+import br.com.fichasordens.repository.ClienteRepository;
 
 @RestController
 @RequestMapping("/cliente")
@@ -32,6 +39,41 @@ public class ClienteController {
 			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public Page<ClienteDto> pesquisarCliente(@RequestParam(required=false) final String cnpjcpf, @RequestParam(required=false) final String nome) {
+		Cliente cli = new Cliente();
+		cli.setCnpjCpf(cnpjcpf);
+		cli.setNome(nome);
+		Page<ClienteEntity> clientePaged = this.cliente.pesquisarCliente(cli);
+		int totalElements = (int) clientePaged.getTotalElements();
+        return new PageImpl<ClienteDto>(clientePaged.getContent()
+                .stream()
+                .map(e -> new ClienteDto(
+                        e.getId(),
+                        e.getNome(),
+                        e.getCnpjCpf(),
+                        e.getEmail(),
+                        e.getEndereco().getLogradouro(),
+                        e.getEndereco().getBairro(),
+                        e.getEndereco().getCidade(),
+                        e.getEndereco().getEstado(),
+                        e.getFone(),
+                        e.getCelular()
+                        ))
+                .collect(Collectors.toList()), ClienteRepository.createPageRequest(), totalElements);
+      
+//		List<ClienteDto> dtoList = new ArrayList<>();
+		/*	clienteList.forEach(a -> {
+				ClienteDto dto = new ClienteDto();
+				dto.setNome(a.getNome());
+				dto.setId(a.getId());
+				dto.setCnpj(a.getCnpjCpf());
+				dto.setFone(a.getFone());
+				dtoList.add(dto);
+		});*/
+		
 	}
 	
 	private Cliente converterClienteDtoParaCliente(final ClienteDto dto) { 

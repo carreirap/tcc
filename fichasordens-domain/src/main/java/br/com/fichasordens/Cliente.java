@@ -1,6 +1,11 @@
 package br.com.fichasordens;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +35,35 @@ public class Cliente extends Pessoa {
 		this.getEndereco().salvarEndereco(cliente.getEndereco());
 		entity.getEndereco().setId(cliente.getEndereco().getId());
 		this.clienteRepository.save(entity);
+	}
+	
+	@Transactional
+	public Page<ClienteEntity> pesquisarCliente(final Cliente cliente) {
+		ClienteEntity ent = new ClienteEntity();
+		if (cliente.getCnpjCpf() != null) {
+			ent.setCnpjCpf(cliente.getCnpjCpf().trim());
+		} else {
+			ent.setNome(cliente.getNome());
+		}
+		
+		
+		ExampleMatcher matcher = ExampleMatcher.matching()
+	            .withIgnoreNullValues()
+	            .withIgnoreCase()
+	            .withMatcher("nome", match -> match.startsWith());
+		Example<ClienteEntity> example = Example.of(ent, matcher);
+		Page<ClienteEntity> paged = this.clienteRepository.findAll(example, ClienteRepository.createPageRequest());
+		paged.forEach(a -> a.getEndereco().getLogradouro());
+		return paged;
+	}
+
+	private void converterEntityParaCliente(final List<Cliente> clienteList, final ClienteEntity e) {
+		Cliente cli = new Cliente();
+		cli.setNome(e.getNome());
+		cli.setCnpjCpf(e.getCnpjCpf());
+		cli.setFone(e.getFone());
+		cli.setId(e.getId());
+		clienteList.add(cli);
 	}
 	
 	public boolean isClienteCadastrado(final String cnpjCpf) {
