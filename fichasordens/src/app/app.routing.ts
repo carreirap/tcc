@@ -9,6 +9,7 @@ import { ClienteComponentComponent } from './cliente-component/cliente-component
 import { DadosempresaComponentComponent } from './dadosempresa-component/dadosempresa-component.component';
 import { FichaAtendimentoComponentComponent } from './ficha-atendimento-component/ficha-atendimento-component.component';
 import { ParametroComponent } from './parametro/parametro.component';
+import { OrdemServicoComponent } from './ordem-servico/ordem-servico.component';
 
 const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -19,7 +20,7 @@ const appRoutes: Routes = [
     { path: 'param', component: ParametroComponent, canActivate: [AuthGuard]},
     { path: 'dadosempresa', component: DadosempresaComponentComponent, canActivate: [AuthGuard]},
     { path: 'fichas', component: FichaAtendimentoComponentComponent, canActivate: [AuthGuard]},
-
+    { path: 'ordem', component: OrdemServicoComponent, canActivate: [AuthGuard]},
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
 
     // otherwise redirect to homed

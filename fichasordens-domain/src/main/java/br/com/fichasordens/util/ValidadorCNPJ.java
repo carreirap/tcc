@@ -10,16 +10,16 @@ public class ValidadorCNPJ {
 	}
 	private static final Logger LOGGER = LogManager.getLogger(ValidadorCNPJ.class);
 	
-	public static boolean isCNPJ(String cnpj) {
+	public static boolean validarCNPJ(String cnpj) {
 		boolean cnpjValidado = false;
 		cnpj = removeCaracteresEspeciais(cnpj);
 		if (!isNumerosCnpjIguais(cnpj)) {
-			cnpjValidado = validarCNPJ(cnpj);
+			cnpjValidado = isCNPJ(cnpj);
 		}
 		return cnpjValidado;
 	}
 
-	private static boolean validarCNPJ(String cnpj) {
+	private static boolean isCNPJ(String cnpj) {
 		boolean cnpjValidado;
 		try {
 			char digito13 = calcularPrimeiroDigito(cnpj);

@@ -47,8 +47,8 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Long>{
 //		};
 //	}
 	
-	public static Pageable createPageRequest() { 
-	    return new PageRequest(0, 10, Sort.Direction.ASC, "nome");
+	public static Pageable createPageRequest(final int page) { 
+	    return new PageRequest(page, 10, Sort.Direction.ASC, "nome");
 	}
 
 }

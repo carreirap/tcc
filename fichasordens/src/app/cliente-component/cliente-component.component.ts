@@ -1,11 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { DataService, CustomInterceptor } from '../_services/http.service';
 import { ToasterService} from 'angular5-toaster';
 import { Cliente } from '../_models/cliente';
 import { Estados } from '../_models/TodosEstados';
 import { NgModel } from '@angular/forms';
-import { NgxSmartModalService } from 'ngx-smart-modal';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {PaginatorModule} from 'primeng/paginator';
+import {TableModule} from 'primeng/table';
+
+
 
 @Component({
   selector: 'app-cliente-component',
@@ -18,10 +21,12 @@ export class ClienteComponentComponent implements OnInit {
   optionsSelect: Array<any>;
   estados: Estados = new Estados();
 
-  page: number;
+  page = 0;
   content: Array<any>;
-  pages: Array<number>;
-
+  pages = 0;
+  nomePesquisa: String;
+  cnpjPesquisa: String;
+  typePesquisa = '';
 
   @ViewChild('cpfcnpjvalidation') pwConfirmModel: NgModel;
   constructor(private service: DataService, toasterService: ToasterService, public modal: NgbModal) {
@@ -61,12 +66,12 @@ export class ClienteComponentComponent implements OnInit {
 
   mostrarModal(clienteModal) {
     this.modal.open(clienteModal);
+    return false;
   }
 
-  loadClientes(response: any) {
-    console.log(response);
-    this.content = response.content;
-    this.pages = new Array(response['totalPages']);
+  setPages(i, event: any) {
+    event.preventDefault();
+    this.page = i;
   }
 
   loadForm(line) {
@@ -85,5 +90,41 @@ export class ClienteComponentComponent implements OnInit {
     this.formCliente.logradouro = line.logradouro;
     this.formCliente.numero = line.numero;
     this.formCliente.cep = line.cep;
+  }
+
+  loadClientes(response: any) {
+    console.log(response);
+    this.content = response.content;
+    console.log(this.content);
+    this.pages = response['totalPages'];
+  }
+
+  public pesquisarPage(type) {
+    this.typePesquisa = type;
+    if (this.typePesquisa === 'cnpjcpf') {
+        this.service.get('/cliente?cnpjcpf=' + this.cnpjPesquisa + '&page=' +
+        this.page + '&size=1&sort=nome,DESC').subscribe(response => {
+            console.log(response);
+            this.loadClientes(response);
+        }, (error) => {
+            console.log('error in', error.error.mensagem);
+        });
+    } else {
+        if (this.nomePesquisa.length > 3 ) {
+            this.service.get('/cliente?nome=' + this.nomePesquisa + '&page=' +
+            this.page + '&size=1&sort=nome,DESC').subscribe(response => {
+                console.log(response);
+                this.loadClientes(response);
+            }, (error) => {
+                console.log('error in', error.error.mensagem);
+            });
+        }
+    }
+  }
+
+  paginate(event) {
+   console.log(event);
+   this.page = event.page;
+   this.pesquisarPage(this.typePesquisa);
   }
 }

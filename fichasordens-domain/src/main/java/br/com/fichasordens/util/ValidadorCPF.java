@@ -9,16 +9,16 @@ public class ValidadorCPF {
 	}
 	private static final Logger LOGGER = LogManager.getLogger(ValidadorCPF.class);
 
-	public static boolean isCPF(String cpf) {
+	public static boolean validarCPF(String cpf) {
 		boolean cpfValidado = false;
 		cpf = removeCaracteresEspeciais(cpf);
 		if(!isNumerosCPFIguais(cpf)) {
-			cpfValidado = validarCPF(cpf);
+			cpfValidado = isCPF(cpf);
 		}
 		return cpfValidado;
 	}
 
-	private static boolean validarCPF(String cpf) {
+	private static boolean isCPF(String cpf) {
 		boolean cpfValidado;
 		try {
 			char digito10 = calcularPrimeiroDigitoCpf(cpf);

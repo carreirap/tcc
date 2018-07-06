@@ -151,4 +151,10 @@ public class EnderecoEntity implements java.io.Serializable {
 		this.clientes = clientes;
 	}
 
+	@Override
+	public String toString() {
+		return "EnderecoEntity [id=" + id + ", logradouro=" + logradouro + ", bairro=" + bairro + ", cidade=" + cidade
+				+ ", estado=" + estado + ", numero=" + numero + ", cep=" + cep + ", complemento=" + complemento
+				+ ", empresas=" + empresas + ", clientes=" + clientes + "]";
+	}
 }

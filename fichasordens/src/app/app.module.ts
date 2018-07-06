@@ -43,7 +43,7 @@ import { HomeComponent } from './home/index';
 
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
@@ -72,9 +72,12 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToasterModule, ToasterService} from 'angular5-toaster';
 import { ParametroComponent } from './parametro/parametro.component';
 import { CpfCnpjDirective } from './util/cnpj-cpf-validator';
-import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { PesquisarDirective } from './util/cliente-search';
-
+import {TableModule} from 'primeng/table';
+import {PaginatorModule} from 'primeng/paginator';
+import {AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
+import {MenuItem} from 'primeng/api';
+import { OrdemServicoComponent } from './ordem-servico/ordem-servico.component';                 //api
 
 @NgModule({
   declarations: [
@@ -89,7 +92,8 @@ import { PesquisarDirective } from './util/cliente-search';
     FichaAtendimentoComponentComponent,
     ParametroComponent,
     CpfCnpjDirective,
-    PesquisarDirective
+    PesquisarDirective,
+    OrdemServicoComponent
    ],
   imports: [
     BrowserModule,
@@ -97,7 +101,9 @@ import { PesquisarDirective } from './util/cliente-search';
     HttpModule,
     HttpClientModule,
     NgbModule.forRoot(),
-    NgxSmartModalModule.forRoot(),
+    TableModule,
+    PaginatorModule,
+    AccordionModule,
     routing,
     BrowserAnimationsModule, ToasterModule
 
@@ -117,6 +123,7 @@ import { PesquisarDirective } from './util/cliente-search';
         Configuration,
         { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true }
   ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   bootstrap: [AppComponent]
 })
 

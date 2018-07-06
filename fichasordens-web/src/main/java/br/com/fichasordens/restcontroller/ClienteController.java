@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -42,11 +43,12 @@ public class ClienteController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public Page<ClienteDto> pesquisarCliente(@RequestParam(required=false) final String cnpjcpf, @RequestParam(required=false) final String nome) {
+	public Page<ClienteDto> pesquisarCliente(@RequestParam(required=false) final String cnpjcpf, @RequestParam(required=false) final String nome, 
+			final Pageable page) {
 		Cliente cli = new Cliente();
 		cli.setCnpjCpf(cnpjcpf);
 		cli.setNome(nome);
-		Page<ClienteEntity> clientePaged = this.cliente.pesquisarCliente(cli);
+		Page<ClienteEntity> clientePaged = this.cliente.pesquisarCliente(cli, page);
 		int totalElements = (int) clientePaged.getTotalElements();
         return new PageImpl<ClienteDto>(clientePaged.getContent()
                 .stream()
@@ -55,14 +57,18 @@ public class ClienteController {
                         e.getNome(),
                         e.getCnpjCpf(),
                         e.getEmail(),
+                        e.getEndereco().getId(),
                         e.getEndereco().getLogradouro(),
                         e.getEndereco().getBairro(),
                         e.getEndereco().getCidade(),
                         e.getEndereco().getEstado(),
                         e.getFone(),
-                        e.getCelular()
+                        e.getCelular(),
+                        e.getEndereco().getNumero(),
+                        e.getEndereco().getCep(),
+                        e.getEndereco().getComplemento()
                         ))
-                .collect(Collectors.toList()), ClienteRepository.createPageRequest(), totalElements);
+                .collect(Collectors.toList()), page, totalElements);
       
 //		List<ClienteDto> dtoList = new ArrayList<>();
 		/*	clienteList.forEach(a -> {
@@ -83,7 +89,7 @@ public class ClienteController {
 		cliente.setEmail(dto.getEmail());
 		cliente.setNome(dto.getNome());
 		cliente.setCelular(dto.getCelular());
-		if (dto.getId() == 0) {
+		if (dto.getId() != 0) {
 			cliente.setId(dto.getId());
 		}
 		

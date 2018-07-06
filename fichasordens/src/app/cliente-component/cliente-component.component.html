@@ -9,7 +9,10 @@
   <div class="form-row">
     <div class="form-group col-md-11" [ngClass]="{'was-validated': !name.valid  && (name.dirty || name.touched)}">
       <label for="nome">Nome</label>
-      <input class="form-control" maxlength="50" type="text" value="" id="nome" name="nome" [(ngModel)]="formCliente.nome" #name="ngModel" required>
+      <input type="hidden" id="id" name="id" [(ngModel)]="formCliente.id"/>
+      <input type="hidden" id="idEndereco" name="idEndereco" [(ngModel)]="formCliente.idEndereco"/>
+      <input class="form-control" maxlength="50" type="text" id="nome" name="nome" [(ngModel)]="formCliente.nome" #name="ngModel" required>
+      
       <div class="invalid-feedback" *ngIf="name.errors && (name.dirty || name.touched)">
         <ul >
           <li *ngIf="name.errors.required">
@@ -18,6 +21,7 @@
         </ul>
       </div>
     </div>
+    <a href="#" (click)="mostrarModal(clienteModal);">Pesq</a>
   </div>
 
   <div class="form-row">
@@ -179,7 +183,7 @@
 
 
 </form>
-<button (click)="mostrarModal(clienteModal)">Open myModal</button>
+
 
 <ng-template #clienteModal let-c="close" let-d="dismiss">
   <div class="modal-header navbar-dark bg-dark">
@@ -191,38 +195,37 @@
   <div class="modal-body">
     <div class="modal-body">
       <label for="modalcpf">CNPJ/CPF:</label>
-      <input class="form-control" maxlength="50" validarCnpjCpf pequisarCliente (onPressEnter)="loadClientes($event)" type="text" value="" 
-      id="nomeCnpjCpf" name="nomeCnpjCpf"/>
+      <input class="form-control" maxlength="50" validarCnpjCpf pequisarCliente [pages]='page' [cnpj]='cnpjPesquisa' (onPressEnter)="pesquisarPage($event, this)" type="text" value="" 
+      id="nomeCnpjCpf" name="nomeCnpjCpf" [(ngModel)]='cnpjPesquisa'/>
       <label for="modalNome">Nome:</label>
-      <input class="form-control" pequisarCliente (PressAnyKey)="loadClientes($event)" maxlength="50" type="text" value="" id="nomeModal" name="nomeModal"/>
-
-      <table class="table table-stripped" style="margin-top: 15px">
-        <thead>
-          <tr>
-            <td><h6>CNPJ/CPF</h6></td>
-            <td><h6>Nome</h6></td>
-          </tr>
-        </thead>
-        <tbody *ngFor="let v of content">
-          <tr>
-            <td (click)="loadForm(v); c('Close')">{{v.cnpj}}</td>
-            <td (click)="loadForm(v); c('Close')">{{v.nome}}</td>
-          </tr>
-        </tbody>
-      </table>
+      <input class="form-control" pequisarCliente [pages]='page' [nome]='nomePesquisa' (PressAnyKey)="pesquisarPage($event, this)" 
+      maxlength="50" type="text" value="" id="nomeModal" name="nomeModal" [(ngModel)]='nomePesquisa'/>
+      
+      <br>
+      <p-table [value]="content"
+      [lazy]="true"
+      (onLazyLoad)="loadData($event)"
+      [responsive]="true">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>CNPJ/CPF</th>
+                <th>Nome</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-car>
+            <tr>
+                <td (click)="loadForm(car); c('Close')">{{car.cnpj}}</td>
+                <td (click)="loadForm(car); c('Close')">{{car.nome}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-paginator [rows]="1" [totalRecords]='pages' (onPageChange)="paginate($event)"></p-paginator>
     </div>
   </div>
   <div class="modal-footer">
       <button class="btn btn-primary" (click)="c('Close click')">Fechar</button>
   </div>
 </ng-template>
-<!--<ngx-smart-modal #myModal identifier="myModal">
-  <h1>Title</h1>
-  <p>Some stuff...</p>
 
-  <button (click)="myModal.close()">Close</button>
-</ngx-smart-modal>
-
-<button (click)="ngxSmartModalService.getModal('myModal').open()">Open myModal</button>-->
 
 

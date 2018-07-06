@@ -19,7 +19,7 @@ public class ValidadorController {
 
 	@RequestMapping(method = RequestMethod.POST, value="/cpf")
 	public ResponseEntity validarCpf(@RequestBody final String cpf) {
-		if (ValidadorCPF.isCPF(cpf)) {
+		if (ValidadorCPF.validarCPF(cpf)) {
 			return new ResponseEntity<>(new MensagemRetornoDto("OK"), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(new MensagemRetornoDto("CPF informado inválido"), HttpStatus.BAD_REQUEST);
@@ -28,7 +28,7 @@ public class ValidadorController {
 	
 	@RequestMapping(method = RequestMethod.POST, value="/cnpj")
 	public ResponseEntity validarCnpj(@RequestBody final String cnpj) {
-		if (ValidadorCNPJ.isCNPJ(cnpj)) {
+		if (ValidadorCNPJ.validarCNPJ(cnpj)) {
 			return new ResponseEntity<>(new MensagemRetornoDto("OK"), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(new MensagemRetornoDto("CNPJ informado inválido"), HttpStatus.BAD_REQUEST);

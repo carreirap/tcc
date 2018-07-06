@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,7 @@ public class Cliente extends Pessoa {
 	@Transactional
 	public void salvarCliente(final Cliente cliente) throws ExcecaoRetorno {
 		
-		if (this.isClienteCadastrado(cliente.getCnpjCpf())) {
+		if (this.isClienteCadastrado(cliente.getCnpjCpf(), cliente.getId())) {
 			throw new ExcecaoRetorno("Cliente ja cadastrado com CNPJ/CPF informado");
 		}
 		
@@ -38,7 +39,7 @@ public class Cliente extends Pessoa {
 	}
 	
 	@Transactional
-	public Page<ClienteEntity> pesquisarCliente(final Cliente cliente) {
+	public Page<ClienteEntity> pesquisarCliente(final Cliente cliente, final Pageable page) {
 		ClienteEntity ent = new ClienteEntity();
 		if (cliente.getCnpjCpf() != null) {
 			ent.setCnpjCpf(cliente.getCnpjCpf().trim());
@@ -52,8 +53,8 @@ public class Cliente extends Pessoa {
 	            .withIgnoreCase()
 	            .withMatcher("nome", match -> match.startsWith());
 		Example<ClienteEntity> example = Example.of(ent, matcher);
-		Page<ClienteEntity> paged = this.clienteRepository.findAll(example, ClienteRepository.createPageRequest());
-		paged.forEach(a -> a.getEndereco().getLogradouro());
+		Page<ClienteEntity> paged = this.clienteRepository.findAll(example, page);
+		paged.forEach(a -> { a.getEndereco(); System.out.println(a.getEndereco());});
 		return paged;
 	}
 
@@ -66,20 +67,26 @@ public class Cliente extends Pessoa {
 		clienteList.add(cli);
 	}
 	
-	public boolean isClienteCadastrado(final String cnpjCpf) {
+	public boolean isClienteCadastrado(final String cnpjCpf, final long id) {
 		boolean clienteEstaCadastrado = false;
-		final ClienteEntity entity = this.clienteRepository.findByCnpjCpf(cnpjCpf);
-		if (entity != null) {
-			clienteEstaCadastrado =  true;
-		} 
+		if (id == 0) { 
+			final ClienteEntity entity = this.clienteRepository.findByCnpjCpf(cnpjCpf);
+			if (entity != null) {
+				clienteEstaCadastrado =  true;
+			}
+		}
 		return clienteEstaCadastrado;
 	}
 	
 	private ClienteEntity convertParaEntity(final Cliente cliente) {
 		final ClienteEntity entity = new ClienteEntity();
+		entity.setId(cliente.getId());
 		entity.setCelular(cliente.getCelular());
 		entity.setCnpjCpf(cliente.getCnpjCpf());
 		entity.setNome(cliente.getNome());
+		entity.setFone(cliente.getFone());
+		entity.setCelular(cliente.getCelular());
+		entity.setEmail(cliente.getEmail());
 		entity.setEndereco(new EnderecoEntity());
 		return entity;
 	}

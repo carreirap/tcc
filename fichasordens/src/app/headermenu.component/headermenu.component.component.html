@@ -7,7 +7,7 @@
   <div class="collapse navbar-collapse" id="navbarNav" [ngbCollapse]="isCollapsed">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#" (click)="onMenuClick()">Ordem de Serviço <span class="sr-only">(current)</span></a>
+        <a class="nav-link" [routerLink]="['/ordem']" (click)="onMenuClick()">Ordem de Serviço <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/fichas']" (click)="onMenuClick()">Ficha de Atendimento</a>

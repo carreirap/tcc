@@ -1,0 +1,138 @@
+<toaster-container></toaster-container>
+<form (submit)="onSubmit()" class="container" #myform="ngForm" novalidate>
+
+  <div class="form-row">
+    <div class="form-group col-md-9">
+
+    </div>
+    <div class="form-group col-md-2">
+      <label for="cnpjcpf">Ordem de Serviço</label>
+      <input class="form-control" maxlength="10" type="text" id="numOrdem" name="numOrdem" [(ngModel)]="formOrdem.numeroOrdem">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-11" [ngClass]="{'was-validated': !cpfcnpjvalidation.valid  && (cpfcnpjvalidation.dirty || cpfcnpjvalidation.touched)}">
+      <label for="cnpjcpf">CNPJ/CPF</label>
+      <input class="form-control" maxlength="18" validarCnpjCpf type="search" id="cpfcnpj" name="cpfcnpj" [(ngModel)]="formOrdem.cliente.cnpj"
+        (cnpjvaluetyped)='setValue($event)' (focusoutcnpj)="setCnpjCpfInvalido($event)" #cpfcnpjvalidation="ngModel" required>
+      <div [hidden]="cpfcnpjvalidation.valid || cpfcnpjvalidation.pristine" class="alert-danger">
+        <ul>
+          <li>
+            O campo CPF/CNPJ é invalido
+          </li>
+        </ul>
+      </div>
+      <div class="invalid-feedback" *ngIf="cpfcnpjvalidation.errors && (cpfcnpjvalidation.dirty || cpfcnpjvalidation.touched )">
+        <ul>
+          <li *ngIf="cpfcnpjvalidation.errors.required">
+            O campo CPF/CNPJ é obrigatório
+          </li>
+        </ul>
+      </div>
+    </div>
+    <a href="#" (click)="mostrarModal(clienteModal);">Pesq</a>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-7">
+      <label for="nome">Cliente</label>
+      <input class="form-control" maxlength="50" type="text" id="nome" name="nome" [(ngModel)]="formOrdem.cliente.nome">
+    </div>
+    <div class="form-group col-md-3">
+      <label for="estado">Situação Ordem</label>
+      <select class="form-control custom-select" id="situacao" name="situacao" [(ngModel)]="formOrdem.situacao">
+        <option *ngFor="let title of situacaoSelect" [value]="title.value">
+          {{title.label}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="celular">Celular</label>
+      <input class="form-control" maxlength="15" type="tel" value="" id="celular" name="celular" [(ngModel)]="formOrdem.cliente.celular">
+    </div>
+    <div class="form-group col-md-5">
+      <label for="fone">Fone</label>
+      <input class="form-control" maxlength="15" type="tel" value="" id="fone" name="fone" [(ngModel)]="formOrdem.cliente.fone">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-body">
+
+          <label for="celular">Tipo do Serviço &nbsp;&nbsp;</label>
+          <label class="form-check-inline">
+            <input class="form-check-input" type="radio" name="mode" [value]="true" [(ngModel)]="formOrdem.tipoOrdem"> Instalação
+          </label>
+          <label class="form-check-inline">
+            <input class="form-check-input" type="radio" name="mode" [value]="false" [(ngModel)]="formOrdem.tipoOrdem"> Suporte
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group col-md-5">
+      <!-- colocar datas aqui -->
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="celular">Fabricante</label>
+      <input class="form-control" maxlength="15" type="tel" value="" id="celular" name="celular" [(ngModel)]="formOrdem.cliente.celular">
+    </div>
+    <div class="form-group col-md-3">
+      <label for="fone">modelo</label>
+      <input class="form-control" maxlength="15" type="tel" value="" id="fone" name="fone" [(ngModel)]="formOrdem.cliente.fone">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="fone">N/S</label>
+      <input class="form-control" maxlength="15" type="tel" value="" id="fone" name="fone" [(ngModel)]="formOrdem.cliente.fone">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <label for="celular">Descrição Equipamento</label>
+      <textarea class="form-control" maxlength="255" id="descDefeito" name="descDefeito" rows="2" [(ngModel)]="formOrdem.descDefeito"></textarea>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <label for="celular">Descrição do Defeito</label>
+      <textarea class="form-control" maxlength="255" id="descEquipamento" name="descEquipamento" rows="2" [(ngModel)]="formOrdem.descEquipamento"></textarea>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <label for="celular">Estado Equipamento / Itens que acompanha
+      </label>
+      <textarea class="form-control" maxlength="255" id="estadoItensAcompanha" name="estadoItensAcompanha" rows="2" [(ngModel)]="formOrdem.estadoItensAcompanha"></textarea>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-11">
+       
+      <p-table [responsive]="true" [value]="formOrdem.itemTable">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Qtde</th>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Garantia</th>
+            <th>NF</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-car>
+          <tr>
+            <td>{{car.qtde}}</td>
+            <td>{{car.descricao}}</td>
+            <td>{{car.valor}}</td>
+            <td>{{car.garantia}}</td>
+            <td>{{car.nf}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</form>
