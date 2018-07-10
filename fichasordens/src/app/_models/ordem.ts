@@ -4,11 +4,18 @@ import { ItemTable } from './item-table';
 export class Ordem {
     numeroOrdem: number;
     cliente: Cliente;
-    tipoOrdem: string;
+    tipoServico: string;
     descDefeito: string;
-    descEquipamento: string;
-    estadoItensAcompanha: string;
+    descEquip: string;
+    estadoItensAcomp: string;
     itemTables: Array<ItemTable>;
+    fabricante: string;
+    modelo: string;
+    serie: string;
+    situacao: string;
+    dataAbertura: string;
+    dataSaida: string;
+    responsavel: string;
 
     constructor () {
         this.cliente = new Cliente();

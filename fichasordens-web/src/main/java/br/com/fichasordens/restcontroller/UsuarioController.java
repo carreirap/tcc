@@ -63,6 +63,12 @@ public class UsuarioController {
 		 return new ResponseEntity<List<UsuarioDto>>(convertToDto(lst),HttpStatus.OK);
 	 }
 	 
+	 @RequestMapping(value = "/getUpdatedUser", method = RequestMethod.POST)
+	 public ResponseEntity<UsuarioDto> login(@RequestBody UsuarioDto user) {
+		 final List<Usuario> lst = this.usuario.listarUsuario(user.getUsuario());
+		 return new ResponseEntity<UsuarioDto>(convertToDto(lst).get(0),HttpStatus.OK);
+	 }
+	 
 	 private List<UsuarioDto> convertToDto(final List<Usuario> lst) {
 		 final List<UsuarioDto> dtos = new ArrayList<UsuarioDto>();
 		 lst.forEach(e->{ 

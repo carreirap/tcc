@@ -78,6 +78,8 @@ import {PaginatorModule} from 'primeng/paginator';
 import {AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
 import {MenuItem} from 'primeng/api';
 import { OrdemServicoComponent } from './ordem-servico/ordem-servico.component';                 //api
+import { DatePipe } from '@angular/common';
+import { ModalPesquisaClienteComponent } from './modal-pesquisa-cliente/modal-pesquisa-cliente.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +95,8 @@ import { OrdemServicoComponent } from './ordem-servico/ordem-servico.component';
     ParametroComponent,
     CpfCnpjDirective,
     PesquisarDirective,
-    OrdemServicoComponent
+    OrdemServicoComponent,
+    ModalPesquisaClienteComponent
    ],
   imports: [
     BrowserModule,
@@ -121,6 +124,7 @@ import { OrdemServicoComponent } from './ordem-servico/ordem-servico.component';
         BaseRequestOptions,
         HttpClientModule,
         Configuration,
+        DatePipe,
         { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true }
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],

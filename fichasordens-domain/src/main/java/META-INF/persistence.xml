@@ -13,7 +13,7 @@
 		<class>br.com.fichasordens.entities.FichaAtendLanc</class>
 		<class>br.com.fichasordens.entities.FichaAtendLancId</class>
 		<class>br.com.fichasordens.entities.FichaAtendimento</class>
-		<class>br.com.fichasordens.entities.OrdemServico</class>
+		<class>br.com.fichasordens.entities.OrdemServicoEntity</class>
 		<class>br.com.fichasordens.entities.ParametroEntity</class>
 		<class>br.com.fichasordens.entities.PecaServicoFicha</class>
 		<class>br.com.fichasordens.entities.PecaServicoFichaId</class>

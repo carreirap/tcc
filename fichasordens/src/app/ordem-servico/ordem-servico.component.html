@@ -3,17 +3,20 @@
 
   <div class="form-row">
     <div class="form-group col-md-9">
-
+        <label for="cnpjcpf">Responsável</label>  
+        <input class="form-control" maxlength="10" type="text" id="responsavel" name="responsavel" [(ngModel)]="formOrdem.responsavel"
+        [readonly]="true" style="background-color: white;">
     </div>
     <div class="form-group col-md-2">
       <label for="cnpjcpf">Ordem de Serviço</label>
-      <input class="form-control" maxlength="10" type="text" id="numOrdem" name="numOrdem" [(ngModel)]="formOrdem.numeroOrdem">
+      <input class="form-control" maxlength="10" type="text" id="numOrdem" name="numOrdem" [(ngModel)]="formOrdem.numeroOrdem"
+      [readonly]="true" style="background-color: white;">
     </div>
   </div>
 
   <div class="form-row">
     <div class="form-group col-md-11" [ngClass]="{'was-validated': !cpfcnpjvalidation.valid  && (cpfcnpjvalidation.dirty || cpfcnpjvalidation.touched)}">
-      <label for="cnpjcpf">CNPJ/CPF</label>
+      <label for="cnpjcpf">CNPJ/CPF &nbsp; <a href="#" (click)="mostrarModal(clienteModal);">Pesquisar</a></label>
       <input class="form-control" maxlength="18" validarCnpjCpf type="search" id="cpfcnpj" name="cpfcnpj" [(ngModel)]="formOrdem.cliente.cnpj"
         (cnpjvaluetyped)='setValue($event)' (focusoutcnpj)="setCnpjCpfInvalido($event)" #cpfcnpjvalidation="ngModel" required>
       <div [hidden]="cpfcnpjvalidation.valid || cpfcnpjvalidation.pristine" class="alert-danger">
@@ -31,11 +34,11 @@
         </ul>
       </div>
     </div>
-    <a href="#" (click)="mostrarModal(clienteModal);">Pesq</a>
+    <!-- <a href="#" (click)="mostrarModal(clienteModal);">Pesq</a> -->
   </div>
 
   <div class="form-row">
-    <div class="form-group col-md-7">
+    <div class="form-group col-md-8">
       <label for="nome">Cliente</label>
       <input class="form-control" maxlength="50" type="text" id="nome" name="nome" [(ngModel)]="formOrdem.cliente.nome">
     </div>
@@ -59,36 +62,42 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-5">
       <div class="panel panel-default">
         <div class="panel-body">
-
           <label for="celular">Tipo do Serviço &nbsp;&nbsp;</label>
           <label class="form-check-inline">
-            <input class="form-check-input" type="radio" name="mode" [value]="true" [(ngModel)]="formOrdem.tipoOrdem"> Instalação
+            <input class="form-check-input" type="radio" name="mode" [value]="true" [(ngModel)]="formOrdem.tipoServico"> Instalação
           </label>
           <label class="form-check-inline">
-            <input class="form-check-input" type="radio" name="mode" [value]="false" [(ngModel)]="formOrdem.tipoOrdem"> Suporte
+            <input class="form-check-input" type="radio" name="mode" [value]="false" [(ngModel)]="formOrdem.tipoServico"> Suporte
           </label>
         </div>
       </div>
     </div>
-    <div class="form-group col-md-5">
-      <!-- colocar datas aqui -->
+    <div class="form-group col-md-3">
+        <label for="celular">Data Abertura</label>
+        <input class="form-control" maxlength="15" type="text" id="dataAbertura" 
+        name="dataAbertura" [(ngModel)]="formOrdem.dataAbertura" [readonly]="true" style="background-color: white;">
+    </div>
+    <div class="form-group col-md-3">
+        <label for="celular">Data Saída</label>
+        <input class="form-control" maxlength="15" type="text" id="dataSaida" 
+        name="dataSaida" [(ngModel)]="formOrdem.dataSaida" [readonly]="true" style="background-color: white;">
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="celular">Fabricante</label>
-      <input class="form-control" maxlength="15" type="tel" value="" id="celular" name="celular" [(ngModel)]="formOrdem.cliente.celular">
+      <input class="form-control" maxlength="15" type="text" id="fabricante" name="fabricante" [(ngModel)]="formOrdem.fabricante">
     </div>
     <div class="form-group col-md-3">
       <label for="fone">modelo</label>
-      <input class="form-control" maxlength="15" type="tel" value="" id="fone" name="fone" [(ngModel)]="formOrdem.cliente.fone">
+      <input class="form-control" maxlength="15" type="text" id="modelo" name="modelo" [(ngModel)]="formOrdem.modelo">
     </div>
     <div class="form-group col-md-4">
       <label for="fone">N/S</label>
-      <input class="form-control" maxlength="15" type="tel" value="" id="fone" name="fone" [(ngModel)]="formOrdem.cliente.fone">
+      <input class="form-control" maxlength="15" type="text" id="serie" name="serie" [(ngModel)]="formOrdem.serie">
     </div>
   </div>
   <div class="form-row">
@@ -100,20 +109,20 @@
   <div class="form-row">
     <div class="form-group col-md-11">
       <label for="celular">Descrição do Defeito</label>
-      <textarea class="form-control" maxlength="255" id="descEquipamento" name="descEquipamento" rows="2" [(ngModel)]="formOrdem.descEquipamento"></textarea>
+      <textarea class="form-control" maxlength="255" id="descEquipamento" name="descEquipamento" rows="2" [(ngModel)]="formOrdem.descEquip"></textarea>
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-11">
       <label for="celular">Estado Equipamento / Itens que acompanha
       </label>
-      <textarea class="form-control" maxlength="255" id="estadoItensAcompanha" name="estadoItensAcompanha" rows="2" [(ngModel)]="formOrdem.estadoItensAcompanha"></textarea>
+      <textarea class="form-control" maxlength="255" id="estadoItensAcompanha" name="estadoItensAcompanha" rows="2" [(ngModel)]="formOrdem.estadoItensAcomp"></textarea>
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-11">
        
-      <p-table [responsive]="true" [value]="formOrdem.itemTable">
+      <p-table [responsive]="true" [value]="formOrdem.itemTable" *ngIf="formOrdem.numeroOrdem">
         <ng-template pTemplate="header">
           <tr>
             <th>Qtde</th>
@@ -135,4 +144,51 @@
       </p-table>
     </div>
   </div>
+  <div class="form-group row">
+      <div class="col-sm-10">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+      </div>
+  </div>
 </form>
+
+<ng-template #clienteModal let-c="close" let-d="dismiss">
+  <div class="modal-header navbar-dark bg-dark">
+    <h5 class="modal-title" style="color:white;">Pesquisar Cliente</h5>
+    <button type="button"  style="color:white;" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+    <div class="modal-body">
+      <label for="modalcpf">CNPJ/CPF:</label>
+      <input class="form-control" maxlength="50" validarCnpjCpf pequisarCliente [pages]='page' [cnpj]='cnpjPesquisa' (onPressEnter)="pesquisarPage($event, this)" type="text" value="" 
+      id="nomeCnpjCpf" name="nomeCnpjCpf" [(ngModel)]='cnpjPesquisa'/>
+      <label for="modalNome">Nome:</label>
+      <input class="form-control" pequisarCliente [pages]='page' [nome]='nomePesquisa' (PressAnyKey)="pesquisarPage($event, this)" 
+      maxlength="50" type="text" value="" id="nomeModal" name="nomeModal" [(ngModel)]='nomePesquisa'/>
+      
+      <br>
+      <p-table [value]="content"
+      [lazy]="true"
+      
+      [responsive]="true">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>CNPJ/CPF</th>
+                <th>Nome</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-car>
+            <tr>
+                <td (click)="loadForm(car); c('Close')">{{car.cnpj}}</td>
+                <td (click)="loadForm(car); c('Close')">{{car.nome}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-paginator [rows]="1" [totalRecords]='pages' (onPageChange)="paginate($event)"></p-paginator>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button class="btn btn-primary" (click)="c('Close click')">Fechar</button>
+  </div>
+</ng-template>

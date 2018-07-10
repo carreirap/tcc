@@ -91,8 +91,8 @@ export class AuthenticationService {
     }
 
 
-    getUpdatedUser(user: User): Observable<User> {
-        this.url = 'http://localhost:9090/getUpdatedUser';
+    public getUpdatedUser(user: User): Observable<User> {
+        this.url = 'http://localhost:9090/usuario/getUpdatedUser';
         this.headers = new Headers({
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token

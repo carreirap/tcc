@@ -5,8 +5,8 @@ import { Cliente } from '../_models/cliente';
 import { Estados } from '../_models/TodosEstados';
 import { NgModel } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {PaginatorModule} from 'primeng/paginator';
-import {TableModule} from 'primeng/table';
+import { PaginatorModule } from 'primeng/paginator';
+import { TableModule } from 'primeng/table';
 
 
 
@@ -15,6 +15,7 @@ import {TableModule} from 'primeng/table';
   templateUrl: './cliente-component.component.html',
   styleUrls: ['./cliente-component.component.css']
 })
+
 export class ClienteComponentComponent implements OnInit {
   toasterService: ToasterService;
   formCliente = new Cliente();

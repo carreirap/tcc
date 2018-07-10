@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
         this.authenticationService.authenticate(this.user)
             .map(res => res.json()).subscribe(response => {
                 this.authenticationService.accessToken = response.access_token;
+                console.log(response);
                 const papel = this.authenticationService.getRule();
                 localStorage.setItem('currentUser', JSON.stringify({usuario: this.user.usuario,
                     token: response.access_token, role: papel

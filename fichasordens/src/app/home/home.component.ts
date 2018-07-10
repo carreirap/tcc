@@ -16,26 +16,22 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
     // users: User[] = [];
     user = new User();
-    @Input('loggedInUser') loggedInUser: string;
+    // tslint:disable-next-line:no-input-rename
+    @Input() loggedInUser: string;
     constructor(private router: Router, private backEndService: AuthenticationService) { }
 
     ngOnInit() {
-        // get users from secure api end point
-        /*this.userService.getUsers()
-            .subscribe(users => {
-                this.users = users;
-            }); */
     }
 
     // tslint:disable-next-line:member-ordering
 
     getUpdatedUser(): void {
 
-        if (this.backEndService.isTokenExpired()) {
+        /*if (this.backEndService.isTokenExpired()) {
             alert('token expired');
         } else {
             alert('token ok');
-        }
+        }*/
 
         this.user.usuario = JSON.parse(localStorage.getItem('currentUser')).usuario;
         this.backEndService.getUpdatedUser(this.user).subscribe(response => {

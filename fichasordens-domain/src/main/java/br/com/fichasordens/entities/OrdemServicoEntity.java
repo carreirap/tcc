@@ -4,9 +4,12 @@ package br.com.fichasordens.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -14,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "ordem_servico", schema = "public")
-public class OrdemServico implements java.io.Serializable {
+public class OrdemServicoEntity implements java.io.Serializable {
 
 	private long id;
 	private ClienteEntity cliente;
@@ -27,15 +30,15 @@ public class OrdemServico implements java.io.Serializable {
 	private String estadoItensAcomp;
 	private String descServico;
 
-	public OrdemServico() {
+	public OrdemServicoEntity() {
 	}
 
-	public OrdemServico(long id, String tipoServico) {
+	public OrdemServicoEntity(long id, String tipoServico) {
 		this.id = id;
 		this.tipoServico = tipoServico;
 	}
 
-	public OrdemServico(long id, ClienteEntity cliente, String tipoServico, String frabricante, String modelo, String serie,
+	public OrdemServicoEntity(long id, ClienteEntity cliente, String tipoServico, String frabricante, String modelo, String serie,
 			String descEquip, String descDefeito, String estadoItensAcomp, String descServico) {
 		this.id = id;
 		this.cliente = cliente;
@@ -50,7 +53,8 @@ public class OrdemServico implements java.io.Serializable {
 	}
 
 	@Id
-
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ordem_sequencia")
+	@SequenceGenerator(name="ordem_sequencia", sequenceName="ordem_sequencia", allocationSize=1)
 	@Column(name = "id", unique = true, nullable = false, precision = 10, scale = 0)
 	public long getId() {
 		return this.id;

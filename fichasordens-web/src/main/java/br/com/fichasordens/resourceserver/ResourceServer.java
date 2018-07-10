@@ -23,17 +23,10 @@ import br.com.fichasordens.dto.UsuarioDto;
 @RestController
 @EnableResourceServer 
 public class ResourceServer {
+	
+	
    public static void main(String[] args) {
       SpringApplication.run(ResourceServer.class, args);
    }
-
-   @RequestMapping(value = "/getUpdatedUser", method = RequestMethod.POST)
-   public UsuarioDto login(@RequestBody UsuarioDto user) {
-      
-	   user.setUsuario("Hello "+ user.getUsuario()+ " !! ");
-	   
-	   return user;
-   }
-
- 
+  
 }

@@ -31,7 +31,7 @@ public class ClienteEntity implements java.io.Serializable {
 	private String celular;
 	private String fone;
 	private String email;
-	private Set<OrdemServico> ordemServicos = new HashSet<OrdemServico>(0);
+	private Set<OrdemServicoEntity> ordemServicos = new HashSet<OrdemServicoEntity>(0);
 	private Set<FichaAtendimento> fichaAtendimentos = new HashSet<FichaAtendimento>(0);
 
 	public ClienteEntity() {
@@ -46,7 +46,7 @@ public class ClienteEntity implements java.io.Serializable {
 	}
 
 	public ClienteEntity(Long id, EnderecoEntity endereco, String nome, String cnpjCpf, String celular, String fone,
-			String email, Set<OrdemServico> ordemServicos, Set<FichaAtendimento> fichaAtendimentos) {
+			String email, Set<OrdemServicoEntity> ordemServicos, Set<FichaAtendimento> fichaAtendimentos) {
 		this.id = id;
 		this.endereco = endereco;
 		this.nome = nome;
@@ -126,11 +126,11 @@ public class ClienteEntity implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")
-	public Set<OrdemServico> getOrdemServicos() {
+	public Set<OrdemServicoEntity> getOrdemServicos() {
 		return this.ordemServicos;
 	}
 
-	public void setOrdemServicos(Set<OrdemServico> ordemServicos) {
+	public void setOrdemServicos(Set<OrdemServicoEntity> ordemServicos) {
 		this.ordemServicos = ordemServicos;
 	}
 
