@@ -1,4 +1,4 @@
-<div class="table-responsive-sm">
+<!--<div class="table-responsive-sm">
   <table class="table">
     <thead class="thead-light">
       <tr>
@@ -17,4 +17,23 @@
       </tr>
     </tbody>
   </table>
+</div> -->
+<div class="table-responsive-sm">
+<p-table [responsive]="true" [value]="user" [lazy]="true" [immutable]=false >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Usuario</th>
+        <th>Nome</th>
+        <th>Papel</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-u>
+        <tr>
+            <td>{{ u.usuario }} <input type="hidden" value="{{u.id}}" /></td>
+            <td>{{ u.nome }}</td>
+            <td>{{ u.papel }}</td>
+            <td><button type="button" (click)="getRow(u)" class="btn btn-link">Alterar</button></td>
+          </tr>
+    </ng-template>
+</p-table>
 </div>

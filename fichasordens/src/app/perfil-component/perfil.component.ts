@@ -4,6 +4,7 @@ import { PerfiService } from './perfil-service';
 import { ToasterService} from 'angular5-toaster';
 import * as CryptoJS from 'crypto-js';
 import { FormsModule } from '@angular/forms';
+import { PapelUserService } from '../_services/papel-service';
 
 @Component({
   selector: 'app-perfil-component',
@@ -18,14 +19,16 @@ export class PerfilComponent implements OnInit {
   operacao: String;
   alteraSenha: Boolean;
   mostrarLink: Boolean;
+  iReadOnly: Boolean;
 
   optionsSelect: Array<any>;
 
-  constructor(private perfil: PerfiService, toasterService: ToasterService) {
+  constructor(private perfil: PerfiService, toasterService: ToasterService, private papelUserService: PapelUserService) {
     this.operacao = 'inserir';
     this.alteraSenha = false;
     this.mostrarLink = false;
     this.toasterService = toasterService;
+    this.iReadOnly = false;
   }
 
   ngOnInit() {
@@ -33,6 +36,14 @@ export class PerfilComponent implements OnInit {
       { value: 'Admin', label: 'Administrador' },
       { value: 'User', label: 'Usuário' }
   ];
+  }
+
+  isAtivo() {
+    if (this.papelUserService.isAdmin() === true) {
+      return true;
+    } else {
+      return this.mostrarLink;
+    }
   }
 
   isOperacaoInserir() {
@@ -98,6 +109,11 @@ export class PerfilComponent implements OnInit {
     this.operacao = 'alterar';
     this.alteraSenha = false;
     this.mostrarLink = true;
+    if (this.papelUserService.isAdmin() === true) {
+      this.iReadOnly = false;
+    } else {
+      this.iReadOnly = true;
+    }
   }
 
 }

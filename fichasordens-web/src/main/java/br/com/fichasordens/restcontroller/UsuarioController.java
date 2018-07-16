@@ -58,7 +58,7 @@ public class UsuarioController {
 	 
 	 @RequestMapping(method = RequestMethod.GET)
 	 public ResponseEntity<List<UsuarioDto>> getUsuario(@RequestParam(required=false) final String user) {
-		 final List<Usuario> lst = usuario.listarUsuario();
+		 final List<Usuario> lst = usuario.listarUsuario(user);
 		 
 		 return new ResponseEntity<List<UsuarioDto>>(convertToDto(lst),HttpStatus.OK);
 	 }

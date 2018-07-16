@@ -1,5 +1,5 @@
 <toaster-container></toaster-container>
-<form  #formularioUsuario="ngForm" (submit)="onSubmit()" novalidate>
+<form  #formularioUsuario="ngForm" (submit)="onSubmit()" novalidate *ngIf="isAtivo()" >
   <div class="row align-items-center justify-content-center">
     <div>
       <h2 style="align-content: center">
@@ -10,7 +10,7 @@
   <div class="form-row">
     <div class="form-group col-md-11" [ngClass]="{'was-validated': !usuario.valid  && (usuario.dirty || usuario.touched)}">
       <label for="inputUsuario">Usuário</label>
-      <input type="text" maxlength="10" name="usuario" id="usuario" [(ngModel)]="formUsuario.usuario" class="form-control" id="inputUsuario"
+      <input type="text" maxlength="10" [(readonly)]="iReadOnly" name="usuario" id="usuario" [(ngModel)]="formUsuario.usuario" class="form-control" id="inputUsuario"
         required #usuario="ngModel">
       <div class="invalid-feedback" *ngIf="usuario.errors && (usuario.dirty || usuario.touched)">
         <ul >
@@ -24,7 +24,7 @@
   <div class="form-row">
     <div class="form-group col-md-11" [ngClass]="{'was-validated': !nome.valid  && (nome.dirty || nome.touched)}">
       <label for="nome">Nome</label>
-      <input type="text" maxlength="50" name="nome" id="nome" [(ngModel)]="formUsuario.nome"
+      <input type="text" maxlength="50" [readonly]="iReadOnly" name="nome" id="nome" [(ngModel)]="formUsuario.nome"
       class="form-control" id="nome" placeholder="" required #nome="ngModel">
       <div class="invalid-feedback" *ngIf="nome.errors && (nome.dirty || nome.touched)">
         <ul >
@@ -38,7 +38,7 @@
   <div class="form-row" *ngIf="isOperacaoInserir()">
     <div class="form-group col-md-11" [ngClass]="{'was-validated': !senha.valid  && (senha.dirty || senha.touched)}">
       <label for="inputPassword">Senha</label>
-      <input type="password" maxlength="8" name="senha" id="senha" [(ngModel)]="formUsuario.senha" class="form-control" id="inputPassword"
+      <input type="password" maxlength="8"  name="senha" id="senha" [(ngModel)]="formUsuario.senha" class="form-control" id="inputPassword"
         required #senha="ngModel">
         <div class="invalid-feedback" *ngIf="senha.errors && (senha.dirty || senha.touched)">
           <ul >
@@ -81,7 +81,7 @@
   <div class="form-row">
     <div class="form-group col-md-11" [ngClass]="{'was-validated': !papel.valid  && (papel.dirty || papel.touched)}">
       <label for="papel">Perfil</label>
-      <select  [(ngModel)]="formUsuario.papel" name="papel" id="papel"
+      <select  [(ngModel)]="formUsuario.papel" [disabled]="iReadOnly" name="papel" id="papel"
       class="form-control custom-select" id="papel" required #papel="ngModel">
         <option *ngFor="let title of optionsSelect" [value]="title.value">
           {{title.label}}
@@ -114,7 +114,7 @@
       <button type="button" (click)="mostrarCampos()" *ngIf="mostrarLinkSenha()" class="btn btn-link">Alterar Senha</button>
     </div>
   </div>
-  <p>Form valid: {{ formularioUsuario.form.valid }}</p>
+  <!--<p>Form valid: {{ formularioUsuario.form.valid }}</p>-->
 </form>
 
 <div class="col-sm-10">

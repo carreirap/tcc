@@ -1,6 +1,9 @@
 package br.com.fichasordens.entities;
 // Generated 03/03/2018 14:18:32 by Hibernate Tools 4.3.5.Final
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -29,6 +33,8 @@ public class OrdemServicoEntity implements java.io.Serializable {
 	private String descDefeito;
 	private String estadoItensAcomp;
 	private String descServico;
+	private Set<OrdemServicoLancEntity> ordemServicoLancs = new HashSet<OrdemServicoLancEntity>(0);
+	private Set<PecaServicoOrdemEntity> pecaServicoOrdems = new HashSet<PecaServicoOrdemEntity>(0);
 
 	public OrdemServicoEntity() {
 	}
@@ -145,5 +151,24 @@ public class OrdemServicoEntity implements java.io.Serializable {
 	public void setDescServico(String descServico) {
 		this.descServico = descServico;
 	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ordemServico")
+	public Set<OrdemServicoLancEntity> getOrdemServicoLancs() {
+		return ordemServicoLancs;
+	}
+
+	public void setOrdemServicoLancs(Set<OrdemServicoLancEntity> ordemServicoLancs) {
+		this.ordemServicoLancs = ordemServicoLancs;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ordemServico")
+	public Set<PecaServicoOrdemEntity> getPecaServicoOrdems() {
+		return pecaServicoOrdems;
+	}
+
+	public void setPecaServicoOrdems(Set<PecaServicoOrdemEntity> pecaServicoOrdems) {
+		this.pecaServicoOrdems = pecaServicoOrdems;
+	}
+	
 
 }

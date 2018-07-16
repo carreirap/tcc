@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { DataService } from '../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
+import { ModalClienteService } from './modal-cliente-service';
 
 @Component({
   selector: 'app-modal-pesquisa-cliente',
@@ -11,6 +12,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./modal-pesquisa-cliente.component.css']
 })
 export class ModalPesquisaClienteComponent implements OnInit {
+  @Input() cClose;
+  @Input() dClose;
 
   page = 0;
   content: Array<any>;
@@ -19,7 +22,8 @@ export class ModalPesquisaClienteComponent implements OnInit {
   cnpjPesquisa: String;
   typePesquisa = '';
 
-  constructor(private service: DataService, public modal: NgbModal, private route: ActivatedRoute) { }
+  constructor(private service: DataService, public modal: NgbModal, private route: ActivatedRoute,
+             private modalClienteService: ModalClienteService) { }
 
   ngOnInit() {
   }
@@ -27,6 +31,10 @@ export class ModalPesquisaClienteComponent implements OnInit {
   setPages(i, event: any) {
     event.preventDefault();
     this.page = i;
+  }
+
+  sendDados(data) {
+    this.modalClienteService.enviarDadosCliente(data);
   }
 
   public loadClientes(response: any) {
@@ -64,10 +72,4 @@ export class ModalPesquisaClienteComponent implements OnInit {
    this.page = event.page;
    this.pesquisarPage(this.typePesquisa);
   }
-
-  public mostrarModal(clienteModal) {
-    this.modal.open(clienteModal);
-    return false;
-  }
-
 }

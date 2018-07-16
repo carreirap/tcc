@@ -8,6 +8,8 @@ public class OrdemServicoLanc {
 	private Date data;
 	private String situacao;
 	private String observacao;
+	private OrdemServico ordemServico;
+	
 	
 	public int getSequencia() {
 		return sequencia;
@@ -38,5 +40,11 @@ public class OrdemServicoLanc {
 	}
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+	public OrdemServico getOrdemServico() {
+		return ordemServico;
+	}
+	public void setOrdemServico(OrdemServico ordemServico) {
+		this.ordemServico = ordemServico;
 	}
 }

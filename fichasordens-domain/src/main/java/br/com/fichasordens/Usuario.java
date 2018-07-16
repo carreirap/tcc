@@ -2,7 +2,6 @@ package br.com.fichasordens;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -87,7 +86,7 @@ public class Usuario {
 	
 	public List<Usuario> listarUsuario(String... usuario) {
 		List<UsuarioEntity> usuarios = null;
-		if (usuario.length == 0) {
+		if (usuario.length == 0 || usuario.length == 1 && usuario[0] == null) {
 			usuarios = usuarioRepository.findAll();
 		} else {
 			usuarios = Arrays.asList(usuarioRepository.findByUsuario(usuario[0]));

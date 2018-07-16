@@ -6,5 +6,5 @@
     confirmaSenha: String;
     papel: String;
     situacao: String;
-    id: Number;
+    id: number;
 }

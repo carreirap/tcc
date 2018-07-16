@@ -8,7 +8,9 @@
   
   <div class="form-row">
     <div class="form-group col-md-11" [ngClass]="{'was-validated': !name.valid  && (name.dirty || name.touched)}">
-      <label for="nome">Nome</label>
+      <label for="nome">Nome   &nbsp;
+          <a href="#" (click)="mostrarModal(clienteModal);">Pesquisar</a>
+      </label>
       <input type="hidden" id="id" name="id" [(ngModel)]="formCliente.id"/>
       <input type="hidden" id="idEndereco" name="idEndereco" [(ngModel)]="formCliente.idEndereco"/>
       <input class="form-control" maxlength="50" type="text" id="nome" name="nome" [(ngModel)]="formCliente.nome" #name="ngModel" required>
@@ -21,7 +23,6 @@
         </ul>
       </div>
     </div>
-    <a href="#" (click)="mostrarModal(clienteModal);">Pesq</a>
   </div>
 
   <div class="form-row">
@@ -184,8 +185,11 @@
 
 </form>
 
-
 <ng-template #clienteModal let-c="close" let-d="dismiss">
+    <app-modal-pesquisa-cliente [cClose]="c" [dClose]="d"></app-modal-pesquisa-cliente>
+</ng-template>
+
+<!-- <ng-template #clienteModal let-c="close" let-d="dismiss">
   <div class="modal-header navbar-dark bg-dark">
     <h5 class="modal-title" style="color:white;">Pesquisar Cliente</h5>
     <button type="button"  style="color:white;" class="close" aria-label="Close" (click)="d('Cross click')">
@@ -225,7 +229,7 @@
   <div class="modal-footer">
       <button class="btn btn-primary" (click)="c('Close click')">Fechar</button>
   </div>
-</ng-template>
+</ng-template> -->
 
 
 

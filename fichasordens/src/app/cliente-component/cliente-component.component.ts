@@ -7,6 +7,7 @@ import { NgModel } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
+import { ModalClienteService } from '../modal-pesquisa-cliente/modal-cliente-service';
 
 
 
@@ -30,17 +31,17 @@ export class ClienteComponentComponent implements OnInit {
   typePesquisa = '';
 
   @ViewChild('cpfcnpjvalidation') pwConfirmModel: NgModel;
-  constructor(private service: DataService, toasterService: ToasterService, public modal: NgbModal) {
+  constructor(private service: DataService, toasterService: ToasterService, public modal: NgbModal,
+              private modalClienteService: ModalClienteService) {
     this.toasterService = toasterService;
   }
 
   ngOnInit() {
     this.optionsSelect = this.estados.getTodosEstados();
-    /* this.service.get('/cliente?cnpjcpf=' + '273.784.108-96').subscribe(response => {
-      console.log(response);
-    }, (error) => {
-      console.log('error in', error.error.mensagem);
-    }); */
+
+    this.modalClienteService.carregarCliente.subscribe(
+      result => this.loadForm(result)
+    );
   }
 
   onSubmit() {
@@ -70,11 +71,6 @@ export class ClienteComponentComponent implements OnInit {
     return false;
   }
 
-  setPages(i, event: any) {
-    event.preventDefault();
-    this.page = i;
-  }
-
   loadForm(line) {
     console.log(line);
     this.formCliente.id = line.id;
@@ -93,39 +89,4 @@ export class ClienteComponentComponent implements OnInit {
     this.formCliente.cep = line.cep;
   }
 
-  loadClientes(response: any) {
-    console.log(response);
-    this.content = response.content;
-    console.log(this.content);
-    this.pages = response['totalPages'];
-  }
-
-  public pesquisarPage(type) {
-    this.typePesquisa = type;
-    if (this.typePesquisa === 'cnpjcpf') {
-        this.service.get('/cliente?cnpjcpf=' + this.cnpjPesquisa + '&page=' +
-        this.page + '&size=1&sort=nome,DESC').subscribe(response => {
-            console.log(response);
-            this.loadClientes(response);
-        }, (error) => {
-            console.log('error in', error.error.mensagem);
-        });
-    } else {
-        if (this.nomePesquisa.length > 3 ) {
-            this.service.get('/cliente?nome=' + this.nomePesquisa + '&page=' +
-            this.page + '&size=1&sort=nome,DESC').subscribe(response => {
-                console.log(response);
-                this.loadClientes(response);
-            }, (error) => {
-                console.log('error in', error.error.mensagem);
-            });
-        }
-    }
-  }
-
-  paginate(event) {
-   console.log(event);
-   this.page = event.page;
-   this.pesquisarPage(this.typePesquisa);
-  }
 }

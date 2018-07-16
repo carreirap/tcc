@@ -17,8 +17,8 @@
 		<class>br.com.fichasordens.entities.ParametroEntity</class>
 		<class>br.com.fichasordens.entities.PecaServicoFicha</class>
 		<class>br.com.fichasordens.entities.PecaServicoFichaId</class>
-		<class>br.com.fichasordens.entities.PecaServicoOrdem</class>
-		<class>br.com.fichasordens.entities.PecaServicoOrdemId</class>
+		<class>br.com.fichasordens.entities.PecaServicoOrdemEntity</class>
+		<class>br.com.fichasordens.entities.PecaServicoOrdemEntityId</class>
 		<class>br.com.fichasordens.entities.UsuarioEntity</class>
 
 		<properties>

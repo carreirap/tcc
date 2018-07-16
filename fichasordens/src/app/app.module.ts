@@ -75,11 +75,16 @@ import { CpfCnpjDirective } from './util/cnpj-cpf-validator';
 import { PesquisarDirective } from './util/cliente-search';
 import {TableModule} from 'primeng/table';
 import {PaginatorModule} from 'primeng/paginator';
-import {AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
+import {AccordionModule} from 'primeng/accordion';     // accordion and accordion tab
 import {MenuItem} from 'primeng/api';
-import { OrdemServicoComponent } from './ordem-servico/ordem-servico.component';                 //api
+import { OrdemServicoComponent } from './ordem-servico/ordem-servico.component';                 // api
 import { DatePipe } from '@angular/common';
 import { ModalPesquisaClienteComponent } from './modal-pesquisa-cliente/modal-pesquisa-cliente.component';
+import { ModalMaoobraComponent } from './modal-maoobra/modal-maoobra.component';
+import { ModalService } from './modal-maoobra/modal-service';
+import { PecaServicoOrdemService } from './ordem-servico/ordem-servico-service';
+import { ModalClienteService } from './modal-pesquisa-cliente/modal-cliente-service';
+import { PapelUserService } from './_services/papel-service';
 
 @NgModule({
   declarations: [
@@ -96,7 +101,8 @@ import { ModalPesquisaClienteComponent } from './modal-pesquisa-cliente/modal-pe
     CpfCnpjDirective,
     PesquisarDirective,
     OrdemServicoComponent,
-    ModalPesquisaClienteComponent
+    ModalPesquisaClienteComponent,
+    ModalMaoobraComponent
    ],
   imports: [
     BrowserModule,
@@ -125,7 +131,11 @@ import { ModalPesquisaClienteComponent } from './modal-pesquisa-cliente/modal-pe
         HttpClientModule,
         Configuration,
         DatePipe,
-        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true }
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true },
+        ModalService,
+        ModalClienteService,
+        PecaServicoOrdemService,
+        PapelUserService
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   bootstrap: [AppComponent]

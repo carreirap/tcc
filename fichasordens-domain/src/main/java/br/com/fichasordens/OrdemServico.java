@@ -17,7 +17,8 @@ public class OrdemServico {
 	private String descServico;
 	private Cliente cliente;
 	
-	private List<OrdemServicoLanc> statusLancamentos;
+	private List<OrdemServicoLanc> ordemServicoLanc;
+	private List<PecaOutroServico> pecaOutroServico;
 
 	public long getId() {
 		return id;
@@ -99,12 +100,20 @@ public class OrdemServico {
 		this.cliente = cliente;
 	}
 
-	public List<OrdemServicoLanc> getStatusLancamentos() {
-		return statusLancamentos;
+	public List<PecaOutroServico> getPecaOutroServico() {
+		return pecaOutroServico;
 	}
 
-	public void setStatusLancamentos(List<OrdemServicoLanc> statusLancamentos) {
-		this.statusLancamentos = statusLancamentos;
+	public void setPecaOutroServico(List<PecaOutroServico> pecaOutroServico) {
+		this.pecaOutroServico = pecaOutroServico;
+	}
+
+	public List<OrdemServicoLanc> getOrdemServicoLanc() {
+		return ordemServicoLanc;
+	}
+
+	public void setOrdemServicoLanc(List<OrdemServicoLanc> ordemServicoLanc) {
+		this.ordemServicoLanc = ordemServicoLanc;
 	}
 
 }

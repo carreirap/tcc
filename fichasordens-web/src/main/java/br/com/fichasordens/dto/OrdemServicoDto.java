@@ -1,5 +1,7 @@
 package br.com.fichasordens.dto;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
 @JsonIgnoreType
@@ -15,7 +17,8 @@ public class OrdemServicoDto {
     private String fabricante;
     private String modelo;
     private String serie;
-    private String dataAbertura;
+    private OrdemServicoLancDto ordemServicoLanc;
+    
 	public long getNumeroOrdem() {
 		return numeroOrdem;
 	}
@@ -70,13 +73,11 @@ public class OrdemServicoDto {
 	public void setSerie(String serie) {
 		this.serie = serie;
 	}
-	public String getDataAbertura() {
-		return dataAbertura;
+	public OrdemServicoLancDto getOrdemServicoLanc() {
+		return ordemServicoLanc;
 	}
-	public void setDataAbertura(String dataAbertura) {
-		this.dataAbertura = dataAbertura;
+	public void setOrdemServicoLanc(OrdemServicoLancDto ordemServicoLanc) {
+		this.ordemServicoLanc = ordemServicoLanc;
 	}
-	
-    
 }
 

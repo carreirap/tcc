@@ -3,10 +3,15 @@ import { ToasterService} from 'angular5-toaster';
 import { DataService, AuthenticationService } from '../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Ordem } from '../_models/ordem';
-import { ItemTable } from '../_models/item-table';
 import { DatePipe } from '@angular/common';
 import { User } from '../_models';
 import { NgModel } from '@angular/forms';
+import { ModalMaoobraComponent } from '../modal-maoobra/modal-maoobra.component';
+import { ModalService } from '../modal-maoobra/modal-service';
+import { PecaServicoOrdemService } from './ordem-servico-service';
+import { PecaServicoOrdem } from '../_models/peca-servico-ordem';
+import { ModalClienteService } from '../modal-pesquisa-cliente/modal-cliente-service';
+// import { OrdemServicoLanc } from '../_models/lancamentosTecnicos';
 
 @Component({
   selector: 'app-ordem-servico',
@@ -17,11 +22,20 @@ import { NgModel } from '@angular/forms';
 export class OrdemServicoComponent implements OnInit {
   toasterService: ToasterService;
   formOrdem = new Ordem();
-  item: ItemTable;
-  situacaoSelect: Array<any> = [
+  modalReference: any;
+  item: PecaServicoOrdem;
+  /*situacaoSelect: Array<any> = [
     { value: 'Aberto', label: 'Aberto' },
+    { value: 'Fechado', label: 'Fechado' }
+  ]; */
+
+  situacaoTecnica: Array<any> = [
+    { value: 'Aberto', label: 'Aberto' },
+    { value: 'Fechado', label: 'Fechado' },
     { value: 'Trabalhando', label: 'Trabalhando' },
-    { value: 'Aguardando', label: 'Aguardando' }
+    { value: 'Aguardando', label: 'Aguardando' },
+    { value: 'Finalizado', label: 'Finalizado' },
+    { value: 'Faturado', label: 'Faturado' }
   ];
 
   page = 0;
@@ -33,37 +47,47 @@ export class OrdemServicoComponent implements OnInit {
 
   @ViewChild('cpfcnpjvalidation') pwConfirmModel: NgModel;
   constructor(private service: DataService, toasterService: ToasterService, public modal: NgbModal,
-              private datePipe: DatePipe, private authenticationService: AuthenticationService) {
+              private datePipe: DatePipe, private authenticationService: AuthenticationService,
+              private modalService: ModalService, private pecaServicoOrdemService: PecaServicoOrdemService,
+              private modalClienteService: ModalClienteService) {
     this.toasterService = toasterService;
   }
 
   ngOnInit() {
-    this.formOrdem.situacao = 'Aberto';
-    this.formOrdem.dataAbertura = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
+
+    this.modalService.carregarLinha.subscribe(
+      result => this.addLinha(result)
+    );
+
+    this.modalClienteService.carregarCliente.subscribe(
+      result => this.loadForm(result)
+    );
+    this.formOrdem.ordemServicoLanc.situacao = 'Aberto';
+    // this.formOrdem.dataAbertura = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
+    this.formOrdem.ordemServicoLanc.data = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
     this.getNomeUsario();
-    this.item = new ItemTable();
-    this.item.qtde = 1;
-    this.item.descricao = 'Descricao';
-    this.item.valor = 5680;
-    this.item.garantia = 3;
-    this.item.nf = 69;
-    this.formOrdem.itemTables.push(this.item);
+    console.log(this.formOrdem.itemTables.length);
   }
 
   private getNomeUsario() {
     const user = new User();
     user.usuario = JSON.parse(localStorage.getItem('currentUser')).usuario;
     this.authenticationService.getUpdatedUser(user).subscribe(response => {
-      this.formOrdem.responsavel = response.nome;
+      this.formOrdem.ordemServicoLanc.usuario = response.nome;
+      this.formOrdem.ordemServicoLanc.idUsuario = response.id;
     }, (error) => {
       console.log('error in', error);
     });
   }
 
   onSubmit() {
+    if (this.formOrdem.ordemServicoLanc.situacao === 'Aberto') {
+      this.formOrdem.ordemServicoLanc.sequencia = 0;
+    }
     this.service.post('/ordem', this.formOrdem).subscribe(response => {
       console.log(response);
       this.setNumeroOrdem(response);
+      this.formOrdem.ordemServicoLancLst.push(this.formOrdem.ordemServicoLanc);
       this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
     }, (error) => {
       console.log('error in', error.error.mensagem);
@@ -80,6 +104,11 @@ export class OrdemServicoComponent implements OnInit {
     return false;
   }
 
+  mostrarModalMaoObra(modalPecas) {
+    this.modalReference = this.modal.open(modalPecas);
+    return false;
+  }
+
   setCnpjCpfInvalido(mensagem: String) {
     console.log(mensagem);
     if (mensagem !== 'OK') {
@@ -91,11 +120,6 @@ export class OrdemServicoComponent implements OnInit {
     this.formOrdem.cliente.cnpj = value;
   }
 
-  setPages(i, event: any) {
-    event.preventDefault();
-    this.page = i;
-  }
-
   loadForm(line) {
     console.log(line);
     this.formOrdem.cliente.id = line.id;
@@ -105,40 +129,32 @@ export class OrdemServicoComponent implements OnInit {
     this.formOrdem.cliente.cnpj = line.cnpj;
   }
 
-  loadClientes(response: any) {
-    console.log(response);
-    this.content = response.content;
-    console.log(this.content);
-    this.pages = response['totalPages'];
+  addLinha(event) {
+    console.log(event.descricao);
+    event.sequencia = this.formOrdem.itemTables.length + 1;
+    event.idOrdem = this.formOrdem.numeroOrdem;
+
+    this.service.post('/ordem/pecaServico', event).subscribe(response => {
+      console.log(response);
+      this.pecaServicoOrdemService.emitirResultado.emit('gravou');
+      this.formOrdem.itemTables.push(event);
+      // this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
+    }, (error) => {
+      console.log('error in', error.error.mensagem);
+      this.pecaServicoOrdemService.emitirResultado.emit('falhou');
+      // this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
+    });
   }
 
-  pesquisarPage(type) {
-    this.typePesquisa = type;
-    if (this.typePesquisa === 'cnpjcpf') {
-        this.service.get('/cliente?cnpjcpf=' + this.cnpjPesquisa + '&page=' +
-        this.page + '&size=1&sort=nome,DESC').subscribe(response => {
-            console.log(response);
-            this.loadClientes(response);
-        }, (error) => {
-            console.log('error in', error.error.mensagem);
-        });
-    } else {
-        if (this.nomePesquisa.length > 3 ) {
-            this.service.get('/cliente?nome=' + this.nomePesquisa + '&page=' +
-            this.page + '&size=1&sort=nome,DESC').subscribe(response => {
-                console.log(response);
-                this.loadClientes(response);
-            }, (error) => {
-                console.log('error in', error.error.mensagem);
-            });
-        }
-    }
-  }
-
-  paginate(event) {
-   console.log(event);
-   this.page = event.page;
-   this.pesquisarPage(this.typePesquisa);
-  }
+  /* onSubmitLancamento() {
+    this.formLancamento.idOrdem = this.formOrdem.numeroOrdem;
+    this.service.post('/ordem/lancamento', this.formLancamento).subscribe(response => {
+      console.log(response);
+      this.toasterService.pop('success', 'Ordem de Serviço', 'Lançamento!');
+    }, (error) => {
+      console.log('error in', error.error.mensagem);
+      this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
+    });
+  } */
 
 }
