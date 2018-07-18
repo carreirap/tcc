@@ -34,7 +34,6 @@ public class OrdemServicoController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity salvarOrdemServico(@RequestBody final OrdemServicoDto dto) {
-		System.out.println(dto);
 		try {
 			OrdemServico ordemServico = this.converterDto(dto);
 			ordemServico = this.ordemServicoService.gravarOrdem(ordemServico);
@@ -47,10 +46,9 @@ public class OrdemServicoController {
 	
 	@RequestMapping(method = RequestMethod.POST,path="/pecaServico")
 	public ResponseEntity salvarItemOrdemServico(@RequestBody final PecaServicoOrdemDto dto) {
-		System.out.println(dto);
 		try {
-			PecaOutroServico peca = this.converterDtoPecaServico(dto);
-			peca = this.ordemServicoService.gravarPecaServicoOrdem(peca);
+			final PecaOutroServico peca = this.converterDtoPecaServico(dto);
+			this.ordemServicoService.gravarPecaServicoOrdem(peca);
 			return new ResponseEntity( HttpStatus.OK);
 		} catch (ExcecaoRetorno e) {
 			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -59,10 +57,9 @@ public class OrdemServicoController {
 	
 	@RequestMapping(method = RequestMethod.POST,path="/lancamento")
 	public ResponseEntity salvarLancamentoTecnico(@RequestBody final OrdemServicoLancDto dto) {
-		System.out.println(dto);
 		try {
 			OrdemServicoLanc peca = this.converterDtoOrdemServicoLanc(dto);
-			peca = this.ordemServicoService.gravarOrdemServicoLanc(peca);
+			this.ordemServicoService.gravarOrdemServicoLanc(peca);
 			return new ResponseEntity( HttpStatus.OK);
 		} catch (ExcecaoRetorno e) {
 			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);

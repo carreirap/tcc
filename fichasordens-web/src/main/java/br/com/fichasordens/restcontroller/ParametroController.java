@@ -33,7 +33,7 @@ public class ParametroController {
 	public ResponseEntity<List<ParametroDto>> recuperarParametros(@RequestParam(required = false) final String user) {
 		final List<Parametro> lst = parametro.recuperarParametros();
 		LOGGER.info("Listando todos parametros");
-		return new ResponseEntity<List<ParametroDto>>(converterParaDto(lst), HttpStatus.OK);
+		return new ResponseEntity<>(converterParaDto(lst), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

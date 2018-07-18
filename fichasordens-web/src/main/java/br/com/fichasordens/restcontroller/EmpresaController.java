@@ -38,7 +38,7 @@ public class EmpresaController {
 				
 		final Empresa empresa = this.empresa.buscarEmpresa();
 		 
-		return new ResponseEntity<EmpresaDto>(this.convertEmpresaParaDto(empresa),HttpStatus.OK);
+		return new ResponseEntity<>(this.convertEmpresaParaDto(empresa),HttpStatus.OK);
 	 }
 	
 	private EmpresaDto convertEmpresaParaDto (final Empresa empresa) {
@@ -57,21 +57,7 @@ public class EmpresaController {
 		dto.setNumero(empresa.getEndereco().getNumero());
 		dto.setSite(empresa.getSite());
 		dto.setIdEndereco(empresa.getEndereco().getId());
-		 
-		 
-//		 dto.setNome("IslucNet");
-//		 dto.setCnpj("76189406000126");
-//		 dto.setBairro("Capão Raso");
-//		 dto.setCep("81070-310");
-//		 dto.setCidade("Curitiba");
-//		 dto.setComplemento("n/a");
-//		 dto.setEmail("israel@islucnet.com.br");
-//		 dto.setEstado("PR");
-//		 dto.setFone("(41)33459299");
-//		 dto.setLogradouro("Rua das flores");
-//		 dto.setNumero(500);
-//		 dto.setSite("www.islucnet.com.br");
-		 return dto;
+		return dto;
 	}
 	
 	private Empresa convertDtoParaEmpresa(EmpresaDto dto) {

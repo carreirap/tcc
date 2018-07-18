@@ -58,14 +58,14 @@ public class Cliente extends Pessoa {
 		return paged;
 	}
 
-	private void converterEntityParaCliente(final List<Cliente> clienteList, final ClienteEntity e) {
+	/*private void converterEntityParaCliente(final List<Cliente> clienteList, final ClienteEntity e) {
 		Cliente cli = new Cliente();
 		cli.setNome(e.getNome());
 		cli.setCnpjCpf(e.getCnpjCpf());
 		cli.setFone(e.getFone());
 		cli.setId(e.getId());
 		clienteList.add(cli);
-	}
+	}*/
 	
 	public boolean isClienteCadastrado(final String cnpjCpf, final long id) {
 		boolean clienteEstaCadastrado = false;

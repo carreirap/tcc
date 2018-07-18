@@ -30,7 +30,7 @@ public class UsuarioController {
 	
 	@Autowired private Usuario usuario;
 	
-	private static String TRUE = "true";
+	private static final String TRUE = "true";
 
 	 @RequestMapping(method = RequestMethod.POST)
 	 public ResponseEntity adicionarUsuario(@RequestBody UsuarioDto dto) {
@@ -60,13 +60,13 @@ public class UsuarioController {
 	 public ResponseEntity<List<UsuarioDto>> getUsuario(@RequestParam(required=false) final String user) {
 		 final List<Usuario> lst = usuario.listarUsuario(user);
 		 
-		 return new ResponseEntity<List<UsuarioDto>>(convertToDto(lst),HttpStatus.OK);
+		 return new ResponseEntity<>(convertToDto(lst),HttpStatus.OK);
 	 }
 	 
 	 @RequestMapping(value = "/getUpdatedUser", method = RequestMethod.POST)
 	 public ResponseEntity<UsuarioDto> login(@RequestBody UsuarioDto user) {
 		 final List<Usuario> lst = this.usuario.listarUsuario(user.getUsuario());
-		 return new ResponseEntity<UsuarioDto>(convertToDto(lst).get(0),HttpStatus.OK);
+		 return new ResponseEntity<>(convertToDto(lst).get(0),HttpStatus.OK);
 	 }
 	 
 	 private List<UsuarioDto> convertToDto(final List<Usuario> lst) {
@@ -84,17 +84,17 @@ public class UsuarioController {
 	 }
 	 
 	 private Usuario convertToUsuario(final UsuarioDto dto) {
-		 final Usuario usuario = new Usuario();
-		 usuario.setNome(dto.getNome());
-		 usuario.setNomeUsuario(dto.getUsuario());
-		 usuario.setPapel(dto.getPapel());
-		 usuario.setNovaSenha(dto.getNovaSenha());
-		 usuario.setConfirmaSenha(dto.getConfirmaSenha());
-		 usuario.setSenha(dto.getSenha());
-		 usuario.setPapel(dto.getPapel());
-		 usuario.setId(dto.getId());
-		 usuario.setSituacao(dto.getSituacao().equals(UsuarioController.TRUE) ? 1 : 0);
+		 final Usuario user = new Usuario();
+		 user.setNome(dto.getNome());
+		 user.setNomeUsuario(dto.getUsuario());
+		 user.setPapel(dto.getPapel());
+		 user.setNovaSenha(dto.getNovaSenha());
+		 user.setConfirmaSenha(dto.getConfirmaSenha());
+		 user.setSenha(dto.getSenha());
+		 user.setPapel(dto.getPapel());
+		 user.setId(dto.getId());
+		 user.setSituacao(dto.getSituacao().equals(UsuarioController.TRUE) ? 1 : 0);
 			 
-		 return usuario;
+		 return user;
 	 }
 }

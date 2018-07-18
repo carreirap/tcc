@@ -1,7 +1,8 @@
 package br.com.fichasordens;
 
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,6 +11,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import br.com.fichasordens.entities.ClienteEntity;
 import br.com.fichasordens.exception.ExcecaoRetorno;
@@ -48,6 +54,34 @@ public class ClienteTest {
 		when(this.mockClienteRepository.findByCnpjCpf(org.mockito.Mockito.any(String.class))).thenReturn(clienteCadastrado);
 		
 		this.cliente.salvarCliente(loadCliente());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void test_PesquisarClienteCnpj_success() {
+		Cliente cli = new Cliente();
+		cli.setCnpjCpf("cnpjcpf");
+		cli.setNome(null);
+		Pageable p = new PageRequest(0, 10);
+		@SuppressWarnings("unchecked")
+		Page<ClienteEntity> paged = Mockito.mock(Page.class);
+		when(this.mockClienteRepository.findAll(org.mockito.Mockito.any(Example.class), org.mockito.Mockito.any(Pageable.class))).thenReturn(paged);
+		Page<ClienteEntity> page = this.cliente.pesquisarCliente(cli, p);
+		assertNotNull(page);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void test_PesquisarClienteNome_success() {
+		Cliente cli = new Cliente();
+		cli.setCnpjCpf(null);
+		cli.setNome("nome");
+		Pageable p = new PageRequest(0, 10);
+		@SuppressWarnings("unchecked")
+		Page<ClienteEntity> paged = Mockito.mock(Page.class);
+		when(this.mockClienteRepository.findAll(org.mockito.Mockito.any(Example.class), org.mockito.Mockito.any(Pageable.class))).thenReturn(paged);
+		Page<ClienteEntity> page = this.cliente.pesquisarCliente(cli, p);
+		assertNotNull(page);
 	}
 	
 	private Cliente loadCliente() {

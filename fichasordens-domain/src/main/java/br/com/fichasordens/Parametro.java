@@ -29,9 +29,9 @@ public class Parametro {
 		List<Parametro> lstParametro = new ArrayList<>();
 		list.forEach(p-> {
 			Parametro param = new Parametro();
-			param.descricao = p.getDescricao();
-			param.id = p.getId();
-			param.valor = p.getValor();
+			param.setDescricao(p.getDescricao());
+			param.setId(p.getId());
+			param.setValor(p.getValor());
 			lstParametro.add(param);
 		});
 		
