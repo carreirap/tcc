@@ -57,6 +57,20 @@ public class UsuarioControllerTest {
 		assertNotNull(list);
 	}
 	
+	
+	@Test
+	public void test_getUsuarioComParametro_success() {
+		Usuario usuario= carregarUsuario();
+		usuario.setSituacao(0);
+		when(this.mockUsuario.listarUsuario()).thenReturn(Arrays.asList(usuario));
+		
+		ResponseEntity response = this.usuarioController.getUsuario("test");
+		
+		List<Usuario> list = (List) response.getBody();
+		
+		assertNotNull(list);
+	}
+	
 	@Test
 	public void test_alterarUsuario_success() throws ExcecaoRetorno {
 		Usuario usuario= carregarUsuario();
