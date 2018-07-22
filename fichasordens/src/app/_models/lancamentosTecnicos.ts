@@ -1,9 +1,9 @@
-export  class OrdemServicoLanc {
+export  class Lancamento {
     sequencia: number;
     usuario: string;
     idUsuario: number;
     situacao: string;
     data: string;
     observacao: string;
-    idOrdem: number;
+    id: number;
 }

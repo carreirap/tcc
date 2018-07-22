@@ -31,7 +31,7 @@ public class UsuarioEntity implements java.io.Serializable {
 	private int situacao;
 	private String papel;
 	
-	private Set<FichaAtendLanc> fichaAtendLancs = new HashSet<FichaAtendLanc>(0);
+	private Set<FichaAtendLancEntity> fichaAtendLancs = new HashSet<FichaAtendLancEntity>(0);
 
 	public UsuarioEntity() {
 	}
@@ -45,7 +45,7 @@ public class UsuarioEntity implements java.io.Serializable {
 	}
 
 	public UsuarioEntity(String usuario, String nome, String senha, Date dataCad, int situacao,
-			Set<FichaAtendLanc> fichaAtendLancs) {
+			Set<FichaAtendLancEntity> fichaAtendLancs) {
 		this.usuario = usuario;
 		this.nome = nome;
 		this.senha = senha;
@@ -112,11 +112,11 @@ public class UsuarioEntity implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
-	public Set<FichaAtendLanc> getFichaAtendLancs() {
+	public Set<FichaAtendLancEntity> getFichaAtendLancs() {
 		return this.fichaAtendLancs;
 	}
 
-	public void setFichaAtendLancs(Set<FichaAtendLanc> fichaAtendLancs) {
+	public void setFichaAtendLancs(Set<FichaAtendLancEntity> fichaAtendLancs) {
 		this.fichaAtendLancs = fichaAtendLancs;
 	}
 	

@@ -24,7 +24,7 @@ import javax.persistence.TemporalType;
 public class AtendimentoFicha implements java.io.Serializable {
 
 	private AtendimentoFichaId id;
-	private FichaAtendimento fichaAtendimento;
+	private FichaAtendimentoEntity fichaAtendimento;
 	private Date date;
 	private String descricao;
 	private BigDecimal valor;
@@ -33,7 +33,7 @@ public class AtendimentoFicha implements java.io.Serializable {
 	public AtendimentoFicha() {
 	}
 
-	public AtendimentoFicha(AtendimentoFichaId id, FichaAtendimento fichaAtendimento, Date date, String descricao,
+	public AtendimentoFicha(AtendimentoFichaId id, FichaAtendimentoEntity fichaAtendimento, Date date, String descricao,
 			BigDecimal valor, BigDecimal duracao) {
 		this.id = id;
 		this.fichaAtendimento = fichaAtendimento;
@@ -58,11 +58,11 @@ public class AtendimentoFicha implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ficha_atendimento_id", nullable = false, insertable = false, updatable = false)
-	public FichaAtendimento getFichaAtendimento() {
+	public FichaAtendimentoEntity getFichaAtendimento() {
 		return this.fichaAtendimento;
 	}
 
-	public void setFichaAtendimento(FichaAtendimento fichaAtendimento) {
+	public void setFichaAtendimento(FichaAtendimentoEntity fichaAtendimento) {
 		this.fichaAtendimento = fichaAtendimento;
 	}
 

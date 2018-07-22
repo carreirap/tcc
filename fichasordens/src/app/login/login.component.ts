@@ -2,10 +2,10 @@
 import { Router } from '@angular/router';
 import * as jwt_decode from 'jwt-decode';
 import { FormsModule } from '@angular/forms';
-import { User } from '../_models/index';
 
 
-import { AuthenticationService } from '../_services/index';
+import { AuthenticationService } from '../_services';
+import { UsuarioLogado } from '../_models/usuario-logado';
 
 @Component({
     moduleId: module.id,
@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
     model: any = {};
     loading = false;
     error = '';
-    user: User;
+    user: UsuarioLogado;
 
     constructor(
         private router: Router,
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
 
     login(): void {
         this.loading = true;
-        this.user = new User();
+        this.user = new UsuarioLogado();
         this.user.usuario = this.model.usuario;
         this.user.senha = this.model.senha;
         this.authenticationService.authenticate(this.user)

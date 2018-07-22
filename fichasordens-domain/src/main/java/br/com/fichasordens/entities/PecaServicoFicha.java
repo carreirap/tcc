@@ -20,7 +20,7 @@ import javax.persistence.Table;
 public class PecaServicoFicha implements java.io.Serializable {
 
 	private PecaServicoFichaId id;
-	private FichaAtendimento fichaAtendimento;
+	private FichaAtendimentoEntity fichaAtendimento;
 	private String descricao;
 	private int quantidade;
 	private BigDecimal valor;
@@ -28,7 +28,7 @@ public class PecaServicoFicha implements java.io.Serializable {
 	public PecaServicoFicha() {
 	}
 
-	public PecaServicoFicha(PecaServicoFichaId id, FichaAtendimento fichaAtendimento, String descricao, int quantidade,
+	public PecaServicoFicha(PecaServicoFichaId id, FichaAtendimentoEntity fichaAtendimento, String descricao, int quantidade,
 			BigDecimal valor) {
 		this.id = id;
 		this.fichaAtendimento = fichaAtendimento;
@@ -52,11 +52,11 @@ public class PecaServicoFicha implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ficha_atend_id", nullable = false, insertable = false, updatable = false)
-	public FichaAtendimento getFichaAtendimento() {
+	public FichaAtendimentoEntity getFichaAtendimento() {
 		return this.fichaAtendimento;
 	}
 
-	public void setFichaAtendimento(FichaAtendimento fichaAtendimento) {
+	public void setFichaAtendimento(FichaAtendimentoEntity fichaAtendimento) {
 		this.fichaAtendimento = fichaAtendimento;
 	}
 

@@ -5,11 +5,11 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { Base64 } from 'js-base64';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { User } from '../_models/index';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Configuration } from '../app.constants';
 import { PapelUserService } from '../_services/papel-service';
+import { UsuarioLogado } from '../_models/usuario-logado';
 
 @Injectable()
 export class PerfiService {
@@ -38,7 +38,7 @@ export class PerfiService {
             .map((response: Response) => response.json());
     }
 
-    post(user: User) {
+    post(user: UsuarioLogado) {
         this.headers = new Headers({
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token
@@ -48,7 +48,7 @@ export class PerfiService {
             .map((response: Response) => response.json());
     }
 
-    put(user: User) {
+    put(user: UsuarioLogado) {
         this.headers = new Headers({
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token

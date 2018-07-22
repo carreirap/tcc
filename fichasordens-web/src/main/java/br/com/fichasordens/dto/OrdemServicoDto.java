@@ -15,7 +15,7 @@ public class OrdemServicoDto {
     private String fabricante;
     private String modelo;
     private String serie;
-    private OrdemServicoLancDto ordemServicoLanc;
+    private LancamentoDto lancamento;
     
 	public long getNumeroOrdem() {
 		return numeroOrdem;
@@ -71,11 +71,11 @@ public class OrdemServicoDto {
 	public void setSerie(String serie) {
 		this.serie = serie;
 	}
-	public OrdemServicoLancDto getOrdemServicoLanc() {
-		return ordemServicoLanc;
+	public LancamentoDto getLancamento() {
+		return lancamento;
 	}
-	public void setOrdemServicoLanc(OrdemServicoLancDto ordemServicoLanc) {
-		this.ordemServicoLanc = ordemServicoLanc;
+	public void setLancamento(LancamentoDto lancamento) {
+		this.lancamento = lancamento;
 	}
 }
 

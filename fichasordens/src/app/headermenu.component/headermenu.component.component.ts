@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { User } from '../_models/index';
+import { UsuarioLogado } from '../_models/usuario-logado';
 
 @Component({
   selector: 'app-headermenu-component',
@@ -8,7 +8,7 @@ import { User } from '../_models/index';
 })
 
 export class HeadermenuComponentComponent implements OnInit {
-  user: User;
+  user: UsuarioLogado;
   papel: String;
 
 

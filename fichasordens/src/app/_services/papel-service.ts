@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { User } from '../_models';
+import { UsuarioLogado } from '../_models/usuario-logado';
 
 @Injectable()
 export class PapelUserService {
     papel: string;
-    user: User;
+    user: UsuarioLogado;
 
   isAdmin() {
     try {
@@ -23,7 +23,7 @@ export class PapelUserService {
   }
 
   getUsuario() {
-    const user = new User();
+    const user = new UsuarioLogado();
     user.usuario = JSON.parse(localStorage.getItem('currentUser')).usuario;
     return user;
   }

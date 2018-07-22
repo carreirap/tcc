@@ -1,8 +1,8 @@
 ﻿import { Routes, RouterModule } from '@angular/router';
 
-import { LoginComponent } from './login/index';
-import { HomeComponent } from './home/index';
-import { AuthGuard } from './_guards/index';
+import { LoginComponent } from './login';
+import { HomeComponent } from './home';
+import { AuthGuard } from './_guards';
 import { HeadermenuComponentComponent } from './headermenu.component/headermenu.component.component';
 import { PerfilComponent } from './perfil-component/perfil.component';
 import { ClienteComponentComponent } from './cliente-component/cliente-component.component';

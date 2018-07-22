@@ -19,7 +19,7 @@ import br.com.fichasordens.PecaOutroServico;
 import br.com.fichasordens.Usuario;
 import br.com.fichasordens.dto.MensagemRetornoDto;
 import br.com.fichasordens.dto.OrdemServicoDto;
-import br.com.fichasordens.dto.OrdemServicoLancDto;
+import br.com.fichasordens.dto.LancamentoDto;
 import br.com.fichasordens.dto.PecaServicoOrdemDto;
 import br.com.fichasordens.exception.ExcecaoRetorno;
 
@@ -56,7 +56,7 @@ public class OrdemServicoController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST,path="/lancamento")
-	public ResponseEntity salvarLancamentoTecnico(@RequestBody final OrdemServicoLancDto dto) {
+	public ResponseEntity salvarLancamentoTecnico(@RequestBody final LancamentoDto dto) {
 		try {
 			OrdemServicoLanc peca = this.converterDtoOrdemServicoLanc(dto);
 			this.ordemServicoService.gravarOrdemServicoLanc(peca);
@@ -80,7 +80,7 @@ public class OrdemServicoController {
 		cliente.setId(dto.getCliente().getId());
 		ent.setCliente(cliente);
 		ent.setOrdemServicoLanc(new ArrayList<OrdemServicoLanc>());
-		OrdemServicoLanc lanc = this.converterDtoOrdemServicoLanc(dto.getOrdemServicoLanc());
+		OrdemServicoLanc lanc = this.converterDtoOrdemServicoLanc(dto.getLancamento());
 		ent.getOrdemServicoLanc().add(lanc);
 		return ent;
 	}
@@ -97,7 +97,7 @@ public class OrdemServicoController {
 		return pecaServico;
 	}
 	
-	private OrdemServicoLanc converterDtoOrdemServicoLanc(final OrdemServicoLancDto dto) {
+	private OrdemServicoLanc converterDtoOrdemServicoLanc(final LancamentoDto dto) {
 		final OrdemServicoLanc lanc = new OrdemServicoLanc();
 		lanc.setData(dto.getData());
 		lanc.setObservacao(dto.getObservacao());
@@ -106,7 +106,7 @@ public class OrdemServicoController {
 		lanc.getUsuario().setId(dto.getIdUsuario());
 		lanc.setSequencia(dto.getSequencia());
 		lanc.setOrdemServico(new OrdemServico());
-		lanc.getOrdemServico().setId(dto.getIdOrdem());
+		lanc.getOrdemServico().setId(dto.getId());
 		return lanc;
 	}
 
