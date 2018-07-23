@@ -68,7 +68,7 @@ public class OrdemServicoServiceImpl implements OrdemServicoInterface {
 		try {
 			entity = this.pecaServicoOrdemRepository.save(entity);
 		} catch (Exception e) {
-			throw new ExcecaoRetorno("Erro ao tentar cadastrar ordem de serviço");
+			throw new ExcecaoRetorno("Erro ao tentar cadastrar peças/outro serviços");
 		}
 		return null;
 	}

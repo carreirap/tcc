@@ -26,11 +26,7 @@ export class OrdemServicoComponent implements OnInit {
   formOrdem = new Ordem();
   modalReference: any;
   item: PecaServicoOrdem;
-  /*situacaoSelect: Array<any> = [
-    { value: 'Aberto', label: 'Aberto' },
-    { value: 'Fechado', label: 'Fechado' }
-  ]; */
-
+  
   situacaoTecnica: Array<any> = [
     { value: 'Aberto', label: 'Aberto' },
     { value: 'Fechado', label: 'Fechado' },

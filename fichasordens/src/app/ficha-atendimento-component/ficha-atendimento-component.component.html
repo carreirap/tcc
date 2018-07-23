@@ -76,10 +76,75 @@
     </div>
     <div class="form-group col-md-4">
       <label for="celular">Data Abertura</label>
-      <input class="form-control" maxlength="15" type="text" id="dataAbertura" [readonly]="true" name="dataAbertura" [(ngModel)]="this.formFicha.lancamento.data"
+      <input class="form-control" maxlength="15" type="text" id="dataAbertura" [readonly]="true" name="dataAbertura" [(ngModel)]="formFicha.lancamento.data"
         [readonly]="true" style="background-color: white;">
     </div>
   </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-9">
+
+    </div>
+    <div class="form-group col-md-1">
+      <!-- -->
+      <button type="submit" (click)="mostrarModalMaoObra(maoobra);" *ngIf="formFicha.numeroFicha" class="btn btn-primary">Incluir</button>
+    </div>
+    <div class="form-group col-md-1">
+      <button type="submit" class="btn btn-primary" *ngIf="formFicha.numeroFicha">Excluir</button>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <p-table [responsive]="true" [value]="formFicha.itemTables" [lazy]="true" [immutable]=false *ngIf="formFicha.numeroFicha">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Qtde</th>
+            <th>Descrição</th>
+            <th>Valor</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-car>
+          <tr>
+            <td>{{car.qtde}}</td>
+            <td>{{car.descricao}}</td>
+            <td>{{car.valor}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+
+
+  <div *ngIf="formFicha.numeroFicha">
+    <div class="form-row">
+      <div class="form-group col-md-5">
+        <label for="cnpjcpf">Técnico</label>
+        <input class="form-control" maxlength="10" type="text" id="tecnico" name="tecnico" [(ngModel)]="formFicha.lancamento.usuario"
+          style="background-color: white;">
+      </div>
+      <div class="form-group col-md-3">
+        <label for="estado">Situação Técnica</label>
+        <select class="form-control custom-select" id="situacao" name="situacao" [(ngModel)]="formFicha.lancamento.situacao">
+          <option *ngFor="let title of situacaoTecnica.situacao" [value]="title.value">
+            {{title.label}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="celular">Data</label>
+        <input class="form-control" maxlength="15" type="text" id="data" [readonly]="true" name="dataAbertura" [(ngModel)]="formFicha.lancamento.data"
+          [readonly]="true" style="background-color: white;">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-11">
+        <label for="celular">Observação</label>
+        <textarea class="form-control" maxlength="255" id="obs" name="obs" rows="2" [(ngModel)]="formFicha.lancamento.observacao"></textarea>
+      </div>
+    </div>
+  </div>
+
   <div class="form-row">
     <div class="form-group col-md-11">
       <p-accordion [multiple]="true">
@@ -100,4 +165,8 @@
 
 <ng-template #clienteModal let-c="close" let-d="dismiss" id="modalCliente">
   <app-modal-pesquisa-cliente [cClose]="c" [dClose]="d"></app-modal-pesquisa-cliente>
+</ng-template>
+
+<ng-template #maoobra let-a="Close" let-b="dismiss" id="maoobra">
+  <app-modal-maoobra [cValue]="a" [dValue]="b"></app-modal-maoobra>
 </ng-template>

@@ -20,7 +20,7 @@ import br.com.fichasordens.Usuario;
 import br.com.fichasordens.dto.MensagemRetornoDto;
 import br.com.fichasordens.dto.OrdemServicoDto;
 import br.com.fichasordens.dto.LancamentoDto;
-import br.com.fichasordens.dto.PecaServicoOrdemDto;
+import br.com.fichasordens.dto.PecaOutroServicoDto;
 import br.com.fichasordens.exception.ExcecaoRetorno;
 
 @RestController
@@ -45,7 +45,7 @@ public class OrdemServicoController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST,path="/pecaServico")
-	public ResponseEntity salvarItemOrdemServico(@RequestBody final PecaServicoOrdemDto dto) {
+	public ResponseEntity salvarItemOrdemServico(@RequestBody final PecaOutroServicoDto dto) {
 		try {
 			final PecaOutroServico peca = this.converterDtoPecaServico(dto);
 			this.ordemServicoService.gravarPecaServicoOrdem(peca);
@@ -85,7 +85,7 @@ public class OrdemServicoController {
 		return ent;
 	}
 	
-	private PecaOutroServico converterDtoPecaServico(final PecaServicoOrdemDto dto) {
+	private PecaOutroServico converterDtoPecaServico(final PecaOutroServicoDto dto) {
 		final PecaOutroServico pecaServico = new PecaOutroServico();
 		//		pecaServico.setId(dto.getIdOrdem()...);
 		pecaServico.setDescricao(dto.getDescricao());

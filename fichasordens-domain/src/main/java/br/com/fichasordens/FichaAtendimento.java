@@ -14,10 +14,12 @@ import br.com.fichasordens.entities.ClienteEntity;
 import br.com.fichasordens.entities.FichaAtendLancEntity;
 import br.com.fichasordens.entities.FichaAtendLancId;
 import br.com.fichasordens.entities.FichaAtendimentoEntity;
-import br.com.fichasordens.entities.OrdemServicoEntity;
+import br.com.fichasordens.entities.PecaServicoFichaEntity;
+import br.com.fichasordens.entities.PecaServicoFichaIdEntity;
 import br.com.fichasordens.exception.ExcecaoRetorno;
 import br.com.fichasordens.repository.FichaAtendLancRepository;
 import br.com.fichasordens.repository.FichaAtendimentoRepository;
+import br.com.fichasordens.repository.PecaServicoFichaRepository;
 
 @Component
 public class FichaAtendimento {
@@ -32,7 +34,12 @@ public class FichaAtendimento {
 	
 	@Autowired
 	private FichaAtendimentoRepository repository;
-	@Autowired FichaAtendLancRepository fichaAtendLancRepository;
+	
+	@Autowired 
+	FichaAtendLancRepository fichaAtendLancRepository;
+	
+	@Autowired
+	private PecaServicoFichaRepository pecaServicoFichaRepository;
 	
 	@Transactional
 	public FichaAtendimento salvarFicha(final FichaAtendimento fichaAtendimento) throws ExcecaoRetorno {
@@ -49,6 +56,23 @@ public class FichaAtendimento {
 		} catch(Exception e) {
 			throw new ExcecaoRetorno("Erro ao tentar cadastrar Ficha de Atendimento");
 		}
+	}
+	
+	@Transactional
+	public void gravarPecaServicoFicha(final PecaOutroServico pecaOutroServico) {
+		final PecaServicoFichaEntity ent = this.converterPecaServicoOrdemParaEntity(pecaOutroServico);
+		pecaServicoFichaRepository.save(ent);
+	}
+	
+	private PecaServicoFichaEntity converterPecaServicoOrdemParaEntity(PecaOutroServico pecaServicoFicha) {
+		PecaServicoFichaEntity ent = new PecaServicoFichaEntity();
+		ent.setDescricao(pecaServicoFicha.getDescricao());
+		ent.setQuantidade(pecaServicoFicha.getQuantidade());
+		ent.setValor(pecaServicoFicha.getValor());
+		ent.setId(new PecaServicoFichaIdEntity());
+		ent.getId().setFichaAtendId(pecaServicoFicha.getFichaAtendimento().getId());
+		ent.getId().setSequencia(pecaServicoFicha.getId());
+		return ent;
 	}
 	
 	public FichaAtendimentoEntity converterParaEntity(final FichaAtendimento fichaAtendimento) {

@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.fichasordens.Cliente;
 import br.com.fichasordens.FichaAtendimento;
 import br.com.fichasordens.FichaAtendimentoLanc;
+import br.com.fichasordens.PecaOutroServico;
 import br.com.fichasordens.Usuario;
 import br.com.fichasordens.dto.FichaAtendimentoDto;
 import br.com.fichasordens.dto.LancamentoDto;
 import br.com.fichasordens.dto.MensagemRetornoDto;
+import br.com.fichasordens.dto.PecaOutroServicoDto;
 import br.com.fichasordens.exception.ExcecaoRetorno;
 
 @RestController
@@ -42,16 +44,17 @@ public class FichaAtendimentoController {
 		}
 	}
 	
-//	@RequestMapping(method = RequestMethod.POST,path="/pecaServico")
-//	public ResponseEntity salvarItemOrdemServico(@RequestBody final PecaServicoOrdemDto dto) {
-//		try {
-//			final PecaOutroServico peca = this.converterDtoPecaServico(dto);
-//			this.ordemServicoService.gravarPecaServicoOrdem(peca);
-//			return new ResponseEntity( HttpStatus.OK);
+	@RequestMapping(method = RequestMethod.POST,path="/pecaServico")
+	public ResponseEntity gravarPecaServicosalvarItemOrdemServico(@RequestBody final PecaOutroServicoDto dto) {
+		//try {
+			final PecaOutroServico peca = this.converterDtoPecaServico(dto);
+			this.fichaAtendimento.gravarPecaServicoFicha(peca);
+			//this.ordemServicoService.gravarPecaServicoOrdem(peca);
+			return new ResponseEntity( HttpStatus.OK);
 //		} catch (ExcecaoRetorno e) {
 //			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
 //		}
-//	}
+	}
 	
 //	@RequestMapping(method = RequestMethod.POST,path="/lancamento")
 //	public ResponseEntity salvarLancamentoTecnico(@RequestBody final OrdemServicoLancDto dto) {
@@ -76,17 +79,17 @@ public class FichaAtendimentoController {
 		return ficha;
 	}
 	
-//	private PecaOutroServico converterDtoPecaServico(final PecaServicoOrdemDto dto) {
-//		final PecaOutroServico pecaServico = new PecaOutroServico();
-//		//		pecaServico.setId(dto.getIdOrdem()...);
-//		pecaServico.setDescricao(dto.getDescricao());
-//		pecaServico.setQuantidade(dto.getQtde());
-//		pecaServico.setValor(dto.getValor());
-//		pecaServico.setId(dto.getSequencia());
-//		pecaServico.setOrdemServico(new OrdemServico());
-//		pecaServico.getOrdemServico().setId(dto.getIdOrdem());
-//		return pecaServico;
-//	}
+	private PecaOutroServico converterDtoPecaServico(final PecaOutroServicoDto dto) {
+		final PecaOutroServico pecaServico = new PecaOutroServico();
+		//		pecaServico.setId(dto.getIdOrdem()...);
+		pecaServico.setDescricao(dto.getDescricao());
+		pecaServico.setQuantidade(dto.getQtde());
+		pecaServico.setValor(dto.getValor());
+		pecaServico.setId(dto.getSequencia());
+		pecaServico.setFichaAtendimento(new FichaAtendimento());
+		pecaServico.getFichaAtendimento().setId(dto.getIdOrdem());
+		return pecaServico;
+	}
 	
 	private FichaAtendimentoLanc converterDtoLanc(final LancamentoDto dto) {
 		final FichaAtendimentoLanc lanc = new FichaAtendimentoLanc();

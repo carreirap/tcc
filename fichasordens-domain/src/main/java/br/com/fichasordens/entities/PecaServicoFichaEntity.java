@@ -17,18 +17,18 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "peca_servico_ficha", schema = "public")
-public class PecaServicoFicha implements java.io.Serializable {
+public class PecaServicoFichaEntity implements java.io.Serializable {
 
-	private PecaServicoFichaId id;
+	private PecaServicoFichaIdEntity id;
 	private FichaAtendimentoEntity fichaAtendimento;
 	private String descricao;
-	private int quantidade;
+	private long quantidade;
 	private BigDecimal valor;
 
-	public PecaServicoFicha() {
+	public PecaServicoFichaEntity() {
 	}
 
-	public PecaServicoFicha(PecaServicoFichaId id, FichaAtendimentoEntity fichaAtendimento, String descricao, int quantidade,
+	public PecaServicoFichaEntity(PecaServicoFichaIdEntity id, FichaAtendimentoEntity fichaAtendimento, String descricao, long quantidade,
 			BigDecimal valor) {
 		this.id = id;
 		this.fichaAtendimento = fichaAtendimento;
@@ -42,11 +42,11 @@ public class PecaServicoFicha implements java.io.Serializable {
 	@AttributeOverrides({
 			@AttributeOverride(name = "fichaAtendId", column = @Column(name = "ficha_atend_id", nullable = false, precision = 10, scale = 0)),
 			@AttributeOverride(name = "sequencia", column = @Column(name = "sequencia", nullable = false, precision = 10, scale = 0)) })
-	public PecaServicoFichaId getId() {
+	public PecaServicoFichaIdEntity getId() {
 		return this.id;
 	}
 
-	public void setId(PecaServicoFichaId id) {
+	public void setId(PecaServicoFichaIdEntity id) {
 		this.id = id;
 	}
 
@@ -70,11 +70,11 @@ public class PecaServicoFicha implements java.io.Serializable {
 	}
 
 	@Column(name = "quantidade", nullable = false)
-	public int getQuantidade() {
+	public long getQuantidade() {
 		return this.quantidade;
 	}
 
-	public void setQuantidade(int quantidade) {
+	public void setQuantidade(long quantidade) {
 		this.quantidade = quantidade;
 	}
 

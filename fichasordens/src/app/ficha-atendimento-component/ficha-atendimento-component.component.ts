@@ -7,6 +7,8 @@ import { DatePipe } from '@angular/common';
 import { UsuarioLogado } from '../_models/usuario-logado';
 import { SituacaoTecnica } from '../_models/situacao-tecnica';
 import { ModalClienteService } from '../modal-pesquisa-cliente/modal-cliente-service';
+import { ModalService } from '../modal-maoobra/modal-service';
+import { PecaServicoOrdemService } from '../ordem-servico/ordem-servico-service';
 
 
 @Component({
@@ -22,13 +24,17 @@ export class FichaAtendimentoComponentComponent implements OnInit {
 
   constructor(private service: DataService, toasterService: ToasterService, public modal: NgbModal,
           private datePipe: DatePipe, private authenticationService: AuthenticationService,
-          private modalClienteService: ModalClienteService) { 
+          private modalClienteService: ModalClienteService,
+          private modalService: ModalService, private pecaServicoOrdemService: PecaServicoOrdemService) { 
     this.formFicha = new Ficha();
     this.situacaoTecnica = new SituacaoTecnica();
     this.toasterService = toasterService;
   }
 
   ngOnInit() {
+    this.modalService.carregarLinha.subscribe(
+      result => this.addLinha(result)
+    );
     this.modalClienteService.carregarCliente.subscribe(
       result => this.loadForm(result)
     );
@@ -64,6 +70,11 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     return false;
   }
 
+  mostrarModalMaoObra(modalPecas) {
+    this.modal.open(modalPecas);
+    return false;
+  }
+
   private getNomeUsario() {
     let userLog = new UsuarioLogado();
     userLog.usuario = JSON.parse(localStorage.getItem('currentUser')).usuario;
@@ -72,6 +83,23 @@ export class FichaAtendimentoComponentComponent implements OnInit {
         this.formFicha.lancamento.idUsuario = response.id;
     }, (error) => {
       console.log('error in', error);
+    });
+  }
+
+  addLinha(event) {
+    console.log(event.descricao);
+    event.sequencia = this.formFicha.itemTables.length + 1;
+    event.idOrdem = this.formFicha.numeroFicha;
+
+    this.service.post('/ficha/pecaServico', event).subscribe(response => {
+      console.log(response);
+      this.pecaServicoOrdemService.emitirResultado.emit('gravou');
+      this.formFicha.itemTables.push(event);
+      // this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
+    }, (error) => {
+      console.log('error in', error.error.mensagem);
+      this.pecaServicoOrdemService.emitirResultado.emit('falhou');
+      // this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
     });
   }
 

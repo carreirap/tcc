@@ -25,7 +25,7 @@ public class FichaAtendimentoEntity implements java.io.Serializable {
 	private long id;
 	private ClienteEntity cliente;
 	private String tipoServico;
-	private Set<PecaServicoFicha> pecaServicoFichas = new HashSet<>(0);
+	private Set<PecaServicoFichaEntity> pecaServicoFichas = new HashSet<>(0);
 	private Set<FichaAtendLancEntity> fichaAtendLancs = new HashSet<>(0);
 	private Set<AtendimentoFicha> atendimentoFichas = new HashSet<>(0);
 
@@ -38,7 +38,7 @@ public class FichaAtendimentoEntity implements java.io.Serializable {
 		this.tipoServico = tipoServico;
 	}
 
-	public FichaAtendimentoEntity(long id, ClienteEntity cliente, String tipoServico, Set<PecaServicoFicha> pecaServicoFichas,
+	public FichaAtendimentoEntity(long id, ClienteEntity cliente, String tipoServico, Set<PecaServicoFichaEntity> pecaServicoFichas,
 			Set<FichaAtendLancEntity> fichaAtendLancs, Set<AtendimentoFicha> atendimentoFichas) {
 		this.id = id;
 		this.cliente = cliente;
@@ -81,11 +81,11 @@ public class FichaAtendimentoEntity implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "fichaAtendimento")
-	public Set<PecaServicoFicha> getPecaServicoFichas() {
+	public Set<PecaServicoFichaEntity> getPecaServicoFichas() {
 		return this.pecaServicoFichas;
 	}
 
-	public void setPecaServicoFichas(Set<PecaServicoFicha> pecaServicoFichas) {
+	public void setPecaServicoFichas(Set<PecaServicoFichaEntity> pecaServicoFichas) {
 		this.pecaServicoFichas = pecaServicoFichas;
 	}
 
