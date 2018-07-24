@@ -45,7 +45,7 @@ public class ParametroControllerTest {
 	
 	@Test
 	public void test_salvarParametro_sucess() {
-		List<Parametro> list = new ArrayList<Parametro>();
+		List<Parametro> list = new ArrayList<>();
 		list.add(carregarParametro());
 		
 		ParametroDto dto = new ParametroDto();
@@ -62,7 +62,7 @@ public class ParametroControllerTest {
 	
 	@Test
 	public void test_salvarParametroValorNull_fail() {
-		List<Parametro> list = new ArrayList<Parametro>();
+		List<Parametro> list = new ArrayList<>();
 		list.add(carregarParametro());
 		
 		ParametroDto dto = new ParametroDto();

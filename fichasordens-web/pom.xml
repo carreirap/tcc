@@ -5,7 +5,15 @@
 	<artifactId>fichasordens-web</artifactId>
 	<packaging>jar</packaging>
 	<properties>
+		<hibernate.version>5.2.2.Final</hibernate.version>
 		<java.version>1.8</java.version>
+		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+		<sonar.language>java</sonar.language>
+		<sonar.exclusions>
+			src/main/java/br/com/fichasordens/dto/*,
+			src/main/java/br/com/fichasordens/resourceserver/*
+		</sonar.exclusions>
 	</properties>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -80,6 +88,28 @@
 						<profile>two</profile>
 					</profiles>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.2.201409121644</version>
+				<configuration>
+					<append>true</append>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

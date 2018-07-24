@@ -61,10 +61,11 @@ public class UsuarioControllerTest {
 	@Test
 	public void test_getUsuarioComParametro_success() {
 		Usuario usuario= carregarUsuario();
-		usuario.setSituacao(0);
-		when(this.mockUsuario.listarUsuario()).thenReturn(Arrays.asList(usuario));
+		usuario.setSituacao(1);
+		String param = "test";
+		when(this.mockUsuario.listarUsuario(param)).thenReturn(Arrays.asList(usuario));
 		
-		ResponseEntity response = this.usuarioController.getUsuario("test");
+		ResponseEntity response = this.usuarioController.getUsuario(param);
 		
 		List<Usuario> list = (List) response.getBody();
 		

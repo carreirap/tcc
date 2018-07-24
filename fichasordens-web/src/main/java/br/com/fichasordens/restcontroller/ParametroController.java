@@ -50,7 +50,7 @@ public class ParametroController {
 	}
 	
 	private List<Parametro> convertDtoParaParametro(final List<ParametroDto> listDto) {
-		List<Parametro> list = new ArrayList<Parametro>();
+		List<Parametro> list = new ArrayList<>();
 		listDto.forEach(p -> {
 			Parametro param = new Parametro();
 			param.setDescricao(p.getDescricao());
@@ -62,7 +62,7 @@ public class ParametroController {
 	}
 
 	private List<ParametroDto> converterParaDto(final List<Parametro> list) {
-		List<ParametroDto> listDto = new ArrayList<ParametroDto>();
+		List<ParametroDto> listDto = new ArrayList<>();
 
 		list.forEach(p -> {
 			ParametroDto dto = new ParametroDto();

@@ -36,9 +36,9 @@ public class EmpresaController {
 	 public ResponseEntity<EmpresaDto> getEmpresa() {
 		LOGGER.info("Buscar dados da empresa");
 				
-		final Empresa empresa = this.empresa.buscarEmpresa();
+		final Empresa emp = this.empresa.buscarEmpresa();
 		 
-		return new ResponseEntity<>(this.convertEmpresaParaDto(empresa),HttpStatus.OK);
+		return new ResponseEntity<>(this.convertEmpresaParaDto(emp),HttpStatus.OK);
 	 }
 	
 	private EmpresaDto convertEmpresaParaDto (final Empresa empresa) {

@@ -49,7 +49,7 @@ public class ClienteController {
 		cli.setNome(nome);
 		Page<ClienteEntity> clientePaged = this.cliente.pesquisarCliente(cli, page);
 		int totalElements = (int) clientePaged.getTotalElements();
-        return new PageImpl<ClienteDto>(clientePaged.getContent()
+        return new PageImpl<>(clientePaged.getContent()
                 .stream()
                 .map(e -> new ClienteDto(
                         e.getId(),
@@ -68,32 +68,22 @@ public class ClienteController {
                         e.getEndereco().getComplemento()
                         ))
                 .collect(Collectors.toList()), page, totalElements);
-      
-//		List<ClienteDto> dtoList = new ArrayList<>();
-		/*	clienteList.forEach(a -> {
-				ClienteDto dto = new ClienteDto();
-				dto.setNome(a.getNome());
-				dto.setId(a.getId());
-				dto.setCnpj(a.getCnpjCpf());
-				dto.setFone(a.getFone());
-				dtoList.add(dto);
-		});*/
 		
 	}
 	
 	private Cliente converterClienteDtoParaCliente(final ClienteDto dto) { 
-		final Cliente cliente = new Cliente();
-		cliente.setFone(dto.getFone());
-		cliente.setCnpjCpf(dto.getCnpj());
-		cliente.setEmail(dto.getEmail());
-		cliente.setNome(dto.getNome());
-		cliente.setCelular(dto.getCelular());
+		final Cliente cli = new Cliente();
+		cli.setFone(dto.getFone());
+		cli.setCnpjCpf(dto.getCnpj());
+		cli.setEmail(dto.getEmail());
+		cli.setNome(dto.getNome());
+		cli.setCelular(dto.getCelular());
 		if (dto.getId() != 0) {
-			cliente.setId(dto.getId());
+			cli.setId(dto.getId());
 		}
 		
-		cliente.setEndereco(this.converteDtoParaEndereco(dto));
-		return cliente;
+		cli.setEndereco(this.converteDtoParaEndereco(dto));
+		return cli;
 	}
 	
 	private Endereco converteDtoParaEndereco(ClienteDto dto) {

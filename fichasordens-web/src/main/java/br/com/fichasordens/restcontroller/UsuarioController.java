@@ -70,7 +70,7 @@ public class UsuarioController {
 	 }
 	 
 	 private List<UsuarioDto> convertToDto(final List<Usuario> lst) {
-		 final List<UsuarioDto> dtos = new ArrayList<UsuarioDto>();
+		 final List<UsuarioDto> dtos = new ArrayList<>();
 		 lst.forEach(e->{ 
 			 UsuarioDto dto = new UsuarioDto();
 			 dto.setNome(e.getNome());
