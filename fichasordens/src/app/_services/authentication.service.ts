@@ -5,9 +5,8 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { Base64 } from 'js-base64';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { DataService } from './http.service';
-import { User } from '../_models/index';
-import { Subscription } from 'rxjs/Subscription';
+import { UsuarioLogado } from '../_models/usuario-logado';
+
 
 @Injectable()
 export class AuthenticationService {
@@ -18,7 +17,7 @@ export class AuthenticationService {
     options: RequestOptions;
     creds: String;
     updatedUser: string;
-    user: User;
+    user: UsuarioLogado;
 
     constructor(private http: Http, private router: Router) {
         // constructor(private http: DataService) {
@@ -31,7 +30,7 @@ export class AuthenticationService {
         return localStorage.getItem('currentUser');
     }
 
-    authenticate(user: User) {
+    authenticate(user: UsuarioLogado) {
         this.url = 'http://localhost:8080/auth/oauth/token';
         this.headers = new Headers({
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -91,7 +90,7 @@ export class AuthenticationService {
     }
 
 
-    public getUpdatedUser(user: User): Observable<User> {
+    public getUpdatedUser(user: UsuarioLogado): Observable<UsuarioLogado> {
         this.url = 'http://localhost:9090/usuario/getUpdatedUser';
         this.headers = new Headers({
           'Content-Type': 'application/json',

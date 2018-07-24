@@ -2,11 +2,11 @@
 import { HttpClientModule } from '@angular/common/http';
 import { Headers, Http, RequestOptions } from '@angular/http';
 import {ActivatedRoute} from '@angular/router';
-import {AuthenticationService} from '../_services/index';
+import {AuthenticationService} from '../_services';
 
-import { User } from '../_models/index';
 // import { UserService } from '../_services/index';
 import { Router } from '@angular/router';
+import { UsuarioLogado } from '../_models/usuario-logado';
 
 @Component({
     moduleId: module.id,
@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 
 export class HomeComponent implements OnInit {
     // users: User[] = [];
-    user = new User();
+    user = new UsuarioLogado();
     // tslint:disable-next-line:no-input-rename
     @Input() loggedInUser: string;
     constructor(private router: Router, private backEndService: AuthenticationService) { }

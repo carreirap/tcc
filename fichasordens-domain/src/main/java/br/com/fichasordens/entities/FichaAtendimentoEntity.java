@@ -6,10 +6,13 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -17,26 +20,26 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "ficha_atendimento", schema = "public")
-public class FichaAtendimento implements java.io.Serializable {
+public class FichaAtendimentoEntity implements java.io.Serializable {
 
 	private long id;
 	private ClienteEntity cliente;
 	private String tipoServico;
-	private Set<PecaServicoFicha> pecaServicoFichas = new HashSet<>(0);
-	private Set<FichaAtendLanc> fichaAtendLancs = new HashSet<>(0);
+	private Set<PecaServicoFichaEntity> pecaServicoFichas = new HashSet<>(0);
+	private Set<FichaAtendLancEntity> fichaAtendLancs = new HashSet<>(0);
 	private Set<AtendimentoFicha> atendimentoFichas = new HashSet<>(0);
 
-	public FichaAtendimento() {
+	public FichaAtendimentoEntity() {
 	}
 
-	public FichaAtendimento(long id, ClienteEntity cliente, String tipoServico) {
+	public FichaAtendimentoEntity(long id, ClienteEntity cliente, String tipoServico) {
 		this.id = id;
 		this.cliente = cliente;
 		this.tipoServico = tipoServico;
 	}
 
-	public FichaAtendimento(long id, ClienteEntity cliente, String tipoServico, Set<PecaServicoFicha> pecaServicoFichas,
-			Set<FichaAtendLanc> fichaAtendLancs, Set<AtendimentoFicha> atendimentoFichas) {
+	public FichaAtendimentoEntity(long id, ClienteEntity cliente, String tipoServico, Set<PecaServicoFichaEntity> pecaServicoFichas,
+			Set<FichaAtendLancEntity> fichaAtendLancs, Set<AtendimentoFicha> atendimentoFichas) {
 		this.id = id;
 		this.cliente = cliente;
 		this.tipoServico = tipoServico;
@@ -45,8 +48,10 @@ public class FichaAtendimento implements java.io.Serializable {
 		this.atendimentoFichas = atendimentoFichas;
 	}
 
+	
 	@Id
-
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ficha_sequencia")
+	@SequenceGenerator(name="ficha_sequencia", sequenceName="ficha_sequencia", allocationSize=1)
 	@Column(name = "id", unique = true, nullable = false, precision = 10, scale = 0)
 	public long getId() {
 		return this.id;
@@ -76,20 +81,20 @@ public class FichaAtendimento implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "fichaAtendimento")
-	public Set<PecaServicoFicha> getPecaServicoFichas() {
+	public Set<PecaServicoFichaEntity> getPecaServicoFichas() {
 		return this.pecaServicoFichas;
 	}
 
-	public void setPecaServicoFichas(Set<PecaServicoFicha> pecaServicoFichas) {
+	public void setPecaServicoFichas(Set<PecaServicoFichaEntity> pecaServicoFichas) {
 		this.pecaServicoFichas = pecaServicoFichas;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "fichaAtendimento")
-	public Set<FichaAtendLanc> getFichaAtendLancs() {
+	public Set<FichaAtendLancEntity> getFichaAtendLancs() {
 		return this.fichaAtendLancs;
 	}
 
-	public void setFichaAtendLancs(Set<FichaAtendLanc> fichaAtendLancs) {
+	public void setFichaAtendLancs(Set<FichaAtendLancEntity> fichaAtendLancs) {
 		this.fichaAtendLancs = fichaAtendLancs;
 	}
 

@@ -12,13 +12,13 @@ import javax.persistence.Embeddable;
 public class FichaAtendLancId implements java.io.Serializable {
 
 	private int sequencia;
-	private String usuarioId;
-	private BigDecimal fichaAtendimentoId;
+	private long usuarioId;
+	private long fichaAtendimentoId;
 
 	public FichaAtendLancId() {
 	}
 
-	public FichaAtendLancId(int sequencia, String usuarioId, BigDecimal fichaAtendimentoId) {
+	public FichaAtendLancId(final int sequencia, final long usuarioId, final long fichaAtendimentoId) {
 		this.sequencia = sequencia;
 		this.usuarioId = usuarioId;
 		this.fichaAtendimentoId = fichaAtendimentoId;
@@ -34,47 +34,46 @@ public class FichaAtendLancId implements java.io.Serializable {
 	}
 
 	@Column(name = "usuario_id", nullable = false)
-	public String getUsuarioId() {
+	public long getUsuarioId() {
 		return this.usuarioId;
 	}
 
-	public void setUsuarioId(String usuarioId) {
+	public void setUsuarioId(final long usuarioId) {
 		this.usuarioId = usuarioId;
 	}
 
 	@Column(name = "ficha_atendimento_id", nullable = false, precision = 131089, scale = 0)
-	public BigDecimal getFichaAtendimentoId() {
+	public long getFichaAtendimentoId() {
 		return this.fichaAtendimentoId;
 	}
 
-	public void setFichaAtendimentoId(BigDecimal fichaAtendimentoId) {
+	public void setFichaAtendimentoId(long fichaAtendimentoId) {
 		this.fichaAtendimentoId = fichaAtendimentoId;
 	}
 
-	public boolean equals(Object other) {
-		if ((this == other))
-			return true;
-		if ((other == null))
-			return false;
-		if (!(other instanceof FichaAtendLancId))
-			return false;
-		FichaAtendLancId castOther = (FichaAtendLancId) other;
-
-		return (this.getSequencia() == castOther.getSequencia())
-				&& ((this.getUsuarioId() == castOther.getUsuarioId()) || (this.getUsuarioId() != null
-						&& castOther.getUsuarioId() != null && this.getUsuarioId().equals(castOther.getUsuarioId())))
-				&& ((this.getFichaAtendimentoId() == castOther.getFichaAtendimentoId())
-						|| (this.getFichaAtendimentoId() != null && castOther.getFichaAtendimentoId() != null
-								&& this.getFichaAtendimentoId().equals(castOther.getFichaAtendimentoId())));
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + sequencia;
+		result = prime * result + (int) (usuarioId ^ (usuarioId >>> 32));
+		return result;
 	}
 
-	public int hashCode() {
-		int result = 17;
-
-		result = 37 * result + this.getSequencia();
-		result = 37 * result + (getUsuarioId() == null ? 0 : this.getUsuarioId().hashCode());
-		result = 37 * result + (getFichaAtendimentoId() == null ? 0 : this.getFichaAtendimentoId().hashCode());
-		return result;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FichaAtendLancId other = (FichaAtendLancId) obj;
+		if (sequencia != other.sequencia)
+			return false;
+		if (usuarioId != other.usuarioId)
+			return false;
+		return true;
 	}
 
 }

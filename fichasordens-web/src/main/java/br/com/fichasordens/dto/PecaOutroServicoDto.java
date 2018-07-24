@@ -2,7 +2,7 @@ package br.com.fichasordens.dto;
 
 import java.math.BigDecimal;
 
-public class PecaServicoOrdemDto {
+public class PecaOutroServicoDto {
 	private long idOrdem;
 	private int sequencia;
 	private int qtde;

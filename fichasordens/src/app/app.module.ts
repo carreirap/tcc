@@ -55,8 +55,8 @@ import { AuthenticationService } from './_services';
 // import { fakeBackendProvider } from './_helpers';
 // import { MockBackend, MockConnection } from '@angular/http/testing';
 import { BaseRequestOptions } from '@angular/http';
-import { LoginComponent } from './login/index';
-import { HomeComponent } from './home/index';
+import { LoginComponent } from './login';
+import { HomeComponent } from './home';
 import { DataService, CustomInterceptor } from './_services/http.service';
 import { Configuration } from './app.constants';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -85,6 +85,9 @@ import { ModalService } from './modal-maoobra/modal-service';
 import { PecaServicoOrdemService } from './ordem-servico/ordem-servico-service';
 import { ModalClienteService } from './modal-pesquisa-cliente/modal-cliente-service';
 import { PapelUserService } from './_services/papel-service';
+import { UserService } from './_services/user.service';
+import {RadioButtonModule} from 'primeng/radiobutton';
+
 
 @NgModule({
   declarations: [
@@ -113,6 +116,7 @@ import { PapelUserService } from './_services/papel-service';
     TableModule,
     PaginatorModule,
     AccordionModule,
+    RadioButtonModule,
     routing,
     BrowserAnimationsModule, ToasterModule
 
@@ -135,7 +139,8 @@ import { PapelUserService } from './_services/papel-service';
         ModalService,
         ModalClienteService,
         PecaServicoOrdemService,
-        PapelUserService
+        PapelUserService,
+        UserService
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   bootstrap: [AppComponent]

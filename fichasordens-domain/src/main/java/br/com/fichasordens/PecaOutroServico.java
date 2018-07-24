@@ -8,6 +8,7 @@ public class PecaOutroServico {
 	private long quantidade;
 	private BigDecimal valor;
 	private OrdemServico ordemServico;
+	private FichaAtendimento fichaAtendimento;
 	
 	public long getId() {
 		return id;
@@ -38,5 +39,11 @@ public class PecaOutroServico {
 	}
 	public void setOrdemServico(OrdemServico ordemServico) {
 		this.ordemServico = ordemServico;
+	}
+	public FichaAtendimento getFichaAtendimento() {
+		return fichaAtendimento;
+	}
+	public void setFichaAtendimento(FichaAtendimento fichaAtendimento) {
+		this.fichaAtendimento = fichaAtendimento;
 	}
 }

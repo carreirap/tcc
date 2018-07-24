@@ -19,19 +19,19 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "ficha_atend_lanc", schema = "public")
-public class FichaAtendLanc implements java.io.Serializable {
+public class FichaAtendLancEntity implements java.io.Serializable {
 
 	private FichaAtendLancId id;
-	private FichaAtendimento fichaAtendimento;
+	private FichaAtendimentoEntity fichaAtendimento;
 	private UsuarioEntity usuario;
 	private String situacao;
 	private Date data;
 	private String observacao;
 
-	public FichaAtendLanc() {
+	public FichaAtendLancEntity() {
 	}
 
-	public FichaAtendLanc(FichaAtendLancId id, FichaAtendimento fichaAtendimento, UsuarioEntity usuario, String situacao,
+	public FichaAtendLancEntity(FichaAtendLancId id, FichaAtendimentoEntity fichaAtendimento, UsuarioEntity usuario, String situacao,
 			Date data, String observacao) {
 		this.id = id;
 		this.fichaAtendimento = fichaAtendimento;
@@ -57,11 +57,11 @@ public class FichaAtendLanc implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ficha_atendimento_id", nullable = false, insertable = false, updatable = false)
-	public FichaAtendimento getFichaAtendimento() {
+	public FichaAtendimentoEntity getFichaAtendimento() {
 		return this.fichaAtendimento;
 	}
 
-	public void setFichaAtendimento(FichaAtendimento fichaAtendimento) {
+	public void setFichaAtendimento(FichaAtendimentoEntity fichaAtendimento) {
 		this.fichaAtendimento = fichaAtendimento;
 	}
 

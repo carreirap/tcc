@@ -4,9 +4,9 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class OrdemServicoLancDto {
+public class LancamentoDto {
 	private int sequencia;
-	private long idOrdem;
+	private long id;
 	private long idUsuario;
     private String situacao;
     
@@ -39,11 +39,11 @@ public class OrdemServicoLancDto {
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
 	}
-	public long getIdOrdem() {
-		return idOrdem;
+	public long getId() {
+		return id;
 	}
-	public void setIdOrdem(long idOrdem) {
-		this.idOrdem = idOrdem;
+	public void setId(long id) {
+		this.id = id;
 	}
 	public long getIdUsuario() {
 		return idUsuario;

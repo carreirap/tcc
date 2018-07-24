@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../_models';
 import { PerfiService } from './perfil-service';
 import { ToasterService} from 'angular5-toaster';
 import * as CryptoJS from 'crypto-js';
 import { FormsModule } from '@angular/forms';
 import { PapelUserService } from '../_services/papel-service';
+import { UsuarioLogado } from '../_models/usuario-logado';
 
 @Component({
   selector: 'app-perfil-component',
@@ -14,7 +14,7 @@ import { PapelUserService } from '../_services/papel-service';
 })
 export class PerfilComponent implements OnInit {
   private toasterService: ToasterService;
-  formUsuario: User = new User();
+  formUsuario: UsuarioLogado = new UsuarioLogado();
 
   operacao: String;
   alteraSenha: Boolean;

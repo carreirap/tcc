@@ -1,3 +1,172 @@
-<p>
-  ficha-atendimento-component works!
-</p>
+<toaster-container></toaster-container>
+<form (submit)="onSubmit()" class="container" #myform="ngForm" novalidate>
+
+  <div class="form-row">
+    <div class="form-group col-md-9">
+      <label for="cnpjcpf">Responsável</label>
+      <input class="form-control" maxlength="10" type="text" id="responsavel" name="responsavel" [(ngModel)]="formFicha.lancamento.usuario"
+        [readonly]="true" style="background-color: white;">
+    </div>
+    <div class="form-group col-md-2">
+      <label for="cnpjcpf">Número Ficha</label>
+      <input class="form-control" maxlength="10" type="text" id="numFicha" name="numFicha" [(ngModel)]="formFicha.numeroFicha"
+        [readonly]="true" style="background-color: white;">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-11" [ngClass]="{'was-validated': !cpfcnpjvalidation.valid  && (cpfcnpjvalidation.dirty || cpfcnpjvalidation.touched)}">
+      <label for="cnpjcpf">CNPJ/CPF &nbsp;
+        <a href="#" (click)="mostrarModal(clienteModal);">Pesquisar</a>
+      </label>
+      <input class="form-control" maxlength="18" validarCnpjCpf type="search" id="cpfcnpj" name="cpfcnpj" [(ngModel)]="formFicha.cliente.cnpj"
+        (cnpjvaluetyped)='setValue($event)' (focusoutcnpj)="setCnpjCpfInvalido($event)" #cpfcnpjvalidation="ngModel" required>
+      <div [hidden]="cpfcnpjvalidation.valid || cpfcnpjvalidation.pristine" class="alert-danger">
+        <ul>
+          <li>
+            O campo CPF/CNPJ é invalido
+          </li>
+        </ul>
+      </div>
+      <div class="invalid-feedback" *ngIf="cpfcnpjvalidation.errors && (cpfcnpjvalidation.dirty || cpfcnpjvalidation.touched )">
+        <ul>
+          <li *ngIf="cpfcnpjvalidation.errors.required">
+            O campo CPF/CNPJ é obrigatório
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- <a href="#" (click)="mostrarModal(clienteModal);">Pesq</a> -->
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-8">
+      <label for="nome">Cliente</label>
+      <input class="form-control" maxlength="50" type="text" [readonly]="true" id="nome" name="nome" [(ngModel)]="formFicha.cliente.nome">
+    </div>
+    <div class="form-group col-md-3">
+      <label for="estado">Situação Ficha</label>
+      <select class="form-control custom-select" id="situacao" name="situacao" [(ngModel)]="formFicha.lancamento.situacao">
+        <option *ngFor="let title of situacaoTecnica.situacao" [value]="title.value">
+          {{title.label}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="celular">Celular</label>
+      <input class="form-control" maxlength="15" type="tel" value="" id="celular" [readonly]="true" name="celular" [(ngModel)]="formFicha.cliente.celular">
+    </div>
+    <div class="form-group col-md-5">
+      <label for="fone">Fone</label>
+      <input class="form-control" maxlength="15" type="tel" value="" id="fone" [readonly]="true" name="fone" [(ngModel)]="formFicha.cliente.fone">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-7">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <label for="celular">Tipo do Serviço &nbsp;&nbsp;</label>
+            <p-radioButton name="groupname" value="Assitencia" label="Assit. Técnica" [(ngModel)]="formFicha.tipoServico"></p-radioButton>
+            <p-radioButton name="groupname" value="Treinamento" label="Treinamento" [(ngModel)]="formFicha.tipoServico"></p-radioButton>
+            <p-radioButton name="groupname" value="Suporte" label="Suporte" [(ngModel)]="formFicha.tipoServico"></p-radioButton>
+        </div>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="celular">Data Abertura</label>
+      <input class="form-control" maxlength="15" type="text" id="dataAbertura" [readonly]="true" name="dataAbertura" [(ngModel)]="formFicha.lancamento.data"
+        [readonly]="true" style="background-color: white;">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-9">
+
+    </div>
+    <div class="form-group col-md-1">
+      <!-- -->
+      <button type="submit" (click)="mostrarModalMaoObra(maoobra);" *ngIf="formFicha.numeroFicha" class="btn btn-primary">Incluir</button>
+    </div>
+    <div class="form-group col-md-1">
+      <button type="submit" class="btn btn-primary" *ngIf="formFicha.numeroFicha">Excluir</button>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <p-table [responsive]="true" [value]="formFicha.itemTables" [lazy]="true" [immutable]=false *ngIf="formFicha.numeroFicha">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Qtde</th>
+            <th>Descrição</th>
+            <th>Valor</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-car>
+          <tr>
+            <td>{{car.qtde}}</td>
+            <td>{{car.descricao}}</td>
+            <td>{{car.valor}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+
+
+  <div *ngIf="formFicha.numeroFicha">
+    <div class="form-row">
+      <div class="form-group col-md-5">
+        <label for="cnpjcpf">Técnico</label>
+        <input class="form-control" maxlength="10" type="text" id="tecnico" name="tecnico" [(ngModel)]="formFicha.lancamento.usuario"
+          style="background-color: white;">
+      </div>
+      <div class="form-group col-md-3">
+        <label for="estado">Situação Técnica</label>
+        <select class="form-control custom-select" id="situacao" name="situacao" [(ngModel)]="formFicha.lancamento.situacao">
+          <option *ngFor="let title of situacaoTecnica.situacao" [value]="title.value">
+            {{title.label}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="celular">Data</label>
+        <input class="form-control" maxlength="15" type="text" id="data" [readonly]="true" name="dataAbertura" [(ngModel)]="formFicha.lancamento.data"
+          [readonly]="true" style="background-color: white;">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-11">
+        <label for="celular">Observação</label>
+        <textarea class="form-control" maxlength="255" id="obs" name="obs" rows="2" [(ngModel)]="formFicha.lancamento.observacao"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <p-accordion [multiple]="true">
+        <p-accordionTab header="Ver Histórico">
+            <div *ngFor="let lanc of formFicha.lancamentoLst">
+              <label>{{lanc.usuario}}</label><label>{{lanc.situacao}}</label>
+            </div>
+        </p-accordionTab>
+      </p-accordion>
+    </div>
+  </div>  
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+  </div>
+</form> 
+
+<ng-template #clienteModal let-c="close" let-d="dismiss" id="modalCliente">
+  <app-modal-pesquisa-cliente [cClose]="c" [dClose]="d"></app-modal-pesquisa-cliente>
+</ng-template>
+
+<ng-template #maoobra let-a="Close" let-b="dismiss" id="maoobra">
+  <app-modal-maoobra [cValue]="a" [dValue]="b"></app-modal-maoobra>
+</ng-template>

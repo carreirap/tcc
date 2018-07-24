@@ -3,20 +3,12 @@ import { PecaServicoOrdem } from './peca-servico-ordem';
 import { Lancamento } from './lancamentosTecnicos';
 
 
-export class Ordem {
-    numeroOrdem: number;
+export class Ficha {
+    numeroFicha: number;
     cliente: Cliente;
     tipoServico: string;
-    descDefeito: string;
-    descEquip: string;
-    estadoItensAcomp: string;
     itemTables: Array<PecaServicoOrdem>;
-    fabricante: string;
-    modelo: string;
-    serie: string;
-    // situacao: string;
     dataAbertura: string;
-    dataSaida: string;
     responsavel: string;
     lancamento:  Lancamento;
     lancamentoLst:  Array<Lancamento>;

@@ -16,7 +16,7 @@ import br.com.fichasordens.OrdemServico;
 import br.com.fichasordens.OrdemServicoInterface;
 import br.com.fichasordens.dto.ClienteDto;
 import br.com.fichasordens.dto.OrdemServicoDto;
-import br.com.fichasordens.dto.OrdemServicoLancDto;
+import br.com.fichasordens.dto.LancamentoDto;
 import br.com.fichasordens.exception.ExcecaoRetorno;
 
 public class OrdemServicoControllerTest {
@@ -44,7 +44,7 @@ public class OrdemServicoControllerTest {
 		OrdemServicoDto ordem = new OrdemServicoDto();
 		ordem.setTipoServico("true");
 		ordem.setCliente(new ClienteDto());
-		ordem.setOrdemServicoLanc(new OrdemServicoLancDto());
+		ordem.setLancamento(new LancamentoDto());
 		return ordem;
 	}
 	

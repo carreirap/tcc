@@ -1,10 +1,10 @@
-﻿export class User {
+﻿export class UsuarioLogado {
     usuario: string;
-    senha: string;
     nome: string;
+    senha: string;
     novaSenha: string;
     confirmaSenha: String;
     papel: String;
     situacao: String;
-    id: number;
+    id: number;    
 }

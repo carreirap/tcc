@@ -4,14 +4,16 @@ import { DataService, AuthenticationService } from '../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Ordem } from '../_models/ordem';
 import { DatePipe } from '@angular/common';
-import { User } from '../_models';
 import { NgModel } from '@angular/forms';
 import { ModalMaoobraComponent } from '../modal-maoobra/modal-maoobra.component';
 import { ModalService } from '../modal-maoobra/modal-service';
 import { PecaServicoOrdemService } from './ordem-servico-service';
 import { PecaServicoOrdem } from '../_models/peca-servico-ordem';
 import { ModalClienteService } from '../modal-pesquisa-cliente/modal-cliente-service';
-// import { OrdemServicoLanc } from '../_models/lancamentosTecnicos';
+import { UserService } from '../_services/user.service';
+import { Lancamento } from '../_models/lancamentosTecnicos';
+import { UsuarioLogado } from '../_models/usuario-logado';
+// import { lancamento } from '../_models/lancamentosTecnicos';
 
 @Component({
   selector: 'app-ordem-servico',
@@ -24,11 +26,7 @@ export class OrdemServicoComponent implements OnInit {
   formOrdem = new Ordem();
   modalReference: any;
   item: PecaServicoOrdem;
-  /*situacaoSelect: Array<any> = [
-    { value: 'Aberto', label: 'Aberto' },
-    { value: 'Fechado', label: 'Fechado' }
-  ]; */
-
+  
   situacaoTecnica: Array<any> = [
     { value: 'Aberto', label: 'Aberto' },
     { value: 'Fechado', label: 'Fechado' },
@@ -47,14 +45,16 @@ export class OrdemServicoComponent implements OnInit {
 
   @ViewChild('cpfcnpjvalidation') pwConfirmModel: NgModel;
   constructor(private service: DataService, toasterService: ToasterService, public modal: NgbModal,
-              private datePipe: DatePipe, private authenticationService: AuthenticationService,
+              private datePipe: DatePipe, private userService: UserService,
               private modalService: ModalService, private pecaServicoOrdemService: PecaServicoOrdemService,
-              private modalClienteService: ModalClienteService) {
+              private modalClienteService: ModalClienteService,
+              private authenticationService: AuthenticationService) {
     this.toasterService = toasterService;
   }
 
   ngOnInit() {
-
+    this.formOrdem.lancamento = new Lancamento();
+    this.getNomeUsario();
     this.modalService.carregarLinha.subscribe(
       result => this.addLinha(result)
     );
@@ -62,32 +62,33 @@ export class OrdemServicoComponent implements OnInit {
     this.modalClienteService.carregarCliente.subscribe(
       result => this.loadForm(result)
     );
-    this.formOrdem.ordemServicoLanc.situacao = 'Aberto';
+    this.formOrdem.lancamento.situacao = 'Aberto';
     // this.formOrdem.dataAbertura = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
-    this.formOrdem.ordemServicoLanc.data = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
-    this.getNomeUsario();
-    console.log(this.formOrdem.itemTables.length);
+    this.formOrdem.lancamento.data = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
+    
+    // console.log(this.formOrdem.itemTables.length);
   }
 
   private getNomeUsario() {
-    const user = new User();
-    user.usuario = JSON.parse(localStorage.getItem('currentUser')).usuario;
-    this.authenticationService.getUpdatedUser(user).subscribe(response => {
-      this.formOrdem.ordemServicoLanc.usuario = response.nome;
-      this.formOrdem.ordemServicoLanc.idUsuario = response.id;
-    }, (error) => {
-      console.log('error in', error);
-    });
+      let userLog = new UsuarioLogado();
+      userLog.usuario = JSON.parse(localStorage.getItem('currentUser')).usuario;
+      this.authenticationService.getUpdatedUser(userLog).subscribe(response => {
+          this.formOrdem.lancamento.usuario = response.nome;
+          this.formOrdem.lancamento.idUsuario = response.id;
+      }, (error) => {
+        console.log('error in', error);
+      });
   }
 
+
   onSubmit() {
-    if (this.formOrdem.ordemServicoLanc.situacao === 'Aberto') {
-      this.formOrdem.ordemServicoLanc.sequencia = 0;
+    if (this.formOrdem.lancamento.situacao === 'Aberto') {
+      this.formOrdem.lancamento.sequencia = 0;
     }
     this.service.post('/ordem', this.formOrdem).subscribe(response => {
       console.log(response);
       this.setNumeroOrdem(response);
-      this.formOrdem.ordemServicoLancLst.push(this.formOrdem.ordemServicoLanc);
+      this.formOrdem.lancamentoLst.push(this.formOrdem.lancamento);
       this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
     }, (error) => {
       console.log('error in', error.error.mensagem);
