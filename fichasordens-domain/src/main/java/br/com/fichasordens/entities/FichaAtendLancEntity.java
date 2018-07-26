@@ -27,18 +27,20 @@ public class FichaAtendLancEntity implements java.io.Serializable {
 	private String situacao;
 	private Date data;
 	private String observacao;
+	private Boolean atualSituacao;
 
 	public FichaAtendLancEntity() {
 	}
 
 	public FichaAtendLancEntity(FichaAtendLancId id, FichaAtendimentoEntity fichaAtendimento, UsuarioEntity usuario, String situacao,
-			Date data, String observacao) {
+			Date data, String observacao, Boolean atualSituacao) {
 		this.id = id;
 		this.fichaAtendimento = fichaAtendimento;
 		this.usuario = usuario;
 		this.situacao = situacao;
 		this.data = data;
 		this.observacao = observacao;
+		this.atualSituacao = atualSituacao;
 	}
 
 	@EmbeddedId
@@ -103,4 +105,13 @@ public class FichaAtendLancEntity implements java.io.Serializable {
 		this.observacao = observacao;
 	}
 
+	@Column(name = "atual_situacao", nullable = false)
+	public Boolean getAtualSituacao() {
+		return atualSituacao;
+	}
+
+	public void setAtualSituacao(Boolean atualSituacao) {
+		this.atualSituacao = atualSituacao;
+	}
+	
 }

@@ -1,12 +1,13 @@
 ﻿import { Component, Input, OnInit } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { Headers, Http, RequestOptions } from '@angular/http';
-import {ActivatedRoute} from '@angular/router';
-import {AuthenticationService} from '../_services';
+import { ActivatedRoute } from '@angular/router';
+import { AuthenticationService, DataService } from '../_services';
 
 // import { UserService } from '../_services/index';
 import { Router } from '@angular/router';
 import { UsuarioLogado } from '../_models/usuario-logado';
+import { Dashboard } from '../_models/dashboad';
 
 @Component({
     moduleId: module.id,
@@ -15,29 +16,55 @@ import { UsuarioLogado } from '../_models/usuario-logado';
 
 export class HomeComponent implements OnInit {
     // users: User[] = [];
+    dashboadFicha: Dashboard;
+    dashboardOrdem: Dashboard;
+
     user = new UsuarioLogado();
     // tslint:disable-next-line:no-input-rename
     @Input() loggedInUser: string;
-    constructor(private router: Router, private backEndService: AuthenticationService) { }
-
-    ngOnInit() {
+    constructor(private service: DataService) {
+        this.dashboadFicha = new Dashboard();
+        this.dashboardOrdem = new Dashboard();
     }
 
-    // tslint:disable-next-line:member-ordering
+    ngOnInit() {
+        this.service.get('/dashboard/allFichas').subscribe(response => {
+            console.log(response);
+            this.setValues(response);
+        }, (error) => {
+            console.log('error in', error.error.mensagem);
+        });
 
-    getUpdatedUser(): void {
+        this.service.get('/dashboard/allOrdens').subscribe(response => {
+            console.log(response);
+            this.setValuesOrdem(response);
+        }, (error) => {
+            console.log('error in', error.error.mensagem);
+        });
+    }
 
-        /*if (this.backEndService.isTokenExpired()) {
-            alert('token expired');
-        } else {
-            alert('token ok');
-        }*/
 
+    setValues(data) {
+        this.dashboadFicha.qtqAberta = data.Aberto;
+        this.dashboadFicha.qtdFechada = data.Fechado
+        this.dashboadFicha.qtdTrabalhando = data.Trabalhando;
+        this.dashboadFicha.qtdAguardando = data.Aguardando;
+        this.dashboadFicha.qtdCancelado = data.Cancelado;
+    }
+
+    setValuesOrdem(data) {
+        this.dashboardOrdem.qtqAberta = data.Aberto;
+        this.dashboardOrdem.qtdFechada = data.Fechado
+        this.dashboardOrdem.qtdTrabalhando = data.Trabalhando;
+        this.dashboardOrdem.qtdAguardando = data.Aguardando;
+        this.dashboardOrdem.qtdCancelado = data.Cancelado;
+    }
+    /*getUpdatedUser(): void {
         this.user.usuario = JSON.parse(localStorage.getItem('currentUser')).usuario;
         this.backEndService.getUpdatedUser(this.user).subscribe(response => {
           this.loggedInUser = response.usuario;
         }, (error) => {
           console.log('error in', error);
         });
-      }
+    }*/
 }

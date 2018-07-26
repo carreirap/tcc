@@ -1,5 +1,7 @@
 package br.com.fichasordens;
 
+import java.util.Map;
+
 import br.com.fichasordens.exception.ExcecaoRetorno;
 
 public interface OrdemServicoInterface {
@@ -11,5 +13,7 @@ public interface OrdemServicoInterface {
 	PecaOutroServico gravarPecaServicoOrdem(PecaOutroServico pecaServicoOrdem) throws ExcecaoRetorno;
 	
 	OrdemServicoLanc gravarOrdemServicoLanc(final OrdemServicoLanc ordemServicoLanc) throws ExcecaoRetorno;
+	
+	Map<String,Integer> contarOrdensPorSituacao();
 
 }

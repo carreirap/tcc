@@ -83,6 +83,41 @@
 
   <div class="form-row">
     <div class="form-group col-md-9">
+      Atendimento
+    </div>
+    <div class="form-group col-md-1">
+     
+      <button type="submit" (click)="mostrarModalAtendimento(atendimento);" *ngIf="formFicha.numeroFicha" class="btn btn-primary">Incluir</button>
+    </div>
+    <div class="form-group col-md-1">
+      <button type="submit" class="btn btn-primary" *ngIf="formFicha.numeroFicha">Excluir</button>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-11">
+      <p-table [responsive]="true" [value]="formFicha.atendimento" [lazy]="true" [immutable]=false *ngIf="formFicha.numeroFicha">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Data</th>
+            <th>Descrição</th>
+            <th>Duracao</th>
+            <th>Valor</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-car>
+          <tr>
+            <td>{{car.dataAtendimento}}</td>
+            <td>{{car.descricao}}</td>
+            <td>{{car.duracao}}</td>
+            <td>{{car.valor}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-9">
 
     </div>
     <div class="form-group col-md-1">
@@ -169,4 +204,8 @@
 
 <ng-template #maoobra let-a="Close" let-b="dismiss" id="maoobra">
   <app-modal-maoobra [cValue]="a" [dValue]="b"></app-modal-maoobra>
+</ng-template>
+
+<ng-template #atendimento let-e="Close" let-f="dismiss" id="atendimento">
+  <app-modal-atendimento [cValue]="e" [dValue]="f"></app-modal-atendimento>
 </ng-template>

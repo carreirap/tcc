@@ -2,7 +2,9 @@ package br.com.fichasordens;
 
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +64,43 @@ public class FichaAtendimento {
 	public void gravarPecaServicoFicha(final PecaOutroServico pecaOutroServico) {
 		final PecaServicoFichaEntity ent = this.converterPecaServicoOrdemParaEntity(pecaOutroServico);
 		pecaServicoFichaRepository.save(ent);
+	}
+	
+	public Map<String,Integer> contarFichasPorSituacao( ) {
+		List<FichaAtendimentoEntity> lst = this.repository.FindAllFichas();
+		Map<String,Integer> map = new HashMap<String,Integer>();
+		int qtdAberto = 0;
+		int qtdTrabalhando = 0;
+		int qtdAguardando = 0;
+		int qtdFechado = 0;
+		int qtdCancelado = 0;
+				
+		for (FichaAtendimentoEntity a : lst) {
+			
+			for (FichaAtendLancEntity lanc : a.getFichaAtendLancs()) {
+				if (lanc.getSituacao().equals("Aberto")) {
+					qtdAberto = qtdAberto + 1; 
+				}
+				if (lanc.getSituacao().equals("Trabalhando")) {
+					qtdTrabalhando = qtdTrabalhando + 1; 
+				}
+				if (lanc.getSituacao().equals("Aguardando")) {
+					qtdAguardando = qtdAguardando + 1; 
+				}
+				if (lanc.getSituacao().equals("Fechado")) {
+					qtdFechado = qtdFechado + 1; 
+				}
+				if (lanc.getSituacao().equals("Cancelado")) {
+					qtdCancelado = qtdCancelado + 1; 
+				}
+			}
+		}
+		map.put("Aberto", qtdAberto);
+		map.put("Trabalhando", qtdTrabalhando);
+		map.put("Aguardando", qtdAguardando);
+		map.put("Fechado", qtdFechado);
+		map.put("Cancelado", qtdCancelado);
+		return map;
 	}
 	
 	private PecaServicoFichaEntity converterPecaServicoOrdemParaEntity(PecaOutroServico pecaServicoFicha) {

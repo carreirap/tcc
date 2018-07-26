@@ -1,6 +1,7 @@
 import { Cliente } from './cliente';
 import { PecaServicoOrdem } from './peca-servico-ordem';
 import { Lancamento } from './lancamentosTecnicos';
+import { Atendimento } from './atendimento';
 
 
 export class Ficha {
@@ -12,11 +13,13 @@ export class Ficha {
     responsavel: string;
     lancamento:  Lancamento;
     lancamentoLst:  Array<Lancamento>;
+    atendimento: Array<Atendimento>;
 
     constructor () {
         this.cliente = new Cliente();
         this.itemTables = new Array<PecaServicoOrdem>();
         this.lancamento = new  Lancamento();
-        this.lancamentoLst = Array<Lancamento>();
+        this.lancamentoLst = new Array<Lancamento>();
+        this.atendimento = new Array<Atendimento>();
     }
 }

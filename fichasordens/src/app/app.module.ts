@@ -87,6 +87,9 @@ import { ModalClienteService } from './modal-pesquisa-cliente/modal-cliente-serv
 import { PapelUserService } from './_services/papel-service';
 import { UserService } from './_services/user.service';
 import {RadioButtonModule} from 'primeng/radiobutton';
+import { ModalAtendimentoComponent } from './modal-atendimento/modal-atendimento.component';
+import { ModalAtendimentoService } from './modal-atendimento/modal-atendimento-service';
+import { PanelModule } from 'primeng/panel';
 
 
 @NgModule({
@@ -105,7 +108,8 @@ import {RadioButtonModule} from 'primeng/radiobutton';
     PesquisarDirective,
     OrdemServicoComponent,
     ModalPesquisaClienteComponent,
-    ModalMaoobraComponent
+    ModalMaoobraComponent,
+    ModalAtendimentoComponent
    ],
   imports: [
     BrowserModule,
@@ -116,6 +120,7 @@ import {RadioButtonModule} from 'primeng/radiobutton';
     TableModule,
     PaginatorModule,
     AccordionModule,
+    PanelModule,
     RadioButtonModule,
     routing,
     BrowserAnimationsModule, ToasterModule
@@ -138,6 +143,7 @@ import {RadioButtonModule} from 'primeng/radiobutton';
         { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true },
         ModalService,
         ModalClienteService,
+        ModalAtendimentoService,
         PecaServicoOrdemService,
         PapelUserService,
         UserService

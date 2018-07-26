@@ -1,4 +1,4 @@
-﻿<div class="col-md-6 col-md-offset-3">
+﻿<!--<div class="col-md-6 col-md-offset-3">
     <h1>Home</h1>
     <p>You're logged in with JWT!!</p>
     <h2  *ngIf="user">{{loggedInUser}}</h2>
@@ -12,3 +12,94 @@
 
     <button (click)="getUpdatedUser()">Get Updated User</button>
 </div>
+-->
+<header class="col-md-12 text-center">
+    <h1>Dashboard</h1>
+</header>
+<div class="container">
+    <div class="row">
+        <header class="col-md-12 text-center">
+            <h3>Fichas de Atendimento</h3>
+        </header>
+        <div class="col-md-4 text-center">
+            <p-panel>
+                <p-header>
+                    Abertas
+                </p-header>
+                    {{dashboadFicha.qtqAberta}} Abertas
+                <p-footer>
+                    Footer content here
+                </p-footer>
+            </p-panel>
+        </div>
+        <div class="col-md-4 text-center">
+            <p-panel>
+                <p-header>
+                    Em andamento
+                </p-header>
+                    {{dashboadFicha.qtdTrabalhando}} Trabalhando<br>
+                    {{dashboadFicha.qtdAguardando}} Aguardando
+                <p-footer>
+                    Footer content here
+                </p-footer>
+            </p-panel>
+        </div>
+        <div class="col-md-4 text-center">
+            <p-panel>
+                <p-header>
+                    Fechadas
+                </p-header>
+                    {{dashboadFicha.qtdFechada}} Fechada <br>
+                    {{dashboadFicha.qtdCancelado}} Cancelada    
+                <p-footer>
+                    Footer content here
+                </p-footer>
+            </p-panel>
+        </div>
+    </div>
+    <div class="row">
+        <header class="col-md-12 text-center">
+            <BR><BR>
+            <header class="col-md-12 text-center">
+                <h3>Ordens de Serviço</h3>
+            </header>
+        </header>
+        <div class="col-md-4 text-center">
+            <p-panel>
+                <p-header>
+                    Ordem Abertas
+                </p-header>
+                    {{dashboardOrdem.qtqAberta}} Abertos
+                <p-footer>
+                    Footer content here
+                </p-footer>
+            </p-panel>
+        </div>
+        <div class="col-md-4 text-center">
+            <p-panel>
+                <p-header>
+                    Em Andamento
+                </p-header>
+                    {{dashboardOrdem.qtdTrabalhando}} Trabalhando <br>
+                    {{dashboardOrdem.qtdAguardando}} Aguardando
+                <p-footer>
+                    Footer content here
+                </p-footer>
+            </p-panel>
+        </div>
+        <div class="col-md-4 text-center">
+            <p-panel>
+                <p-header>
+                    Fechado
+                </p-header>
+                    {{dashboardOrdem.qtdFechada}} Fechadas <br>
+                    {{dashboardOrdem.qtdCancelado}} Canceladas
+                <p-footer>
+                    Footer content here
+                </p-footer>
+            </p-panel>
+        </div>
+    </div>
+</div>
+
+

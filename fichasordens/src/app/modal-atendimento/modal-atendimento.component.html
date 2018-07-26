@@ -1,6 +1,6 @@
 <form (submit)="onSubmit()" class="container" #f="ngForm" style="padding-left: 0px; padding-right: 0px;" novalidate>
   <div class="modal-header navbar-dark bg-dark">
-    <h5 class="modal-title" style="color:white;">Peças / Outro Servicos</h5>
+    <h5 class="modal-title" style="color:white;">Inserir Atendimento</h5>
     <button type="button" style="color:white;" class="close" aria-label="Close" (click)="dValue('Close click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -10,21 +10,27 @@
 
       <div class="form-row">
         <div class="form-group col-md-7">
-          <label for="visita">Quantidade</label>
+          <label for="visita">Data</label>
           <input type="hidden" id="id-vista" name="id-visita">
-          <input class="form-control" type="text" value="" id="qtde" name="qtde" [(ngModel)]="formItemTable.qtde">
+          <input class="form-control" type="text" value="" id="data" name="data" [(ngModel)]="formAtendimento.dataAtendimento">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-7">
           <label for="visita">Descrição</label>
-          <input class="form-control" type="text" value="" id="descr" name="descr" [(ngModel)]="formItemTable.descricao">
+          <input class="form-control" type="text" value="" id="descr" name="descr" [(ngModel)]="formAtendimento.descricao">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-7">
+          <label for="visita">Duracao</label>
+          <input class="form-control" type="text" value="" id="duracao" name="duracao" [(ngModel)]="formAtendimento.duracao">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-7">
           <label for="visita">Valor</label>
-          <input class="form-control" type="text" value="" id="valor" name="valor" [(ngModel)]="formItemTable.valor">
+          <input class="form-control" type="text" value="" id="valor" name="valor" [(ngModel)]="formAtendimento.valor">
         </div>
       </div>
 

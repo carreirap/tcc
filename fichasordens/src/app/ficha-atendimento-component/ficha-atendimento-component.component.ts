@@ -9,6 +9,7 @@ import { SituacaoTecnica } from '../_models/situacao-tecnica';
 import { ModalClienteService } from '../modal-pesquisa-cliente/modal-cliente-service';
 import { ModalService } from '../modal-maoobra/modal-service';
 import { PecaServicoOrdemService } from '../ordem-servico/ordem-servico-service';
+import { ModalAtendimentoService } from '../modal-atendimento/modal-atendimento-service';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   constructor(private service: DataService, toasterService: ToasterService, public modal: NgbModal,
           private datePipe: DatePipe, private authenticationService: AuthenticationService,
           private modalClienteService: ModalClienteService,
-          private modalService: ModalService, private pecaServicoOrdemService: PecaServicoOrdemService) { 
+          private modalService: ModalService, private pecaServicoOrdemService: PecaServicoOrdemService,
+        private modalAtendimento: ModalAtendimentoService) { 
     this.formFicha = new Ficha();
     this.situacaoTecnica = new SituacaoTecnica();
     this.toasterService = toasterService;
@@ -37,6 +39,9 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     );
     this.modalClienteService.carregarCliente.subscribe(
       result => this.loadForm(result)
+    );
+    this.modalAtendimento.carregarLinha.subscribe(
+      result => this.addLinhaAtendimento(result)  
     );
     this.formFicha.lancamento.data = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
     this.formFicha.lancamento.situacao = 'Aberto';
@@ -75,6 +80,11 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     return false;
   }
 
+  mostrarModalAtendimento(atendimento) {
+    this.modal.open(atendimento);
+    return false;
+  }
+
   private getNomeUsario() {
     let userLog = new UsuarioLogado();
     userLog.usuario = JSON.parse(localStorage.getItem('currentUser')).usuario;
@@ -101,6 +111,13 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.pecaServicoOrdemService.emitirResultado.emit('falhou');
       // this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
     });
+  }
+
+  addLinhaAtendimento(event) {
+    console.log(event);
+    event.sequencia = this.formFicha.atendimento.length + 1;
+    event.idOrdem =  this.formFicha.numeroFicha;
+    this.formFicha.atendimento.push(event);
   }
 
   loadForm(data) {

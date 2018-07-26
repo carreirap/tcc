@@ -1,13 +1,17 @@
 package br.com.fichasordens;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.fichasordens.entities.ClienteEntity;
+import br.com.fichasordens.entities.FichaAtendLancEntity;
+import br.com.fichasordens.entities.FichaAtendimentoEntity;
 import br.com.fichasordens.entities.OrdemServicoEntity;
 import br.com.fichasordens.entities.OrdemServicoLancEntity;
 import br.com.fichasordens.entities.OrdemServicoLancId;
@@ -85,6 +89,44 @@ public class OrdemServicoServiceImpl implements OrdemServicoInterface {
 			throw new ExcecaoRetorno("Erro ao tentar cadastrar ordem de serviço");
 		}
 		return null;
+	}
+	
+	
+	public Map<String,Integer> contarOrdensPorSituacao() {
+		List<OrdemServicoEntity> lst = this.ordemServicoRepository.FindAllOrdens();
+		Map<String,Integer> map = new HashMap<String,Integer>();
+		int qtdAberto = 0;
+		int qtdTrabalhando = 0;
+		int qtdAguardando = 0;
+		int qtdFechado = 0;
+		int qtdCancelado = 0;
+				
+		for (OrdemServicoEntity a : lst) {
+			
+			for (OrdemServicoLancEntity lanc : a.getOrdemServicoLancs()) {
+				if (lanc.getSituacao().equals("Aberto")) {
+					qtdAberto = qtdAberto + 1; 
+				}
+				if (lanc.getSituacao().equals("Trabalhando")) {
+					qtdTrabalhando = qtdTrabalhando + 1; 
+				}
+				if (lanc.getSituacao().equals("Aguardando")) {
+					qtdAguardando = qtdAguardando + 1; 
+				}
+				if (lanc.getSituacao().equals("Fechado")) {
+					qtdFechado = qtdFechado + 1; 
+				}
+				if (lanc.getSituacao().equals("Cancelado")) {
+					qtdCancelado = qtdCancelado + 1; 
+				}
+			}
+		}
+		map.put("Aberto", qtdAberto);
+		map.put("Trabalhando", qtdTrabalhando);
+		map.put("Aguardando", qtdAguardando);
+		map.put("Fechado", qtdFechado);
+		map.put("Cancelado", qtdCancelado);
+		return map;
 	}
 	
 	private OrdemServicoEntity converterParaEntity(final OrdemServico ordemServico) {
