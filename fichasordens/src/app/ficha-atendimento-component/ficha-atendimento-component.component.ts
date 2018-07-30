@@ -10,6 +10,8 @@ import { ModalClienteService } from '../modal-pesquisa-cliente/modal-cliente-ser
 import { ModalService } from '../modal-maoobra/modal-service';
 import { PecaServicoOrdemService } from '../ordem-servico/ordem-servico-service';
 import { ModalAtendimentoService } from '../modal-atendimento/modal-atendimento-service';
+import { ActivatedRoute } from '../../../node_modules/@angular/router';
+import { Cliente } from '../_models/cliente';
 
 
 @Component({
@@ -21,13 +23,15 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   formFicha: Ficha;
   situacaoTecnica: any;
   toasterService: ToasterService;
+  param: any;
 
 
   constructor(private service: DataService, toasterService: ToasterService, public modal: NgbModal,
           private datePipe: DatePipe, private authenticationService: AuthenticationService,
           private modalClienteService: ModalClienteService,
           private modalService: ModalService, private pecaServicoOrdemService: PecaServicoOrdemService,
-        private modalAtendimento: ModalAtendimentoService) { 
+        private modalAtendimento: ModalAtendimentoService,
+        private route: ActivatedRoute,) { 
     this.formFicha = new Ficha();
     this.situacaoTecnica = new SituacaoTecnica();
     this.toasterService = toasterService;
@@ -43,16 +47,31 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     this.modalAtendimento.carregarLinha.subscribe(
       result => this.addLinhaAtendimento(result)  
     );
-    this.formFicha.lancamento.data = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
-    this.formFicha.lancamento.situacao = 'Aberto';
-    this.formFicha.tipoServico = 'Assitencia';
-    this.getNomeUsario();
+
+    this.route.params.subscribe(
+      params => {
+        this.param = params['id']; 
+    });
+    if (this.param !== undefined) {
+      this.service.get('/ficha/buscar?id=' + this.param).subscribe(response => {
+        this.loadFicha(response);
+      }, (error) => {
+        console.log('error in', error);
+        // this.toasterService.pop('error', 'Empresa', error.mensagem);
+      });
+    } else {
+      this.formFicha.dataAbertura = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
+      this.formFicha.lancamento.situacao = 'Aberto';
+      this.formFicha.tipoServico = 'Assitencia';
+      this.getNomeUsario();
+    }
   }
 
   onSubmit() {
     if (this.formFicha.lancamento.situacao === 'Aberto') {
       this.formFicha.lancamento.sequencia = 0;
       this.formFicha.lancamento.observacao = 'Abertura'
+      this.formFicha.lancamento.data = this.formFicha.dataAbertura
     }
     this.service.post('/ficha', this.formFicha).subscribe(response => {
       console.log(response);
@@ -63,6 +82,29 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       console.log('error in', error.error.mensagem);
       this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
     });
+  }
+
+  loadFicha(data) {
+    this.formFicha.numeroFicha = data.numeroFicha;
+    this.formFicha.tipoServico = data.tipoServico;
+    this.formFicha.cliente = new Cliente();
+    this.formFicha.cliente.cnpj = data.cliente.cnpj
+    this.formFicha.cliente.fone = data.cliente.fone;
+    this.formFicha.cliente.celular = data.cliente.celular;
+    this.formFicha.cliente.nome = data.cliente.nome;
+    debugger;
+    for (let i=0; i < data.lancamentoLst.length; i++) {
+      if (i===0) {
+        this.formFicha.dataAbertura = this.datePipe.transform(data.lancamentoLst[i].data, 'dd/MM/yyyy');
+        this.formFicha.responsavel = data.lancamentoLst[i].nomeUsuario;
+        
+      }
+      if (i + 1 === data.lancamentoLst.length) {
+        this.formFicha.lancamento.situacao = data.lancamentoLst[i].situacao;
+      }
+      this.formFicha.lancamentoLst.push(data.lancamentoLst[i])
+    }
+    this.formFicha.pecaOutroServicoDto = data.pecaOutroServicoDto;
   }
 
   setNumeroFicha(data) {
@@ -89,7 +131,8 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     let userLog = new UsuarioLogado();
     userLog.usuario = JSON.parse(localStorage.getItem('currentUser')).usuario;
     this.authenticationService.getUpdatedUser(userLog).subscribe(response => {
-        this.formFicha.lancamento.usuario = response.nome;
+        this.formFicha.lancamento.nomeUsuario = response.nome;
+        this.formFicha.responsavel = response.nome;
         this.formFicha.lancamento.idUsuario = response.id;
     }, (error) => {
       console.log('error in', error);
@@ -98,13 +141,13 @@ export class FichaAtendimentoComponentComponent implements OnInit {
 
   addLinha(event) {
     console.log(event.descricao);
-    event.sequencia = this.formFicha.itemTables.length + 1;
+    event.sequencia = this.formFicha.pecaOutroServicoDto.length + 1;
     event.idOrdem = this.formFicha.numeroFicha;
 
     this.service.post('/ficha/pecaServico', event).subscribe(response => {
       console.log(response);
       this.pecaServicoOrdemService.emitirResultado.emit('gravou');
-      this.formFicha.itemTables.push(event);
+      this.formFicha.pecaOutroServicoDto.push(event);
       // this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
     }, (error) => {
       console.log('error in', error.error.mensagem);

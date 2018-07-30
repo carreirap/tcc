@@ -4,7 +4,7 @@
   <div class="form-row">
     <div class="form-group col-md-9">
       <label for="cnpjcpf">Responsável</label>
-      <input class="form-control" maxlength="10" type="text" id="responsavel" name="responsavel" [(ngModel)]="formFicha.lancamento.usuario"
+      <input class="form-control" maxlength="10" type="text" id="responsavel" name="responsavel" [(ngModel)]="formFicha.responsavel"
         [readonly]="true" style="background-color: white;">
     </div>
     <div class="form-group col-md-2">
@@ -76,7 +76,7 @@
     </div>
     <div class="form-group col-md-4">
       <label for="celular">Data Abertura</label>
-      <input class="form-control" maxlength="15" type="text" id="dataAbertura" [readonly]="true" name="dataAbertura" [(ngModel)]="formFicha.lancamento.data"
+      <input class="form-control" maxlength="15" type="text" id="dataAbertura" [readonly]="true" name="dataAbertura" [(ngModel)]="formFicha.dataAbertura"
         [readonly]="true" style="background-color: white;">
     </div>
   </div>
@@ -130,7 +130,7 @@
   </div>
   <div class="form-row">
     <div class="form-group col-md-11">
-      <p-table [responsive]="true" [value]="formFicha.itemTables" [lazy]="true" [immutable]=false *ngIf="formFicha.numeroFicha">
+      <p-table [responsive]="true" [value]="formFicha.pecaOutroServicoDto" [lazy]="true" [immutable]=false *ngIf="formFicha.numeroFicha">
         <ng-template pTemplate="header">
           <tr>
             <th>Qtde</th>
@@ -155,7 +155,7 @@
     <div class="form-row">
       <div class="form-group col-md-5">
         <label for="cnpjcpf">Técnico</label>
-        <input class="form-control" maxlength="10" type="text" id="tecnico" name="tecnico" [(ngModel)]="formFicha.lancamento.usuario"
+        <input class="form-control" maxlength="10" type="text" id="tecnico" name="tecnico" [(ngModel)]="formFicha.lancamento.nomeUsuario"
           style="background-color: white;">
       </div>
       <div class="form-group col-md-3">
@@ -168,8 +168,8 @@
       </div>
       <div class="form-group col-md-3">
         <label for="celular">Data</label>
-        <input class="form-control" maxlength="15" type="text" id="data" [readonly]="true" name="dataAbertura" [(ngModel)]="formFicha.lancamento.data"
-          [readonly]="true" style="background-color: white;">
+        <input class="form-control" maxlength="15" type="text" id="dataAberturaLanc" name="dataAberturaLanc" [(ngModel)]="formFicha.lancamento.data"
+          style="background-color: white;">
       </div>
     </div>
     <div class="form-row">
@@ -185,7 +185,11 @@
       <p-accordion [multiple]="true">
         <p-accordionTab header="Ver Histórico">
             <div *ngFor="let lanc of formFicha.lancamentoLst">
-              <label>{{lanc.usuario}}</label><label>{{lanc.situacao}}</label>
+              <label>{{lanc.nomeUsuario}}</label><br>
+              <label>{{lanc.situacao}}</label><br>
+              <label>{{lanc.data}}</label><br>
+              <label>{{lanc.observacao}}</label>
+
             </div>
         </p-accordionTab>
       </p-accordion>

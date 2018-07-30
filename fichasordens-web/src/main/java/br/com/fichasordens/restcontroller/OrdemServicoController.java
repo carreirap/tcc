@@ -22,6 +22,7 @@ import br.com.fichasordens.dto.OrdemServicoDto;
 import br.com.fichasordens.dto.LancamentoDto;
 import br.com.fichasordens.dto.PecaOutroServicoDto;
 import br.com.fichasordens.exception.ExcecaoRetorno;
+import br.com.fichasordens.util.ConverterPecaOutroServico;
 
 @RestController
 @RequestMapping("/ordem")
@@ -47,7 +48,7 @@ public class OrdemServicoController {
 	@RequestMapping(method = RequestMethod.POST,path="/pecaServico")
 	public ResponseEntity salvarItemOrdemServico(@RequestBody final PecaOutroServicoDto dto) {
 		try {
-			final PecaOutroServico peca = this.converterDtoPecaServico(dto);
+			final PecaOutroServico peca = ConverterPecaOutroServico.converterDtoPecaServico(dto);
 			this.ordemServicoService.gravarPecaServicoOrdem(peca);
 			return new ResponseEntity( HttpStatus.OK);
 		} catch (ExcecaoRetorno e) {
@@ -83,18 +84,6 @@ public class OrdemServicoController {
 		OrdemServicoLanc lanc = this.converterDtoOrdemServicoLanc(dto.getLancamento());
 		ent.getOrdemServicoLanc().add(lanc);
 		return ent;
-	}
-	
-	private PecaOutroServico converterDtoPecaServico(final PecaOutroServicoDto dto) {
-		final PecaOutroServico pecaServico = new PecaOutroServico();
-		//		pecaServico.setId(dto.getIdOrdem()...);
-		pecaServico.setDescricao(dto.getDescricao());
-		pecaServico.setQuantidade(dto.getQtde());
-		pecaServico.setValor(dto.getValor());
-		pecaServico.setId(dto.getSequencia());
-		pecaServico.setOrdemServico(new OrdemServico());
-		pecaServico.getOrdemServico().setId(dto.getIdOrdem());
-		return pecaServico;
 	}
 	
 	private OrdemServicoLanc converterDtoOrdemServicoLanc(final LancamentoDto dto) {

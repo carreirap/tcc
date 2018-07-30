@@ -24,9 +24,9 @@
         <div class="col-md-4 text-center">
             <p-panel>
                 <p-header>
-                    Abertas
+                    Abertas 
                 </p-header>
-                    {{dashboadFicha.qtqAberta}} Abertas
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Aberto']">{{dashboadFicha.qtqAberta}} Abertas</a>
                 <p-footer>
                     Footer content here
                 </p-footer>
@@ -37,8 +37,9 @@
                 <p-header>
                     Em andamento
                 </p-header>
-                    {{dashboadFicha.qtdTrabalhando}} Trabalhando<br>
-                    {{dashboadFicha.qtdAguardando}} Aguardando
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Trabalhando']">{{dashboadFicha.qtdTrabalhando}} Trabalhando</a>
+                    <br>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Aguardando']">{{dashboadFicha.qtdAguardando}} Aguardando</a>
                 <p-footer>
                     Footer content here
                 </p-footer>

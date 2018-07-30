@@ -2,6 +2,7 @@ package br.com.fichasordens;
 
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,8 @@ public class FichaAtendimento {
 	private String tipoServico;
 	private long id;
 	
-	private List<FichaAtendimentoLanc> fichaAtendimentoLanc;
+	private List<FichaAtendimentoLanc> fichaAtendimentoLancList;
+	private List<PecaOutroServico> pecaOutroServicoList;
 	
 	@Autowired
 	private FichaAtendimentoRepository repository;
@@ -49,8 +51,8 @@ public class FichaAtendimento {
 			FichaAtendimentoEntity ent = this.converterParaEntity(fichaAtendimento);
 			ent = this.repository.save(ent);
 			fichaAtendimento.setId(ent.getId());
-			fichaAtendimento.getFichaAtendimentoLanc().get(0).setFichaAtendimento(fichaAtendimento);
-			FichaAtendLancEntity lancEntity = this.converterFichaAtendLancParaEntity(fichaAtendimento.getFichaAtendimentoLanc().get(0));
+			fichaAtendimento.getFichaAtendimentoLancList().get(0).setFichaAtendimento(fichaAtendimento);
+			FichaAtendLancEntity lancEntity = this.converterFichaAtendLancParaEntity(fichaAtendimento.getFichaAtendimentoLancList().get(0));
 			
 			fichaAtendLancRepository.save(lancEntity);
 			LOGGER.info("Ficha de Atendimento cadastrada id {}", ent.getId());
@@ -101,6 +103,71 @@ public class FichaAtendimento {
 		map.put("Fechado", qtdFechado);
 		map.put("Cancelado", qtdCancelado);
 		return map;
+	}
+	
+	@Transactional
+	public List<FichaAtendimento> listarFichas(final String situacao) {
+		List<FichaAtendimentoEntity> lst = this.repository.FindAllFichaByStatus(situacao);
+		if (!situacao.equals("Aberto")) {
+			
+		}
+		List<FichaAtendimento> fichaList = new ArrayList<FichaAtendimento>();
+		lst.forEach(a-> {
+			FichaAtendLancEntity ent = this.fichaAtendLancRepository.findBySituacaoAndFichaAtendimentoId("Aberto", a.getId());
+			ent.getUsuario().getId();
+			a.getFichaAtendLancs().add(ent);
+			fichaList.add(this.converterEntityParaFichaAtendimento(a));
+		});
+		return fichaList;
+	}
+	
+	@Transactional
+	public FichaAtendimento buscarFicha(final long id) {
+		final FichaAtendimentoEntity ent = this.repository.findOne(id);
+		FichaAtendimento ficha = this.converterEntityParaFichaAtendimento(ent);
+		return ficha;
+	}
+	
+	
+	private FichaAtendimento converterEntityParaFichaAtendimento(final FichaAtendimentoEntity entity) {
+		FichaAtendimento ficha = new FichaAtendimento();
+		ficha.setId(entity.getId());
+		ficha.setTipoServico(entity.getTipoServico());
+		Cliente cliente = new Cliente();
+		cliente.setId(entity.getCliente().getId());
+		cliente.setNome(entity.getCliente().getNome());
+		cliente.setCelular(entity.getCliente().getCelular());
+		cliente.setFone(entity.getCliente().getFone());
+		cliente.setCnpjCpf(entity.getCliente().getCnpjCpf());
+		ficha.setCliente(cliente);
+		if (entity.getFichaAtendLancs().size() > 0) {
+			ficha.setFichaAtendimentoLancList(new ArrayList<FichaAtendimentoLanc>());
+			entity.getFichaAtendLancs().forEach(a-> {
+				FichaAtendimentoLanc lanc = new FichaAtendimentoLanc();
+				lanc.setSituacao(a.getSituacao());
+				lanc.setData(a.getData());
+				Usuario user = new Usuario();
+				user.setNome(a.getUsuario().getNome());
+				user.setId(a.getUsuario().getId());
+				lanc.setUsuario(user);
+				lanc.setObservacao(a.getObservacao());
+				lanc.setFichaAtendimento(ficha);
+				ficha.getFichaAtendimentoLancList().add(lanc);
+			});
+		}
+		if (entity.getPecaServicoFichas().size() > 0) {
+			ficha.setPecaOutroServicoList(new ArrayList<PecaOutroServico>());
+			for (PecaServicoFichaEntity a: entity.getPecaServicoFichas()) {
+				PecaOutroServico servico = new PecaOutroServico();
+				servico.setId(a.getId().getSequencia());
+				servico.setDescricao(a.getDescricao());
+				servico.setQuantidade(a.getQuantidade());
+				servico.setValor(a.getValor());
+				servico.setFichaAtendimento(ficha);
+				ficha.getPecaOutroServicoList().add(servico);
+			}
+		}
+		return ficha;
 	}
 	
 	private PecaServicoFichaEntity converterPecaServicoOrdemParaEntity(PecaOutroServico pecaServicoFicha) {
@@ -160,12 +227,19 @@ public class FichaAtendimento {
 		this.id = id;
 	}
 	
-	public List<FichaAtendimentoLanc> getFichaAtendimentoLanc() {
-		return fichaAtendimentoLanc;
+	public List<FichaAtendimentoLanc> getFichaAtendimentoLancList() {
+		return fichaAtendimentoLancList;
 	}
 
-	public void setFichaAtendimentoLanc(List<FichaAtendimentoLanc> fichaAtendimentoLanc) {
-		this.fichaAtendimentoLanc = fichaAtendimentoLanc;
+	public void setFichaAtendimentoLancList(List<FichaAtendimentoLanc> fichaAtendimentoLanc) {
+		this.fichaAtendimentoLancList = fichaAtendimentoLanc;
 	}
-	
+
+	public List<PecaOutroServico> getPecaOutroServicoList() {
+		return pecaOutroServicoList;
+	}
+
+	public void setPecaOutroServicoList(List<PecaOutroServico> pecaOutroServicoList) {
+		this.pecaOutroServicoList = pecaOutroServicoList;
+	}
 }

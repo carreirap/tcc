@@ -15,6 +15,9 @@ public interface FichaAtendimentoRepository extends JpaRepository<FichaAtendimen
 	
 	@Query("SELECT a FROM FichaAtendimentoEntity a LEFT JOIN a.fichaAtendLancs b where b.atualSituacao = true")
 	public List<FichaAtendimentoEntity> FindAllFichas();
+	
+	@Query("SELECT a FROM FichaAtendimentoEntity a LEFT JOIN a.fichaAtendLancs b where b.atualSituacao = true and b.situacao = ?1")
+	public List<FichaAtendimentoEntity> FindAllFichaByStatus(final String situacao);
 
 }
 

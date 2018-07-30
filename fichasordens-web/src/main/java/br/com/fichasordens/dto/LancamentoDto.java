@@ -8,6 +8,7 @@ public class LancamentoDto {
 	private int sequencia;
 	private long id;
 	private long idUsuario;
+	private String nomeUsuario;
     private String situacao;
     
     @JsonFormat(pattern = "dd/MM/yyyy")
@@ -50,5 +51,11 @@ public class LancamentoDto {
 	}
 	public void setIdUsuario(long idUsuario) {
 		this.idUsuario = idUsuario;
+	}
+	public String getNomeUsuario() {
+		return nomeUsuario;
+	}
+	public void setNomeUsuario(String nomeUsuario) {
+		this.nomeUsuario = nomeUsuario;
 	}
 }

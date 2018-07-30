@@ -73,7 +73,7 @@ export class OrdemServicoComponent implements OnInit {
       let userLog = new UsuarioLogado();
       userLog.usuario = JSON.parse(localStorage.getItem('currentUser')).usuario;
       this.authenticationService.getUpdatedUser(userLog).subscribe(response => {
-          this.formOrdem.lancamento.usuario = response.nome;
+          this.formOrdem.lancamento.nomeUsuario = response.nome;
           this.formOrdem.lancamento.idUsuario = response.id;
       }, (error) => {
         console.log('error in', error);

@@ -8,7 +8,7 @@ export class Ficha {
     numeroFicha: number;
     cliente: Cliente;
     tipoServico: string;
-    itemTables: Array<PecaServicoOrdem>;
+    pecaOutroServicoDto: Array<PecaServicoOrdem>;
     dataAbertura: string;
     responsavel: string;
     lancamento:  Lancamento;
@@ -17,7 +17,7 @@ export class Ficha {
 
     constructor () {
         this.cliente = new Cliente();
-        this.itemTables = new Array<PecaServicoOrdem>();
+        this.pecaOutroServicoDto = new Array<PecaServicoOrdem>();
         this.lancamento = new  Lancamento();
         this.lancamentoLst = new Array<Lancamento>();
         this.atendimento = new Array<Atendimento>();

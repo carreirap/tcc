@@ -29,14 +29,14 @@ export class HomeComponent implements OnInit {
 
     ngOnInit() {
         this.service.get('/dashboard/allFichas').subscribe(response => {
-            console.log(response);
+            // console.log(response);
             this.setValues(response);
         }, (error) => {
             console.log('error in', error.error.mensagem);
         });
 
         this.service.get('/dashboard/allOrdens').subscribe(response => {
-            console.log(response);
+            // console.log(response);
             this.setValuesOrdem(response);
         }, (error) => {
             console.log('error in', error.error.mensagem);

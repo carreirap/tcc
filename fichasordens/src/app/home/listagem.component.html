@@ -1,0 +1,55 @@
+<p-dataView #dv [value]="lista" [sortField]="sortField" [sortOrder]="sortOrder" [paginator]="true" [rows]="20" paginatorPosition="both">
+    <p-header>
+        <div class="ui-helper-clearfix">
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-4">
+                    <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By" (onChange)="onSortChange($event)" [autoWidth]="false"
+                        [style]="{'min-width':'15em'}"></p-dropdown>
+                </div>
+            </div>
+        </div>
+    </p-header>
+    <ng-template let-ser pTemplate="listItem">
+        <div class="ui-g" style="padding: 1em;border-bottom: 1px solid #d9d9d9">
+            <div class="ui-g-12 ui-md-8 ser-details">
+                <div class="ui-g">
+                    <div class="ui-g-2 ui-sm-6">Numero: </div>
+                    <div class="ui-g-10 ui-sm-6">
+                        <b>{{ser.numero}}</b>
+                    </div>
+
+                    <div class="ui-g-2 ui-sm-6">Tipo: </div>
+                    <div class="ui-g-10 ui-sm-6">
+                        <b>{{ser.tipo}}</b>
+                    </div>
+
+                    <div class="ui-g-2 ui-sm-6">Cliente: </div>
+                    <div class="ui-g-10 ui-sm-6">
+                        <b>{{ser.cliente}}</b>
+                    </div>
+
+                    <div class="ui-g-2 ui-sm-6">Responsavel: </div>
+                    <div class="ui-g-10 ui-sm-6">
+                        <b>{{ser.responsavel}}</b>
+                    </div>
+
+                    <div class="ui-g-2 ui-sm-6">Situacao: </div>
+                    <div class="ui-g-10 ui-sm-6">
+                        <b> {{ser.situacao}}</b>
+                    </div>
+
+                    <div class="ui-g-2 ui-sm-6">Dias: </div>
+                    <div class="ui-g-10 ui-sm-6">
+                        <b> {{ser.dias}}</b>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-1 search-icon">
+                <a class="nav-link" [routerLink]="['/fichas', ser.numero]" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                    <span aria-hidden="true" class="ui-button-icon-left ui-clickable pi pi-search"></span>
+                    <span class="ui-button-text ui-clickable">ui-btn</span>
+                </a>
+            </div>
+        </div>
+    </ng-template>
+</p-dataView>

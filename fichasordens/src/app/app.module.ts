@@ -76,7 +76,8 @@ import { PesquisarDirective } from './util/cliente-search';
 import {TableModule} from 'primeng/table';
 import {PaginatorModule} from 'primeng/paginator';
 import {AccordionModule} from 'primeng/accordion';     // accordion and accordion tab
-import {MenuItem} from 'primeng/api';
+import {DataViewModule} from 'primeng/dataview';
+// import {MenuItem} from 'primeng/api';
 import { OrdemServicoComponent } from './ordem-servico/ordem-servico.component';                 // api
 import { DatePipe } from '@angular/common';
 import { ModalPesquisaClienteComponent } from './modal-pesquisa-cliente/modal-pesquisa-cliente.component';
@@ -90,6 +91,7 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import { ModalAtendimentoComponent } from './modal-atendimento/modal-atendimento.component';
 import { ModalAtendimentoService } from './modal-atendimento/modal-atendimento-service';
 import { PanelModule } from 'primeng/panel';
+import { ListagemComponent } from './home/listagem.component';
 
 
 @NgModule({
@@ -109,7 +111,8 @@ import { PanelModule } from 'primeng/panel';
     OrdemServicoComponent,
     ModalPesquisaClienteComponent,
     ModalMaoobraComponent,
-    ModalAtendimentoComponent
+    ModalAtendimentoComponent,
+    ListagemComponent
    ],
   imports: [
     BrowserModule,
@@ -121,6 +124,7 @@ import { PanelModule } from 'primeng/panel';
     PaginatorModule,
     AccordionModule,
     PanelModule,
+    DataViewModule,
     RadioButtonModule,
     routing,
     BrowserAnimationsModule, ToasterModule
