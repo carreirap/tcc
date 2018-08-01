@@ -12,6 +12,7 @@ import { PecaServicoOrdemService } from '../ordem-servico/ordem-servico-service'
 import { ModalAtendimentoService } from '../modal-atendimento/modal-atendimento-service';
 import { ActivatedRoute } from '../../../node_modules/@angular/router';
 import { Cliente } from '../_models/cliente';
+import { FichaAtendimentoService } from './ficha-atendimento-service';
 
 
 @Component({
@@ -31,7 +32,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
           private modalClienteService: ModalClienteService,
           private modalService: ModalService, private pecaServicoOrdemService: PecaServicoOrdemService,
         private modalAtendimento: ModalAtendimentoService,
-        private route: ActivatedRoute,) { 
+        private route: ActivatedRoute,private fichaAtendimentoService: FichaAtendimentoService) { 
     this.formFicha = new Ficha();
     this.situacaoTecnica = new SituacaoTecnica();
     this.toasterService = toasterService;
@@ -159,8 +160,20 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   addLinhaAtendimento(event) {
     console.log(event);
     event.sequencia = this.formFicha.atendimento.length + 1;
-    event.idOrdem =  this.formFicha.numeroFicha;
-    this.formFicha.atendimento.push(event);
+    event.id =  this.formFicha.numeroFicha;
+
+    this.service.post('/ficha/atendimento', event).subscribe(response => {
+      console.log(response);
+      this.fichaAtendimentoService.emitirResultado.emit('gravou');
+      this.formFicha.atendimento.push(event);
+      // this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
+    }, (error) => {
+      console.log('error in', error.error.mensagem);
+      this.fichaAtendimentoService.emitirResultado.emit('falhou');
+      // this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
+    });
+
+    
   }
 
   loadForm(data) {

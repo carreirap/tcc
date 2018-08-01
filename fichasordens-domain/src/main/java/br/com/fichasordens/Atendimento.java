@@ -4,13 +4,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class Atendimento {
+	
 	private int sequencia;
 	private Date data;
 	private String descricao;
 	private BigDecimal valor;
 	private float duracao;
 	private FichaAtendimento fichaAtendimento;
-
+	
 	public int getSequencia() {
 		return sequencia;
 	}
@@ -47,4 +48,5 @@ public class Atendimento {
 	public void setFichaAtendimento(FichaAtendimento fichaAtendimento) {
 		this.fichaAtendimento = fichaAtendimento;
 	}
+	
 }

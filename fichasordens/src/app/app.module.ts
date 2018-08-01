@@ -92,6 +92,7 @@ import { ModalAtendimentoComponent } from './modal-atendimento/modal-atendimento
 import { ModalAtendimentoService } from './modal-atendimento/modal-atendimento-service';
 import { PanelModule } from 'primeng/panel';
 import { ListagemComponent } from './home/listagem.component';
+import { FichaAtendimentoService } from './ficha-atendimento-component/ficha-atendimento-service';
 
 
 @NgModule({
@@ -149,6 +150,7 @@ import { ListagemComponent } from './home/listagem.component';
         ModalClienteService,
         ModalAtendimentoService,
         PecaServicoOrdemService,
+        FichaAtendimentoService,
         PapelUserService,
         UserService
   ],

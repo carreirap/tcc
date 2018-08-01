@@ -13,16 +13,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.fichasordens.Atendimento;
 import br.com.fichasordens.Cliente;
 import br.com.fichasordens.FichaAtendimento;
 import br.com.fichasordens.FichaAtendimentoLanc;
 import br.com.fichasordens.PecaOutroServico;
+import br.com.fichasordens.dto.AtendimentoDto;
 import br.com.fichasordens.dto.FichaAtendimentoDto;
 import br.com.fichasordens.dto.LancamentoDto;
 import br.com.fichasordens.dto.ListagemDashboardDto;
 import br.com.fichasordens.dto.MensagemRetornoDto;
 import br.com.fichasordens.dto.PecaOutroServicoDto;
 import br.com.fichasordens.exception.ExcecaoRetorno;
+import br.com.fichasordens.util.ConverterAtendimento;
 import br.com.fichasordens.util.ConverterCliente;
 import br.com.fichasordens.util.ConverterLancamentoDto;
 import br.com.fichasordens.util.ConverterPecaOutroServico;
@@ -54,6 +57,18 @@ public class FichaAtendimentoController {
 		//try {
 			final PecaOutroServico peca = ConverterPecaOutroServico.converterDtoPecaServico(dto);
 			this.fichaAtendimento.gravarPecaServicoFicha(peca);
+			//this.ordemServicoService.gravarPecaServicoOrdem(peca);
+			return new ResponseEntity( HttpStatus.OK);
+//		} catch (ExcecaoRetorno e) {
+//			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+//		}
+	}
+	
+	@RequestMapping(method = RequestMethod.POST,path="/atendimento")
+	public ResponseEntity gravarPecaServicosalvarItemOrdemServico(@RequestBody final AtendimentoDto dto) {
+		//try {
+			final Atendimento atend = ConverterAtendimento.converterAtendimentoDto(dto);
+			this.fichaAtendimento.gravarAtendimento(atend);
 			//this.ordemServicoService.gravarPecaServicoOrdem(peca);
 			return new ResponseEntity( HttpStatus.OK);
 //		} catch (ExcecaoRetorno e) {
