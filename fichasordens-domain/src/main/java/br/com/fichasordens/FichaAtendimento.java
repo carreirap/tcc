@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.fichasordens.entities.AtendimentoFichaEntity;
 import br.com.fichasordens.entities.ClienteEntity;
 import br.com.fichasordens.entities.FichaAtendLancEntity;
 import br.com.fichasordens.entities.FichaAtendLancId;
@@ -35,6 +36,7 @@ public class FichaAtendimento {
 	
 	private List<FichaAtendimentoLanc> fichaAtendimentoLancList;
 	private List<PecaOutroServico> pecaOutroServicoList;
+	private List<Atendimento> atendimentoList;
 	
 	@Autowired
 	private FichaAtendimentoRepository repository;
@@ -70,15 +72,17 @@ public class FichaAtendimento {
 	
 	public Map<String,Integer> contarFichasPorSituacao( ) {
 		List<FichaAtendimentoEntity> lst = this.repository.FindAllFichas();
+		return calcularTotais(lst);
+	}
+
+	private Map<String,Integer> calcularTotais(List<FichaAtendimentoEntity> lst) {
 		Map<String,Integer> map = new HashMap<String,Integer>();
 		int qtdAberto = 0;
 		int qtdTrabalhando = 0;
 		int qtdAguardando = 0;
 		int qtdFechado = 0;
 		int qtdCancelado = 0;
-				
 		for (FichaAtendimentoEntity a : lst) {
-			
 			for (FichaAtendLancEntity lanc : a.getFichaAtendLancs()) {
 				if (lanc.getSituacao().equals("Aberto")) {
 					qtdAberto = qtdAberto + 1; 
@@ -167,6 +171,18 @@ public class FichaAtendimento {
 				ficha.getPecaOutroServicoList().add(servico);
 			}
 		}
+		if(entity.getAtendimentoFichas().size() > 0) {
+			List<Atendimento> atendimentoList = new ArrayList<Atendimento>();
+			for(AtendimentoFichaEntity p: entity.getAtendimentoFichas()) {
+				Atendimento atend = new Atendimento();
+				atend.setData(p.getDate());
+				atend.setDescricao(p.getDescricao());
+				atend.setDuracao(p.getDuracao().floatValue());
+				atend.setSequencia(p.getId().getSequencia());
+				atend.setFichaAtendimento(ficha);
+				atendimentoList.add(atend);
+			}
+		}
 		return ficha;
 	}
 	
@@ -241,5 +257,13 @@ public class FichaAtendimento {
 
 	public void setPecaOutroServicoList(List<PecaOutroServico> pecaOutroServicoList) {
 		this.pecaOutroServicoList = pecaOutroServicoList;
+	}
+
+	public List<Atendimento> getAtendimentoList() {
+		return atendimentoList;
+	}
+
+	public void setAtendimentoList(List<Atendimento> atendimentoList) {
+		this.atendimentoList = atendimentoList;
 	}
 }

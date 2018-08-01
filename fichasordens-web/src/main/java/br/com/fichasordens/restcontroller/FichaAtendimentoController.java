@@ -121,6 +121,8 @@ public class FichaAtendimentoController {
 		for(PecaOutroServico p: ficha.getPecaOutroServicoList()) {
 			dto.getPecaOutroServicoDto().add(ConverterPecaOutroServico.converterPecaOutroServicoParaDto(p));
 		}
+		for(Atendimento p : ficha.get )
+	
 		return dto;
 	}
 	

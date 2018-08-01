@@ -94,15 +94,17 @@ public class OrdemServicoServiceImpl implements OrdemServicoInterface {
 	
 	public Map<String,Integer> contarOrdensPorSituacao() {
 		List<OrdemServicoEntity> lst = this.ordemServicoRepository.FindAllOrdens();
+		return calcularTotais(lst);
+	}
+
+	private Map<String,Integer> calcularTotais(List<OrdemServicoEntity> lst) {
 		Map<String,Integer> map = new HashMap<String,Integer>();
 		int qtdAberto = 0;
 		int qtdTrabalhando = 0;
 		int qtdAguardando = 0;
 		int qtdFechado = 0;
 		int qtdCancelado = 0;
-				
 		for (OrdemServicoEntity a : lst) {
-			
 			for (OrdemServicoLancEntity lanc : a.getOrdemServicoLancs()) {
 				if (lanc.getSituacao().equals("Aberto")) {
 					qtdAberto = qtdAberto + 1; 

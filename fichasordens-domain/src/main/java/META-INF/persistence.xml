@@ -5,7 +5,7 @@
 	<persistence-unit name="test"
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-		<class>br.com.fichasordens.entities.AtendimentoFicha</class>
+		<class>br.com.fichasordens.entities.AtendimentoFichaEntity</class>
 		<class>br.com.fichasordens.entities.AtendimentoFichaId</class>
 		<class>br.com.fichasordens.entities.ClienteEntity</class>
 		<class>br.com.fichasordens.entities.EmpresaEntity</class>
