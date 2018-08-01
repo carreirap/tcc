@@ -10,7 +10,8 @@ public class FichaAtendimentoDto {
     private LancamentoDto lancamento;
     private List<LancamentoDto> lancamentoLst;
     private List<PecaOutroServicoDto> pecaOutroServicoDto;
-    
+    private List<AtendimentoDto> atendimento;
+   
     public long getNumeroFicha() {
 		return numeroFicha;
 	}
@@ -46,5 +47,11 @@ public class FichaAtendimentoDto {
 	}
 	public void setPecaOutroServicoDto(List<PecaOutroServicoDto> pecaOutroServicoDto) {
 		this.pecaOutroServicoDto = pecaOutroServicoDto;
+	}
+	public List<AtendimentoDto> getAtendimento() {
+		return atendimento;
+	}
+	public void setAtendimento(List<AtendimentoDto> atendimento) {
+		this.atendimento = atendimento;
 	}
 }

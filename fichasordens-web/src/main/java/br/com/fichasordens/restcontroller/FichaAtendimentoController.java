@@ -131,14 +131,27 @@ public class FichaAtendimentoController {
 			final LancamentoDto lancDto = ConverterLancamentoDto.converterLancamentoDto(lanc);
 			dto.getLancamentoLst().add(lancDto);
 		}
-		
 		dto.setPecaOutroServicoDto(new ArrayList<PecaOutroServicoDto>());
 		for(PecaOutroServico p: ficha.getPecaOutroServicoList()) {
 			dto.getPecaOutroServicoDto().add(ConverterPecaOutroServico.converterPecaOutroServicoParaDto(p));
 		}
-		for(Atendimento p : ficha.get )
+		dto.setAtendimento(new ArrayList<AtendimentoDto>());
+		for(Atendimento p : ficha.getAtendimentoList() ) {
+			dto.getAtendimento().add(converterAtendimentoParaAtendimentoDto(ficha, p));
+		}
 	
 		return dto;
+	}
+
+	private AtendimentoDto converterAtendimentoParaAtendimentoDto(final FichaAtendimento ficha, Atendimento p) {
+		AtendimentoDto atendDto = new AtendimentoDto();
+		atendDto.setDataAtendimento(p.getData());
+		atendDto.setDescricao(p.getDescricao());
+		atendDto.setDuracao(p.getDuracao());
+		atendDto.setSequencia(p.getSequencia());
+		atendDto.setValor(p.getValor());
+		atendDto.setId(ficha.getId());
+		return atendDto;
 	}
 	
 	
