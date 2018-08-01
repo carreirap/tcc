@@ -2,6 +2,7 @@ package br.com.fichasordens;
 
 
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.fichasordens.entities.AtendimentoFichaEntity;
+import br.com.fichasordens.entities.AtendimentoFichaId;
 import br.com.fichasordens.entities.ClienteEntity;
 import br.com.fichasordens.entities.FichaAtendLancEntity;
 import br.com.fichasordens.entities.FichaAtendLancId;
@@ -20,6 +23,7 @@ import br.com.fichasordens.entities.FichaAtendimentoEntity;
 import br.com.fichasordens.entities.PecaServicoFichaEntity;
 import br.com.fichasordens.entities.PecaServicoFichaIdEntity;
 import br.com.fichasordens.exception.ExcecaoRetorno;
+import br.com.fichasordens.repository.AtendimentoFichaRepository;
 import br.com.fichasordens.repository.FichaAtendLancRepository;
 import br.com.fichasordens.repository.FichaAtendimentoRepository;
 import br.com.fichasordens.repository.PecaServicoFichaRepository;
@@ -35,6 +39,7 @@ public class FichaAtendimento {
 	
 	private List<FichaAtendimentoLanc> fichaAtendimentoLancList;
 	private List<PecaOutroServico> pecaOutroServicoList;
+	private List<Atendimento> atendimentoList;
 	
 	@Autowired
 	private FichaAtendimentoRepository repository;
@@ -44,6 +49,9 @@ public class FichaAtendimento {
 	
 	@Autowired
 	private PecaServicoFichaRepository pecaServicoFichaRepository;
+	
+	@Autowired
+	private AtendimentoFichaRepository atendimentoRepository;
 	
 	@Transactional
 	public FichaAtendimento salvarFicha(final FichaAtendimento fichaAtendimento) throws ExcecaoRetorno {
@@ -66,6 +74,12 @@ public class FichaAtendimento {
 	public void gravarPecaServicoFicha(final PecaOutroServico pecaOutroServico) {
 		final PecaServicoFichaEntity ent = this.converterPecaServicoOrdemParaEntity(pecaOutroServico);
 		pecaServicoFichaRepository.save(ent);
+	}
+	
+	@Transactional
+	public void gravarAtendimento(final Atendimento atendimento) {
+		final AtendimentoFichaEntity ent = this.converterAtendimentoParaEntity(atendimento);
+		atendimentoRepository.save(ent);
 	}
 	
 	public Map<String,Integer> contarFichasPorSituacao( ) {
@@ -156,18 +170,55 @@ public class FichaAtendimento {
 			});
 		}
 		if (entity.getPecaServicoFichas().size() > 0) {
-			ficha.setPecaOutroServicoList(new ArrayList<PecaOutroServico>());
-			for (PecaServicoFichaEntity a: entity.getPecaServicoFichas()) {
-				PecaOutroServico servico = new PecaOutroServico();
-				servico.setId(a.getId().getSequencia());
-				servico.setDescricao(a.getDescricao());
-				servico.setQuantidade(a.getQuantidade());
-				servico.setValor(a.getValor());
-				servico.setFichaAtendimento(ficha);
-				ficha.getPecaOutroServicoList().add(servico);
-			}
+			ficha.setPecaOutroServicoList(converterEntityParaPecaOutroServico(entity, ficha));
+		}
+		
+		if (entity.getAtendimentoFichas().size() > 0) {
+			ficha.setAtendimentoList(converterEntityParaAtendimentoFicha(entity, ficha));
 		}
 		return ficha;
+	}
+
+	private List<Atendimento> converterEntityParaAtendimentoFicha(final FichaAtendimentoEntity entity, FichaAtendimento ficha) {
+		List<Atendimento> list = new ArrayList<Atendimento>();
+		entity.getAtendimentoFichas().forEach(a-> {
+			Atendimento atend = new Atendimento();
+			atend.setData(a.getDate());
+			atend.setDescricao(a.getDescricao());
+			atend.setDuracao(a.getDuracao().floatValue());
+			atend.setFichaAtendimento(ficha);
+			atend.setSequencia(a.getId().getSequencia());
+			atend.setValor(a.getValor());
+			list.add(atend);
+		});
+		return list;
+	}
+
+	private List<PecaOutroServico> converterEntityParaPecaOutroServico(final FichaAtendimentoEntity entity, final FichaAtendimento ficha) {
+		List<PecaOutroServico> list = new ArrayList<PecaOutroServico>();
+		for (PecaServicoFichaEntity a: entity.getPecaServicoFichas()) {
+			PecaOutroServico servico = new PecaOutroServico();
+			servico.setId(a.getId().getSequencia());
+			servico.setDescricao(a.getDescricao());
+			servico.setQuantidade(a.getQuantidade());
+			servico.setValor(a.getValor());
+			servico.setFichaAtendimento(ficha);
+			list.add(servico);
+		}
+		return list;
+	}
+	
+	private AtendimentoFichaEntity converterAtendimentoParaEntity(final Atendimento atendimento) {
+		final AtendimentoFichaEntity ent = new AtendimentoFichaEntity();
+		ent.setDescricao(atendimento.getDescricao());
+		ent.setDuracao(new BigDecimal(atendimento.getDuracao()));
+		ent.setDate(atendimento.getData());
+		ent.setValor(atendimento.getValor());
+		ent.setId(new AtendimentoFichaId());
+		ent.getId().setSequencia(atendimento.getSequencia());
+		ent.getId().setFichaAtendimentoId(atendimento.getFichaAtendimento().getId());
+		
+		return ent;
 	}
 	
 	private PecaServicoFichaEntity converterPecaServicoOrdemParaEntity(PecaOutroServico pecaServicoFicha) {
@@ -242,4 +293,13 @@ public class FichaAtendimento {
 	public void setPecaOutroServicoList(List<PecaOutroServico> pecaOutroServicoList) {
 		this.pecaOutroServicoList = pecaOutroServicoList;
 	}
+
+	public List<Atendimento> getAtendimentoList() {
+		return atendimentoList;
+	}
+
+	public void setAtendimentoList(List<Atendimento> atendimentoList) {
+		this.atendimentoList = atendimentoList;
+	}
+	
 }

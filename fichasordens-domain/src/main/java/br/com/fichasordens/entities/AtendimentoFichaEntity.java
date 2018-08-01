@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "atendimento_ficha", schema = "public")
-public class AtendimentoFicha implements java.io.Serializable {
+public class AtendimentoFichaEntity implements java.io.Serializable {
 
 	private AtendimentoFichaId id;
 	private FichaAtendimentoEntity fichaAtendimento;
@@ -30,10 +30,10 @@ public class AtendimentoFicha implements java.io.Serializable {
 	private BigDecimal valor;
 	private BigDecimal duracao;
 
-	public AtendimentoFicha() {
+	public AtendimentoFichaEntity() {
 	}
 
-	public AtendimentoFicha(AtendimentoFichaId id, FichaAtendimentoEntity fichaAtendimento, Date date, String descricao,
+	public AtendimentoFichaEntity(AtendimentoFichaId id, FichaAtendimentoEntity fichaAtendimento, Date date, String descricao,
 			BigDecimal valor, BigDecimal duracao) {
 		this.id = id;
 		this.fichaAtendimento = fichaAtendimento;

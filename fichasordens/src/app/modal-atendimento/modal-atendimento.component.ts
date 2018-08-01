@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Atendimento } from '../_models/atendimento';
 import { ModalAtendimentoService } from './modal-atendimento-service';
+import { FichaAtendimentoService } from '../ficha-atendimento-component/ficha-atendimento-service';
 
 
 @Component({
@@ -14,9 +15,17 @@ export class ModalAtendimentoComponent implements OnInit {
   @Input() cValue;
   @Input() dValue;
 
-  constructor(private ngModal: NgbModal, private modalService: ModalAtendimentoService) { }
+  constructor(private ngModal: NgbModal, private modalService: ModalAtendimentoService, private fichaAtendimentoService: FichaAtendimentoService) { }
 
+  
   ngOnInit() {
+    this.fichaAtendimentoService.emitirResultado.subscribe(
+      // result => this.addLinha(result)
+      result => {
+        if (result === 'gravou') {
+          this.limpar();
+        }
+      });
   }
 
   onSubmit() {
@@ -28,6 +37,14 @@ export class ModalAtendimentoComponent implements OnInit {
     if (this.formAtendimento.duracao !== undefined) {
       this.modalService.enviarLinhaPaginaChamadora(atend);
     }
+  }
+
+  limpar() {
+    this.formAtendimento.descricao = '';
+    this.formAtendimento.duracao = undefined;
+    this.formAtendimento.valor = undefined;
+    this.formAtendimento.dataAtendimento = ''
+    return false;
   }
 
   
