@@ -44,8 +44,9 @@ export class DataService {
             .put<T>(this.actionUrl + id, JSON.stringify(itemToUpdate));
     }
 
-    public delete<T>(id: number): Observable<T> {
-        return this.http.delete<T>(this.actionUrl + id);
+    public delete<T>(path: String): Observable<T> {
+        return this.http.delete<T>(this._configuration.ServerService +
+            path);
     }
 }
 

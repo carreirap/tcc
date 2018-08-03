@@ -53,6 +53,9 @@ public class FichaAtendimento {
 	@Autowired
 	private AtendimentoFichaRepository atendimentoRepository;
 	
+	@Autowired
+	private Parametro parametro;
+	
 	@Transactional
 	public FichaAtendimento salvarFicha(final FichaAtendimento fichaAtendimento) throws ExcecaoRetorno {
 		try {
@@ -85,6 +88,11 @@ public class FichaAtendimento {
 	public Map<String,Integer> contarFichasPorSituacao( ) {
 		List<FichaAtendimentoEntity> lst = this.repository.FindAllFichas();
 		return calcularTotais(lst);
+	}
+	
+	public BigDecimal calcularValorAtendimento(final int horas, final int tipo) {
+		Parametro param = this.parametro.recuperarParametros().get(tipo);
+		return new BigDecimal(horas).multiply(param.getValor());
 	}
 
 	private Map<String,Integer> calcularTotais(List<FichaAtendimentoEntity> lst) {
@@ -142,6 +150,15 @@ public class FichaAtendimento {
 		final FichaAtendimentoEntity ent = this.repository.findOne(id);
 		FichaAtendimento ficha = this.converterEntityParaFichaAtendimento(ent);
 		return ficha;
+	}
+	
+	@Transactional
+	public void deletarAtendimento(final long idFicha, final int sequencia) {
+		AtendimentoFichaEntity ent = new AtendimentoFichaEntity();
+		ent.setId(new AtendimentoFichaId());
+		ent.getId().setSequencia(sequencia);
+		ent.getId().setFichaAtendimentoId(idFicha);
+		this.atendimentoRepository.delete(ent);
 	}
 	
 	

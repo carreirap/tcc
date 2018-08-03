@@ -91,8 +91,10 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import { ModalAtendimentoComponent } from './modal-atendimento/modal-atendimento.component';
 import { ModalAtendimentoService } from './modal-atendimento/modal-atendimento-service';
 import { PanelModule } from 'primeng/panel';
+import { CalendarModule } from 'primeng/calendar';
 import { ListagemComponent } from './home/listagem.component';
 import { FichaAtendimentoService } from './ficha-atendimento-component/ficha-atendimento-service';
+import { CalcularAtendimento } from './util/calcular-atendimento';
 
 
 @NgModule({
@@ -109,6 +111,7 @@ import { FichaAtendimentoService } from './ficha-atendimento-component/ficha-ate
     ParametroComponent,
     CpfCnpjDirective,
     PesquisarDirective,
+    CalcularAtendimento,
     OrdemServicoComponent,
     ModalPesquisaClienteComponent,
     ModalMaoobraComponent,
@@ -127,6 +130,7 @@ import { FichaAtendimentoService } from './ficha-atendimento-component/ficha-ate
     PanelModule,
     DataViewModule,
     RadioButtonModule,
+    CalendarModule,
     routing,
     BrowserAnimationsModule, ToasterModule
 

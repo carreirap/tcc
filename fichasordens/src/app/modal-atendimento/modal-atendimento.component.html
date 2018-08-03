@@ -1,4 +1,3 @@
-<form (submit)="onSubmit()" class="container" #f="ngForm" style="padding-left: 0px; padding-right: 0px;" novalidate>
   <div class="modal-header navbar-dark bg-dark">
     <h5 class="modal-title" style="color:white;">Inserir Atendimento</h5>
     <button type="button" style="color:white;" class="close" aria-label="Close" (click)="dValue('Close click')">
@@ -12,32 +11,42 @@
         <div class="form-group col-md-7">
           <label for="visita">Data</label>
           <input type="hidden" id="id-vista" name="id-visita">
-          <input class="form-control" type="text" value="" id="data" name="data" [(ngModel)]="formAtendimento.dataAtendimento">
+          <!--<input class="form-control" type="text" value="" id="data" name="data" [(ngModel)]="formAtendimento.dataAtendimento">-->
+          <p-calendar class="form-control" [(ngModel)]="formAtendimento.dataAtendimento"
+          inputStyleClass="no-border"></p-calendar>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-7">
           <label for="visita">Descrição</label>
-          <input class="form-control" type="text" value="" id="descr" name="descr" [(ngModel)]="formAtendimento.descricao">
-        </div>
+          <select class="form-control custom-select" onselect="" id="estado" name="estado" [(ngModel)]="formAtendimento.descricao">
+          <option *ngFor="let title of formAtendimento.tipo" [value]="title.value">
+              {{title.label}}             
+            </option>
+        </select>
+      </div>
+          <!--<input class="form-control" type="text" value="" id="descr" name="descr" [(ngModel)]="formAtendimento.descricao">-->
       </div>
       <div class="form-row">
         <div class="form-group col-md-7">
           <label for="visita">Duracao</label>
-          <input class="form-control" type="text" value="" id="duracao" name="duracao" [(ngModel)]="formAtendimento.duracao">
+          <input class="form-control" type="text" value="" id="duracao" calcularAtendimento name="duracao" [(ngModel)]="formAtendimento.duracao" 
+           (onPressEnter)="calcular($event, this)" [inputTextFilter]='this'>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-7">
           <label for="visita">Valor</label>
-          <input class="form-control" type="text" value="" id="valor" name="valor" [(ngModel)]="formAtendimento.valor">
+          <input [readonly]=true class="form-control" type="text" value="" id="valor" name="valor" numbersOnly [(ngModel)]="formAtendimento.valor" digits="8" decimals="2">
         </div>
       </div>
-
+    </div> 
+    <div class="alert alert-danger" role="alert" *ngIf="error">
+      <strong>Todos</strong> os campos precisam ser informados.
     </div>
   </div>
   <div class="modal-footer">
     <button class="btn btn-primary" (click)="limpar()">Cancelar</button>
-    <button class="btn btn-primary">Inserir</button>
+    <button class="btn btn-primary" (click)="onSubmit()">Inserir</button>
   </div>
-</form>
+

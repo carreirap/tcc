@@ -28,7 +28,7 @@
                 </p-header>
                     <a class="nav-link" [routerLink]="['/listaDashboard', 'Aberto']">{{dashboadFicha.qtqAberta}} Abertas</a>
                 <p-footer>
-                    Footer content here
+                    
                 </p-footer>
             </p-panel>
         </div>
@@ -40,7 +40,7 @@
                     <a class="nav-link" [routerLink]="['/listaDashboard', 'Trabalhando']">{{dashboadFicha.qtdTrabalhando}} Trabalhando</a>
                     <a class="nav-link" [routerLink]="['/listaDashboard', 'Aguardando']">{{dashboadFicha.qtdAguardando}} Aguardando</a>
                 <p-footer>
-                    Footer content here
+                    
                 </p-footer>
             </p-panel>
         </div>
@@ -49,10 +49,10 @@
                 <p-header>
                     Fechadas
                 </p-header>
-                    {{dashboadFicha.qtdFechada}} Fechada <br>
-                    {{dashboadFicha.qtdCancelado}} Cancelada    
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Fechado']">{{dashboadFicha.qtdFechada}} Fechado</a>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Cancelado']">{{dashboadFicha.qtdAguardando}} Cancelado</a>
                 <p-footer>
-                    Footer content here
+
                 </p-footer>
             </p-panel>
         </div>

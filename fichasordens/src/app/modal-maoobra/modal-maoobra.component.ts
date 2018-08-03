@@ -46,5 +46,6 @@ export class ModalMaoobraComponent implements OnInit {
     this.formItemTable.valor = undefined;
     return false;
   }
+  
 
 }

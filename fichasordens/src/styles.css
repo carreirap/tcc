@@ -3,4 +3,10 @@ label {margin-bottom: 0; }
 ul {margin-bottom: 0; }
 .was-validated {margin-bottom: 8px; }
 .jumbotron  { min-height: 400px;} 
-
+.no-border {
+    border-left-width: 0px !important;
+    border-right-width: 0px !important;
+    padding-left: 0px !important;
+    border-top-width: 0px !important;
+    border-bottom-width: 0px !important;
+}

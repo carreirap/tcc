@@ -13,6 +13,7 @@ import { ModalAtendimentoService } from '../modal-atendimento/modal-atendimento-
 import { ActivatedRoute } from '../../../node_modules/@angular/router';
 import { Cliente } from '../_models/cliente';
 import { FichaAtendimentoService } from './ficha-atendimento-service';
+import { Atendimento } from '../_models/atendimento';
 
 
 @Component({
@@ -25,6 +26,8 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   situacaoTecnica: any;
   toasterService: ToasterService;
   param: any;
+  // selectedAtend: string[] = [];
+  selectedAtend: Atendimento;
 
 
   constructor(private service: DataService, toasterService: ToasterService, public modal: NgbModal,
@@ -85,6 +88,19 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     });
   }
 
+  remove() {
+    console.log(this.selectedAtend);
+    this.service.delete('/ficha/atendimento?idFicha=' + this.selectedAtend.id + '&sequencia=' + this.selectedAtend.sequencia).subscribe(response => {
+      console.log(response);
+      this.toasterService.pop('success', 'Ficha de Atendimento', 'Atendimento excluido com sucesso');
+      this.formFicha.atendimento.splice(this.formFicha.atendimento.indexOf(this.selectedAtend), 1);
+    }, (error) => {
+      console.log('error in', error.error.mensagem);
+      this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
+    });
+    return false;
+  }
+
   loadFicha(data) {
     this.formFicha.numeroFicha = data.numeroFicha;
     this.formFicha.tipoServico = data.tipoServico;
@@ -93,7 +109,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     this.formFicha.cliente.fone = data.cliente.fone;
     this.formFicha.cliente.celular = data.cliente.celular;
     this.formFicha.cliente.nome = data.cliente.nome;
-    debugger;
+
     for (let i=0; i < data.lancamentoLst.length; i++) {
       if (i===0) {
         this.formFicha.dataAbertura = this.datePipe.transform(data.lancamentoLst[i].data, 'dd/MM/yyyy');
@@ -106,6 +122,11 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.formFicha.lancamentoLst.push(data.lancamentoLst[i])
     }
     this.formFicha.pecaOutroServicoDto = data.pecaOutroServicoDto;
+    for (let i=0; i < data.atendimento.length; i++) {
+      data.atendimento[i].dataAtendimento = this.datePipe.transform(data.atendimento[i].dataAtendimento, 'dd/MM/yyyy');
+      this.formFicha.atendimento.push(data.atendimento[i]);
+    }
+    
   }
 
   setNumeroFicha(data) {

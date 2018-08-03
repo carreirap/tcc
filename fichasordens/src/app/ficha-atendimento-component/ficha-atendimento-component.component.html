@@ -90,12 +90,14 @@
       <button type="submit" (click)="mostrarModalAtendimento(atendimento);" *ngIf="formFicha.numeroFicha" class="btn btn-primary">Incluir</button>
     </div>
     <div class="form-group col-md-1">
-      <button type="submit" class="btn btn-primary" *ngIf="formFicha.numeroFicha">Excluir</button>
+      <button type="submit" class="btn btn-primary" (click)="remove()" *ngIf="formFicha.numeroFicha">Excluir</button>
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-11">
-      <p-table [responsive]="true" [value]="formFicha.atendimento" [lazy]="true" [immutable]=false *ngIf="formFicha.numeroFicha">
+      <p-table [responsive]="true" [value]="formFicha.atendimento" [lazy]="true" 
+      selectionMode="single" [(selection)]="selectedAtend"
+      [immutable]=false *ngIf="formFicha.numeroFicha">
         <ng-template pTemplate="header">
           <tr>
             <th>Data</th>
@@ -105,7 +107,7 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-car>
-          <tr>
+          <tr [pSelectableRow]="car">
             <td>{{car.dataAtendimento}}</td>
             <td>{{car.descricao}}</td>
             <td>{{car.duracao}}</td>

@@ -94,7 +94,7 @@ public class AtendimentoFichaEntity implements java.io.Serializable {
 		this.valor = valor;
 	}
 
-	@Column(name = "duracao", nullable = false, precision = 3)
+	@Column(name = "duracao", nullable = false, precision = 5)
 	public BigDecimal getDuracao() {
 		return this.duracao;
 	}

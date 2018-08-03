@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Atendimento } from '../_models/atendimento';
 import { ModalAtendimentoService } from './modal-atendimento-service';
 import { FichaAtendimentoService } from '../ficha-atendimento-component/ficha-atendimento-service';
+import { DataService } from '../_services/http.service';
 
 
 @Component({
@@ -14,10 +15,13 @@ export class ModalAtendimentoComponent implements OnInit {
   formAtendimento = new Atendimento();
   @Input() cValue;
   @Input() dValue;
+  error: string;
 
-  constructor(private ngModal: NgbModal, private modalService: ModalAtendimentoService, private fichaAtendimentoService: FichaAtendimentoService) { }
+  constructor(private ngModal: NgbModal, private modalService: ModalAtendimentoService,
+    private fichaAtendimentoService: FichaAtendimentoService,
+    private service: DataService) { }
 
-  
+
   ngOnInit() {
     this.fichaAtendimentoService.emitirResultado.subscribe(
       // result => this.addLinha(result)
@@ -28,10 +32,31 @@ export class ModalAtendimentoComponent implements OnInit {
       });
   }
 
+  calcular(event) {
+    this.service.get('/ficha/calcAtendimento?horas=' + this.formAtendimento.duracao + '&tipo=' +
+      this.formAtendimento.descricao).subscribe(response => {
+        this.loadValor(response);
+      }, (error) => {
+        console.log('error in', error.error.mensagem);
+      });
+    return false;
+
+  }
+
   onSubmit() {
+    if (this.formAtendimento.duracao === undefined) {
+      this.error = 'error';
+    }
+    if (this.formAtendimento.descricao === undefined || this.formAtendimento.descricao === '') {
+      this.error = 'error';
+    }
+    if (this.formAtendimento.dataAtendimento === undefined) {
+      this.error = 'error';
+    }
     const atend = new Atendimento();
     atend.duracao = this.formAtendimento.duracao;
-    atend.descricao = this.formAtendimento.descricao;
+    debugger;
+    atend.descricao = this.formAtendimento.tipo[parseInt(this.formAtendimento.descricao)].label;
     atend.valor = this.formAtendimento.valor;
     atend.dataAtendimento = this.formAtendimento.dataAtendimento;
     if (this.formAtendimento.duracao !== undefined) {
@@ -44,9 +69,14 @@ export class ModalAtendimentoComponent implements OnInit {
     this.formAtendimento.duracao = undefined;
     this.formAtendimento.valor = undefined;
     this.formAtendimento.dataAtendimento = ''
+    this.error = undefined;
     return false;
   }
 
-  
+  loadValor(data) {
+    this.formAtendimento.valor = data;
+  }
+
+
 
 }

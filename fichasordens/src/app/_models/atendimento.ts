@@ -7,4 +7,8 @@ export  class Atendimento {
     duracao: number;
     valor:number;
     id: number;
+
+    tipo: Array<any> = [
+        { value: '0', label: 'Visita Tecnica' },
+        { value: '1', label: 'Hora Tecnica' }];
 }

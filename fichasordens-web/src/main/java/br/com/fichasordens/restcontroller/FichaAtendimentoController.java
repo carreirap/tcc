@@ -107,6 +107,17 @@ public class FichaAtendimentoController {
 		return this.converterParaDto(ficha);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET,path="/calcAtendimento")
+	public ResponseEntity calcularValorAtendimento(@RequestParam final int horas, @RequestParam final int tipo) {
+		return new ResponseEntity(this.fichaAtendimento.calcularValorAtendimento(horas, tipo), HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(method = RequestMethod.DELETE,path="/atendimento")
+	public ResponseEntity deletarAtendimento(@RequestParam final int idFicha, @RequestParam final int sequencia) {
+		this.fichaAtendimento.deletarAtendimento(idFicha, sequencia);
+		return new ResponseEntity(HttpStatus.OK);
+	}
 	
 	
 //	@RequestMapping(method = RequestMethod.POST,path="/lancamento")
@@ -127,19 +138,24 @@ public class FichaAtendimentoController {
 		dto.setCliente(ConverterCliente.converterClienteParaDto(ficha.getCliente()));
 
 		dto.setLancamentoLst(new ArrayList<LancamentoDto>());
-		for(FichaAtendimentoLanc lanc: ficha.getFichaAtendimentoLancList()) {
-			final LancamentoDto lancDto = ConverterLancamentoDto.converterLancamentoDto(lanc);
-			dto.getLancamentoLst().add(lancDto);
+		if (ficha.getFichaAtendimentoLancList() != null) {
+			for(FichaAtendimentoLanc lanc: ficha.getFichaAtendimentoLancList()) {
+				final LancamentoDto lancDto = ConverterLancamentoDto.converterLancamentoDto(lanc);
+				dto.getLancamentoLst().add(lancDto);
+			}
 		}
 		dto.setPecaOutroServicoDto(new ArrayList<PecaOutroServicoDto>());
-		for(PecaOutroServico p: ficha.getPecaOutroServicoList()) {
-			dto.getPecaOutroServicoDto().add(ConverterPecaOutroServico.converterPecaOutroServicoParaDto(p));
+		if (ficha.getPecaOutroServicoList() != null) {
+			for(PecaOutroServico p: ficha.getPecaOutroServicoList()) {
+				dto.getPecaOutroServicoDto().add(ConverterPecaOutroServico.converterPecaOutroServicoParaDto(p));
+			}
 		}
 		dto.setAtendimento(new ArrayList<AtendimentoDto>());
-		for(Atendimento p : ficha.getAtendimentoList() ) {
-			dto.getAtendimento().add(converterAtendimentoParaAtendimentoDto(ficha, p));
+		if (ficha.getAtendimentoList() != null) {
+			for(Atendimento p : ficha.getAtendimentoList() ) {
+				dto.getAtendimento().add(converterAtendimentoParaAtendimentoDto(ficha, p));
+			}
 		}
-	
 		return dto;
 	}
 
