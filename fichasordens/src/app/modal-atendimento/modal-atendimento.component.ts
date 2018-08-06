@@ -55,7 +55,6 @@ export class ModalAtendimentoComponent implements OnInit {
     }
     const atend = new Atendimento();
     atend.duracao = this.formAtendimento.duracao;
-    debugger;
     atend.descricao = this.formAtendimento.tipo[parseInt(this.formAtendimento.descricao)].label;
     atend.valor = this.formAtendimento.valor;
     atend.dataAtendimento = this.formAtendimento.dataAtendimento;

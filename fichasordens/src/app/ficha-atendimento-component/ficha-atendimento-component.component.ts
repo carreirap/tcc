@@ -14,6 +14,7 @@ import { ActivatedRoute } from '../../../node_modules/@angular/router';
 import { Cliente } from '../_models/cliente';
 import { FichaAtendimentoService } from './ficha-atendimento-service';
 import { Atendimento } from '../_models/atendimento';
+import { PecaServicoOrdem } from '../_models/peca-servico-ordem';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   param: any;
   // selectedAtend: string[] = [];
   selectedAtend: Atendimento;
+  selectedPecaServico: PecaServicoOrdem;
 
 
   constructor(private service: DataService, toasterService: ToasterService, public modal: NgbModal,
@@ -59,6 +61,8 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     if (this.param !== undefined) {
       this.service.get('/ficha/buscar?id=' + this.param).subscribe(response => {
         this.loadFicha(response);
+        this.formFicha.lancamento.nomeUsuario = 'fffff';
+        this.formFicha.lancamento.data = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
       }, (error) => {
         console.log('error in', error);
         // this.toasterService.pop('error', 'Empresa', error.mensagem);
@@ -67,8 +71,8 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.formFicha.dataAbertura = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
       this.formFicha.lancamento.situacao = 'Aberto';
       this.formFicha.tipoServico = 'Assitencia';
-      this.getNomeUsario();
     }
+    this.getNomeUsario();
   }
 
   onSubmit() {
@@ -77,6 +81,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.formFicha.lancamento.observacao = 'Abertura'
       this.formFicha.lancamento.data = this.formFicha.dataAbertura
     }
+    this.getSequenciaLancamento();
     this.service.post('/ficha', this.formFicha).subscribe(response => {
       console.log(response);
       this.setNumeroFicha(response);
@@ -87,6 +92,14 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
     });
   }
+  
+  getSequenciaLancamento() {
+    let x = 0;
+    for (let i=0; i < this.formFicha.lancamentoLst.length; i++) {
+      x = this.formFicha.lancamentoLst[i].sequencia;
+    }
+    this.formFicha.lancamento.sequencia = x + 1;
+  }
 
   remove() {
     console.log(this.selectedAtend);
@@ -96,7 +109,20 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.formFicha.atendimento.splice(this.formFicha.atendimento.indexOf(this.selectedAtend), 1);
     }, (error) => {
       console.log('error in', error.error.mensagem);
-      this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
+      this.toasterService.pop('error', 'Ficha de Atendimento', error.error.mensagem);
+    });
+    return false;
+  }
+
+  removePecaOutroServico() {
+    console.log(this.selectedAtend);
+    this.service.delete('/ficha/pecaServico?idFicha=' + this.selectedPecaServico.idOrdem + '&sequencia=' + this.selectedPecaServico.sequencia).subscribe(response => {
+      console.log(response);
+      this.toasterService.pop('success', 'Ficha de Atendimento', 'Peça/Outro Servico excluido com sucesso');
+      this.formFicha.pecaOutroServicoDto.splice(this.formFicha.pecaOutroServicoDto.indexOf(this.selectedPecaServico), 1);
+    }, (error) => {
+      console.log('error in', error.error.mensagem);
+      this.toasterService.pop('error', 'Ficha de Atendimento', error.error.mensagem);
     });
     return false;
   }
@@ -109,13 +135,16 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     this.formFicha.cliente.fone = data.cliente.fone;
     this.formFicha.cliente.celular = data.cliente.celular;
     this.formFicha.cliente.nome = data.cliente.nome;
+    this.formFicha.cliente.id = data.cliente.id;
+
 
     for (let i=0; i < data.lancamentoLst.length; i++) {
       if (i===0) {
         this.formFicha.dataAbertura = this.datePipe.transform(data.lancamentoLst[i].data, 'dd/MM/yyyy');
         this.formFicha.responsavel = data.lancamentoLst[i].nomeUsuario;
         
-      }
+      } 
+      data.lancamentoLst[i].data = this.datePipe.transform(data.lancamentoLst[i].data, 'dd/MM/yyyy');
       if (i + 1 === data.lancamentoLst.length) {
         this.formFicha.lancamento.situacao = data.lancamentoLst[i].situacao;
       }

@@ -64,7 +64,11 @@ public class FichaAtendimento {
 			fichaAtendimento.setId(ent.getId());
 			fichaAtendimento.getFichaAtendimentoLancList().get(0).setFichaAtendimento(fichaAtendimento);
 			FichaAtendLancEntity lancEntity = this.converterFichaAtendLancParaEntity(fichaAtendimento.getFichaAtendimentoLancList().get(0));
-			
+			FichaAtendLancEntity lancEntityAnterior = this.fichaAtendLancRepository.findByFichaAtendimentoIdAndAtualSituacao(ent.getId(), true);
+			if (lancEntityAnterior != null) {
+				lancEntityAnterior.setAtualSituacao(false);
+				this.fichaAtendLancRepository.save(lancEntityAnterior);
+			}
 			fichaAtendLancRepository.save(lancEntity);
 			LOGGER.info("Ficha de Atendimento cadastrada id {}", ent.getId());
 			return fichaAtendimento;
@@ -159,6 +163,15 @@ public class FichaAtendimento {
 		ent.getId().setSequencia(sequencia);
 		ent.getId().setFichaAtendimentoId(idFicha);
 		this.atendimentoRepository.delete(ent);
+	}
+	
+	@Transactional
+	public void deletarPecaOutroServico(final long idFicha, final int sequencia) {
+		PecaServicoFichaEntity ent = new PecaServicoFichaEntity();
+		ent.setId(new PecaServicoFichaIdEntity());
+		ent.getId().setSequencia(sequencia);
+		ent.getId().setFichaAtendId(idFicha);
+		this.pecaServicoFichaRepository.delete(ent);
 	}
 	
 	
@@ -265,6 +278,7 @@ public class FichaAtendimento {
 	
 	public FichaAtendimentoEntity converterParaEntity(final FichaAtendimento fichaAtendimento) {
 		final FichaAtendimentoEntity ent = new FichaAtendimentoEntity();
+		ent.setId(fichaAtendimento.getId());
 		ent.setTipoServico(fichaAtendimento.getTipoServico());
 		ent.setId(fichaAtendimento.getId());
 		ClienteEntity cliente = new ClienteEntity();
@@ -284,6 +298,7 @@ public class FichaAtendimento {
 		ent.getId().setSequencia(fichaAtendimentoLanc.getSequencia());
 		ent.getId().setFichaAtendimentoId(fichaAtendimentoLanc.getFichaAtendimento().getId());
 		ent.getFichaAtendimento().setId(fichaAtendimentoLanc.getFichaAtendimento().getId());
+		ent.setAtualSituacao(true);
 		return ent;
 		
 	}

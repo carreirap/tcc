@@ -119,6 +119,12 @@ public class FichaAtendimentoController {
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	
+	@RequestMapping(method = RequestMethod.DELETE,path="/pecaServico")
+	public ResponseEntity deletarPecaOutroServico(@RequestParam final int idFicha, @RequestParam final int sequencia) {
+		this.fichaAtendimento.deletarPecaOutroServico(idFicha, sequencia);
+		return new ResponseEntity(HttpStatus.OK);
+	}
+	
 	
 //	@RequestMapping(method = RequestMethod.POST,path="/lancamento")
 //	public ResponseEntity salvarLancamentoTecnico(@RequestBody final OrdemServicoLancDto dto) {
@@ -174,6 +180,7 @@ public class FichaAtendimentoController {
 	private FichaAtendimento converterDto(final FichaAtendimentoDto dto) {
 		final FichaAtendimento ficha = new FichaAtendimento();
 		ficha.setTipoServico(dto.getTipoServico());
+		ficha.setId(dto.getNumeroFicha());
 		final Cliente cliente = new Cliente();
 		cliente.setId(dto.getCliente().getId());
 		ficha.setCliente(cliente);

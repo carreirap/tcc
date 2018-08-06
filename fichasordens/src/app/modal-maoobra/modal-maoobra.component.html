@@ -27,7 +27,9 @@
           <input class="form-control" type="number" value="" id="valor" name="valor" [(ngModel)]="formItemTable.valor" numbersOnly digits="8" decimals="2">
         </div>
       </div>
-
+      <div class="alert alert-danger" role="alert" *ngIf="error">
+        <strong>Todos</strong> os campos precisam ser informados.
+      </div>
     </div>
   </div>
   <div class="modal-footer">

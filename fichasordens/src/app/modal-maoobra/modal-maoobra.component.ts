@@ -15,12 +15,12 @@ export class ModalMaoobraComponent implements OnInit {
   formItemTable = new PecaServicoOrdem();
   @Input() cValue;
   @Input() dValue;
+  error: string;
 
   constructor(private ngModal: NgbModal, private modalService: ModalService, private pecaServicoOrdemService: PecaServicoOrdemService) { }
 
   ngOnInit() {
     this.pecaServicoOrdemService.emitirResultado.subscribe(
-      // result => this.addLinha(result)
       result => {
         if (result === 'gravou') {
           this.limpar();
@@ -30,6 +30,15 @@ export class ModalMaoobraComponent implements OnInit {
 
 
   onSubmit() {
+    if (this.formItemTable.qtde === undefined) {
+      this.error = 'error';
+    }
+    if (this.formItemTable.descricao === undefined || this.formItemTable.descricao === '') {
+      this.error = 'error';
+    }
+    if (this.formItemTable.valor === undefined) {
+      this.error = 'error';
+    }
     const itemTable = new PecaServicoOrdem();
     itemTable.qtde = this.formItemTable.qtde;
     itemTable.descricao = this.formItemTable.descricao;
