@@ -37,7 +37,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
           private modalClienteService: ModalClienteService,
           private modalService: ModalService, private pecaServicoOrdemService: PecaServicoOrdemService,
         private modalAtendimento: ModalAtendimentoService,
-        private route: ActivatedRoute,private fichaAtendimentoService: FichaAtendimentoService) { 
+        private route: ActivatedRoute, private fichaAtendimentoService: FichaAtendimentoService) {
     this.formFicha = new Ficha();
     this.situacaoTecnica = new SituacaoTecnica();
     this.toasterService = toasterService;
@@ -51,12 +51,12 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       result => this.loadForm(result)
     );
     this.modalAtendimento.carregarLinha.subscribe(
-      result => this.addLinhaAtendimento(result)  
+      result => this.addLinhaAtendimento(result)
     );
 
     this.route.params.subscribe(
       params => {
-        this.param = params['id']; 
+        this.param = params['id'];
     });
     if (this.param !== undefined) {
       this.service.get('/ficha/buscar?id=' + this.param).subscribe(response => {
@@ -78,10 +78,11 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   onSubmit() {
     if (this.formFicha.lancamento.situacao === 'Aberto') {
       this.formFicha.lancamento.sequencia = 0;
-      this.formFicha.lancamento.observacao = 'Abertura'
-      this.formFicha.lancamento.data = this.formFicha.dataAbertura
+      this.formFicha.lancamento.observacao = 'Abertura';
+      this.formFicha.lancamento.data = this.formFicha.dataAbertura;
+    } else {
+      this.getSequenciaLancamento();
     }
-    this.getSequenciaLancamento();
     this.service.post('/ficha', this.formFicha).subscribe(response => {
       console.log(response);
       this.setNumeroFicha(response);
@@ -92,10 +93,10 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
     });
   }
-  
+
   getSequenciaLancamento() {
     let x = 0;
-    for (let i=0; i < this.formFicha.lancamentoLst.length; i++) {
+    for (let i = 0; i < this.formFicha.lancamentoLst.length; i++) {
       x = this.formFicha.lancamentoLst[i].sequencia;
     }
     this.formFicha.lancamento.sequencia = x + 1;
@@ -103,6 +104,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
 
   remove() {
     console.log(this.selectedAtend);
+    // tslint:disable-next-line:max-line-length
     this.service.delete('/ficha/atendimento?idFicha=' + this.selectedAtend.id + '&sequencia=' + this.selectedAtend.sequencia).subscribe(response => {
       console.log(response);
       this.toasterService.pop('success', 'Ficha de Atendimento', 'Atendimento excluido com sucesso');
@@ -116,6 +118,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
 
   removePecaOutroServico() {
     console.log(this.selectedAtend);
+    // tslint:disable-next-line:max-line-length
     this.service.delete('/ficha/pecaServico?idFicha=' + this.selectedPecaServico.idOrdem + '&sequencia=' + this.selectedPecaServico.sequencia).subscribe(response => {
       console.log(response);
       this.toasterService.pop('success', 'Ficha de Atendimento', 'Peça/Outro Servico excluido com sucesso');
@@ -131,37 +134,35 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     this.formFicha.numeroFicha = data.numeroFicha;
     this.formFicha.tipoServico = data.tipoServico;
     this.formFicha.cliente = new Cliente();
-    this.formFicha.cliente.cnpj = data.cliente.cnpj
+    this.formFicha.cliente.cnpj = data.cliente.cnpj;
     this.formFicha.cliente.fone = data.cliente.fone;
     this.formFicha.cliente.celular = data.cliente.celular;
     this.formFicha.cliente.nome = data.cliente.nome;
     this.formFicha.cliente.id = data.cliente.id;
 
 
-    for (let i=0; i < data.lancamentoLst.length; i++) {
-      if (i===0) {
+    for (let i = 0; i < data.lancamentoLst.length; i++) {
+      if (i === 0) {
         this.formFicha.dataAbertura = this.datePipe.transform(data.lancamentoLst[i].data, 'dd/MM/yyyy');
         this.formFicha.responsavel = data.lancamentoLst[i].nomeUsuario;
-        
-      } 
+      }
       data.lancamentoLst[i].data = this.datePipe.transform(data.lancamentoLst[i].data, 'dd/MM/yyyy');
       if (i + 1 === data.lancamentoLst.length) {
         this.formFicha.lancamento.situacao = data.lancamentoLst[i].situacao;
       }
-      this.formFicha.lancamentoLst.push(data.lancamentoLst[i])
+      this.formFicha.lancamentoLst.push(data.lancamentoLst[i]);
     }
     this.formFicha.pecaOutroServicoDto = data.pecaOutroServicoDto;
-    for (let i=0; i < data.atendimento.length; i++) {
+    for (let i = 0; i < data.atendimento.length; i++) {
       data.atendimento[i].dataAtendimento = this.datePipe.transform(data.atendimento[i].dataAtendimento, 'dd/MM/yyyy');
       this.formFicha.atendimento.push(data.atendimento[i]);
     }
-    
+
   }
 
   setNumeroFicha(data) {
     this.formFicha.numeroFicha = data.numeroFicha;
   }
-  
 
   mostrarModal(clienteModal) {
     this.modal.open(clienteModal);
@@ -179,7 +180,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   }
 
   private getNomeUsario() {
-    let userLog = new UsuarioLogado();
+    const userLog = new UsuarioLogado();
     userLog.usuario = JSON.parse(localStorage.getItem('currentUser')).usuario;
     this.authenticationService.getUpdatedUser(userLog).subscribe(response => {
         this.formFicha.lancamento.nomeUsuario = response.nome;
@@ -223,7 +224,6 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       // this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
     });
 
-    
   }
 
   loadForm(data) {

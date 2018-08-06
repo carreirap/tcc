@@ -141,7 +141,7 @@ public class FichaAtendimento {
 		}
 		List<FichaAtendimento> fichaList = new ArrayList<FichaAtendimento>();
 		lst.forEach(a-> {
-			FichaAtendLancEntity ent = this.fichaAtendLancRepository.findBySituacaoAndFichaAtendimentoId("Aberto", a.getId());
+			FichaAtendLancEntity ent = this.fichaAtendLancRepository.findBySituacaoAndFichaAtendimentoId(situacao, a.getId());
 			ent.getUsuario().getId();
 			a.getFichaAtendLancs().add(ent);
 			fichaList.add(this.converterEntityParaFichaAtendimento(a));

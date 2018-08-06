@@ -77,7 +77,7 @@ public class FichaAtendLancEntity implements java.io.Serializable {
 		this.usuario = usuario;
 	}
 
-	@Column(name = "situacao", nullable = false, length = 10)
+	@Column(name = "situacao", nullable = false, length = 15)
 	public String getSituacao() {
 		return this.situacao;
 	}
