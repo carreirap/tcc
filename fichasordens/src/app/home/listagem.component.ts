@@ -14,22 +14,32 @@ import { Configuration } from '../app.constants';
   })
 
 export class ListagemComponent implements OnInit {
-    param: any; 
-    lista: any[];   
+    param: any;
+    paramTipo: any;
+    lista: any[];
     ngOnInit(): void {
         this.lista = new Array();
         this.route.params.subscribe(
             params => {
-                this.param = params['situacao']; 
+                this.param = params['situacao'];
+                this.paramTipo = params['tipo'];
         });
-        
-        this.service.get('/ficha?situacao=' + this.param).subscribe(response => {
-            this.loadData(response);
-        }, (error) => {
-            console.log('error in', error);
-            // this.toasterService.pop('error', 'Empresa', error.mensagem);
-        });
-        
+        if (this.paramTipo === 'Ficha') {
+            this.service.get('/ficha?situacao=' + this.param).subscribe(response => {
+                this.loadData(response);
+            }, (error) => {
+                console.log('error in', error);
+                // this.toasterService.pop('error', 'Empresa', error.mensagem);
+            });
+        } else {
+            this.service.get('/ordem?situacao=' + this.param).subscribe(response => {
+                this.loadData(response);
+            }, (error) => {
+                console.log('error in', error);
+                // this.toasterService.pop('error', 'Empresa', error.mensagem);
+            });
+        }
+
     }
 
     constructor(

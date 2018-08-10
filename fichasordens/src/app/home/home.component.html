@@ -26,7 +26,7 @@
                 <p-header>
                     Abertas 
                 </p-header>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Aberto']">{{dashboadFicha.qtqAberta}} Abertas</a>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Aberto','Ficha']">{{dashboadFicha.qtqAberta}} Abertas</a>
                 <p-footer>
                     
                 </p-footer>
@@ -37,8 +37,8 @@
                 <p-header>
                     Em andamento
                 </p-header>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Trabalhando']">{{dashboadFicha.qtdTrabalhando}} Trabalhando</a>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Aguardando']">{{dashboadFicha.qtdAguardando}} Aguardando</a>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Trabalhando','Ficha']">{{dashboadFicha.qtdTrabalhando}} Trabalhando</a>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Aguardando','Ficha']">{{dashboadFicha.qtdAguardando}} Aguardando</a>
                 <p-footer>
                     
                 </p-footer>
@@ -49,8 +49,8 @@
                 <p-header>
                     Fechadas
                 </p-header>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Fechado']">{{dashboadFicha.qtdFechada}} Fechado</a>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Cancelado']">{{dashboadFicha.qtdAguardando}} Cancelado</a>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Fechado,Ficha']">{{dashboadFicha.qtdFechada}} Fechado</a>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Cancelado,Ficha']">{{dashboadFicha.qtdAguardando}} Cancelado</a>
                 <p-footer>
 
                 </p-footer>
@@ -69,7 +69,7 @@
                 <p-header>
                     Ordem Abertas
                 </p-header>
-                    {{dashboardOrdem.qtqAberta}} Abertos
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Aberto','Ordem']">{{dashboardOrdem.qtqAberta}} Abertas</a>
                 <p-footer>
                     Footer content here
                 </p-footer>

@@ -58,6 +58,7 @@ public class OrdemServico {
 			lancEntity.getId().setOrdemServicoId(ent.getId());
 			lancEntity.getOrdemServico().setId(ent.getId());
 			ordemServico.setId(ent.getId());
+			lancEntity.setAtualSituacao(true);
 			this.ordemServicoLancRepository.save(lancEntity);
 		} catch (Exception e) {
 			throw new ExcecaoRetorno("Erro ao tentar cadastrar ordem de serviço");
@@ -98,7 +99,7 @@ public class OrdemServico {
 		return null;
 	}
 	
-	
+	@Transactional
 	public void deletarPecaOutroServico(final int id, final int sequencia) {
 		PecaServicoOrdemEntity ent = new PecaServicoOrdemEntity();
 		ent.setId(new PecaServicoOrdemEntityId());
