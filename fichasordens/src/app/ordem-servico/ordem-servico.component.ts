@@ -26,6 +26,7 @@ export class OrdemServicoComponent implements OnInit {
   formOrdem = new Ordem();
   modalReference: any;
   item: PecaServicoOrdem;
+  selectedPecaServico: PecaServicoOrdem;
   
   situacaoTecnica: Array<any> = [
     { value: 'Aberto', label: 'Aberto' },
@@ -147,6 +148,18 @@ export class OrdemServicoComponent implements OnInit {
     });
   }
 
+  removePecaOutroServico() {
+    // tslint:disable-next-line:max-line-length
+    this.service.delete('/ordem/pecaServico?id=' + this.selectedPecaServico.idOrdem + '&sequencia=' + this.selectedPecaServico.sequencia).subscribe(response => {
+      console.log(response);
+      this.toasterService.pop('success', 'Ordem de Serviço', 'Peça/Outro Servico excluido com sucesso');
+      this.formOrdem.itemTables.splice(this.formOrdem.itemTables.indexOf(this.selectedPecaServico), 1);
+    }, (error) => {
+      console.log('error in', error.error.mensagem);
+      this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
+    });
+    return false;
+  }
   /* onSubmitLancamento() {
     this.formLancamento.idOrdem = this.formOrdem.numeroOrdem;
     this.service.post('/ordem/lancamento', this.formLancamento).subscribe(response => {

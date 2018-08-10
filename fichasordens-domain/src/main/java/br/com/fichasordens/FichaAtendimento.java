@@ -108,19 +108,19 @@ public class FichaAtendimento {
 		int qtdCancelado = 0;
 		for (FichaAtendimentoEntity a : lst) {
 			for (FichaAtendLancEntity lanc : a.getFichaAtendLancs()) {
-				if (lanc.getSituacao().equals("Aberto")) {
+				if (lanc.getSituacao().equals("Aberto") && lanc.getAtualSituacao()) {
 					qtdAberto = qtdAberto + 1; 
 				}
-				if (lanc.getSituacao().equals("Trabalhando")) {
+				if (lanc.getSituacao().equals("Trabalhando") && lanc.getAtualSituacao()) {
 					qtdTrabalhando = qtdTrabalhando + 1; 
 				}
-				if (lanc.getSituacao().equals("Aguardando")) {
+				if (lanc.getSituacao().equals("Aguardando") && lanc.getAtualSituacao()) {
 					qtdAguardando = qtdAguardando + 1; 
 				}
-				if (lanc.getSituacao().equals("Fechado")) {
+				if (lanc.getSituacao().equals("Fechado") && lanc.getAtualSituacao()) {
 					qtdFechado = qtdFechado + 1; 
 				}
-				if (lanc.getSituacao().equals("Cancelado")) {
+				if (lanc.getSituacao().equals("Cancelado") && lanc.getAtualSituacao()) {
 					qtdCancelado = qtdCancelado + 1; 
 				}
 			}

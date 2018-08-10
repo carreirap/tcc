@@ -30,7 +30,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   // selectedAtend: string[] = [];
   selectedAtend: Atendimento;
   selectedPecaServico: PecaServicoOrdem;
-
+  situacao: any;
 
   constructor(private service: DataService, toasterService: ToasterService, public modal: NgbModal,
           private datePipe: DatePipe, private authenticationService: AuthenticationService,
@@ -88,6 +88,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.setNumeroFicha(response);
       this.formFicha.lancamentoLst.push(this.formFicha.lancamento);
       this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
+      this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formFicha.lancamento.situacao);
     }, (error) => {
       console.log('error in', error.error.mensagem);
       this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
@@ -140,7 +141,6 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     this.formFicha.cliente.nome = data.cliente.nome;
     this.formFicha.cliente.id = data.cliente.id;
 
-
     for (let i = 0; i < data.lancamentoLst.length; i++) {
       if (i === 0) {
         this.formFicha.dataAbertura = this.datePipe.transform(data.lancamentoLst[i].data, 'dd/MM/yyyy');
@@ -149,6 +149,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       data.lancamentoLst[i].data = this.datePipe.transform(data.lancamentoLst[i].data, 'dd/MM/yyyy');
       if (i + 1 === data.lancamentoLst.length) {
         this.formFicha.lancamento.situacao = data.lancamentoLst[i].situacao;
+        this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formFicha.lancamento.situacao);
       }
       this.formFicha.lancamentoLst.push(data.lancamentoLst[i]);
     }

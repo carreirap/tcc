@@ -4,7 +4,7 @@
   <div class="form-row">
     <div class="form-group col-md-9">
       <label for="cnpjcpf">Responsável</label>
-      <input class="form-control" maxlength="10" type="text" id="responsavel" name="responsavel" [(ngModel)]="formOrdem.lancamento.nomeUsuario"
+      <input class="form-control" maxlength="50" type="text" id="responsavel" name="responsavel" [(ngModel)]="formOrdem.lancamento.nomeUsuario"
         [readonly]="true" style="background-color: white;">
     </div>
     <div class="form-group col-md-2">
@@ -130,12 +130,14 @@
       <button type="submit" (click)="mostrarModalMaoObra(maoobra);" *ngIf="formOrdem.numeroOrdem" class="btn btn-primary">Incluir</button>
     </div>
     <div class="form-group col-md-1">
-      <button type="submit" class="btn btn-primary" *ngIf="formOrdem.numeroOrdem">Excluir</button>
+      <button type="submit" class="btn btn-primary" (click)="remove()" *ngIf="formOrdem.numeroOrdem">Excluir</button>
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-11">
-      <p-table [responsive]="true" [value]="formOrdem.itemTables" [lazy]="true" [immutable]=false *ngIf="formOrdem.numeroOrdem">
+      <p-table [responsive]="true" [value]="formOrdem.itemTables" [lazy]="true" [immutable]=false 
+      selectionMode="single" [(selection)]="selectedPecaServico"
+      *ngIf="formOrdem.numeroOrdem">
         <ng-template pTemplate="header">
           <tr>
             <th>Qtde</th>
@@ -143,11 +145,11 @@
             <th>Valor</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-car>
-          <tr>
-            <td>{{car.qtde}}</td>
-            <td>{{car.descricao}}</td>
-            <td>{{car.valor}}</td>
+        <ng-template pTemplate="body" let-peca>
+          <tr [pSelectableRow]="peca">
+            <td>{{peca.qtde}}</td>
+            <td>{{peca.descricao}}</td>
+            <td>{{peca.valor}}</td>
           </tr>
         </ng-template>
       </p-table>
