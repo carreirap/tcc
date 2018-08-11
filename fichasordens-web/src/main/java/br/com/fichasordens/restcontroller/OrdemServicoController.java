@@ -1,6 +1,7 @@
 package br.com.fichasordens.restcontroller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,11 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fichasordens.Cliente;
+import br.com.fichasordens.FichaAtendimento;
+import br.com.fichasordens.FichaAtendimentoLanc;
 import br.com.fichasordens.OrdemServico;
 import br.com.fichasordens.OrdemServicoLanc;
 import br.com.fichasordens.PecaOutroServico;
 import br.com.fichasordens.Usuario;
 import br.com.fichasordens.dto.LancamentoDto;
+import br.com.fichasordens.dto.ListagemDashboardDto;
 import br.com.fichasordens.dto.MensagemRetornoDto;
 import br.com.fichasordens.dto.OrdemServicoDto;
 import br.com.fichasordens.dto.PecaOutroServicoDto;
@@ -29,8 +33,10 @@ import br.com.fichasordens.util.ConverterPecaOutroServico;
 @EnableResourceServer
 public class OrdemServicoController {
 	
+	private static final String ORDEM_DE_SERVICO = "Ordem de Servico";
 	@Autowired
 	OrdemServico ordemServico;
+	
 
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -72,6 +78,31 @@ public class OrdemServicoController {
 	public ResponseEntity deletarOrdemDeServico(@RequestParam final int id, @RequestParam final int sequencia) {
 		this.ordemServico.deletarPecaOutroServico(id, sequencia);
 		return new ResponseEntity(HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity listaFichas(@RequestParam final String situacao) {
+		List<OrdemServico> ordemList = this.ordemServico.listarOrdens(situacao);
+		List<ListagemDashboardDto> dtoList = new ArrayList<ListagemDashboardDto>();
+		ordemList.forEach(a->{
+			ListagemDashboardDto dto = new ListagemDashboardDto();
+			dto.setId(a.getId());
+			dto.setNomeCliente(a.getCliente().getNome());
+			dto.setSituacao(situacao);
+			dto.setTipoServico(ORDEM_DE_SERVICO);
+			for(OrdemServicoLanc lanc: a.getOrdemServicoLanc()) {
+				if (lanc.getSituacao().equals(situacao)) {
+					dto.setResponsavel(lanc.getUsuario().getNome());
+				}
+				if (lanc.getSituacao().equals("Aberto")) {
+					dto.setDataAbertura(lanc.getData());
+				}
+			}
+			dtoList.add(dto);
+		});
+		
+		return new ResponseEntity<>(dtoList,HttpStatus.OK);
+		
 	}
 	
 	private OrdemServico converterDto(final OrdemServicoDto dto) {

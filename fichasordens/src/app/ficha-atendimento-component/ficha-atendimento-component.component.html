@@ -159,7 +159,7 @@
     <div class="form-row">
       <div class="form-group col-md-5" [ngClass]="{'was-validated': !tecnico.valid  && (tecnico.dirty || tecnico.touched)}">
         <label for="cnpjcpf">Técnico</label>
-        <input class="form-control" maxlength="10" type="text" id="tecnico" name="tecnico" [(ngModel)]="formFicha.lancamento.nomeUsuario"
+        <input class="form-control" readonly maxlength="10" type="text" id="tecnico" name="tecnico" [(ngModel)]="formFicha.lancamento.nomeUsuario"
           style="background-color: white;" #tecnico="ngModel" required>
           <div class="invalid-feedback" *ngIf="tecnico.errors && (tecnico.dirty || tecnico.touched)">
             <ul >
@@ -179,7 +179,7 @@
       </div>
       <div class="form-group col-md-3" [ngClass]="{'was-validated': !dataAberturaLanc.valid  && (dataAberturaLanc.dirty || dataAberturaLanc.touched)}">
         <label for="celular">Data</label>
-        <input class="form-control" maxlength="15" type="text" id="dataAberturaLanc" name="dataAberturaLanc" 
+        <input class="form-control" readonly maxlength="15" type="text" id="dataAberturaLanc" name="dataAberturaLanc" 
         [(ngModel)]="formFicha.lancamento.data"  #dataAberturaLanc="ngModel" required
           style="background-color: white;">
           <div class="invalid-feedback" *ngIf="dataAberturaLanc.errors && (dataAberturaLanc.dirty || dataAberturaLanc.touched)">

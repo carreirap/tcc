@@ -61,7 +61,6 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     if (this.param !== undefined) {
       this.service.get('/ficha/buscar?id=' + this.param).subscribe(response => {
         this.loadFicha(response);
-        this.formFicha.lancamento.nomeUsuario = 'fffff';
         this.formFicha.lancamento.data = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
       }, (error) => {
         console.log('error in', error);

@@ -15,4 +15,7 @@ public interface OrdemServicoRepository extends JpaRepository<OrdemServicoEntity
 
 	@Query("SELECT a FROM OrdemServicoEntity a LEFT JOIN a.ordemServicoLancs b where b.atualSituacao = true")
 	public List<OrdemServicoEntity> FindAllOrdens();
+	
+	@Query("SELECT a FROM OrdemServicoEntity a LEFT JOIN a.ordemServicoLancs b where b.atualSituacao = true and b.situacao = ?1")
+	public List<OrdemServicoEntity> FindAllOrdensByStatus(final String situacao);
 }

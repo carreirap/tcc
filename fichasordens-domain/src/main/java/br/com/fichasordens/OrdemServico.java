@@ -101,15 +101,25 @@ public class OrdemServico {
 	
 	@Transactional
 	public void deletarPecaOutroServico(final int id, final int sequencia) {
-		PecaServicoOrdemEntity ent = new PecaServicoOrdemEntity();
+		final PecaServicoOrdemEntity ent = new PecaServicoOrdemEntity();
 		ent.setId(new PecaServicoOrdemEntityId());
 		ent.getId().setSequencia(sequencia);
 		ent.getId().setOrdemServicoId(id);;
 		this.pecaServicoOrdemRepository.delete(ent);
 	}
+	
+	@Transactional
+	public List<OrdemServico> listarOrdens(final String situacao) {
+		List<OrdemServicoEntity> entityList = this.ordemServicoRepository.FindAllOrdensByStatus(situacao);
+		List<OrdemServico> ordemList = new ArrayList<OrdemServico>();
+		entityList.forEach(a-> {
+			ordemList.add(converterEntityParaOrdemServico(a));
+		});
+		return ordemList;
+	}
 
 	public Map<String,Integer> contarOrdensPorSituacao() {
-		List<OrdemServicoEntity> lst = this.ordemServicoRepository.FindAllOrdens();
+		final List<OrdemServicoEntity> lst = this.ordemServicoRepository.FindAllOrdens();
 		return calcularTotais(lst);
 	}
 
@@ -169,6 +179,7 @@ public class OrdemServico {
 		ordem.setFabricante(entity.getFrabricante());
 		ordem.setDescDefeito(entity.getDescDefeito());
 		ordem.setDescEquip(entity.getDescEquip());
+		ordem.setId(entity.getId());
 		//îent.setDescServico(ordemServico.getDescServico());
 		ordem.setEstadoItensAcomp(entity.getEstadoItensAcomp());
 		ordem.setModelo(entity.getModelo());
