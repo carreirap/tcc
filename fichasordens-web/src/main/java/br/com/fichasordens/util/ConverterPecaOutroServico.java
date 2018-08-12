@@ -12,7 +12,10 @@ public class ConverterPecaOutroServico {
 		pecaDto.setQtde((int)p.getQuantidade());
 		pecaDto.setSequencia((int)p.getId());
 		pecaDto.setValor(p.getValor());
-		pecaDto.setIdOrdem(p.getFichaAtendimento().getId());
+		if (p.getFichaAtendimento() != null)
+			pecaDto.setIdOrdem(p.getFichaAtendimento().getId());
+		else
+			pecaDto.setIdOrdem(p.getOrdemServico().getId());
 		return pecaDto;
 	}
 	

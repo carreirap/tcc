@@ -14,20 +14,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fichasordens.Cliente;
-import br.com.fichasordens.FichaAtendimento;
 import br.com.fichasordens.FichaAtendimentoLanc;
 import br.com.fichasordens.OrdemServico;
 import br.com.fichasordens.OrdemServicoLanc;
 import br.com.fichasordens.PecaOutroServico;
-import br.com.fichasordens.Usuario;
+import br.com.fichasordens.dto.FichaAtendimentoDto;
 import br.com.fichasordens.dto.LancamentoDto;
 import br.com.fichasordens.dto.ListagemDashboardDto;
 import br.com.fichasordens.dto.MensagemRetornoDto;
 import br.com.fichasordens.dto.OrdemServicoDto;
 import br.com.fichasordens.dto.PecaOutroServicoDto;
 import br.com.fichasordens.exception.ExcecaoRetorno;
+import br.com.fichasordens.util.ConverterCliente;
+import br.com.fichasordens.util.ConverterLancamentoDto;
 import br.com.fichasordens.util.ConverterPecaOutroServico;
 
+@SuppressWarnings("rawtypes")
 @RestController
 @RequestMapping("/ordem")
 @EnableResourceServer
@@ -42,7 +44,7 @@ public class OrdemServicoController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity salvarOrdemServico(@RequestBody final OrdemServicoDto dto) {
 		try {
-			OrdemServico ordemServico = this.converterDto(dto);
+			OrdemServico ordemServico = this.converterDtoParaOrdemServico(dto);
 			ordemServico = this.ordemServico.gravarOrdem(ordemServico);
 			dto.setNumeroOrdem(ordemServico.getId());
 			return new ResponseEntity<OrdemServicoDto>(dto, HttpStatus.OK);
@@ -65,7 +67,7 @@ public class OrdemServicoController {
 	@RequestMapping(method = RequestMethod.POST,path="/lancamento")
 	public ResponseEntity salvarLancamentoTecnico(@RequestBody final LancamentoDto dto) {
 		try {
-			OrdemServicoLanc peca = this.converterDtoOrdemServicoLanc(dto);
+			OrdemServicoLanc peca = ConverterLancamentoDto.converterDtoParaOrdemServicoLanc(dto);
 			this.ordemServico.gravarOrdemServicoLanc(peca);
 			return new ResponseEntity( HttpStatus.OK);
 		} catch (ExcecaoRetorno e) {
@@ -79,6 +81,7 @@ public class OrdemServicoController {
 		this.ordemServico.deletarPecaOutroServico(id, sequencia);
 		return new ResponseEntity(HttpStatus.OK);
 	}
+	
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity listaFichas(@RequestParam final String situacao) {
@@ -102,10 +105,15 @@ public class OrdemServicoController {
 		});
 		
 		return new ResponseEntity<>(dtoList,HttpStatus.OK);
-		
 	}
 	
-	private OrdemServico converterDto(final OrdemServicoDto dto) {
+	@RequestMapping(method = RequestMethod.GET,path="/buscar")
+	public OrdemServicoDto buscarOrdem(@RequestParam final long id) {
+		final OrdemServico ordem = this.ordemServico.buscarOrdem(id);
+		return this.converterOrdemServicoParaDto(ordem);
+	}
+	
+	private OrdemServico converterDtoParaOrdemServico(final OrdemServicoDto dto) {
 		final OrdemServico ent = new OrdemServico();
 		ent.setFabricante(dto.getFabricante());
 		ent.setDescDefeito(dto.getDescDefeito());
@@ -114,27 +122,45 @@ public class OrdemServicoController {
 		ent.setEstadoItensAcomp(dto.getEstadoItensAcomp());
 		ent.setModelo(dto.getModelo());
 		ent.setSerie(dto.getSerie());
-		ent.setTipoServico(dto.getTipoServico().equals("true") ? "Instalacao" : "Suporte");
+		ent.setTipoServico(dto.getTipoServico());
 		final Cliente cliente = new Cliente();
 		cliente.setId(dto.getCliente().getId());
 		ent.setCliente(cliente);
 		ent.setOrdemServicoLanc(new ArrayList<OrdemServicoLanc>());
-		OrdemServicoLanc lanc = this.converterDtoOrdemServicoLanc(dto.getLancamento());
+		OrdemServicoLanc lanc = ConverterLancamentoDto.converterDtoParaOrdemServicoLanc(dto.getLancamento());
 		ent.getOrdemServicoLanc().add(lanc);
 		return ent;
 	}
 	
-	private OrdemServicoLanc converterDtoOrdemServicoLanc(final LancamentoDto dto) {
-		final OrdemServicoLanc lanc = new OrdemServicoLanc();
-		lanc.setData(dto.getData());
-		lanc.setObservacao(dto.getObservacao());
-		lanc.setSituacao(dto.getSituacao());
-		lanc.setUsuario(new Usuario());
-		lanc.getUsuario().setId(dto.getIdUsuario());
-		lanc.setSequencia(dto.getSequencia());
-		lanc.setOrdemServico(new OrdemServico());
-		lanc.getOrdemServico().setId(dto.getId());
-		return lanc;
+	private OrdemServicoDto converterOrdemServicoParaDto(final OrdemServico ordem) {
+		final OrdemServicoDto dto = new OrdemServicoDto();
+		dto.setNumeroOrdem(ordem.getId());
+		dto.setFabricante(ordem.getFabricante());
+		dto.setDescDefeito(ordem.getDescDefeito());
+		dto.setDescEquip(ordem.getDescEquip());
+		//ent.setDescServico(dto.getDescServico());
+		dto.setEstadoItensAcomp(ordem.getEstadoItensAcomp());
+		dto.setModelo(ordem.getModelo());
+		dto.setSerie(ordem.getSerie());
+		dto.setTipoServico(ordem.getTipoServico());
+		dto.setCliente(ConverterCliente.converterClienteParaDto(ordem.getCliente()));
+	
+		dto.setLancamentoLst(new ArrayList<LancamentoDto>());
+		if (ordem.getOrdemServicoLanc() != null) {
+			for (OrdemServicoLanc lanc : ordem.getOrdemServicoLanc()) {
+				final LancamentoDto lancDto = ConverterLancamentoDto.converterOrdemLancamentoParaDto(lanc);
+				dto.getLancamentoLst().add(lancDto);
+			}
+		}
+		
+		
+		dto.setPecaOutroServicoDto(new ArrayList<PecaOutroServicoDto>());
+		if (ordem.getPecaOutroServico() != null) {
+			for(PecaOutroServico p: ordem.getPecaOutroServico()) {
+				dto.getPecaOutroServicoDto().add(ConverterPecaOutroServico.converterPecaOutroServicoParaDto(p));
+			}
+		}
+		return dto;
 	}
 
 }

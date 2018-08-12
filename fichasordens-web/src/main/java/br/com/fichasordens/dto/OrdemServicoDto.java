@@ -1,5 +1,7 @@
 package br.com.fichasordens.dto;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
 @JsonIgnoreType
@@ -16,6 +18,9 @@ public class OrdemServicoDto {
     private String modelo;
     private String serie;
     private LancamentoDto lancamento;
+    
+    private List<LancamentoDto> lancamentoLst;
+    private List<PecaOutroServicoDto> pecaOutroServicoDto;
     
 	public long getNumeroOrdem() {
 		return numeroOrdem;
@@ -76,6 +81,18 @@ public class OrdemServicoDto {
 	}
 	public void setLancamento(LancamentoDto lancamento) {
 		this.lancamento = lancamento;
+	}
+	public List<LancamentoDto> getLancamentoLst() {
+		return lancamentoLst;
+	}
+	public void setLancamentoLst(List<LancamentoDto> lancamentoLst) {
+		this.lancamentoLst = lancamentoLst;
+	}
+	public List<PecaOutroServicoDto> getPecaOutroServicoDto() {
+		return pecaOutroServicoDto;
+	}
+	public void setPecaOutroServicoDto(List<PecaOutroServicoDto> pecaOutroServicoDto) {
+		this.pecaOutroServicoDto = pecaOutroServicoDto;
 	}
 }
 

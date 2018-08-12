@@ -40,7 +40,6 @@ export class SituacaoTecnica {
     }
 
     public getSituacoesBaseadoNoAtual(atual) {
-        debugger;
         if (atual === 'Aberto') {
             return this.situacaoAberto;
         }

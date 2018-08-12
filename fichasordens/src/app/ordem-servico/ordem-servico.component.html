@@ -4,7 +4,7 @@
   <div class="form-row">
     <div class="form-group col-md-9">
       <label for="cnpjcpf">Responsável</label>
-      <input class="form-control" maxlength="50" type="text" id="responsavel" name="responsavel" [(ngModel)]="formOrdem.lancamento.nomeUsuario"
+      <input class="form-control" maxlength="50" type="text" id="responsavel" name="responsavel" [(ngModel)]="formOrdem.responsavel"
         [readonly]="true" style="background-color: white;">
     </div>
     <div class="form-group col-md-2">
@@ -46,11 +46,12 @@
     </div>
     <div class="form-group col-md-3">
       <label for="estado">Situação Ordem</label>
-      <select class="form-control custom-select" id="situacao" name="situacao" [(ngModel)]="formOrdem.lancamento.situacao">
-        <option *ngFor="let title of situacaoTecnica" [value]="title.value">
+      <input class="form-control" maxlength="50" type="text" [readonly]="true" id="situacao" name="situacao" [(ngModel)]="formOrdem.lancamento.situacao">
+      <!--<select class="form-control custom-select" id="situacao" name="situacao" [(ngModel)]="formOrdem.lancamento.situacao">
+        <option *ngFor="let title of situacao" [value]="title.value">
           {{title.label}}
         </option>
-      </select>
+      </select> -->
     </div>
   </div>
   <div class="form-row">
@@ -68,12 +69,8 @@
       <div class="panel panel-default">
         <div class="panel-body">
           <label for="celular">Tipo do Serviço &nbsp;&nbsp;</label>
-          <label class="form-check-inline">
-            <input class="form-check-input" type="radio" name="mode" [value]="true" [(ngModel)]="formOrdem.tipoServico"> Instalação
-          </label>
-          <label class="form-check-inline">
-            <input class="form-check-input" type="radio" name="mode" [value]="false" [(ngModel)]="formOrdem.tipoServico"> Suporte
-          </label>
+          <p-radioButton name="groupname" value="Instalacao" label="Instalação" [(ngModel)]="formOrdem.tipoServico"></p-radioButton>
+          <p-radioButton name="groupname" value="Suporte" label="Suporte" [(ngModel)]="formOrdem.tipoServico"></p-radioButton>
         </div>
       </div>
     </div>
@@ -165,7 +162,7 @@
       <div class="form-group col-md-3">
         <label for="estado">Situação Técnica</label>
         <select class="form-control custom-select" id="situacao" name="situacao" [(ngModel)]="this.formOrdem.lancamento.situacao">
-          <option *ngFor="let title of situacaoTecnica" [value]="title.value">
+          <option *ngFor="let title of situacao" [value]="title.value">
             {{title.label}}
           </option>
         </select>

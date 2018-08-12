@@ -192,12 +192,12 @@ public class OrdemServico {
 		cliente.setCelular(entity.getCliente().getCelular());
 		cliente.setFone(entity.getCliente().getFone());
 		ordem.setCliente(cliente);
-		ordem.setOrdemServicoLanc(convertLancEntityParaOrdemServicoLanc(entity));
-		ordem.setPecaOutroServico(converterPecaServicoEntityParaPecaOutroServico(entity));
+		ordem.setOrdemServicoLanc(convertLancEntityParaOrdemServicoLanc(entity, ordem));
+		ordem.setPecaOutroServico(converterPecaServicoEntityParaPecaOutroServico(entity, ordem));
 		return ordem;
 	}
 
-	private List<PecaOutroServico> converterPecaServicoEntityParaPecaOutroServico(final OrdemServicoEntity entity) {
+	private List<PecaOutroServico> converterPecaServicoEntityParaPecaOutroServico(final OrdemServicoEntity entity, final OrdemServico ordemServico) {
 		List<PecaOutroServico> lst = new ArrayList<PecaOutroServico>();
 		entity.getPecaServicoOrdems().forEach(a -> {
 			PecaOutroServico peca = new PecaOutroServico();
@@ -205,12 +205,13 @@ public class OrdemServico {
 			peca.setQuantidade(a.getQuantidade());
 			peca.setValor(a.getValor());
 			peca.setId(a.getId().getSequencia());
+			peca.setOrdemServico(ordemServico);
 			lst.add(peca);
 		});
 		return lst;
 	}
 
-	private List<OrdemServicoLanc> convertLancEntityParaOrdemServicoLanc(final OrdemServicoEntity entity) {
+	private List<OrdemServicoLanc> convertLancEntityParaOrdemServicoLanc(final OrdemServicoEntity entity, final OrdemServico ordemServico) {
 		List<OrdemServicoLanc> lst = new ArrayList<OrdemServicoLanc>();
 		entity.getOrdemServicoLancs().forEach(a ->
 		{
@@ -219,6 +220,7 @@ public class OrdemServico {
 			lanc.setObservacao(a.getObservacao());
 			lanc.setSequencia((int)a.getId().getSequencia());
 			lanc.setSituacao(a.getSituacao());
+			lanc.setOrdemServico(ordemServico);
 			lanc.setUsuario(new Usuario());
 			lanc.getUsuario().setId(a.getUsuario().getId());
 			lanc.getUsuario().setNome(a.getUsuario().getNome());

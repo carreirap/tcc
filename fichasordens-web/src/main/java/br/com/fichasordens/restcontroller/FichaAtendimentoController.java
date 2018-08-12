@@ -146,7 +146,7 @@ public class FichaAtendimentoController {
 		dto.setLancamentoLst(new ArrayList<LancamentoDto>());
 		if (ficha.getFichaAtendimentoLancList() != null) {
 			for(FichaAtendimentoLanc lanc: ficha.getFichaAtendimentoLancList()) {
-				final LancamentoDto lancDto = ConverterLancamentoDto.converterLancamentoDto(lanc);
+				final LancamentoDto lancDto = ConverterLancamentoDto.converterLancamentoParaDto(lanc);
 				dto.getLancamentoLst().add(lancDto);
 			}
 		}
@@ -185,7 +185,7 @@ public class FichaAtendimentoController {
 		cliente.setId(dto.getCliente().getId());
 		ficha.setCliente(cliente);
 		ficha.setFichaAtendimentoLancList(new ArrayList<FichaAtendimentoLanc>());
-		FichaAtendimentoLanc lanc = ConverterLancamentoDto.converterDtoLanc(dto.getLancamento());
+		FichaAtendimentoLanc lanc = ConverterLancamentoDto.converterDtoParaFichaAtendimentoLanc(dto.getLancamento());
 		ficha.getFichaAtendimentoLancList().add(lanc);
 		return ficha;
 	}
