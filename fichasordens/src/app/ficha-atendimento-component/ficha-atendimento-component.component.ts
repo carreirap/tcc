@@ -86,11 +86,11 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       console.log(response);
       this.setNumeroFicha(response);
       this.formFicha.lancamentoLst.push(this.formFicha.lancamento);
-      this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
+      this.toasterService.pop('success', 'Ficha de Atendimento', 'Ficha de Atendimento cadastrado com sucesso!');
       this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formFicha.lancamento.situacao);
     }, (error) => {
       console.log('error in', error.error.mensagem);
-      this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
+      this.toasterService.pop('error', 'Ficha de Atendimento', error.error.mensagem);
     });
   }
 

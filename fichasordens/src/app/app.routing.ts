@@ -22,6 +22,7 @@ const appRoutes: Routes = [
     { path: 'dadosempresa', component: DadosempresaComponentComponent, canActivate: [AuthGuard]},
     { path: 'fichas/:id', component: FichaAtendimentoComponentComponent, canActivate: [AuthGuard]},
     { path: 'fichas', component: FichaAtendimentoComponentComponent, canActivate: [AuthGuard]},
+    { path: 'ordem', component: OrdemServicoComponent, canActivate: [AuthGuard]},
     { path: 'ordem/:id', component: OrdemServicoComponent, canActivate: [AuthGuard]},
     { path: 'listaDashboard/:situacao/:tipo', component: ListagemComponent, canActivate: [AuthGuard]},
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },

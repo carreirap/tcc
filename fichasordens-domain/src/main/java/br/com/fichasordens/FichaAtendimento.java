@@ -105,6 +105,7 @@ public class FichaAtendimento {
 		int qtdTrabalhando = 0;
 		int qtdAguardando = 0;
 		int qtdFechado = 0;
+		int qtdFinalizado = 0;
 		int qtdCancelado = 0;
 		for (FichaAtendimentoEntity a : lst) {
 			for (FichaAtendLancEntity lanc : a.getFichaAtendLancs()) {
@@ -116,6 +117,9 @@ public class FichaAtendimento {
 				}
 				if (lanc.getSituacao().equals("Aguardando") && lanc.getAtualSituacao()) {
 					qtdAguardando = qtdAguardando + 1; 
+				}
+				if (lanc.getSituacao().equals("Finalizado") && lanc.getAtualSituacao()) {
+					qtdFinalizado = qtdFinalizado + 1; 
 				}
 				if (lanc.getSituacao().equals("Fechado") && lanc.getAtualSituacao()) {
 					qtdFechado = qtdFechado + 1; 
@@ -129,6 +133,7 @@ public class FichaAtendimento {
 		map.put("Trabalhando", qtdTrabalhando);
 		map.put("Aguardando", qtdAguardando);
 		map.put("Fechado", qtdFechado);
+		map.put("Finalizado", qtdFinalizado);
 		map.put("Cancelado", qtdCancelado);
 		return map;
 	}

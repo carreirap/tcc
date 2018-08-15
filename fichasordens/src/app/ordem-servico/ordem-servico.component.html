@@ -42,7 +42,7 @@
   <div class="form-row">
     <div class="form-group col-md-8">
       <label for="nome">Cliente</label>
-      <input class="form-control" maxlength="50" type="text" id="nome" name="nome" [(ngModel)]="formOrdem.cliente.nome">
+      <input class="form-control" maxlength="50" readonly type="text" id="nome" name="nome" [(ngModel)]="formOrdem.cliente.nome">
     </div>
     <div class="form-group col-md-3">
       <label for="estado">Situação Ordem</label>
@@ -57,11 +57,11 @@
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="celular">Celular</label>
-      <input class="form-control" maxlength="15" type="tel" value="" id="celular" name="celular" [(ngModel)]="formOrdem.cliente.celular">
+      <input class="form-control" maxlength="15" readonly type="tel" value="" id="celular" name="celular" [(ngModel)]="formOrdem.cliente.celular">
     </div>
     <div class="form-group col-md-5">
       <label for="fone">Fone</label>
-      <input class="form-control" maxlength="15" type="tel" value="" id="fone" name="fone" [(ngModel)]="formOrdem.cliente.fone">
+      <input class="form-control" maxlength="15" readonly type="tel" value="" id="fone" name="fone" [(ngModel)]="formOrdem.cliente.fone">
     </div>
   </div>
   <div class="form-row">
@@ -76,7 +76,7 @@
     </div>
     <div class="form-group col-md-3">
       <label for="celular">Data Abertura</label>
-      <input class="form-control" maxlength="15" type="text" id="dataAbertura" name="dataAbertura" [(ngModel)]="this.formOrdem.lancamento.data"
+      <input class="form-control" maxlength="15" type="text" id="dataAbertura" name="dataAbertura" [(ngModel)]="formOrdem.lancamento.data"
         [readonly]="true" style="background-color: white;">
     </div>
     <div class="form-group col-md-3">
@@ -124,10 +124,10 @@
     </div>
     <div class="form-group col-md-1">
       <!-- -->
-      <button type="submit" (click)="mostrarModalMaoObra(maoobra);" *ngIf="formOrdem.numeroOrdem" class="btn btn-primary">Incluir</button>
+      <button type="submit" (click)="mostrarModalMaoObra(maoobra);" *ngIf="mostrarBotoes()" class="btn btn-primary">Incluir</button>
     </div>
     <div class="form-group col-md-1">
-      <button type="submit" class="btn btn-primary" (click)="remove()" *ngIf="formOrdem.numeroOrdem">Excluir</button>
+      <button type="submit" class="btn btn-primary" (click)="remove()" *ngIf="mostrarBotoes()">Excluir</button>
     </div>
   </div>
   <div class="form-row">
@@ -154,38 +154,63 @@
   </div>
   <div *ngIf="formOrdem.numeroOrdem">
     <div class="form-row">
-      <div class="form-group col-md-5">
+      <div class="form-group col-md-5" [ngClass]="{'was-validated': !tecnico.valid  && (tecnico.dirty || tecnico.touched)}">
         <label for="cnpjcpf">Técnico</label>
-        <input class="form-control" maxlength="10" type="text" id="tecnico" name="tecnico" [(ngModel)]="this.formOrdem.lancamento.nomeUsuario"
-          style="background-color: white;">
+        <input class="form-control" readonly maxlength="50" type="text" id="tecnico" name="tecnico" [(ngModel)]="formOrdem.lancamento.nomeUsuario"
+          style="background-color: white;" #tecnico="ngModel" required>
+          <div class="invalid-feedback" *ngIf="tecnico.errors && (tecnico.dirty || tecnico.touched)">
+            <ul >
+              <li *ngIf="tecnico.errors.required">
+                O técnico é obrigatório
+              </li>
+            </ul>
+          </div>
       </div>
       <div class="form-group col-md-3">
         <label for="estado">Situação Técnica</label>
-        <select class="form-control custom-select" id="situacao" name="situacao" [(ngModel)]="this.formOrdem.lancamento.situacao">
+        <select class="form-control custom-select" id="situacao" name="situacao" [(ngModel)]="formOrdem.lancamento.situacao">
           <option *ngFor="let title of situacao" [value]="title.value">
             {{title.label}}
           </option>
         </select>
       </div>
-      <div class="form-group col-md-3">
+      <div class="form-group col-md-3" [ngClass]="{'was-validated': !dataAberturaLanc.valid  && (dataAberturaLanc.dirty || dataAberturaLanc.touched)}">
         <label for="celular">Data</label>
-        <input class="form-control" maxlength="15" type="text" id="data" [readonly]="true" name="dataAbertura" [(ngModel)]="this.formOrdem.lancamento.data"
-          [readonly]="true" style="background-color: white;">
+        <input class="form-control" maxlength="15" type="text" id="dataAberturaLanc" name="dataAberturaLanc" [(ngModel)]="formOrdem.lancamento.data"
+          [readonly]="true" style="background-color: white;" #dataAberturaLanc="ngModel">
+          <div class="invalid-feedback" *ngIf="dataAberturaLanc.errors && (dataAberturaLanc.dirty || dataAberturaLanc.touched)">
+            <ul >
+              <li *ngIf="dataAberturaLanc.errors.required">
+                Data é obrigatória
+              </li>
+            </ul>
+          </div>
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group col-md-11">
+      <div class="form-group col-md-11" [ngClass]="{'was-validated': !obser.valid  && (obser.dirty || obser.touched)}">
         <label for="celular">Observação</label>
-        <textarea class="form-control" maxlength="255" id="obs" name="obs" rows="2" [(ngModel)]="this.formOrdem.lancamento.observacao"></textarea>
+        <textarea class="form-control" maxlength="255" id="obs" name="obs" rows="2"
+         [(ngModel)]="formOrdem.lancamento.observacao" required #obser="ngModel"></textarea>
+        <div class="invalid-feedback" *ngIf="obser.errors && (obser.dirty || obser.touched)">
+          <ul >
+            <li *ngIf="obser.errors.required">
+              Observação é obrigatória
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-  <div class="form-row">
+  <div class="form-row" *ngIf="formOrdem.numeroOrdem">
     <div class="form-group col-md-11">
       <p-accordion [multiple]="true">
-        <p-accordionTab header="Ver Histórico">
+        <p-accordionTab header="Ver Histórico de Lancamentos">
             <div *ngFor="let lanc of formOrdem.lancamentoLst">
-              <label>{{lanc.nomeUsuario}}</label><label>{{lanc.situacao}}</label>
+              <label>{{lanc.nomeUsuario}}</label><br>
+              <label>{{lanc.situacao}}</label><br>
+              <label>{{lanc.data}}</label><br>
+              <label>{{lanc.observacao}}</label>
             </div>
         </p-accordionTab>
       </p-accordion>
@@ -194,12 +219,10 @@
 
   <div class="form-group row">
     <div class="col-sm-10">
-      <button type="submit" class="btn btn-primary">Salvar</button>
+      <button type="submit" class="btn btn-primary" [disabled]="!myform.valid">Salvar</button>
     </div>
   </div>
 </form>
-
-
 
 <ng-template #clienteModal let-c="close" let-d="dismiss" id="modalCliente">
   <app-modal-pesquisa-cliente [cClose]="c" [dClose]="d"></app-modal-pesquisa-cliente>

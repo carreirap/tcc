@@ -115,6 +115,7 @@ public class OrdemServicoController {
 	
 	private OrdemServico converterDtoParaOrdemServico(final OrdemServicoDto dto) {
 		final OrdemServico ent = new OrdemServico();
+		ent.setId(dto.getNumeroOrdem());
 		ent.setFabricante(dto.getFabricante());
 		ent.setDescDefeito(dto.getDescDefeito());
 		ent.setDescEquip(dto.getDescEquip());

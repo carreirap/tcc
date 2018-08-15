@@ -83,7 +83,7 @@ public class OrdemServicoLancEntity implements java.io.Serializable {
 		this.usuario = usuario;
 	}
 
-	@Column(name = "situacao", nullable = false, length = 10)
+	@Column(name = "situacao", nullable = false, length = 15)
 	public String getSituacao() {
 		return this.situacao;
 	}
@@ -102,7 +102,7 @@ public class OrdemServicoLancEntity implements java.io.Serializable {
 		this.data = data;
 	}
 
-	@Column(name = "observacao", length = 10)
+	@Column(name = "observacao", length = 255)
 	public String getObservacao() {
 		return this.observacao;
 	}

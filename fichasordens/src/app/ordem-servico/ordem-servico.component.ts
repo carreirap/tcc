@@ -61,14 +61,14 @@ export class OrdemServicoComponent implements OnInit {
     if (this.param !== undefined) {
       this.service.get('/ordem/buscar?id=' + this.param).subscribe(response => {
         this.loadOrdem(response);
-        // this.formFicha.lancamento.data = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
+        this.formOrdem.lancamento.data = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
       }, (error) => {
         console.log('error in', error);
       });
 
     } else {
+      debugger;
       this.formOrdem.lancamento = new Lancamento();
-      this.getNomeUsario();
       this.modalService.carregarLinha.subscribe(
         result => this.addLinha(result)
       );
@@ -79,7 +79,7 @@ export class OrdemServicoComponent implements OnInit {
       this.formOrdem.lancamento.situacao = 'Aberto';
       this.formOrdem.lancamento.data = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
     }
-    
+    this.getNomeUsario();
   }
 
   private getNomeUsario() {
@@ -87,17 +87,19 @@ export class OrdemServicoComponent implements OnInit {
       userLog.usuario = JSON.parse(localStorage.getItem('currentUser')).usuario;
       this.authenticationService.getUpdatedUser(userLog).subscribe(response => {
           this.formOrdem.lancamento.nomeUsuario = response.nome;
-          this.responsavel = this.formOrdem.lancamento.nomeUsuario;
+          this.formOrdem.responsavel = this.formOrdem.lancamento.nomeUsuario;
           this.formOrdem.lancamento.idUsuario = response.id;
       }, (error) => {
         console.log('error in', error);
       });
   }
-
+  
 
   onSubmit() {
     if (this.formOrdem.lancamento.situacao === 'Aberto') {
       this.formOrdem.lancamento.sequencia = 0;
+    } else {
+      this.getSequenciaLancamento();
     }
     this.service.post('/ordem', this.formOrdem).subscribe(response => {
       console.log(response);
@@ -108,6 +110,14 @@ export class OrdemServicoComponent implements OnInit {
       console.log('error in', error.error.mensagem);
       this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
     });
+  }
+
+  getSequenciaLancamento() {
+    let x = 0;
+    for (let i = 0; i < this.formOrdem.lancamentoLst.length; i++) {
+      x = this.formOrdem.lancamentoLst[i].sequencia;
+    }
+    this.formOrdem.lancamento.sequencia = x + 1;
   }
 
   private setNumeroOrdem(response) {
@@ -212,6 +222,17 @@ export class OrdemServicoComponent implements OnInit {
     }
     this.formOrdem.itemTables = data.pecaOutroServicoDto;
     
+  }
+
+  mostrarBotoes() {
+    if (this.formOrdem.lancamento.situacao !== 'Aberto' && 
+    this.formOrdem.lancamento.situacao !== 'Faturado' && 
+    this.formOrdem.lancamento.situacao !== 'Fechado' && 
+    this.formOrdem.lancamento.situacao !== 'Finalizado') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

@@ -4,4 +4,6 @@ export class Dashboard {
     qtdAguardando: number;
     qtdTrabalhando: number;
     qtdCancelado: number;
+    qtdFinalizado: number;
+    qtdFaturado: number;
 }

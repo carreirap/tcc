@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.fichasordens.entities.ClienteEntity;
+import br.com.fichasordens.entities.FichaAtendLancEntity;
 import br.com.fichasordens.entities.OrdemServicoEntity;
 import br.com.fichasordens.entities.OrdemServicoLancEntity;
 import br.com.fichasordens.entities.OrdemServicoLancId;
@@ -59,6 +60,11 @@ public class OrdemServico {
 			lancEntity.getOrdemServico().setId(ent.getId());
 			ordemServico.setId(ent.getId());
 			lancEntity.setAtualSituacao(true);
+			OrdemServicoLancEntity lancEntityAnterior = this.ordemServicoLancRepository.findByOrdemServicoIdAndAtualSituacao(ent.getId(),  true);
+			if (lancEntityAnterior != null) {
+				lancEntityAnterior.setAtualSituacao(false);
+				this.ordemServicoLancRepository.save(lancEntityAnterior);
+			}
 			this.ordemServicoLancRepository.save(lancEntity);
 		} catch (Exception e) {
 			throw new ExcecaoRetorno("Erro ao tentar cadastrar ordem de serviço");
@@ -129,6 +135,7 @@ public class OrdemServico {
 		int qtdTrabalhando = 0;
 		int qtdAguardando = 0;
 		int qtdFechado = 0;
+		int qtdFinalizado = 0;
 		int qtdCancelado = 0;
 		for (OrdemServicoEntity a : lst) {
 			for (OrdemServicoLancEntity lanc : a.getOrdemServicoLancs()) {
@@ -144,6 +151,9 @@ public class OrdemServico {
 				if (lanc.getSituacao().equals("Fechado") && lanc.getAtualSituacao()) {
 					qtdFechado = qtdFechado + 1; 
 				}
+				if (lanc.getSituacao().equals("Finalizado") && lanc.getAtualSituacao()) {
+					qtdFinalizado = qtdFinalizado + 1; 
+				}
 				if (lanc.getSituacao().equals("Cancelado") && lanc.getAtualSituacao()) {
 					qtdCancelado = qtdCancelado + 1; 
 				}
@@ -153,12 +163,14 @@ public class OrdemServico {
 		map.put("Trabalhando", qtdTrabalhando);
 		map.put("Aguardando", qtdAguardando);
 		map.put("Fechado", qtdFechado);
+		map.put("Finalizado", qtdFinalizado);
 		map.put("Cancelado", qtdCancelado);
 		return map;
 	}
 	
 	private OrdemServicoEntity converterParaEntity(final OrdemServico ordemServico) {
 		final OrdemServicoEntity ent = new OrdemServicoEntity();
+		ent.setId(ordemServico.getId());
 		ent.setFrabricante(ordemServico.getFabricante());
 		ent.setDescDefeito(ordemServico.getDescDefeito());
 		ent.setDescEquip(ordemServico.getDescEquip());

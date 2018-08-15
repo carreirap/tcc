@@ -27,10 +27,12 @@ export class SituacaoTecnica {
     ];
 
     situacaoFinalizado: Array<any> = [
+        { value: 'Finalizado', label: 'Finalizado' },
         { value: 'Faturado', label: 'Faturado' }
     ];
 
     situacaoFaturado: Array<any> = [
+        { value: 'Faturado', label: 'Faturado' },
         { value: 'Fechado', label: 'Fechado' }
     ];
 
