@@ -39,7 +39,8 @@ export class OrdemServicoComponent implements OnInit {
   typePesquisa = '';
   param: any;
   situacao: any;
-
+  totalPecaOutros: number;
+  
   @ViewChild('cpfcnpjvalidation') pwConfirmModel: NgModel;
   constructor(private service: DataService, toasterService: ToasterService, public modal: NgbModal,
               private datePipe: DatePipe, private userService: UserService,
@@ -53,6 +54,14 @@ export class OrdemServicoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.modalService.carregarLinha.subscribe(
+      result => this.addLinha(result)
+    );
+
+    this.modalClienteService.carregarCliente.subscribe(
+      result => this.loadForm(result)
+    );
+
     this.route.params.subscribe(
       params => {
         this.param = params['id'];
@@ -69,13 +78,7 @@ export class OrdemServicoComponent implements OnInit {
     } else {
       debugger;
       this.formOrdem.lancamento = new Lancamento();
-      this.modalService.carregarLinha.subscribe(
-        result => this.addLinha(result)
-      );
-
-      this.modalClienteService.carregarCliente.subscribe(
-        result => this.loadForm(result)
-      );
+ 
       this.formOrdem.lancamento.situacao = 'Aberto';
       this.formOrdem.lancamento.data = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
     }
@@ -162,7 +165,9 @@ export class OrdemServicoComponent implements OnInit {
     this.service.post('/ordem/pecaServico', event).subscribe(response => {
       console.log(response);
       this.pecaServicoOrdemService.emitirResultado.emit('gravou');
+      this.calcularTotalLinha(event);
       this.formOrdem.itemTables.push(event);
+      this.calcularTotalTabela(this.formOrdem.itemTables);
       // this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
     }, (error) => {
       console.log('error in', error.error.mensagem);
@@ -171,12 +176,25 @@ export class OrdemServicoComponent implements OnInit {
     });
   }
 
+  calcularTotalLinha(event) {
+    event.total = (event.valor * event.qtde);
+  }
+
+  calcularTotalTabela(table) {
+    let total = 0;
+    for(let i=0; i < table.length; i++) {
+      total = total + table[i].total;
+    }
+    this.totalPecaOutros = total;
+  }
+
   removePecaOutroServico() {
     // tslint:disable-next-line:max-line-length
     this.service.delete('/ordem/pecaServico?id=' + this.selectedPecaServico.idOrdem + '&sequencia=' + this.selectedPecaServico.sequencia).subscribe(response => {
       console.log(response);
       this.toasterService.pop('success', 'Ordem de Serviço', 'Peça/Outro Servico excluido com sucesso');
       this.formOrdem.itemTables.splice(this.formOrdem.itemTables.indexOf(this.selectedPecaServico), 1);
+      this.calcularTotalTabela(this.formOrdem.itemTables);
     }, (error) => {
       console.log('error in', error.error.mensagem);
       this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
@@ -208,6 +226,8 @@ export class OrdemServicoComponent implements OnInit {
     this.formOrdem.fabricante = data.fabricante;
     this.formOrdem.serie = data.serie;
 
+    this.formOrdem.itemTables = data.pecaOutroServicoDto;
+    this.calcularTotalTabela(this.formOrdem.itemTables);
     for (let i = 0; i < data.lancamentoLst.length; i++) {
       if (i === 0) {
         this.formOrdem.dataAbertura = this.datePipe.transform(data.lancamentoLst[i].data, 'dd/MM/yyyy');
@@ -220,7 +240,6 @@ export class OrdemServicoComponent implements OnInit {
       }
       this.formOrdem.lancamentoLst.push(data.lancamentoLst[i]);
     }
-    this.formOrdem.itemTables = data.pecaOutroServicoDto;
     
   }
 

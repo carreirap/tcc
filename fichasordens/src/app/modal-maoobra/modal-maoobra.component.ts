@@ -43,6 +43,7 @@ export class ModalMaoobraComponent implements OnInit {
     itemTable.qtde = this.formItemTable.qtde;
     itemTable.descricao = this.formItemTable.descricao;
     itemTable.valor = this.formItemTable.valor;
+    itemTable.total = this.formItemTable.qtde * this.formItemTable.valor;
     if (this.formItemTable.qtde !== undefined) {
       this.modalService.enviarLinhaPaginaChamadora(itemTable);
     }

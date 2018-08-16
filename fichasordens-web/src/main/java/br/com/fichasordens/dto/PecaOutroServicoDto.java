@@ -8,6 +8,7 @@ public class PecaOutroServicoDto {
 	private int qtde;
 	private String descricao;
 	private BigDecimal valor;
+	private BigDecimal total;
 	
 	public int getQtde() {
 		return qtde;
@@ -39,4 +40,12 @@ public class PecaOutroServicoDto {
 	public void setSequencia(int sequencia) {
 		this.sequencia = sequencia;
 	}
+	public BigDecimal getTotal() {
+		return total;
+	}
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
+	
+	
 }

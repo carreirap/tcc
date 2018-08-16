@@ -28,6 +28,7 @@ import br.com.fichasordens.exception.ExcecaoRetorno;
 import br.com.fichasordens.util.ConverterCliente;
 import br.com.fichasordens.util.ConverterLancamentoDto;
 import br.com.fichasordens.util.ConverterPecaOutroServico;
+import br.com.fichasordens.util.TipoServicoEnum;
 
 @SuppressWarnings("rawtypes")
 @RestController
@@ -56,7 +57,7 @@ public class OrdemServicoController {
 	@RequestMapping(method = RequestMethod.POST,path="/pecaServico")
 	public ResponseEntity salvarItemOrdemServico(@RequestBody final PecaOutroServicoDto dto) {
 		try {
-			final PecaOutroServico peca = ConverterPecaOutroServico.converterDtoPecaServico(dto);
+			final PecaOutroServico peca = ConverterPecaOutroServico.converterDtoPecaServico(dto, TipoServicoEnum.ORDEM_SERVICO);
 			this.ordemServico.gravarPecaServicoOrdem(peca);
 			return new ResponseEntity( HttpStatus.OK);
 		} catch (ExcecaoRetorno e) {

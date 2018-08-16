@@ -29,11 +29,13 @@ import br.com.fichasordens.util.ConverterAtendimento;
 import br.com.fichasordens.util.ConverterCliente;
 import br.com.fichasordens.util.ConverterLancamentoDto;
 import br.com.fichasordens.util.ConverterPecaOutroServico;
+import br.com.fichasordens.util.TipoServicoEnum;
 
 @RestController
 @RequestMapping("/ficha")
 @EnableResourceServer
 public class FichaAtendimentoController {
+	
 	
 	@Autowired
 	FichaAtendimento fichaAtendimento;
@@ -55,7 +57,7 @@ public class FichaAtendimentoController {
 	@RequestMapping(method = RequestMethod.POST,path="/pecaServico")
 	public ResponseEntity gravarPecaServicosalvarItemOrdemServico(@RequestBody final PecaOutroServicoDto dto) {
 		//try {
-			final PecaOutroServico peca = ConverterPecaOutroServico.converterDtoPecaServico(dto);
+			final PecaOutroServico peca = ConverterPecaOutroServico.converterDtoPecaServico(dto, TipoServicoEnum.FICHA_ATENDIMENTO);
 			this.fichaAtendimento.gravarPecaServicoFicha(peca);
 			//this.ordemServicoService.gravarPecaServicoOrdem(peca);
 			return new ResponseEntity( HttpStatus.OK);

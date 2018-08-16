@@ -4,4 +4,5 @@ export  class PecaServicoOrdem {
     valor: number;
     sequencia: number;
     idOrdem: number;
+    total: number;
 }

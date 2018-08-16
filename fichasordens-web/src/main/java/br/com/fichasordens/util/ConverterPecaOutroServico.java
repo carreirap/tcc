@@ -1,6 +1,9 @@
 package br.com.fichasordens.util;
 
+import java.math.BigDecimal;
+
 import br.com.fichasordens.FichaAtendimento;
+import br.com.fichasordens.OrdemServico;
 import br.com.fichasordens.PecaOutroServico;
 import br.com.fichasordens.dto.PecaOutroServicoDto;
 
@@ -12,6 +15,7 @@ public class ConverterPecaOutroServico {
 		pecaDto.setQtde((int)p.getQuantidade());
 		pecaDto.setSequencia((int)p.getId());
 		pecaDto.setValor(p.getValor());
+		pecaDto.setTotal(pecaDto.getValor().multiply(new BigDecimal(pecaDto.getQtde())));
 		if (p.getFichaAtendimento() != null)
 			pecaDto.setIdOrdem(p.getFichaAtendimento().getId());
 		else
@@ -19,15 +23,20 @@ public class ConverterPecaOutroServico {
 		return pecaDto;
 	}
 	
-	public static PecaOutroServico converterDtoPecaServico(final PecaOutroServicoDto dto) {
+	public static PecaOutroServico converterDtoPecaServico(final PecaOutroServicoDto dto, final TipoServicoEnum type) {
 		final PecaOutroServico pecaServico = new PecaOutroServico();
 		//		pecaServico.setId(dto.getIdOrdem()...);
 		pecaServico.setDescricao(dto.getDescricao());
 		pecaServico.setQuantidade(dto.getQtde());
 		pecaServico.setValor(dto.getValor());
 		pecaServico.setId(dto.getSequencia());
-		pecaServico.setFichaAtendimento(new FichaAtendimento());
-		pecaServico.getFichaAtendimento().setId(dto.getIdOrdem());
+		if (type == TipoServicoEnum.FICHA_ATENDIMENTO) {
+			pecaServico.setFichaAtendimento(new FichaAtendimento());
+			pecaServico.getFichaAtendimento().setId(dto.getIdOrdem());
+		} else {
+			pecaServico.setOrdemServico(new OrdemServico());
+			pecaServico.getOrdemServico().setId(dto.getIdOrdem());
+		}
 		return pecaServico;
 	}
 }
