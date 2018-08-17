@@ -31,6 +31,8 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   selectedAtend: Atendimento;
   selectedPecaServico: PecaServicoOrdem;
   situacao: any;
+  totalPecaOutros: number;
+  totalAtendimentos: number
 
   constructor(private service: DataService, toasterService: ToasterService, public modal: NgbModal,
           private datePipe: DatePipe, private authenticationService: AuthenticationService,
@@ -109,6 +111,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       console.log(response);
       this.toasterService.pop('success', 'Ficha de Atendimento', 'Atendimento excluido com sucesso');
       this.formFicha.atendimento.splice(this.formFicha.atendimento.indexOf(this.selectedAtend), 1);
+      this.totalAtendimentos = this.calcularTotalTabelaAtendimento(this.formFicha.atendimento);
     }, (error) => {
       console.log('error in', error.error.mensagem);
       this.toasterService.pop('error', 'Ficha de Atendimento', error.error.mensagem);
@@ -123,6 +126,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       console.log(response);
       this.toasterService.pop('success', 'Ficha de Atendimento', 'Peça/Outro Servico excluido com sucesso');
       this.formFicha.pecaOutroServicoDto.splice(this.formFicha.pecaOutroServicoDto.indexOf(this.selectedPecaServico), 1);
+      this.totalPecaOutros = this.calcularTotalTabelaPecaOutros(this.formFicha.pecaOutroServicoDto);
     }, (error) => {
       console.log('error in', error.error.mensagem);
       this.toasterService.pop('error', 'Ficha de Atendimento', error.error.mensagem);
@@ -152,11 +156,13 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       }
       this.formFicha.lancamentoLst.push(data.lancamentoLst[i]);
     }
+    this.totalPecaOutros = this.calcularTotalTabelaPecaOutros(data.pecaOutroServicoDto)
     this.formFicha.pecaOutroServicoDto = data.pecaOutroServicoDto;
     for (let i = 0; i < data.atendimento.length; i++) {
       data.atendimento[i].dataAtendimento = this.datePipe.transform(data.atendimento[i].dataAtendimento, 'dd/MM/yyyy');
       this.formFicha.atendimento.push(data.atendimento[i]);
     }
+    this.totalAtendimentos = this.calcularTotalTabelaAtendimento(this.formFicha.atendimento);
 
   }
 
@@ -199,7 +205,9 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     this.service.post('/ficha/pecaServico', event).subscribe(response => {
       console.log(response);
       this.pecaServicoOrdemService.emitirResultado.emit('gravou');
+      this.calcularTotalLinha(event);
       this.formFicha.pecaOutroServicoDto.push(event);
+      this.totalPecaOutros = this.calcularTotalTabelaPecaOutros(this.formFicha.pecaOutroServicoDto);
       // this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
     }, (error) => {
       console.log('error in', error.error.mensagem);
@@ -217,6 +225,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       console.log(response);
       this.fichaAtendimentoService.emitirResultado.emit('gravou');
       this.formFicha.atendimento.push(event);
+      this.totalAtendimentos = this.calcularTotalTabelaAtendimento(this.formFicha.atendimento);
       // this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
     }, (error) => {
       console.log('error in', error.error.mensagem);
@@ -225,7 +234,35 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     });
 
   }
+  
+  calcularTotalLinha(event) {
+    event.total = (event.valor * event.qtde);
+    event.total = this.roundNumber(event.total, 2);
+  }
 
+  calcularTotalTabelaPecaOutros(table) {
+    let total = 0;
+    for(let i=0; i < table.length; i++) {
+      total = total + table[i].total;
+      
+    }
+    return this.roundNumber(total, 2);
+  }
+
+  calcularTotalTabelaAtendimento(table) {
+    let total = 0;
+    for(let i=0; i < table.length; i++) {
+      total = total + table[i].valor;
+      
+    }
+    return this.roundNumber(total, 2);
+  }
+
+  roundNumber(number, decimals) {
+    var newnumber = new Number(number+'').toFixed(parseInt(decimals));
+    return parseFloat(newnumber); 
+  }
+        
   loadForm(data) {
     this.formFicha.cliente.cnpj = data.cnpj;
     this.formFicha.cliente.nome = data.nome;

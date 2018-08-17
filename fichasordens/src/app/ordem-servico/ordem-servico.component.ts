@@ -109,6 +109,7 @@ export class OrdemServicoComponent implements OnInit {
       this.setNumeroOrdem(response);
       this.formOrdem.lancamentoLst.push(this.formOrdem.lancamento);
       this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
+      this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formOrdem.lancamento.situacao);
     }, (error) => {
       console.log('error in', error.error.mensagem);
       this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
@@ -178,14 +179,21 @@ export class OrdemServicoComponent implements OnInit {
 
   calcularTotalLinha(event) {
     event.total = (event.valor * event.qtde);
+    event.total = this.roundNumber(event.total, 2);
   }
 
   calcularTotalTabela(table) {
     let total = 0;
     for(let i=0; i < table.length; i++) {
       total = total + table[i].total;
+      
     }
-    this.totalPecaOutros = total;
+    this.totalPecaOutros = this.roundNumber(total, 2);
+  }
+
+  roundNumber(number, decimals) {
+    var newnumber = new Number(number+'').toFixed(parseInt(decimals));
+    return parseFloat(newnumber); 
   }
 
   removePecaOutroServico() {
@@ -226,8 +234,9 @@ export class OrdemServicoComponent implements OnInit {
     this.formOrdem.fabricante = data.fabricante;
     this.formOrdem.serie = data.serie;
 
+    
+    this.calcularTotalTabela(data.pecaOutroServicoDto);
     this.formOrdem.itemTables = data.pecaOutroServicoDto;
-    this.calcularTotalTabela(this.formOrdem.itemTables);
     for (let i = 0; i < data.lancamentoLst.length; i++) {
       if (i === 0) {
         this.formOrdem.dataAbertura = this.datePipe.transform(data.lancamentoLst[i].data, 'dd/MM/yyyy');
