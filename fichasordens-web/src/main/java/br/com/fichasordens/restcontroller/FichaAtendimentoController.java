@@ -29,6 +29,7 @@ import br.com.fichasordens.util.ConverterAtendimento;
 import br.com.fichasordens.util.ConverterCliente;
 import br.com.fichasordens.util.ConverterLancamentoDto;
 import br.com.fichasordens.util.ConverterPecaOutroServico;
+import br.com.fichasordens.util.StatusServicoEnum;
 import br.com.fichasordens.util.TipoServicoEnum;
 
 @RestController
@@ -80,7 +81,7 @@ public class FichaAtendimentoController {
 		
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity listaFichas(@RequestParam final String situacao) {
-		List<FichaAtendimento> fichaList = this.fichaAtendimento.listarFichas(situacao);
+		List<FichaAtendimento> fichaList = this.fichaAtendimento.listarFichas(StatusServicoEnum.valueOf(situacao.toUpperCase()));
 		List<ListagemDashboardDto> dtoList = new ArrayList<ListagemDashboardDto>();
 		fichaList.forEach(a->{
 			ListagemDashboardDto dto = new ListagemDashboardDto();

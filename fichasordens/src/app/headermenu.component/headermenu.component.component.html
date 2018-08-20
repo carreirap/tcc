@@ -6,14 +6,14 @@
 
   <div class="collapse navbar-collapse" id="navbarNav" [ngbCollapse]="isCollapsed">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" [routerLink]="['/ordem']" (click)="onMenuClick()">Ordem de Serviço <span class="sr-only">(current)</span></a>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/ordem']" (click)="onMenuClick('ordem')">Ordem de Serviço <span *ngIf="active === 'ordem'" class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/fichas']" (click)="onMenuClick()">Ficha de Atendimento</a>
+        <a class="nav-link" [routerLink]="['/fichas']" (click)="onMenuClick('ficha')">Ficha de Atendimento <span *ngIf="active === 'ficha'" class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/cliente']" (click)="onMenuClick()">Cliente</a>
+        <a class="nav-link" [routerLink]="['/cliente']" (click)="onMenuClick('cliente')">Cliente <span *ngIf="active === 'cliente'" class="sr-only">(current)</span></a>
       </li>
             
       <!-- <li class="nav-item">
@@ -29,21 +29,21 @@
     <ul class="navbar-nav mr-sm-2">  
       <li class="nav-item dropdown2" ngbDropdown *ngIf="isAdmin()" >
         <a class="nav-link dropdown-toggle" onclick="return false;" ngbDropdownToggle disabled href="#" id="nav-dropdown2" role="button" data-toggle="dropdown2" aria-haspopup="true" aria-expanded="false">
-          Sistema
+          Sistema <span *ngIf="active === 'sistema'" class="sr-only">(current)</span>
         </a>
         <div class="dropdown-menu" aria-labelledby="nav-dropdown2" ngbDropdownMenu>
-          <a class="dropdown-item" [routerLink]="['/dadosempresa']" (click)="onMenuClick()">Dados Empresa</a>
-          <a class="dropdown-item" [routerLink]="['/param']" (click)="onMenuClick()">Paramentros</a>
+          <a class="dropdown-item" [routerLink]="['/dadosempresa']" (click)="onMenuClick('sistema')">Dados Empresa</a>
+          <a class="dropdown-item" [routerLink]="['/param']" (click)="onMenuClick('sistema')">Paramentros</a>
         </div>
       </li>
 
 
       <li class="nav-item dropdown" ngbDropdown>
         <a class="nav-link dropdown-toggle" onclick="return false;" ngbDropdownToggle disabled href="#" id="nav-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Usuario
+          Usuario <span *ngIf="active === 'usuario'" class="sr-only">(current)</span>
         </a>
         <div class="dropdown-menu" aria-labelledby="nav-dropdown" ngbDropdownMenu>
-          <a class="dropdown-item" [routerLink]="['/perfil']" (click)="onMenuClick()">Perfil</a>
+          <a class="dropdown-item" [routerLink]="['/perfil']" (click)="onMenuClick('usuario')">Perfil</a>
           <a class="dropdown-item" [routerLink]="['/login']">Logoff</a>
           <!--<div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a>-->

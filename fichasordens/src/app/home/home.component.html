@@ -1,19 +1,4 @@
-﻿<!--<div class="col-md-6 col-md-offset-3">
-    <h1>Home</h1>
-    <p>You're logged in with JWT!!</p>
-    <h2  *ngIf="user">{{loggedInUser}}</h2>
-    <div>
-        Users from secure api end point:
-        <ul>
-            <li *ngFor="let user of users">{{user.nome}}</li>
-        </ul>
-    </div>
-   
-
-    <button (click)="getUpdatedUser()">Get Updated User</button>
-</div>
--->
-<header class="col-md-12 text-center">
+﻿<header class="col-md-12 text-center">
     <h1>Dashboard</h1>
 </header>
 <div class="container">
@@ -26,10 +11,7 @@
                 <p-header>
                     Abertas 
                 </p-header>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Aberto','Ficha']">{{dashboadFicha.qtqAberta}} Abertas</a>
-                <p-footer>
-                    
-                </p-footer>
+                <a class="nav-link" [routerLink]="['/listaDashboard', 'Aberto','Ficha']">{{dashboadFicha.qtqAberta}} Abertas</a>
             </p-panel>
         </div>
         <div class="col-md-4 text-center">
@@ -49,8 +31,8 @@
                 <p-header>
                     Fechadas
                 </p-header>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Fechado,Ficha']">{{dashboadFicha.qtdFechada}} Fechado</a>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Cancelado,Ficha']">{{dashboadFicha.qtdAguardando}} Cancelado</a>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Fechado','Ficha']">{{dashboadFicha.qtdFechada}} Fechado</a>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Cancelado','Ficha']">{{dashboadFicha.qtdAguardando}} Cancelado</a>
                 <p-footer>
 
                 </p-footer>

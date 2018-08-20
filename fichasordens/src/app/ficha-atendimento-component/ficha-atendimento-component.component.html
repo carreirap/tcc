@@ -75,30 +75,35 @@
         </div>
       </div>
     </div>
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-2">
       <label for="celular">Data Abertura</label>
-      <input class="form-control" maxlength="15" type="text" id="dataAbertura" [readonly]="true" name="dataAbertura" [(ngModel)]="formFicha.dataAbertura"
+      <input class="form-control" maxlength="10" type="text" id="dataAbertura" [readonly]="true" name="dataAbertura" [(ngModel)]="formFicha.dataAbertura"
+        [readonly]="true" style="background-color: white;">
+    </div>
+    <div class="form-group col-md-2">
+      <label for="celular">Data Fechamento</label>
+      <input class="form-control" maxlength="10" type="text" id="dataFechamento" [readonly]="true" name="dataFechamento" [(ngModel)]="formFicha.dataFechamento"
         [readonly]="true" style="background-color: white;">
     </div>
   </div>
   <br>
-  <div class="form-row">
+  <div class="form-row" *ngIf="formFicha.numeroFicha">
     <div class="form-group col-md-9">
       Atendimento
     </div>
     <div class="form-group col-md-1">
      
-      <button type="submit" (click)="mostrarModalAtendimento(atendimento);" *ngIf="formFicha.numeroFicha" class="btn btn-primary">Incluir</button>
+      <button type="submit" (click)="mostrarModalAtendimento(atendimento);" *ngIf="mostrarBotoes()" class="btn btn-primary">Incluir</button>
     </div>
     <div class="form-group col-md-1">
-      <button type="submit" class="btn btn-primary" (click)="remove()" *ngIf="formFicha.numeroFicha">Excluir</button>
+      <button type="submit" class="btn btn-primary" (click)="remove()" *ngIf="mostrarBotoes()">Excluir</button>
     </div>
   </div>
-  <div class="form-row">
+  <div class="form-row" *ngIf="formFicha.numeroFicha">
     <div class="form-group col-md-11">
       <p-table [responsive]="true" [value]="formFicha.atendimento" [lazy]="true" 
       selectionMode="single" [(selection)]="selectedAtend"
-      [immutable]=false *ngIf="formFicha.numeroFicha">
+      [immutable]=false >
         <ng-template pTemplate="header" styleClass="thead-light">
           <tr>
             <th>Data</th>
@@ -112,12 +117,12 @@
             <td>{{car.dataAtendimento}}</td>
             <td>{{car.descricao}}</td>
             <td>{{car.duracao}}</td>
-            <td>{{car.valor}}</td>
+            <td>{{car.valor | currency:'BRL':true}}</td>
           </tr>
         </ng-template>
       </p-table>
     </div>
-    <div class="form-group col-md-11" style="text-align: right">
+    <div class="form-group col-md-11" style="text-align: right" *ngIf="formFicha.lancamento.situacao !== 'Aberto'">
       <label><strong>Total=> {{totalAtendimentos}} </strong> </label>
     </div>
   </div>
@@ -128,10 +133,10 @@
     </div>
     <div class="form-group col-md-1">
       <!-- -->
-      <button type="submit" (click)="mostrarModalMaoObra(maoobra);" *ngIf="formFicha.numeroFicha" class="btn btn-primary">Incluir</button>
+      <button type="submit" (click)="mostrarModalMaoObra(maoobra);" class="btn btn-primary" *ngIf="mostrarBotoes()">Incluir</button>
     </div>
     <div class="form-group col-md-1">
-      <button type="submit" class="btn btn-primary" (click)="removePecaOutroServico()" *ngIf="formFicha.numeroFicha">Excluir</button>
+      <button type="submit" class="btn btn-primary" (click)="removePecaOutroServico()" *ngIf="mostrarBotoes()">Excluir</button>
     </div>
   </div>
   <div class="form-row">
@@ -150,24 +155,27 @@
           <tr [pSelectableRow]="peca">
             <td>{{peca.qtde}}</td>
             <td>{{peca.descricao}}</td>
-            <td>{{peca.valor}}</td>
-            <td>{{peca.total}}</td>  
+            <td>{{peca.valor | currency:'BRL':true}}</td>
+            <td>{{peca.total | currency:'BRL':true}}</td>  
           </tr>
         </ng-template>
       </p-table>
     </div>
-    <div class="form-group col-md-11" style="text-align: right">
-      <label><strong>Total=> {{totalPecaOutros}} </strong> </label>
+    <div class="form-group col-md-11" style="text-align: right" *ngIf="formFicha.lancamento.situacao !== 'Aberto'">
+      <label><strong>Total=> {{totalPecaOutros | currency:'BRL':true}} </strong> </label>
+    </div>
+    <div class="form-group col-md-11" style="text-align: right" *ngIf="formFicha.lancamento.situacao !== 'Aberto'">
+      <label><strong>Total Ficha de Atendimento => {{totalFicha | currency:'BRL':true}} </strong> </label>
     </div>
   </div>
 
 
  <br>
-  <div *ngIf="formFicha.numeroFicha">
+  <div *ngIf="formFicha.numeroFicha && (formFicha.dataFechamento === '' || formFicha.dataFechamento === undefined)">
     <div class="form-row">
       <div class="form-group col-md-5" [ngClass]="{'was-validated': !tecnico.valid  && (tecnico.dirty || tecnico.touched)}">
         <label for="cnpjcpf">Técnico</label>
-        <input class="form-control" readonly maxlength="10" type="text" id="tecnico" name="tecnico" [(ngModel)]="formFicha.lancamento.nomeUsuario"
+        <input class="form-control" readonly maxlength="50" type="text" id="tecnico" name="tecnico" [(ngModel)]="formFicha.lancamento.nomeUsuario"
           style="background-color: white;" #tecnico="ngModel" required>
           <div class="invalid-feedback" *ngIf="tecnico.errors && (tecnico.dirty || tecnico.touched)">
             <ul >
@@ -216,10 +224,10 @@
     </div>
   </div>
 
-  <div class="form-row">
+  <div class="form-row" *ngIf="formFicha.numeroFicha">
     <div class="form-group col-md-11">
       <p-accordion [multiple]="true">
-        <p-accordionTab header="Ver Histórico">
+        <p-accordionTab header="Ver Histórico de lancamento">
             <div *ngFor="let lanc of formFicha.lancamentoLst">
               <label>{{lanc.nomeUsuario}}</label><br>
               <label>{{lanc.situacao}}</label><br>
@@ -230,10 +238,9 @@
       </p-accordion>
     </div>
   </div>  
-  <div class="form-group row">
+  <div class="form-group row" *ngIf="formFicha.dataFechamento === '' || formFicha.dataFechamento === undefined">
     <div class="col-sm-10">
       <button type="submit" class="btn btn-primary"  [disabled]="!myform.valid">Salvar</button>
-      {{myform.valid}}
     </div>
   </div>
 </form> 

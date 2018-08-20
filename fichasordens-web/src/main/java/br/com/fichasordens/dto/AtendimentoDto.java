@@ -11,7 +11,7 @@ public class AtendimentoDto {
 	private String usuario;
 	private long idUsuario;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date dataAtendimento;
 	
 	private String descricao;

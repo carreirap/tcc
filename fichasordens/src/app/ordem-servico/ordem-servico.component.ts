@@ -76,11 +76,10 @@ export class OrdemServicoComponent implements OnInit {
       });
 
     } else {
-      debugger;
       this.formOrdem.lancamento = new Lancamento();
  
       this.formOrdem.lancamento.situacao = 'Aberto';
-      this.formOrdem.lancamento.data = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
+      this.formOrdem.dataAbertura = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
     }
     this.getNomeUsario();
   }
@@ -101,6 +100,8 @@ export class OrdemServicoComponent implements OnInit {
   onSubmit() {
     if (this.formOrdem.lancamento.situacao === 'Aberto') {
       this.formOrdem.lancamento.sequencia = 0;
+      this.formOrdem.lancamento.data = this.formOrdem.dataAbertura;
+      this.formOrdem.lancamento.observacao = "Abertura da Ordem de Serviço."
     } else {
       this.getSequenciaLancamento();
     }
@@ -110,7 +111,10 @@ export class OrdemServicoComponent implements OnInit {
       this.formOrdem.lancamentoLst.push(this.formOrdem.lancamento);
       this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
       this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formOrdem.lancamento.situacao);
-    }, (error) => {
+      if (this.formOrdem.lancamento.situacao === 'Fechado') {
+        this.formOrdem.dataSaida = this.formOrdem.lancamento.data;
+      }
+    }, (error) => { 
       console.log('error in', error.error.mensagem);
       this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
     });
@@ -247,7 +251,11 @@ export class OrdemServicoComponent implements OnInit {
         this.formOrdem.lancamento.situacao = data.lancamentoLst[i].situacao;
         this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formOrdem.lancamento.situacao);
       }
+      // if (i + 1 <  data.lancamentoLst.length)
       this.formOrdem.lancamentoLst.push(data.lancamentoLst[i]);
+      if (data.lancamentoLst[i].situacao === 'Fechado') {
+        this.formOrdem.dataSaida = data.lancamentoLst[i].data;
+      }  
     }
     
   }

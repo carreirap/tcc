@@ -9,7 +9,7 @@ import br.com.fichasordens.entities.FichaAtendLancId;
 @Repository
 public interface FichaAtendLancRepository extends JpaRepository<FichaAtendLancEntity, FichaAtendLancId> {
 	
-	FichaAtendLancEntity findBySituacaoAndFichaAtendimentoId(final String situacao, final long idFicha);
+	FichaAtendLancEntity findBySituacaoAndFichaAtendimentoIdAndAtualSituacao(final String situacao, final long idFicha, final boolean atualSituacao);
 	
 	FichaAtendLancEntity findByFichaAtendimentoIdAndAtualSituacao(final long id, final boolean atualSitucao);
 

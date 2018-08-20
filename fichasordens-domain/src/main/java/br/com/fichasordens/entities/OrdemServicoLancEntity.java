@@ -119,4 +119,37 @@ public class OrdemServicoLancEntity implements java.io.Serializable {
 	public void setAtualSituacao(Boolean atualSituacao) {
 		this.atualSituacao = atualSituacao;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((ordemServico == null) ? 0 : ordemServico.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OrdemServicoLancEntity other = (OrdemServicoLancEntity) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (ordemServico == null) {
+			if (other.ordemServico != null)
+				return false;
+		} else if (!ordemServico.equals(other.ordemServico))
+			return false;
+		return true;
+	}
+	
+	
 }

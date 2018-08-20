@@ -10,6 +10,7 @@ export class Ficha {
     tipoServico: string;
     pecaOutroServicoDto: Array<PecaServicoOrdem>;
     dataAbertura: string;
+    dataFechamento: string;
     responsavel: string;
     lancamento:  Lancamento;
     lancamentoLst:  Array<Lancamento>;

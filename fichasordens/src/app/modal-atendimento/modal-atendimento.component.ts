@@ -4,6 +4,7 @@ import { Atendimento } from '../_models/atendimento';
 import { ModalAtendimentoService } from './modal-atendimento-service';
 import { FichaAtendimentoService } from '../ficha-atendimento-component/ficha-atendimento-service';
 import { DataService } from '../_services/http.service';
+import { DatePipe } from '../../../node_modules/@angular/common';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class ModalAtendimentoComponent implements OnInit {
   @Input() dValue;
   error: string;
 
-  constructor(private ngModal: NgbModal, private modalService: ModalAtendimentoService,
+  constructor(private ngModal: NgbModal, private modalService: ModalAtendimentoService, private datePipe: DatePipe,
     private fichaAtendimentoService: FichaAtendimentoService,
     private service: DataService) { }
 
@@ -57,7 +58,7 @@ export class ModalAtendimentoComponent implements OnInit {
     atend.duracao = this.formAtendimento.duracao;
     atend.descricao = this.formAtendimento.tipo[parseInt(this.formAtendimento.descricao)].label;
     atend.valor = this.formAtendimento.valor;
-    atend.dataAtendimento = this.formAtendimento.dataAtendimento;
+    atend.dataAtendimento = this.datePipe.transform(this.formAtendimento.dataAtendimento, 'dd/MM/yyyy');
     if (this.formAtendimento.duracao !== undefined) {
       this.modalService.enviarLinhaPaginaChamadora(atend);
     }

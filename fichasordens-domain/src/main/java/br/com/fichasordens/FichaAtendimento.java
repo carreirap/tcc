@@ -27,6 +27,7 @@ import br.com.fichasordens.repository.AtendimentoFichaRepository;
 import br.com.fichasordens.repository.FichaAtendLancRepository;
 import br.com.fichasordens.repository.FichaAtendimentoRepository;
 import br.com.fichasordens.repository.PecaServicoFichaRepository;
+import br.com.fichasordens.util.StatusServicoEnum;
 
 @Component
 public class FichaAtendimento {
@@ -107,25 +108,29 @@ public class FichaAtendimento {
 		int qtdFechado = 0;
 		int qtdFinalizado = 0;
 		int qtdCancelado = 0;
+		int qtdFaturado = 0;
 		for (FichaAtendimentoEntity a : lst) {
 			for (FichaAtendLancEntity lanc : a.getFichaAtendLancs()) {
-				if (lanc.getSituacao().equals("Aberto") && lanc.getAtualSituacao()) {
+				if (lanc.getSituacao().equals(StatusServicoEnum.ABERTO.getValue()) && lanc.getAtualSituacao()) {
 					qtdAberto = qtdAberto + 1; 
 				}
-				if (lanc.getSituacao().equals("Trabalhando") && lanc.getAtualSituacao()) {
+				if (lanc.getSituacao().equals(StatusServicoEnum.TRABALHANDO.getValue()) && lanc.getAtualSituacao()) {
 					qtdTrabalhando = qtdTrabalhando + 1; 
 				}
-				if (lanc.getSituacao().equals("Aguardando") && lanc.getAtualSituacao()) {
+				if (lanc.getSituacao().equals(StatusServicoEnum.AGUARDANDO.getValue()) && lanc.getAtualSituacao()) {
 					qtdAguardando = qtdAguardando + 1; 
 				}
-				if (lanc.getSituacao().equals("Finalizado") && lanc.getAtualSituacao()) {
+				if (lanc.getSituacao().equals(StatusServicoEnum.FINALIZADO.getValue()) && lanc.getAtualSituacao()) {
 					qtdFinalizado = qtdFinalizado + 1; 
 				}
-				if (lanc.getSituacao().equals("Fechado") && lanc.getAtualSituacao()) {
+				if (lanc.getSituacao().equals(StatusServicoEnum.FECHADO.getValue()) && lanc.getAtualSituacao()) {
 					qtdFechado = qtdFechado + 1; 
 				}
-				if (lanc.getSituacao().equals("Cancelado") && lanc.getAtualSituacao()) {
+				if (lanc.getSituacao().equals(StatusServicoEnum.CANCELADO.getValue()) && lanc.getAtualSituacao()) {
 					qtdCancelado = qtdCancelado + 1; 
+				}
+				if (lanc.getSituacao().equals(StatusServicoEnum.FATURADO.getValue()) && lanc.getAtualSituacao()) {
+					qtdFaturado = qtdFaturado + 1; 
 				}
 			}
 		}
@@ -135,18 +140,17 @@ public class FichaAtendimento {
 		map.put("Fechado", qtdFechado);
 		map.put("Finalizado", qtdFinalizado);
 		map.put("Cancelado", qtdCancelado);
+		map.put("Faturado", qtdFaturado);
 		return map;
 	}
 	
 	@Transactional
-	public List<FichaAtendimento> listarFichas(final String situacao) {
-		List<FichaAtendimentoEntity> lst = this.repository.FindAllFichaByStatus(situacao);
-		if (!situacao.equals("Aberto")) {
-			
-		}
+	public List<FichaAtendimento> listarFichas(final StatusServicoEnum situacao) {
+		List<FichaAtendimentoEntity> lst = this.repository.FindAllFichaByStatus(situacao.getValue());
+		
 		List<FichaAtendimento> fichaList = new ArrayList<FichaAtendimento>();
 		lst.forEach(a-> {
-			FichaAtendLancEntity ent = this.fichaAtendLancRepository.findBySituacaoAndFichaAtendimentoId(situacao, a.getId());
+			FichaAtendLancEntity ent = this.fichaAtendLancRepository.findBySituacaoAndFichaAtendimentoIdAndAtualSituacao(situacao.getValue(), a.getId(), true);
 			ent.getUsuario().getId();
 			a.getFichaAtendLancs().add(ent);
 			fichaList.add(this.converterEntityParaFichaAtendimento(a));
@@ -195,6 +199,7 @@ public class FichaAtendimento {
 			ficha.setFichaAtendimentoLancList(new ArrayList<FichaAtendimentoLanc>());
 			entity.getFichaAtendLancs().forEach(a-> {
 				FichaAtendimentoLanc lanc = new FichaAtendimentoLanc();
+				lanc.setSequencia(a.getId().getSequencia());
 				lanc.setSituacao(a.getSituacao());
 				lanc.setData(a.getData());
 				Usuario user = new Usuario();

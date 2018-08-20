@@ -51,6 +51,7 @@ export class HomeComponent implements OnInit {
         this.dashboadFicha.qtdAguardando = data.Aguardando;
         this.dashboadFicha.qtdCancelado = data.Cancelado;
         this.dashboadFicha.qtdFinalizado = data.Finalizado;
+        this.dashboadFicha.qtdFaturado = data.Faturado;
     }
 
     setValuesOrdem(data) {
@@ -60,6 +61,7 @@ export class HomeComponent implements OnInit {
         this.dashboardOrdem.qtdAguardando = data.Aguardando;
         this.dashboardOrdem.qtdCancelado = data.Cancelado;
         this.dashboardOrdem.qtdFinalizado = data.Finalizado;
+        this.dashboardOrdem.qtdFaturado = data.Faturado;
     }
     /*getUpdatedUser(): void {
         this.user.usuario = JSON.parse(localStorage.getItem('currentUser')).usuario;

@@ -33,6 +33,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   situacao: any;
   totalPecaOutros: number;
   totalAtendimentos: number
+  totalFicha: number;
 
   constructor(private service: DataService, toasterService: ToasterService, public modal: NgbModal,
           private datePipe: DatePipe, private authenticationService: AuthenticationService,
@@ -72,6 +73,8 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.formFicha.dataAbertura = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
       this.formFicha.lancamento.situacao = 'Aberto';
       this.formFicha.tipoServico = 'Assitencia';
+      this.formFicha.lancamento.data = this.formFicha.dataAbertura;
+      this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formFicha.lancamento.situacao);
     }
     this.getNomeUsario();
   }
@@ -90,6 +93,9 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.formFicha.lancamentoLst.push(this.formFicha.lancamento);
       this.toasterService.pop('success', 'Ficha de Atendimento', 'Ficha de Atendimento cadastrado com sucesso!');
       this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formFicha.lancamento.situacao);
+      if (this.formFicha.lancamento.situacao === 'Fechado') {
+        this.formFicha.dataFechamento = this.formFicha.lancamento.data;
+      }
     }, (error) => {
       console.log('error in', error.error.mensagem);
       this.toasterService.pop('error', 'Ficha de Atendimento', error.error.mensagem);
@@ -97,6 +103,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   }
 
   getSequenciaLancamento() {
+    debugger;
     let x = 0;
     for (let i = 0; i < this.formFicha.lancamentoLst.length; i++) {
       x = this.formFicha.lancamentoLst[i].sequencia;
@@ -112,6 +119,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.toasterService.pop('success', 'Ficha de Atendimento', 'Atendimento excluido com sucesso');
       this.formFicha.atendimento.splice(this.formFicha.atendimento.indexOf(this.selectedAtend), 1);
       this.totalAtendimentos = this.calcularTotalTabelaAtendimento(this.formFicha.atendimento);
+      this.calcularTotalFicha();
     }, (error) => {
       console.log('error in', error.error.mensagem);
       this.toasterService.pop('error', 'Ficha de Atendimento', error.error.mensagem);
@@ -127,6 +135,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.toasterService.pop('success', 'Ficha de Atendimento', 'Peça/Outro Servico excluido com sucesso');
       this.formFicha.pecaOutroServicoDto.splice(this.formFicha.pecaOutroServicoDto.indexOf(this.selectedPecaServico), 1);
       this.totalPecaOutros = this.calcularTotalTabelaPecaOutros(this.formFicha.pecaOutroServicoDto);
+      this.calcularTotalFicha();
     }, (error) => {
       console.log('error in', error.error.mensagem);
       this.toasterService.pop('error', 'Ficha de Atendimento', error.error.mensagem);
@@ -155,6 +164,10 @@ export class FichaAtendimentoComponentComponent implements OnInit {
         this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formFicha.lancamento.situacao);
       }
       this.formFicha.lancamentoLst.push(data.lancamentoLst[i]);
+      if (data.lancamentoLst[i].situacao === 'Fechado') {
+        this.formFicha.dataFechamento = data.lancamentoLst[i].data;
+      }  
+      
     }
     this.totalPecaOutros = this.calcularTotalTabelaPecaOutros(data.pecaOutroServicoDto)
     this.formFicha.pecaOutroServicoDto = data.pecaOutroServicoDto;
@@ -163,6 +176,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.formFicha.atendimento.push(data.atendimento[i]);
     }
     this.totalAtendimentos = this.calcularTotalTabelaAtendimento(this.formFicha.atendimento);
+    this.calcularTotalFicha();
 
   }
 
@@ -208,6 +222,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.calcularTotalLinha(event);
       this.formFicha.pecaOutroServicoDto.push(event);
       this.totalPecaOutros = this.calcularTotalTabelaPecaOutros(this.formFicha.pecaOutroServicoDto);
+      this.calcularTotalFicha();
       // this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
     }, (error) => {
       console.log('error in', error.error.mensagem);
@@ -226,6 +241,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.fichaAtendimentoService.emitirResultado.emit('gravou');
       this.formFicha.atendimento.push(event);
       this.totalAtendimentos = this.calcularTotalTabelaAtendimento(this.formFicha.atendimento);
+      this.calcularTotalFicha();
       // this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
     }, (error) => {
       console.log('error in', error.error.mensagem);
@@ -238,6 +254,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   calcularTotalLinha(event) {
     event.total = (event.valor * event.qtde);
     event.total = this.roundNumber(event.total, 2);
+    
   }
 
   calcularTotalTabelaPecaOutros(table) {
@@ -246,16 +263,23 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       total = total + table[i].total;
       
     }
+    
     return this.roundNumber(total, 2);
+
   }
 
   calcularTotalTabelaAtendimento(table) {
     let total = 0;
     for(let i=0; i < table.length; i++) {
       total = total + table[i].valor;
-      
     }
     return this.roundNumber(total, 2);
+  }
+
+  calcularTotalFicha () {
+    this.totalFicha = 0;
+    this.totalFicha = this.totalAtendimentos + this.totalPecaOutros;
+    this.totalFicha = this.roundNumber(this.totalFicha, 2);
   }
 
   roundNumber(number, decimals) {
@@ -269,6 +293,17 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     this.formFicha.cliente.celular = data.celular;
     this.formFicha.cliente.fone = data.fone;
     this.formFicha.cliente.id = data.id;
+  }
+
+  mostrarBotoes() {
+    if (this.formFicha.lancamento.situacao !== 'Aberto' && 
+    this.formFicha.lancamento.situacao !== 'Faturado' && 
+    this.formFicha.lancamento.situacao !== 'Fechado' && 
+    this.formFicha.lancamento.situacao !== 'Finalizado') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

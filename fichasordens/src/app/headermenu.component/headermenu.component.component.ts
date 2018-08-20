@@ -10,6 +10,7 @@ import { UsuarioLogado } from '../_models/usuario-logado';
 export class HeadermenuComponentComponent implements OnInit {
   user: UsuarioLogado;
   papel: String;
+  active: string;
 
 
   public isCollapsed = true;
@@ -20,7 +21,7 @@ export class HeadermenuComponentComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.active = 'dashboard';
   }
 
   isUserLogger() {
@@ -51,8 +52,10 @@ export class HeadermenuComponentComponent implements OnInit {
     return 'currentUser';
   }
 
-  onMenuClick() {
+  onMenuClick(clicked) {
     this.el.nativeElement.querySelector('.navbar-toggler').click();
+    this.active = clicked;
+
   }
 
 }

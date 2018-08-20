@@ -95,6 +95,10 @@ import { CalendarModule } from 'primeng/calendar';
 import { ListagemComponent } from './home/listagem.component';
 import { FichaAtendimentoService } from './ficha-atendimento-component/ficha-atendimento-service';
 import { CalcularAtendimento } from './util/calcular-atendimento';
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import ptBr from '@angular/common/locales/pt';
+registerLocaleData(ptBr)
 
 
 @NgModule({
@@ -142,6 +146,7 @@ import { CalcularAtendimento } from './util/calcular-atendimento';
         ToasterService,
         DataService,
         FormBuilder,
+        {provide: LOCALE_ID, useValue: 'pt-BR'},
         // providers used to create fake backend
         // fakeBackendProvider,
         // MockBackend,

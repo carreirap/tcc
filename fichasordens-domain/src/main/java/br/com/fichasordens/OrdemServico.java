@@ -1,5 +1,6 @@
 package br.com.fichasordens;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.fichasordens.entities.ClienteEntity;
-import br.com.fichasordens.entities.FichaAtendLancEntity;
 import br.com.fichasordens.entities.OrdemServicoEntity;
 import br.com.fichasordens.entities.OrdemServicoLancEntity;
 import br.com.fichasordens.entities.OrdemServicoLancId;
@@ -20,6 +20,7 @@ import br.com.fichasordens.exception.ExcecaoRetorno;
 import br.com.fichasordens.repository.OrdemServicoLancRepository;
 import br.com.fichasordens.repository.OrdemServicoRepository;
 import br.com.fichasordens.repository.PecaServicoOrdemRepository;
+import br.com.fichasordens.util.StatusServicoEnum;
 
 @Component
 public class OrdemServico {
@@ -137,25 +138,29 @@ public class OrdemServico {
 		int qtdFechado = 0;
 		int qtdFinalizado = 0;
 		int qtdCancelado = 0;
+		int qtdFaturado = 0;
 		for (OrdemServicoEntity a : lst) {
 			for (OrdemServicoLancEntity lanc : a.getOrdemServicoLancs()) {
-				if (lanc.getSituacao().equals("Aberto") && lanc.getAtualSituacao()) {
+				if (lanc.getSituacao().equals(StatusServicoEnum.ABERTO.getValue()) && lanc.getAtualSituacao()) {
 					qtdAberto = qtdAberto + 1; 
 				}
-				if (lanc.getSituacao().equals("Trabalhando") && lanc.getAtualSituacao()) {
+				if (lanc.getSituacao().equals(StatusServicoEnum.TRABALHANDO.getValue()) && lanc.getAtualSituacao()) {
 					qtdTrabalhando = qtdTrabalhando + 1; 
 				}
-				if (lanc.getSituacao().equals("Aguardando") && lanc.getAtualSituacao()) {
+				if (lanc.getSituacao().equals(StatusServicoEnum.AGUARDANDO.getValue()) && lanc.getAtualSituacao()) {
 					qtdAguardando = qtdAguardando + 1; 
 				}
-				if (lanc.getSituacao().equals("Fechado") && lanc.getAtualSituacao()) {
+				if (lanc.getSituacao().equals(StatusServicoEnum.FECHADO.getValue()) && lanc.getAtualSituacao()) {
 					qtdFechado = qtdFechado + 1; 
 				}
-				if (lanc.getSituacao().equals("Finalizado") && lanc.getAtualSituacao()) {
+				if (lanc.getSituacao().equals(StatusServicoEnum.FINALIZADO.getValue()) && lanc.getAtualSituacao()) {
 					qtdFinalizado = qtdFinalizado + 1; 
 				}
-				if (lanc.getSituacao().equals("Cancelado") && lanc.getAtualSituacao()) {
+				if (lanc.getSituacao().equals(StatusServicoEnum.CANCELADO.getValue()) && lanc.getAtualSituacao()) {
 					qtdCancelado = qtdCancelado + 1; 
+				}
+				if (lanc.getSituacao().equals(StatusServicoEnum.FATURADO.getValue()) && lanc.getAtualSituacao()) {
+					qtdFaturado = qtdFaturado + 1; 
 				}
 			}
 		}
@@ -165,6 +170,7 @@ public class OrdemServico {
 		map.put("Fechado", qtdFechado);
 		map.put("Finalizado", qtdFinalizado);
 		map.put("Cancelado", qtdCancelado);
+		map.put("Faturado", qtdFaturado);
 		return map;
 	}
 	
@@ -225,18 +231,20 @@ public class OrdemServico {
 
 	private List<OrdemServicoLanc> convertLancEntityParaOrdemServicoLanc(final OrdemServicoEntity entity, final OrdemServico ordemServico) {
 		List<OrdemServicoLanc> lst = new ArrayList<OrdemServicoLanc>();
-		entity.getOrdemServicoLancs().forEach(a ->
-		{
-			OrdemServicoLanc lanc = new OrdemServicoLanc();
-			lanc.setData(a.getData());
-			lanc.setObservacao(a.getObservacao());
-			lanc.setSequencia((int)a.getId().getSequencia());
-			lanc.setSituacao(a.getSituacao());
-			lanc.setOrdemServico(ordemServico);
-			lanc.setUsuario(new Usuario());
-			lanc.getUsuario().setId(a.getUsuario().getId());
-			lanc.getUsuario().setNome(a.getUsuario().getNome());
-			lst.add(lanc);
+		entity.getOrdemServicoLancs()
+		        
+			.forEach(a ->
+			{
+				OrdemServicoLanc lanc = new OrdemServicoLanc();
+				lanc.setData(a.getData());
+				lanc.setObservacao(a.getObservacao());
+				lanc.setSequencia((int)a.getId().getSequencia());
+				lanc.setSituacao(a.getSituacao());
+				lanc.setOrdemServico(ordemServico);
+				lanc.setUsuario(new Usuario());
+				lanc.getUsuario().setId(a.getUsuario().getId());
+				lanc.getUsuario().setNome(a.getUsuario().getNome());
+				lst.add(lanc);
 		});
 		return lst;
 	}

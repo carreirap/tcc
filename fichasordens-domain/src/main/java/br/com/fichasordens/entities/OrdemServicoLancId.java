@@ -72,4 +72,5 @@ public class OrdemServicoLancId implements java.io.Serializable {
 		return result;
 	}
 
+	
 }
