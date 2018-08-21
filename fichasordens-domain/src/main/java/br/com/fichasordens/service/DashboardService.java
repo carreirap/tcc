@@ -2,10 +2,12 @@ package br.com.fichasordens.service;
 
 import java.util.Map;
 
+import br.com.fichasordens.util.DashBoardDto;
+
 public interface DashboardService {
 	
-	Map<String,Integer> contarFichasAtendimento();
+	Map<String,DashBoardDto> contarFichasAtendimento();
 	
-	Map<String,Integer> contarOrdensDeServicos();
+	Map<String,DashBoardDto> contarOrdensDeServicos();
 
 }

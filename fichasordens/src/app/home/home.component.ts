@@ -19,6 +19,16 @@ export class HomeComponent implements OnInit {
     dashboadFicha: Dashboard;
     dashboardOrdem: Dashboard;
 
+    totalOrdemTrabalhando: number;
+    totalOrdemFechado: number;
+    totalOrdemFinalizado: number;
+    totalOrdemFaturado: number;
+
+    totalFichaTrabalhando: number;
+    totalFichaFechado: number;
+    totalFichaFaturado: number;
+    totalFichaFinalizado
+
     user = new UsuarioLogado();
     // tslint:disable-next-line:no-input-rename
     @Input() loggedInUser: string;
@@ -45,23 +55,33 @@ export class HomeComponent implements OnInit {
 
 
     setValues(data) {
-        this.dashboadFicha.qtqAberta = data.Aberto;
-        this.dashboadFicha.qtdFechada = data.Fechado
-        this.dashboadFicha.qtdTrabalhando = data.Trabalhando;
-        this.dashboadFicha.qtdAguardando = data.Aguardando;
-        this.dashboadFicha.qtdCancelado = data.Cancelado;
-        this.dashboadFicha.qtdFinalizado = data.Finalizado;
-        this.dashboadFicha.qtdFaturado = data.Faturado;
+        this.dashboadFicha.qtqAberta = data.Aberto.qtd;
+        this.dashboadFicha.qtdFechada = data.Fechado.qtd
+        this.dashboadFicha.qtdTrabalhando = data.Trabalhando.qtd;
+        this.dashboadFicha.qtdAguardando = data.Aguardando.qtd;
+        this.dashboadFicha.qtdCancelado = data.Cancelado.qtd;
+        this.dashboadFicha.qtdFinalizado = data.Finalizado.qtd;
+        this.dashboadFicha.qtdFaturado = data.Faturado.qtd;
+
+        this.totalFichaFechado = data.Fechado.valor;
+        this.totalFichaTrabalhando = data.Trabalhando.valor;
+        this.totalFichaFinalizado = data.Finalizado.valor;
+        this.totalFichaFaturado = data.Faturado.valor;
     }
 
     setValuesOrdem(data) {
-        this.dashboardOrdem.qtqAberta = data.Aberto;
-        this.dashboardOrdem.qtdFechada = data.Fechado
-        this.dashboardOrdem.qtdTrabalhando = data.Trabalhando;
-        this.dashboardOrdem.qtdAguardando = data.Aguardando;
-        this.dashboardOrdem.qtdCancelado = data.Cancelado;
-        this.dashboardOrdem.qtdFinalizado = data.Finalizado;
-        this.dashboardOrdem.qtdFaturado = data.Faturado;
+        this.dashboardOrdem.qtqAberta = data.Aberto.qtd;
+        this.dashboardOrdem.qtdFechada = data.Fechado.qtd;
+        this.dashboardOrdem.qtdTrabalhando = data.Trabalhando.qtd;
+        this.dashboardOrdem.qtdAguardando = data.Aguardando.qtd;
+        this.dashboardOrdem.qtdCancelado = data.Cancelado.qtd;
+        this.dashboardOrdem.qtdFinalizado = data.Finalizado.qtd;
+        this.dashboardOrdem.qtdFaturado = data.Faturado.qtd;
+
+        this.totalOrdemFechado = data.Fechado.valor;
+        this.totalOrdemTrabalhando = data.Trabalhando.valor;
+        this.totalOrdemFinalizado = data.Finalizado.valor;
+        this.totalOrdemFaturado = data.Faturado.valor;
     }
     /*getUpdatedUser(): void {
         this.user.usuario = JSON.parse(localStorage.getItem('currentUser')).usuario;

@@ -20,6 +20,7 @@ import br.com.fichasordens.exception.ExcecaoRetorno;
 import br.com.fichasordens.repository.OrdemServicoLancRepository;
 import br.com.fichasordens.repository.OrdemServicoRepository;
 import br.com.fichasordens.repository.PecaServicoOrdemRepository;
+import br.com.fichasordens.util.DashBoardDto;
 import br.com.fichasordens.util.StatusServicoEnum;
 
 @Component
@@ -125,13 +126,13 @@ public class OrdemServico {
 		return ordemList;
 	}
 
-	public Map<String,Integer> contarOrdensPorSituacao() {
+	public Map<String,DashBoardDto> contarOrdensPorSituacao() {
 		final List<OrdemServicoEntity> lst = this.ordemServicoRepository.FindAllOrdens();
 		return calcularTotais(lst);
 	}
 
-	private Map<String,Integer> calcularTotais(List<OrdemServicoEntity> lst) {
-		Map<String,Integer> map = new HashMap<String,Integer>();
+	private Map<String,DashBoardDto> calcularTotais(List<OrdemServicoEntity> lst) {
+		Map<String,DashBoardDto> map = new HashMap<String,DashBoardDto>();
 		int qtdAberto = 0;
 		int qtdTrabalhando = 0;
 		int qtdAguardando = 0;
@@ -139,39 +140,60 @@ public class OrdemServico {
 		int qtdFinalizado = 0;
 		int qtdCancelado = 0;
 		int qtdFaturado = 0;
+		BigDecimal totalAberto = new BigDecimal(0);
+		BigDecimal totalTrabalhando = new BigDecimal(0);
+		BigDecimal totalFechado = new BigDecimal(0);
+		BigDecimal totalFinalizado = new BigDecimal(0);
+		BigDecimal totalFaturado = new BigDecimal(0);
 		for (OrdemServicoEntity a : lst) {
 			for (OrdemServicoLancEntity lanc : a.getOrdemServicoLancs()) {
 				if (lanc.getSituacao().equals(StatusServicoEnum.ABERTO.getValue()) && lanc.getAtualSituacao()) {
 					qtdAberto = qtdAberto + 1; 
+					totalAberto = totalAberto.add(calcularTotalPecaServicos(a));
 				}
 				if (lanc.getSituacao().equals(StatusServicoEnum.TRABALHANDO.getValue()) && lanc.getAtualSituacao()) {
 					qtdTrabalhando = qtdTrabalhando + 1; 
+					totalTrabalhando = totalTrabalhando.add(calcularTotalPecaServicos(a));
 				}
 				if (lanc.getSituacao().equals(StatusServicoEnum.AGUARDANDO.getValue()) && lanc.getAtualSituacao()) {
 					qtdAguardando = qtdAguardando + 1; 
+					totalTrabalhando = totalTrabalhando.add(calcularTotalPecaServicos(a));
 				}
 				if (lanc.getSituacao().equals(StatusServicoEnum.FECHADO.getValue()) && lanc.getAtualSituacao()) {
-					qtdFechado = qtdFechado + 1; 
+					qtdFechado = qtdFechado + 1;
+					totalFechado = totalFechado.add(calcularTotalPecaServicos(a));
 				}
 				if (lanc.getSituacao().equals(StatusServicoEnum.FINALIZADO.getValue()) && lanc.getAtualSituacao()) {
 					qtdFinalizado = qtdFinalizado + 1; 
+					totalFinalizado = totalFinalizado.add(calcularTotalPecaServicos(a));
 				}
 				if (lanc.getSituacao().equals(StatusServicoEnum.CANCELADO.getValue()) && lanc.getAtualSituacao()) {
-					qtdCancelado = qtdCancelado + 1; 
+					qtdCancelado = qtdCancelado + 1;
+					totalFechado = totalFechado.add(calcularTotalPecaServicos(a));
 				}
 				if (lanc.getSituacao().equals(StatusServicoEnum.FATURADO.getValue()) && lanc.getAtualSituacao()) {
 					qtdFaturado = qtdFaturado + 1; 
+					totalFaturado = totalFaturado.add(calcularTotalPecaServicos(a));
 				}
 			}
 		}
-		map.put("Aberto", qtdAberto);
-		map.put("Trabalhando", qtdTrabalhando);
-		map.put("Aguardando", qtdAguardando);
-		map.put("Fechado", qtdFechado);
-		map.put("Finalizado", qtdFinalizado);
-		map.put("Cancelado", qtdCancelado);
-		map.put("Faturado", qtdFaturado);
+		map.put("Aberto", new DashBoardDto(qtdAberto, totalAberto));
+		map.put("Trabalhando", new DashBoardDto(qtdTrabalhando, totalTrabalhando));
+		map.put("Aguardando", new DashBoardDto(qtdAguardando, totalTrabalhando));
+		map.put("Fechado", new DashBoardDto(qtdFechado, totalFechado));
+		map.put("Finalizado", new DashBoardDto(qtdFinalizado,totalFinalizado));
+		map.put("Cancelado", new DashBoardDto(qtdCancelado, totalFechado));
+		map.put("Faturado", new DashBoardDto(qtdFaturado, totalFaturado));
 		return map;
+	}
+	
+	private BigDecimal calcularTotalPecaServicos(OrdemServicoEntity ordem) {
+		BigDecimal totalPecaServico = new BigDecimal(0);
+		for (PecaServicoOrdemEntity lanc : ordem.getPecaServicoOrdems()) {
+			BigDecimal resultado = totalPecaServico.add(lanc.getValor());
+			totalPecaServico = resultado;
+		}
+		return totalPecaServico;
 	}
 	
 	private OrdemServicoEntity converterParaEntity(final OrdemServico ordemServico) {
