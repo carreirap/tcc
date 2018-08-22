@@ -56,7 +56,7 @@ public class FichaAtendimentoController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST,path="/pecaServico")
-	public ResponseEntity gravarPecaServicosalvarItemOrdemServico(@RequestBody final PecaOutroServicoDto dto) {
+	public ResponseEntity gravarPecaServicoFicha(@RequestBody final PecaOutroServicoDto dto) {
 		//try {
 			final PecaOutroServico peca = ConverterPecaOutroServico.converterDtoPecaServico(dto, TipoServicoEnum.FICHA_ATENDIMENTO);
 			this.fichaAtendimento.gravarPecaServicoFicha(peca);
@@ -68,7 +68,7 @@ public class FichaAtendimentoController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST,path="/atendimento")
-	public ResponseEntity gravarPecaServicosalvarItemOrdemServico(@RequestBody final AtendimentoDto dto) {
+	public ResponseEntity gravarAtendimento(@RequestBody final AtendimentoDto dto) {
 		//try {
 			final Atendimento atend = ConverterAtendimento.converterAtendimentoDto(dto);
 			this.fichaAtendimento.gravarAtendimento(atend);
@@ -117,14 +117,14 @@ public class FichaAtendimentoController {
 	
 	
 	@RequestMapping(method = RequestMethod.DELETE,path="/atendimento")
-	public ResponseEntity deletarAtendimento(@RequestParam final int idFicha, @RequestParam final int sequencia) {
-		this.fichaAtendimento.deletarAtendimento(idFicha, sequencia);
+	public ResponseEntity excluirAtendimento(@RequestParam final int idFicha, @RequestParam final int sequencia) {
+		this.fichaAtendimento.excluirAtendimento(idFicha, sequencia);
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE,path="/pecaServico")
-	public ResponseEntity deletarPecaOutroServico(@RequestParam final int idFicha, @RequestParam final int sequencia) {
-		this.fichaAtendimento.deletarPecaOutroServico(idFicha, sequencia);
+	public ResponseEntity excluirPecaOutroServico(@RequestParam final int idFicha, @RequestParam final int sequencia) {
+		this.fichaAtendimento.excluirPecaOutroServico(idFicha, sequencia);
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	

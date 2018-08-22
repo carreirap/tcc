@@ -100,6 +100,10 @@ public class FichaAtendimento {
 	
 	public BigDecimal calcularValorAtendimento(final int horas, final int tipo) {
 		Parametro param = this.parametro.recuperarParametros().get(tipo);
+		return calcular(horas, param);
+	}
+
+	private BigDecimal calcular(final int horas, final Parametro param) {
 		return new BigDecimal(horas).multiply(param.getValor());
 	}
 
@@ -190,7 +194,7 @@ public class FichaAtendimento {
 	}
 	
 	@Transactional
-	public void deletarAtendimento(final long idFicha, final int sequencia) {
+	public void excluirAtendimento(final long idFicha, final int sequencia) {
 		AtendimentoFichaEntity ent = new AtendimentoFichaEntity();
 		ent.setId(new AtendimentoFichaId());
 		ent.getId().setSequencia(sequencia);
@@ -199,7 +203,7 @@ public class FichaAtendimento {
 	}
 	
 	@Transactional
-	public void deletarPecaOutroServico(final long idFicha, final int sequencia) {
+	public void excluirPecaOutroServico(final long idFicha, final int sequencia) {
 		PecaServicoFichaEntity ent = new PecaServicoFichaEntity();
 		ent.setId(new PecaServicoFichaIdEntity());
 		ent.getId().setSequencia(sequencia);

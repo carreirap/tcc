@@ -11,3 +11,6 @@ ul {margin-bottom: 0; }
     border-top-width: 0px !important;
     border-bottom-width: 0px !important;
 }
+.btn {
+   line-height: 0.8;
+}

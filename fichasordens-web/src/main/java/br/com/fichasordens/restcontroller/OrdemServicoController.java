@@ -46,7 +46,7 @@ public class OrdemServicoController {
 	public ResponseEntity salvarOrdemServico(@RequestBody final OrdemServicoDto dto) {
 		try {
 			OrdemServico ordemServico = this.converterDtoParaOrdemServico(dto);
-			ordemServico = this.ordemServico.gravarOrdem(ordemServico);
+			ordemServico = this.ordemServico.salvarOrdem(ordemServico);
 			dto.setNumeroOrdem(ordemServico.getId());
 			return new ResponseEntity<OrdemServicoDto>(dto, HttpStatus.OK);
 		} catch (ExcecaoRetorno e) {
@@ -78,7 +78,7 @@ public class OrdemServicoController {
 	
 	
 	@RequestMapping(method = RequestMethod.DELETE,path="/pecaServico")
-	public ResponseEntity deletarOrdemDeServico(@RequestParam final int id, @RequestParam final int sequencia) {
+	public ResponseEntity deletarPecaServicoOrdem(@RequestParam final int id, @RequestParam final int sequencia) {
 		this.ordemServico.deletarPecaOutroServico(id, sequencia);
 		return new ResponseEntity(HttpStatus.OK);
 	}

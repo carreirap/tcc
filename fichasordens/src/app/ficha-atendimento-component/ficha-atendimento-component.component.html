@@ -19,7 +19,7 @@
       <label for="cnpjcpf">CNPJ/CPF &nbsp;
         <a href="#" (click)="mostrarModal(clienteModal);">Pesquisar</a>
       </label>
-      <input class="form-control" maxlength="18" validarCnpjCpf type="search" id="cpfcnpj" name="cpfcnpj" [(ngModel)]="formFicha.cliente.cnpj"
+      <input class="form-control" maxlength="18" validarCnpjCpf type="search" id="cpfcnpj" readonly name="cpfcnpj" [(ngModel)]="formFicha.cliente.cnpj"
         (cnpjvaluetyped)='setValue($event)' (focusoutcnpj)="setCnpjCpfInvalido($event)" #cpfcnpjvalidation="ngModel" required>
       <!--<div [hidden]="cpfcnpjvalidation.valid || cpfcnpjvalidation.pristine" class="alert-danger">
         <ul>

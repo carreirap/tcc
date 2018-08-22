@@ -32,7 +32,7 @@ public class OrdemServicoControllerTest {
 		OrdemServicoDto ordem = criarDto();
 		OrdemServico ord = new OrdemServico();
 		ord.setId(10L);
-		when(this.ordemServico.gravarOrdem(org.mockito.Mockito.any(OrdemServico.class))).thenReturn(ord);
+		when(this.ordemServico.salvarOrdem(org.mockito.Mockito.any(OrdemServico.class))).thenReturn(ord);
 		
 		ResponseEntity response = this.ordemServicoController.salvarOrdemServico(ordem);
 		
@@ -50,7 +50,7 @@ public class OrdemServicoControllerTest {
 	@Test
 	public void test_salvarOrdemServico_fail() throws ExcecaoRetorno {
 		OrdemServicoDto ordem = criarDto();
-		when(this.ordemServico.gravarOrdem(org.mockito.Mockito.any(OrdemServico.class))).thenThrow(new ExcecaoRetorno());
+		when(this.ordemServico.salvarOrdem(org.mockito.Mockito.any(OrdemServico.class))).thenThrow(new ExcecaoRetorno());
 		
 		ResponseEntity response = this.ordemServicoController.salvarOrdemServico(ordem);
 		

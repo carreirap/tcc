@@ -52,7 +52,7 @@ public class OrdemServico {
 	private Usuario usuario;
 	
 	@Transactional
-	public OrdemServico gravarOrdem(final OrdemServico ordemServico) throws ExcecaoRetorno {
+	public OrdemServico salvarOrdem(final OrdemServico ordemServico) throws ExcecaoRetorno {
 		OrdemServicoEntity ent = this.converterParaEntity(ordemServico);
 		try {
 			OrdemServicoLancEntity lancEntity = this.converterOrdemServicoLancParaEntity(ordemServico.getOrdemServicoLanc().get(0));
