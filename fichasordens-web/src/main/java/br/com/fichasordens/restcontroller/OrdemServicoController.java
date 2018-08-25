@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -28,6 +29,7 @@ import br.com.fichasordens.exception.ExcecaoRetorno;
 import br.com.fichasordens.util.ConverterCliente;
 import br.com.fichasordens.util.ConverterLancamentoDto;
 import br.com.fichasordens.util.ConverterPecaOutroServico;
+import br.com.fichasordens.util.DataUtil;
 import br.com.fichasordens.util.TipoServicoEnum;
 
 @SuppressWarnings("rawtypes")
@@ -39,6 +41,9 @@ public class OrdemServicoController {
 	private static final String ORDEM_DE_SERVICO = "Ordem de Servico";
 	@Autowired
 	OrdemServico ordemServico;
+	
+	@Value("${alerta.servico.parado.situacao}")
+	private int qtdDiasAlerta;
 	
 
 	
@@ -97,6 +102,11 @@ public class OrdemServicoController {
 			for(OrdemServicoLanc lanc: a.getOrdemServicoLanc()) {
 				if (lanc.getSituacao().equals(situacao)) {
 					dto.setResponsavel(lanc.getUsuario().getNome());
+					dto.setDias((int)DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()));
+					if (dto.getDias() > qtdDiasAlerta) 
+						dto.setAlerta("S");
+					else
+						dto.setAlerta("N");
 				}
 				if (lanc.getSituacao().equals("Aberto")) {
 					dto.setDataAbertura(lanc.getData());

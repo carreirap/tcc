@@ -2,10 +2,10 @@
     <p-header>
         <div class="ui-helper-clearfix">
             <div class="ui-g">
-                <div class="ui-g-12 ui-md-4">
+                <!--<div class="ui-g-12 ui-md-4">
                     <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By" (onChange)="onSortChange($event)" [autoWidth]="false"
                         [style]="{'min-width':'15em'}"></p-dropdown>
-                </div>
+                </div> -->
             </div>
         </div>
     </p-header>
@@ -40,7 +40,9 @@
 
                     <div class="ui-g-2 ui-sm-6">Dias: </div>
                     <div class="ui-g-10 ui-sm-6">
-                        <b> {{ser.dias}}</b>
+                        <b> {{ser.dias}} 
+                            <span *ngIf="ser.alerta === 'S'" class="badge badge-pill badge-danger">!</span>
+                        </b>
                     </div>
                 </div>
             </div>

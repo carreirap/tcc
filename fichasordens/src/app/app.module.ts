@@ -98,6 +98,7 @@ import { CalcularAtendimento } from './util/calcular-atendimento';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import ptBr from '@angular/common/locales/pt';
+import { HistoricoComponent } from './historico/historico.component';
 registerLocaleData(ptBr)
 
 
@@ -120,7 +121,8 @@ registerLocaleData(ptBr)
     ModalPesquisaClienteComponent,
     ModalMaoobraComponent,
     ModalAtendimentoComponent,
-    ListagemComponent
+    ListagemComponent,
+    HistoricoComponent
    ],
   imports: [
     BrowserModule,

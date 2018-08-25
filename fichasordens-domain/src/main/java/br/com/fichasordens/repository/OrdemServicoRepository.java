@@ -1,5 +1,6 @@
 package br.com.fichasordens.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,7 @@ public interface OrdemServicoRepository extends JpaRepository<OrdemServicoEntity
 	
 	@Query("SELECT a FROM OrdemServicoEntity a LEFT JOIN a.ordemServicoLancs b where b.atualSituacao = true and b.situacao = ?1")
 	public List<OrdemServicoEntity> FindAllOrdensByStatus(final String situacao);
+	
+	@Query("SELECT a FROM OrdemServicoEntity a LEFT JOIN a.ordemServicoLancs b where b.atualSituacao = true and b.situacao = ?1 and b.data between ?2 and ?3")
+	public List<OrdemServicoEntity> FindAllOrdensByStatusAndDataBetween(final String situacao, final Date inicio, final Date fim);
 }

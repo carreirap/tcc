@@ -54,10 +54,11 @@ export class ListagemComponent implements OnInit {
            let l:Listagem = new Listagem();
            l.numero = data[i].id;
            l.cliente = data[i].nomeCliente;
-           l.dias = 1;
+           l.dias = data[i].dias;
            l.responsavel = data[i].responsavel;
            l.situacao = data[i].situacao;
            l.tipo = data[i].tipoServico;
+           l.alerta = data[i].alerta;
            this.lista.push(l) 
         }
     }  

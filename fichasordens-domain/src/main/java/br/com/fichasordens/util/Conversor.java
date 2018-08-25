@@ -5,8 +5,6 @@ import java.util.List;
 
 import br.com.fichasordens.PecaOutroServico;
 import br.com.fichasordens.entities.OrdemServicoEntity;
-import br.com.fichasordens.entities.PecaServicoOrdemEntity;
-import br.com.fichasordens.entities.PecaServicoOrdemEntityId;
 
 public final class Conversor {
 	

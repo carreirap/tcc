@@ -5,4 +5,5 @@ export class Listagem {
     situacao: string;
     responsavel: string;
     dias: number;
+    alerta:string;
 }

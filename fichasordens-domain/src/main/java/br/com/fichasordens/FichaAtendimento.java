@@ -4,6 +4,7 @@ package br.com.fichasordens;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,16 +21,15 @@ import br.com.fichasordens.entities.ClienteEntity;
 import br.com.fichasordens.entities.FichaAtendLancEntity;
 import br.com.fichasordens.entities.FichaAtendLancId;
 import br.com.fichasordens.entities.FichaAtendimentoEntity;
-import br.com.fichasordens.entities.OrdemServicoEntity;
 import br.com.fichasordens.entities.PecaServicoFichaEntity;
 import br.com.fichasordens.entities.PecaServicoFichaIdEntity;
-import br.com.fichasordens.entities.PecaServicoOrdemEntity;
 import br.com.fichasordens.exception.ExcecaoRetorno;
 import br.com.fichasordens.repository.AtendimentoFichaRepository;
 import br.com.fichasordens.repository.FichaAtendLancRepository;
 import br.com.fichasordens.repository.FichaAtendimentoRepository;
 import br.com.fichasordens.repository.PecaServicoFichaRepository;
 import br.com.fichasordens.util.DashBoardDto;
+import br.com.fichasordens.util.DataUtil;
 import br.com.fichasordens.util.StatusServicoEnum;
 
 @Component
@@ -93,9 +93,8 @@ public class FichaAtendimento {
 		atendimentoRepository.save(ent);
 	}
 	
-	public Map<String,DashBoardDto> contarFichasPorSituacao( ) {
-		List<FichaAtendimentoEntity> lst = this.repository.FindAllFichas();
-		return calcularTotais(lst);
+	public List<FichaAtendimentoEntity> buscarFichasDeAtendimento() {
+		return this.repository.FindAllFichas();
 	}
 	
 	public BigDecimal calcularValorAtendimento(final int horas, final int tipo) {
@@ -121,23 +120,41 @@ public class FichaAtendimento {
 		BigDecimal totalFechado = new BigDecimal(0);
 		BigDecimal totalFinalizado = new BigDecimal(0);
 		BigDecimal totalFaturado = new BigDecimal(0);
+		boolean alertaAberto = false;
+		boolean alertaTrabalhando = false; 
+		boolean alertaAguardando = false;
+		boolean alertaFinalizado = false; 
+		boolean alertaFaturado = false;
+		
 		for (FichaAtendimentoEntity a : lst) {
 			for (FichaAtendLancEntity lanc : a.getFichaAtendLancs()) {
 				if (lanc.getSituacao().equals(StatusServicoEnum.ABERTO.getValue()) && lanc.getAtualSituacao()) {
 					qtdAberto = qtdAberto + 1; 
 					totalAberto = totalAberto.add(calcularTotalPecaServicos(a));
+					if (DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()) > 1 ) {
+						alertaAberto = true;
+					}
 				}
 				if (lanc.getSituacao().equals(StatusServicoEnum.TRABALHANDO.getValue()) && lanc.getAtualSituacao()) {
 					qtdTrabalhando = qtdTrabalhando + 1; 
 					totalTrabalhando = totalTrabalhando.add(calcularTotalPecaServicos(a));
+					if (DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()) > 1 ) {
+						alertaTrabalhando = true;
+					}
 				}
 				if (lanc.getSituacao().equals(StatusServicoEnum.AGUARDANDO.getValue()) && lanc.getAtualSituacao()) {
 					qtdAguardando = qtdAguardando + 1; 
 					totalTrabalhando = totalTrabalhando.add(calcularTotalPecaServicos(a));
+					if (DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()) > 1 ) {
+						alertaAguardando = true;
+					}
 				}
 				if (lanc.getSituacao().equals(StatusServicoEnum.FINALIZADO.getValue()) && lanc.getAtualSituacao()) {
 					qtdFinalizado = qtdFinalizado + 1; 
 					totalFinalizado = totalFinalizado.add(calcularTotalPecaServicos(a));
+					if (DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()) > 1 ) {
+						alertaFinalizado = true;
+					}
 				}
 				if (lanc.getSituacao().equals(StatusServicoEnum.FECHADO.getValue()) && lanc.getAtualSituacao()) {
 					qtdFechado = qtdFechado + 1; 
@@ -150,16 +167,19 @@ public class FichaAtendimento {
 				if (lanc.getSituacao().equals(StatusServicoEnum.FATURADO.getValue()) && lanc.getAtualSituacao()) {
 					qtdFaturado = qtdFaturado + 1;
 					totalFaturado = totalFaturado.add(calcularTotalPecaServicos(a));
+					if (DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()) > 1 ) {
+						alertaFaturado = true;
+					}
 				}
 			}
 		}
-		map.put("Aberto", new DashBoardDto(qtdAberto, totalAberto));
-		map.put("Trabalhando", new DashBoardDto(qtdTrabalhando, totalTrabalhando));
-		map.put("Aguardando", new DashBoardDto(qtdAguardando, totalTrabalhando));
-		map.put("Fechado", new DashBoardDto(qtdFechado, totalFechado));
-		map.put("Finalizado", new DashBoardDto(qtdFinalizado,totalFinalizado));
-		map.put("Cancelado", new DashBoardDto(qtdCancelado, totalFechado));
-		map.put("Faturado", new DashBoardDto(qtdFaturado, totalFaturado));
+		map.put("Aberto", new DashBoardDto(qtdAberto, totalAberto, (alertaAberto ? 'S' : 'N')));
+		map.put("Trabalhando", new DashBoardDto(qtdTrabalhando, totalTrabalhando, (alertaTrabalhando ? 'S' : 'N')));
+		map.put("Aguardando", new DashBoardDto(qtdAguardando, totalTrabalhando, (alertaAguardando ? 'S' : 'N')));
+		map.put("Fechado", new DashBoardDto(qtdFechado, totalFechado, 'N'));
+		map.put("Finalizado", new DashBoardDto(qtdFinalizado,totalFinalizado, (alertaFinalizado ? 'S' : 'N')));
+		map.put("Cancelado", new DashBoardDto(qtdCancelado, totalFechado, 'N'));
+		map.put("Faturado", new DashBoardDto(qtdFaturado, totalFaturado, (alertaFaturado ? 'S' : 'N')));
 		return map;
 	}
 	
@@ -174,7 +194,7 @@ public class FichaAtendimento {
 	
 	@Transactional
 	public List<FichaAtendimento> listarFichas(final StatusServicoEnum situacao) {
-		List<FichaAtendimentoEntity> lst = this.repository.FindAllFichaByStatus(situacao.getValue());
+		List<FichaAtendimentoEntity> lst = this.buscarFichaAtendimentoPorSituacao(situacao);
 		
 		List<FichaAtendimento> fichaList = new ArrayList<FichaAtendimento>();
 		lst.forEach(a-> {
@@ -184,6 +204,14 @@ public class FichaAtendimento {
 			fichaList.add(this.converterEntityParaFichaAtendimento(a));
 		});
 		return fichaList;
+	}
+	
+	public List<FichaAtendimentoEntity> buscarFichaAtendimentoPorSituacao(final StatusServicoEnum situacao) {
+		return this.repository.FindAllFichaByStatus(situacao.getValue());
+	}
+	
+	public List<FichaAtendimentoEntity> buscarFichaAtendimentoPorSituacao(final StatusServicoEnum situacao, final Date inicio, final Date fim) {
+		return this.repository.FindAllFichaByStatusAndDataInicioAndDataFim(situacao.getValue(), inicio, fim);
 	}
 	
 	@Transactional

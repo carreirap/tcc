@@ -6,11 +6,13 @@ public class DashBoardDto {
 
 	private int qtd;
 	private BigDecimal valor;
+	private char alerta;
 	
-	public DashBoardDto(int qtd, BigDecimal valor) {
+	public DashBoardDto(final int qtd, final BigDecimal valor, final char alerta) {
 		super();
 		this.qtd = qtd;
 		this.valor = valor;
+		this.alerta = alerta;
 	}
 	public int getQtd() {
 		return qtd;
@@ -23,6 +25,12 @@ public class DashBoardDto {
 	}
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
+	}
+	public char getAlerta() {
+		return alerta;
+	}
+	public void setAlerta(char alerta) {
+		this.alerta = alerta;
 	}
 	
 }
