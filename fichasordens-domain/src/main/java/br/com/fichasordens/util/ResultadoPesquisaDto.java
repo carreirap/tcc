@@ -1,12 +1,14 @@
 package br.com.fichasordens.util;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class ResultadoPesquisaDto {
 	private long numero;
 	private String nomeCliente;
 	private String tipo;
 	private BigDecimal valor;
+	private Date data;
 
 	public long getNumero() {
 		return numero;
@@ -38,6 +40,14 @@ public class ResultadoPesquisaDto {
 
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
+	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
 	}
 
 }

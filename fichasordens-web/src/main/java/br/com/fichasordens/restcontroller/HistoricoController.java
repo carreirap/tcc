@@ -1,8 +1,8 @@
 package br.com.fichasordens.restcontroller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -24,9 +24,9 @@ public class HistoricoController {
 	private HistoricoService historicoService;
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity pesquisar(@RequestBody final HistoricoPesquisaDto dto) {
-		List<ResultadoPesquisaDto> list = this.historicoService.pesquisar(dto.getTipo(), dto.getNumero(), dto.getCnpjcpf(), dto.getIdResponsavel(), dto.getSituacao());
-		return new ResponseEntity<>(list, HttpStatus.OK);
+	public ResponseEntity pesquisar(@RequestBody final HistoricoPesquisaDto dto, final Pageable pageable) {
+		Page<ResultadoPesquisaDto> pages = this.historicoService.pesquisar(dto.getTipo(), dto.getNumero(), dto.getCnpjcpf(), dto.getIdResponsavel(), dto.getSituacao(), pageable);
+		return new ResponseEntity<>(pages, HttpStatus.OK);
 	}
 
 }

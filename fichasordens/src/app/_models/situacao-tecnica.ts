@@ -8,6 +8,16 @@ export class SituacaoTecnica {
         { value: 'Faturado', label: 'Faturado' }
     ];
 
+    situacaoTodas: Array<any> = [
+        { value: 'Todas', label: 'Todas' },
+        { value: 'Aberto', label: 'Aberto' },
+        { value: 'Aguardando', label: 'Aguardando' },
+        { value: 'Faturado', label: 'Faturado' },
+        { value: 'Fechado', label: 'Fechado' },
+        { value: 'Finalizado', label: 'Finalizado' },
+        { value: 'Trabalhando', label: 'Trabalhando' }
+    ];
+
     situacaoAberto: Array<any> = [
         { value: 'Aberto', label: 'Aberto' },
         { value: 'Cancelado', label: 'Cancelado' },
@@ -39,6 +49,9 @@ export class SituacaoTecnica {
 
     public getTodasSituacao() {
         return this.situacao;
+    }
+    public getSituacoes_Todas() {
+        return this.situacaoTodas;
     }
 
     public getSituacoesBaseadoNoAtual(atual) {

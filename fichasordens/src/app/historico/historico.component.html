@@ -12,7 +12,7 @@
     <div class="form-group col-md-2">
           <label for="numFicha">Número</label>
           <input class="form-control" maxlength="15" type="text" id="numFicha" name="numFicha" [(ngModel)]="formHist.numero"
-            [readonly]="true" style="background-color: white;">
+            style="background-color: white;">
     </div>
     <div class="form-group col-md-3">
           <label for="numFicha">CNPJ/CPF</label>
@@ -35,4 +35,37 @@
         <button type="submit" class="btn btn-primary"  [disabled]="!myform.valid">Pesquisar</button>
       </div>
   </div>
+  <div class="form-group row">
+      <div class="col-sm-12">
+      <p-table [value]="content"
+      [lazy]="true"
+      [responsive]="true" selectionMode="single">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Numero</th>
+                <th>Nome Cliente</th>
+                <th>Tipo</th>
+                <th>Data</th>
+                <th>valor</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data>
+            <tr [routerLink]="[path ,data.numero]">
+                <td>{{data.numero}}</td>
+                <td>{{data.nomeCliente}}</td>
+                <td>{{data.tipo}}</td>
+                <td>{{data.data | date:'dd/MM/yyyy'}}</td>
+                <td>{{data.valor | currency:'BRL':true}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <li  *ngIf="content?.length == 0">
+      <span class="search_no_results">
+           Nenhum registro encontrado! 
+      </span>
+    </li>
+    <p-paginator *ngIf="content?.length > 0" [rows]="1" [totalRecords]='pages' (onPageChange)="paginate($event)"></p-paginator>
+    </div>
+  </div>
+
 </form>  

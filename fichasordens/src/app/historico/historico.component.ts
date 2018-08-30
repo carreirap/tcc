@@ -16,6 +16,10 @@ export class HistoricoComponent implements OnInit {
   situacao: any;
   toasterService: ToasterService;
   tipoServico: TipoServico;
+  content: Array<any>;
+  pages = 0;
+  page = 0;
+  path = "";
 
   constructor(private service: DataService, toasterService: ToasterService) {
     this.formHist = new Historico();
@@ -26,12 +30,17 @@ export class HistoricoComponent implements OnInit {
 
   ngOnInit() {
     this.tipoServico = new TipoServico();
-    this.situacao = this.situacaoTecnica.getTodasSituacao();
+    this.formHist.situacao = "Todas"
+    this.formHist.tipo = 'Ficha';
+    this.situacao = this.situacaoTecnica.getSituacoes_Todas();
     console.log(this.situacao);
   }
 
   onSubmit() {
-    this.service.post('/historico', this.formHist).subscribe(response => {
+    this.content = undefined;
+    this.service.post('/historico?page=' +
+            this.page + '&size=1&sort=id,DESC', this.formHist).subscribe(response => {
+              this.loadHistorico(response);
     this.toasterService.pop('success', 'Pesquisa Historico', 'Pesquisa Realizado com sucesso!');
     }, (error) => {
       console.log('error in', error.error.mensagem);
@@ -39,4 +48,19 @@ export class HistoricoComponent implements OnInit {
     });
   }
 
+  public loadHistorico(response: any) {
+    if (this.formHist.tipo == "Ficha") {
+      this.path = '/fichas';
+    } else {
+      this.path = '/ordem';
+    }
+
+    this.content = response.content;
+    this.pages = response['totalPages'];
+  }
+
+  public paginate(event) {
+    this.page = event.page;
+    this.onSubmit();
+   }
 }
