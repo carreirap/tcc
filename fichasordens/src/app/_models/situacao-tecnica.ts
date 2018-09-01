@@ -46,6 +46,13 @@ export class SituacaoTecnica {
         { value: 'Fechado', label: 'Fechado' }
     ];
 
+    situacaoAbertura: Array<any> = [
+        { value: 'Aberto', label: 'Aberto' }
+    ];
+
+    public getSituacaoAbertura() {
+        return this.situacaoAbertura;
+    }
 
     public getTodasSituacao() {
         return this.situacao;

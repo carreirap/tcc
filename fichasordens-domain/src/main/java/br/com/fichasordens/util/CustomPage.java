@@ -13,6 +13,7 @@ public class CustomPage<T> extends PageImpl<T> {
 		super(content, pageable, total);
 	}
 
+	@Override
 	public int getTotalPages() {
 		return totalPages;
 	}
@@ -20,6 +21,27 @@ public class CustomPage<T> extends PageImpl<T> {
 	public void setTotalPages(int totalPages) {
 		this.totalPages = totalPages;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + totalPages;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CustomPage other = (CustomPage) obj;
+		if (totalPages != other.totalPages)
+			return false;
+		return true;
+	}
 	
 }

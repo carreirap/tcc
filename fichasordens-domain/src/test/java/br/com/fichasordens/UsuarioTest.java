@@ -153,7 +153,7 @@ public class UsuarioTest {
 	}
 	
 	
-	private Usuario createUsuario() {
+	public static Usuario createUsuario() {
 		final Usuario u = new Usuario();
 		u.setNome("test");
 		u.setNomeUsuario("Test");

@@ -1,8 +1,7 @@
 package br.com.fichasordens;
 
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
-import static org.junit.Assert.*;
-
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -13,7 +12,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -84,18 +82,18 @@ public class ClienteTest {
 		assertNotNull(page);
 	}
 	
-	private Cliente loadCliente() {
+	public static Cliente loadCliente() {
 		Cliente cli = new Cliente();
 		cli.setCelular("99999999999999");
 		cli.setCnpjCpf("cnpjCpf");
 		cli.setEmail("test");
 		cli.setFone("988888888");
 		cli.setNome("test");
-		cli.setEndereco(this.loadEndereco());
+		cli.setEndereco(loadEndereco());
 		return cli;
 	}
 	
-	private Endereco loadEndereco() {
+	private static Endereco loadEndereco() {
 		Endereco end = new Endereco(); 
 		end.setBairro("test");
 		end.setCep("81444-444");

@@ -80,42 +80,40 @@ public class OrdemServico {
 		return this.converterEntityParaOrdemServico(ent);
 	}
 	
-	public PecaOutroServico gravarPecaServicoOrdem(PecaOutroServico pecaServicoOrdem) throws ExcecaoRetorno {
+	public void gravarPecaServicoOrdem(PecaOutroServico pecaServicoOrdem) throws ExcecaoRetorno {
 		PecaServicoOrdemEntity entity = converterPecaServicoOrdemParaEntity(pecaServicoOrdem);
 		try {
-			entity = this.pecaServicoOrdemRepository.save(entity);
+			this.pecaServicoOrdemRepository.save(entity);
 		} catch (Exception e) {
 			throw new ExcecaoRetorno("Erro ao tentar cadastrar peças/outro serviços");
 		}
-		return null;
 	}
 	
-	@Transactional
-	public OrdemServicoLanc gravarOrdemServicoLanc(final OrdemServicoLanc ordemServicoLanc) throws ExcecaoRetorno {
+	/*@Transactional
+	public void gravarOrdemServicoLanc(final OrdemServicoLanc ordemServicoLanc) throws ExcecaoRetorno {
 		OrdemServicoLancEntity entity = converterOrdemServicoLancParaEntity(ordemServicoLanc);
 		try {
 			List<Usuario> usuarioLst = this.usuario.listarUsuario(entity.getUsuario().getUsuario());
 			entity.getUsuario().setId(usuarioLst.get(0).getId());
-			entity = this.ordemServicoLancRepository.save(entity);
+			this.ordemServicoLancRepository.save(entity);
 		} catch (Exception e) {
 			throw new ExcecaoRetorno("Erro ao tentar cadastrar ordem de serviço");
 		}
-		return null;
-	}
+	}*/
 	
 	@Transactional
 	public void deletarPecaOutroServico(final int id, final int sequencia) {
 		final PecaServicoOrdemEntity ent = new PecaServicoOrdemEntity();
 		ent.setId(new PecaServicoOrdemEntityId());
 		ent.getId().setSequencia(sequencia);
-		ent.getId().setOrdemServicoId(id);;
+		ent.getId().setOrdemServicoId(id);
 		this.pecaServicoOrdemRepository.delete(ent);
 	}
 	
 	@Transactional
 	public List<OrdemServico> listarOrdens(final String situacao) {
 		List<OrdemServicoEntity> entityList = this.buscarOrdensDeServicoPorSituacao(situacao);
-		List<OrdemServico> ordemList = new ArrayList<OrdemServico>();
+		List<OrdemServico> ordemList = new ArrayList<>();
 		entityList.forEach(a-> {
 			ordemList.add(converterEntityParaOrdemServico(a));
 		});
@@ -124,11 +122,11 @@ public class OrdemServico {
 
 	
 	public List<OrdemServicoEntity> buscarOrdensDeServicoPorSituacao(final String situacao) {
-		return  this.ordemServicoRepository.FindAllOrdensByStatus(situacao);
+		return  this.ordemServicoRepository.findAllOrdensByStatus(situacao);
 	}
 	
 	public List<OrdemServicoEntity> buscarOrdensDeServicoPorSituacao(final String situacao, final Date inicio, final Date fim) {
-		return  this.ordemServicoRepository.FindAllOrdensByStatusAndDataBetween(situacao, inicio, fim);
+		return  this.ordemServicoRepository.findAllOrdensByStatusAndDataBetween(situacao, inicio, fim);
 	}
 	
 	private OrdemServicoEntity converterParaEntity(final OrdemServico ordemServico) {

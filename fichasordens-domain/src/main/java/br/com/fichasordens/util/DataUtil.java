@@ -24,12 +24,11 @@ public class DataUtil {
 	    	      .toLocalDate();
 	 
 	    Period period = Period.between(now, sixDaysBehind);
-	    long diff = Math.abs(period.getDays());
-	    return diff;
+	    return Math.abs(period.getDays());
 	}
 	
 	public static Map<String,Date> getDataInicioDataFim() {
-		Map<String, Date> map = new HashMap<String,Date>();
+		Map<String, Date> map = new HashMap<>();
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.DAY_OF_MONTH, 1);
 		map.put(DATA_INICIO, c.getTime());

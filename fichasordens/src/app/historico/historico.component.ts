@@ -39,7 +39,7 @@ export class HistoricoComponent implements OnInit {
   onSubmit() {
     this.content = undefined;
     this.service.post('/historico?page=' +
-            this.page + '&size=1&sort=id,DESC', this.formHist).subscribe(response => {
+            this.page + '&size=3&sort=id,DESC', this.formHist).subscribe(response => {
               this.loadHistorico(response);
     this.toasterService.pop('success', 'Pesquisa Historico', 'Pesquisa Realizado com sucesso!');
     }, (error) => {
@@ -60,6 +60,7 @@ export class HistoricoComponent implements OnInit {
   }
 
   public paginate(event) {
+    console.log(event.page);
     this.page = event.page;
     this.onSubmit();
    }

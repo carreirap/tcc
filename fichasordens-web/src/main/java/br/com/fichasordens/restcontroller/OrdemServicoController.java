@@ -70,7 +70,7 @@ public class OrdemServicoController {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.POST,path="/lancamento")
+	/*@RequestMapping(method = RequestMethod.POST,path="/lancamento")
 	public ResponseEntity salvarLancamentoTecnico(@RequestBody final LancamentoDto dto) {
 		try {
 			OrdemServicoLanc peca = ConverterLancamentoDto.converterDtoParaOrdemServicoLanc(dto);
@@ -79,7 +79,7 @@ public class OrdemServicoController {
 		} catch (ExcecaoRetorno e) {
 			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
-	}
+	}*/
 	
 	
 	@RequestMapping(method = RequestMethod.DELETE,path="/pecaServico")

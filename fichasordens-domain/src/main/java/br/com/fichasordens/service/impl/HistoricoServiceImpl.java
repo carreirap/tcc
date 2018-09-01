@@ -44,73 +44,119 @@ public class HistoricoServiceImpl implements HistoricoService {
 			final String situacao, final Pageable pageable) {
 		if (tipo.equals("Ficha")) {
 			if (numero != 0 ) {
-				final FichaAtendimentoEntity ent = this.repository.findOne(numero); 
-				final List<ResultadoPesquisaDto> lst = this.converterListaDeFichasParaDto(Arrays.asList(ent));
-				final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<ResultadoPesquisaDto>(lst, pageable, lst.size());
-				pages.setTotalPages(1);
-				
-				return pages;
+				return pesquisarNumeroFicha(numero, pageable);
 			}
 			
-			if (numero == 0 && (cnpjcpf != null && !cnpjcpf.equals("")) && idUsuario == 0) {
-				Page<FichaAtendimentoEntity> paged = null;
-				if (situacao.equals(TODAS))
-					paged = this.repository.FindAllFichaByCnpfcpf(cnpjcpf, pageable);
-				else 
-					paged = this.repository.FindAllFichaByCnpfcpfAndSituacao(cnpjcpf, situacao, pageable);
-				final List<ResultadoPesquisaDto> lst = this.converterListaDeFichasParaDto(paged.getContent());
-				final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<ResultadoPesquisaDto>(lst, pageable, lst.size());
-				pages.setTotalPages(paged.getTotalPages());
-				
-				return pages;
+			if ((cnpjcpf != null && !cnpjcpf.equals("")) && idUsuario == 0) {
+				return pesquisarCnpfCpfFicha(cnpjcpf, situacao, pageable);
 			}
 			
-			if (numero == 0 && (cnpjcpf == null || cnpjcpf.equals("")) && idUsuario == 0) {
-				final Page<FichaAtendimentoEntity> paged = this.repository.FindAllFichaByStatus(situacao, pageable); 
-				final List<ResultadoPesquisaDto> lst = this.converterListaDeFichasParaDto(paged.getContent());
-				final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<ResultadoPesquisaDto>(lst, pageable, lst.size());
-				pages.setTotalPages(paged.getTotalPages());
-				
-				return pages;
+			if (situacao.equals(TODAS)) {
+				return pesquisarTodasSituacaoFicha(pageable);
 			}
+			
+			if ( (cnpjcpf == null || cnpjcpf.equals("")) && idUsuario == 0) {
+				return pesquisarPorSituacaoFicha(situacao, pageable);
+			}
+			
 		} else {
 			if (numero != 0 ) {
-				final OrdemServicoEntity ent = this.ordemRepository.findOne(numero); 
-				final List<ResultadoPesquisaDto> lst = this.converterListaDeOrdensParaDto(Arrays.asList(ent));
-				final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<ResultadoPesquisaDto>(lst, pageable, lst.size());
-				pages.setTotalPages(1);
-				
-				return pages;
+				return pesquisarNumeroOrdem(numero, pageable);
 			}
 			
-			if (numero == 0 && (cnpjcpf != null && !cnpjcpf.equals("")) && idUsuario == 0) {
+			if ((cnpjcpf != null && !cnpjcpf.equals("")) && idUsuario == 0) {
 				Page<OrdemServicoEntity> paged = null;
 				if (situacao.equals(TODAS))
-					paged = this.ordemRepository.FindAllOrdensByCnpfcpf(cnpjcpf, pageable);
+					paged = this.ordemRepository.findAllOrdensByCnpfcpf(cnpjcpf, pageable);
 				else 
-					paged = this.ordemRepository.FindAllOrdensByCnpfcpfAndSituacao(cnpjcpf, situacao, pageable);
+					paged = this.ordemRepository.findAllOrdensByCnpfcpfAndSituacao(cnpjcpf, situacao, pageable);
 				final List<ResultadoPesquisaDto> lst = this.converterListaDeOrdensParaDto(paged.getContent());
-				final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<ResultadoPesquisaDto>(lst, pageable, lst.size());
+				final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
 				pages.setTotalPages(paged.getTotalPages());
 				
 				return pages;
 			}
 			
-			if (numero == 0 && (cnpjcpf == null || cnpjcpf.equals("")) && idUsuario == 0) {
-				final Page<OrdemServicoEntity> paged = this.ordemRepository.FindAllOrdensByStatus(situacao, pageable); 
+			if (situacao.equals(TODAS)) {
+				final Page<OrdemServicoEntity> paged = this.ordemRepository.findAllOrdens(pageable); 
 				final List<ResultadoPesquisaDto> lst = this.converterListaDeOrdensParaDto(paged.getContent());
-				final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<ResultadoPesquisaDto>(lst, pageable, lst.size());
+				final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
 				pages.setTotalPages(paged.getTotalPages());
 				
 				return pages;
 			}
+			
+			
+			if ((cnpjcpf == null || cnpjcpf.equals("")) && idUsuario == 0) {
+				return pesquisarPorSituacaoOrdem(situacao, pageable);
+			}
+			
 		}
 		
 		return null;
 	}
 
+	private Page<ResultadoPesquisaDto> pesquisarNumeroOrdem(final long numero, final Pageable pageable) {
+		final OrdemServicoEntity ent = this.ordemRepository.findOne(numero); 
+		final List<ResultadoPesquisaDto> lst = this.converterListaDeOrdensParaDto(Arrays.asList(ent));
+		final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
+		pages.setTotalPages(1);
+		
+		return pages;
+	}
+
+	private Page<ResultadoPesquisaDto> pesquisarPorSituacaoFicha(final String situacao, final Pageable pageable) {
+		final Page<FichaAtendimentoEntity> paged = this.repository.findAllFichaByStatus(situacao, pageable); 
+		final List<ResultadoPesquisaDto> lst = this.converterListaDeFichasParaDto(paged.getContent());
+		final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
+		pages.setTotalPages(paged.getTotalPages());
+		
+		return pages;
+	}
+
+	private Page<ResultadoPesquisaDto> pesquisarPorSituacaoOrdem(final String situacao, final Pageable pageable) {
+		final Page<OrdemServicoEntity> paged = this.ordemRepository.findAllOrdensByStatus(situacao, pageable); 
+		final List<ResultadoPesquisaDto> lst = this.converterListaDeOrdensParaDto(paged.getContent());
+		final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
+		pages.setTotalPages(paged.getTotalPages());
+		
+		return pages;
+	}
+
+	private Page<ResultadoPesquisaDto> pesquisarTodasSituacaoFicha(final Pageable pageable) {
+		final Page<FichaAtendimentoEntity> paged = this.repository.findAllFichas(pageable); 
+		final List<ResultadoPesquisaDto> lst = this.converterListaDeFichasParaDto(paged.getContent());
+		final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
+		pages.setTotalPages(paged.getTotalPages());
+		
+		return pages;
+	}
+
+	private Page<ResultadoPesquisaDto> pesquisarCnpfCpfFicha(final String cnpjcpf, final String situacao,
+			final Pageable pageable) {
+		Page<FichaAtendimentoEntity> paged = null;
+		if (situacao.equals(TODAS))
+			paged = this.repository.findAllFichaByCnpfcpf(cnpjcpf, pageable);
+		else 
+			paged = this.repository.findAllFichaByCnpfcpfAndSituacao(cnpjcpf, situacao, pageable);
+		final List<ResultadoPesquisaDto> lst = this.converterListaDeFichasParaDto(paged.getContent());
+		final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
+		pages.setTotalPages(paged.getTotalPages());
+		
+		return pages;
+	}
+
+	private Page<ResultadoPesquisaDto> pesquisarNumeroFicha(final long numero, final Pageable pageable) {
+		final Page<FichaAtendimentoEntity> page = this.repository.findById(numero, pageable); 
+		final List<ResultadoPesquisaDto> lst = this.converterListaDeFichasParaDto(page.getContent());
+		final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
+		pages.setTotalPages(1);
+		
+		return pages;
+	}
+
 	private List<ResultadoPesquisaDto> converterListaDeFichasParaDto(final List<FichaAtendimentoEntity> lst) {
-		List<ResultadoPesquisaDto> resultadoList = new ArrayList<ResultadoPesquisaDto>();
+		List<ResultadoPesquisaDto> resultadoList = new ArrayList<>();
 		lst.stream().forEach(a -> {
 			ResultadoPesquisaDto dto = new ResultadoPesquisaDto();
 			dto.setNomeCliente(a.getCliente().getNome());
@@ -133,7 +179,7 @@ public class HistoricoServiceImpl implements HistoricoService {
 	}
 	
 	private List<ResultadoPesquisaDto> converterListaDeOrdensParaDto(final List<OrdemServicoEntity> lst) {
-		List<ResultadoPesquisaDto> resultadoList = new ArrayList<ResultadoPesquisaDto>();
+		List<ResultadoPesquisaDto> resultadoList = new ArrayList<>();
 		lst.stream().forEach(a -> {
 			ResultadoPesquisaDto dto = new ResultadoPesquisaDto();
 			dto.setNomeCliente(a.getCliente().getNome());

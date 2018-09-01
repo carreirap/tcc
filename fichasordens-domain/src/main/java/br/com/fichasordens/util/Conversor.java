@@ -8,9 +8,10 @@ import br.com.fichasordens.entities.OrdemServicoEntity;
 
 public final class Conversor {
 	
+	private Conversor() {}
 	
 	public static List<PecaOutroServico> converterPecaServicoEntityParaPecaOutroServico(final OrdemServicoEntity entity) {
-		List<PecaOutroServico> lst = new ArrayList<PecaOutroServico>();
+		List<PecaOutroServico> lst = new ArrayList<>();
 		entity.getPecaServicoOrdems().forEach(a -> {
 			PecaOutroServico peca = new PecaOutroServico();
 			peca.setDescricao(a.getDescricao());

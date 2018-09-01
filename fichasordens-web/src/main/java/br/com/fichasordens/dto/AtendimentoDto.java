@@ -15,7 +15,7 @@ public class AtendimentoDto {
 	private Date dataAtendimento;
 	
 	private String descricao;
-	private float duracao;
+	private BigDecimal duracao;
 	private BigDecimal valor;
 	private long id;
 	
@@ -49,10 +49,10 @@ public class AtendimentoDto {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	public float getDuracao() {
+	public BigDecimal getDuracao() {
 		return duracao;
 	}
-	public void setDuracao(float duracao) {
+	public void setDuracao(BigDecimal duracao) {
 		this.duracao = duracao;
 	}
 	public BigDecimal getValor() {

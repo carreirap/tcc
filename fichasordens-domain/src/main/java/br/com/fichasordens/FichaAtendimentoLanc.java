@@ -8,7 +8,7 @@ public class FichaAtendimentoLanc {
 	private Date data;
 	private String situacao;
 	private String observacao;
-	private FichaAtendimento FichaAtendimento;
+	private FichaAtendimento fichaAtendimento;
 	
 	
 	public int getSequencia() {
@@ -42,9 +42,9 @@ public class FichaAtendimentoLanc {
 		this.usuario = usuario;
 	}
 	public FichaAtendimento getFichaAtendimento() {
-		return FichaAtendimento;
+		return fichaAtendimento;
 	}
 	public void setFichaAtendimento(FichaAtendimento fichaAtendimento) {
-		FichaAtendimento = fichaAtendimento;
+		this.fichaAtendimento = fichaAtendimento;
 	}
 }

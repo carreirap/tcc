@@ -1,7 +1,6 @@
 package br.com.fichasordens.service.impl;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +48,7 @@ public class DashboardServiceImpl implements DashboardService {
 	}
 	
 	private Map<String,DashBoardDto> contarFichasPorSituacao() {
-		Map<String,DashBoardDto> map = new HashMap<String,DashBoardDto>();
+		Map<String,DashBoardDto> map = new HashMap<>();
 		for(StatusServicoEnum e: StatusServicoEnum.values()) {
 			if (e == StatusServicoEnum.FECHADO || e == StatusServicoEnum.CANCELADO) {
 				Map<String,Date> dateMap = DataUtil.getDataInicioDataFim();
@@ -66,7 +65,7 @@ public class DashboardServiceImpl implements DashboardService {
 	
 	private Map<String,DashBoardDto> calcularTotaisFichaAtendimento(List<FichaAtendimentoEntity> lst, final String situacao) {
 		final int diasAlerta = Integer.parseInt(qtdDiasAlerta);
-		Map<String,DashBoardDto> map = new HashMap<String,DashBoardDto>();
+		Map<String,DashBoardDto> map = new HashMap<>();
 		int qtdAberto = 0;
 		
 		BigDecimal totalAberto = new BigDecimal(0);
@@ -99,7 +98,7 @@ public class DashboardServiceImpl implements DashboardService {
 	}
 	
 	private Map<String,DashBoardDto> contarOrdensPorSituacao() {
-		Map<String,DashBoardDto> map = new HashMap<String,DashBoardDto>();
+		Map<String,DashBoardDto> map = new HashMap<>();
 		for(StatusServicoEnum e: StatusServicoEnum.values()) {
 			if (e == StatusServicoEnum.FECHADO || e == StatusServicoEnum.CANCELADO) {
 				Map<String,Date> dateMap = DataUtil.getDataInicioDataFim();
@@ -114,7 +113,7 @@ public class DashboardServiceImpl implements DashboardService {
 	}
 
 	private Map<String,DashBoardDto> calcularTotaisOrdens(final List<OrdemServicoEntity> lst, final String situacao) {
-		Map<String,DashBoardDto> map = new HashMap<String,DashBoardDto>();
+		Map<String,DashBoardDto> map = new HashMap<>();
 		int qtdAberto = 0;
 		BigDecimal totalAberto = new BigDecimal(0);
 		

@@ -79,7 +79,9 @@ export class OrdemServicoComponent implements OnInit {
       this.formOrdem.lancamento = new Lancamento();
       this.formOrdem.tipoServico = 'Instalacao';
       this.formOrdem.lancamento.situacao = 'Aberto';
+      //this.situacao = this.situacaoTecnica.getSituacaoAbertura();
       this.formOrdem.dataAbertura = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
+      //this.formOrdem.lancamento.data = this.formOrdem.dataAbertura;
     }
     this.getNomeUsario();
   }

@@ -51,21 +51,13 @@ public class Cliente extends Pessoa {
 		ExampleMatcher matcher = ExampleMatcher.matching()
 	            .withIgnoreNullValues()
 	            .withIgnoreCase()
-	            .withMatcher("nome", match -> match.startsWith());
+	            .withMatcher("nome", match-> match.startsWith());
 		Example<ClienteEntity> example = Example.of(ent, matcher);
 		Page<ClienteEntity> paged = this.clienteRepository.findAll(example, page);
-		paged.forEach(a -> { a.getEndereco(); System.out.println(a.getEndereco());});
+		paged.forEach(a-> a.getEndereco() );
 		return paged;
 	}
 
-	/*private void converterEntityParaCliente(final List<Cliente> clienteList, final ClienteEntity e) {
-		Cliente cli = new Cliente();
-		cli.setNome(e.getNome());
-		cli.setCnpjCpf(e.getCnpjCpf());
-		cli.setFone(e.getFone());
-		cli.setId(e.getId());
-		clienteList.add(cli);
-	}*/
 	
 	public boolean isClienteCadastrado(final String cnpjCpf, final long id) {
 		boolean clienteEstaCadastrado = false;

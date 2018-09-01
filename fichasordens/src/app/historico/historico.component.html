@@ -64,7 +64,9 @@
            Nenhum registro encontrado! 
       </span>
     </li>
-    <p-paginator *ngIf="content?.length > 0" [rows]="1" [totalRecords]='pages' (onPageChange)="paginate($event)"></p-paginator>
+    
+    <p-paginator   [rows]="1" [totalRecords]='pages' (onPageChange)="paginate($event)"></p-paginator>
+  
     </div>
   </div>
 
