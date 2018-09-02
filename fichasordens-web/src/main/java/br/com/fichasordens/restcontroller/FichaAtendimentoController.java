@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.fichasordens.Atendimento;
 import br.com.fichasordens.Cliente;
 import br.com.fichasordens.FichaAtendimento;
-import br.com.fichasordens.FichaAtendimentoLanc;
+import br.com.fichasordens.Lancamento;
 import br.com.fichasordens.PecaOutroServico;
 import br.com.fichasordens.dto.AtendimentoDto;
 import br.com.fichasordens.dto.FichaAtendimentoDto;
@@ -89,7 +89,7 @@ public class FichaAtendimentoController {
 			dto.setNomeCliente(a.getCliente().getNome());
 			dto.setSituacao(situacao);
 			dto.setTipoServico("Ficha de Atendimento");
-			for(FichaAtendimentoLanc lanc:  a.getFichaAtendimentoLancList()) {
+			for(Lancamento lanc:  a.getFichaAtendimentoLancList()) {
 				if (lanc.getSituacao().equals(situacao)) {
 					dto.setResponsavel(lanc.getUsuario().getNome());
 				}
@@ -148,7 +148,7 @@ public class FichaAtendimentoController {
 
 		dto.setLancamentoLst(new ArrayList<LancamentoDto>());
 		if (ficha.getFichaAtendimentoLancList() != null) {
-			for(FichaAtendimentoLanc lanc: ficha.getFichaAtendimentoLancList()) {
+			for(Lancamento lanc: ficha.getFichaAtendimentoLancList()) {
 				final LancamentoDto lancDto = ConverterLancamentoDto.converterLancamentoParaDto(lanc);
 				dto.getLancamentoLst().add(lancDto);
 			}
@@ -187,8 +187,8 @@ public class FichaAtendimentoController {
 		final Cliente cliente = new Cliente();
 		cliente.setId(dto.getCliente().getId());
 		ficha.setCliente(cliente);
-		ficha.setFichaAtendimentoLancList(new ArrayList<FichaAtendimentoLanc>());
-		FichaAtendimentoLanc lanc = ConverterLancamentoDto.converterDtoParaFichaAtendimentoLanc(dto.getLancamento());
+		ficha.setFichaAtendimentoLancList(new ArrayList<Lancamento>());
+		Lancamento lanc = ConverterLancamentoDto.converterDtoParaFichaAtendimentoLanc(dto.getLancamento());
 		ficha.getFichaAtendimentoLancList().add(lanc);
 		return ficha;
 	}

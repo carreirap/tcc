@@ -1,7 +1,5 @@
 package br.com.fichasordens;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -51,10 +49,10 @@ public class Cliente extends Pessoa {
 		ExampleMatcher matcher = ExampleMatcher.matching()
 	            .withIgnoreNullValues()
 	            .withIgnoreCase()
-	            .withMatcher("nome", match-> match.startsWith());
+	            .withMatcher("nome", match-> match.startsWith()); //NOSONAR
 		Example<ClienteEntity> example = Example.of(ent, matcher);
 		Page<ClienteEntity> paged = this.clienteRepository.findAll(example, page);
-		paged.forEach(a-> a.getEndereco() );
+		paged.forEach(a-> a.getEndereco() ); //NOSONAR
 		return paged;
 	}
 

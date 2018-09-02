@@ -18,6 +18,9 @@ import br.com.fichasordens.exception.ExcecaoRetorno;
 import br.com.fichasordens.repository.OrdemServicoLancRepository;
 import br.com.fichasordens.repository.OrdemServicoRepository;
 import br.com.fichasordens.repository.PecaServicoOrdemRepository;
+import br.com.fichasordens.util.ConversorOrdemServico;
+import br.com.fichasordens.util.StatusServicoEnum;
+import br.com.fichasordens.util.ConversorCliente;
 
 @Component
 public class OrdemServico {
@@ -32,7 +35,7 @@ public class OrdemServico {
 	private String descServico;
 	private Cliente cliente;
 	
-	private List<OrdemServicoLanc> ordemServicoLanc;
+	private List<Lancamento> lancamento;
 	private List<PecaOutroServico> pecaOutroServico;
 	
 	@Autowired
@@ -51,7 +54,7 @@ public class OrdemServico {
 	public OrdemServico salvarOrdem(final OrdemServico ordemServico) throws ExcecaoRetorno {
 		OrdemServicoEntity ent = this.converterParaEntity(ordemServico);
 		try {
-			OrdemServicoLancEntity lancEntity = this.converterOrdemServicoLancParaEntity(ordemServico.getOrdemServicoLanc().get(0));
+			OrdemServicoLancEntity lancEntity = this.converterOrdemServicoLancParaEntity(ordemServico.getLancamento().get(0));
 			ent = this.ordemServicoRepository.save(ent);
 			lancEntity.setOrdemServico(new OrdemServicoEntity());
 			lancEntity.getId().setOrdemServicoId(ent.getId());
@@ -89,18 +92,6 @@ public class OrdemServico {
 		}
 	}
 	
-	/*@Transactional
-	public void gravarOrdemServicoLanc(final OrdemServicoLanc ordemServicoLanc) throws ExcecaoRetorno {
-		OrdemServicoLancEntity entity = converterOrdemServicoLancParaEntity(ordemServicoLanc);
-		try {
-			List<Usuario> usuarioLst = this.usuario.listarUsuario(entity.getUsuario().getUsuario());
-			entity.getUsuario().setId(usuarioLst.get(0).getId());
-			this.ordemServicoLancRepository.save(entity);
-		} catch (Exception e) {
-			throw new ExcecaoRetorno("Erro ao tentar cadastrar ordem de serviço");
-		}
-	}*/
-	
 	@Transactional
 	public void deletarPecaOutroServico(final int id, final int sequencia) {
 		final PecaServicoOrdemEntity ent = new PecaServicoOrdemEntity();
@@ -111,22 +102,20 @@ public class OrdemServico {
 	}
 	
 	@Transactional
-	public List<OrdemServico> listarOrdens(final String situacao) {
+	public List<OrdemServico> listarOrdens(final StatusServicoEnum situacao) {
 		List<OrdemServicoEntity> entityList = this.buscarOrdensDeServicoPorSituacao(situacao);
 		List<OrdemServico> ordemList = new ArrayList<>();
-		entityList.forEach(a-> {
-			ordemList.add(converterEntityParaOrdemServico(a));
-		});
+		entityList.forEach(a-> ordemList.add(converterEntityParaOrdemServico(a)) );
 		return ordemList;
 	}
 
 	
-	public List<OrdemServicoEntity> buscarOrdensDeServicoPorSituacao(final String situacao) {
-		return  this.ordemServicoRepository.findAllOrdensByStatus(situacao);
+	public List<OrdemServicoEntity> buscarOrdensDeServicoPorSituacao(final StatusServicoEnum situacao) {
+		return  this.ordemServicoRepository.findAllOrdensByStatus(situacao.getValue());
 	}
 	
-	public List<OrdemServicoEntity> buscarOrdensDeServicoPorSituacao(final String situacao, final Date inicio, final Date fim) {
-		return  this.ordemServicoRepository.findAllOrdensByStatusAndDataBetween(situacao, inicio, fim);
+	public List<OrdemServicoEntity> buscarOrdensDeServicoPorSituacao(final StatusServicoEnum situacao, final Date inicio, final Date fim) {
+		return  this.ordemServicoRepository.findAllOrdensByStatusAndDataBetween(situacao.getValue(), inicio, fim);
 	}
 	
 	private OrdemServicoEntity converterParaEntity(final OrdemServico ordemServico) {
@@ -135,14 +124,13 @@ public class OrdemServico {
 		ent.setFrabricante(ordemServico.getFabricante());
 		ent.setDescDefeito(ordemServico.getDescDefeito());
 		ent.setDescEquip(ordemServico.getDescEquip());
-		//îent.setDescServico(ordemServico.getDescServico());
 		ent.setEstadoItensAcomp(ordemServico.getEstadoItensAcomp());
 		ent.setModelo(ordemServico.getModelo());
 		ent.setSerie(ordemServico.getSerie());
 		ent.setTipoServico(ordemServico.getTipoServico());
-		final ClienteEntity cliente = new ClienteEntity();
-		cliente.setId(ordemServico.getCliente().getId());
-		ent.setCliente(cliente);
+		final ClienteEntity cli = new ClienteEntity();
+		cli.setId(ordemServico.getCliente().getId());
+		ent.setCliente(cli);
 		
 		return ent;
 	}
@@ -153,44 +141,23 @@ public class OrdemServico {
 		ordem.setDescDefeito(entity.getDescDefeito());
 		ordem.setDescEquip(entity.getDescEquip());
 		ordem.setId(entity.getId());
-		//îent.setDescServico(ordemServico.getDescServico());
 		ordem.setEstadoItensAcomp(entity.getEstadoItensAcomp());
 		ordem.setModelo(entity.getModelo());
 		ordem.setSerie(entity.getSerie());
 		ordem.setTipoServico(entity.getTipoServico());
-		final Cliente cliente = new Cliente();
-		cliente.setId(entity.getCliente().getId());
-		cliente.setNome(entity.getCliente().getNome());
-		cliente.setCnpjCpf(entity.getCliente().getCnpjCpf());
-		cliente.setCelular(entity.getCliente().getCelular());
-		cliente.setFone(entity.getCliente().getFone());
-		ordem.setCliente(cliente);
-		ordem.setOrdemServicoLanc(convertLancEntityParaOrdemServicoLanc(entity, ordem));
-		ordem.setPecaOutroServico(converterPecaServicoEntityParaPecaOutroServico(entity, ordem));
+		final Cliente cli = ConversorCliente.converterClienteEntityParaCliente(entity.getCliente());
+		ordem.setCliente(cli);
+		ordem.setLancamento(convertLancEntityParaOrdemServicoLanc(entity, ordem));
+		ordem.setPecaOutroServico(ConversorOrdemServico.converterPecaServicoEntityParaPecaOutroServico(entity, ordem));
 		return ordem;
 	}
 
-	private List<PecaOutroServico> converterPecaServicoEntityParaPecaOutroServico(final OrdemServicoEntity entity, final OrdemServico ordemServico) {
-		List<PecaOutroServico> lst = new ArrayList<PecaOutroServico>();
-		entity.getPecaServicoOrdems().forEach(a -> {
-			PecaOutroServico peca = new PecaOutroServico();
-			peca.setDescricao(a.getDescricao());
-			peca.setQuantidade(a.getQuantidade());
-			peca.setValor(a.getValor());
-			peca.setId(a.getId().getSequencia());
-			peca.setOrdemServico(ordemServico);
-			lst.add(peca);
-		});
-		return lst;
-	}
-
-	private List<OrdemServicoLanc> convertLancEntityParaOrdemServicoLanc(final OrdemServicoEntity entity, final OrdemServico ordemServico) {
-		List<OrdemServicoLanc> lst = new ArrayList<OrdemServicoLanc>();
-		entity.getOrdemServicoLancs()
-		        
+	private List<Lancamento> convertLancEntityParaOrdemServicoLanc(final OrdemServicoEntity entity, final OrdemServico ordemServico) {
+		List<Lancamento> lst = new ArrayList<>();
+		entity.getOrdemServicoLancs()		        
 			.forEach(a ->
 			{
-				OrdemServicoLanc lanc = new OrdemServicoLanc();
+				Lancamento lanc = new Lancamento();
 				lanc.setData(a.getData());
 				lanc.setObservacao(a.getObservacao());
 				lanc.setSequencia((int)a.getId().getSequencia());
@@ -215,18 +182,16 @@ public class OrdemServico {
 		return ent;
 	}
 	
-	private OrdemServicoLancEntity converterOrdemServicoLancParaEntity(final OrdemServicoLanc ordemServicoLanc) {
+	private OrdemServicoLancEntity converterOrdemServicoLancParaEntity(final Lancamento lancamento) {
 		OrdemServicoLancEntity ent = new OrdemServicoLancEntity();
-		ent.setData(ordemServicoLanc.getData());
-		ent.setObservacao(ordemServicoLanc.getObservacao());
-		ent.setSituacao(ordemServicoLanc.getSituacao());
+		ent.setData(lancamento.getData());
+		ent.setObservacao(lancamento.getObservacao());
+		ent.setSituacao(lancamento.getSituacao());
 		ent.setOrdemServico(new OrdemServicoEntity());
 		ent.setId(new OrdemServicoLancId());
-		ent.getId().setUsuarioId(ordemServicoLanc.getUsuario().getId());
-		ent.getId().setSequencia(ordemServicoLanc.getSequencia());
-		ent.getOrdemServico().setId(ordemServicoLanc.getOrdemServico().getId());
-//		ent.setUsuario(new UsuarioEntity());
-//		ent.getUsuario().setUsuario(ordemServicoLanc.getUsuario().getId());
+		ent.getId().setUsuarioId(lancamento.getUsuario().getId());
+		ent.getId().setSequencia(lancamento.getSequencia());
+		ent.getOrdemServico().setId(lancamento.getOrdemServico().getId());
 		return ent;
 		
 	}
@@ -320,12 +285,12 @@ public class OrdemServico {
 		this.pecaOutroServico = pecaOutroServico;
 	}
 
-	public List<OrdemServicoLanc> getOrdemServicoLanc() {
-		return ordemServicoLanc;
+	public List<Lancamento> getLancamento() {
+		return lancamento;
 	}
 
-	public void setOrdemServicoLanc(List<OrdemServicoLanc> ordemServicoLanc) {
-		this.ordemServicoLanc = ordemServicoLanc;
+	public void setLancamento(List<Lancamento> lancamento) {
+		this.lancamento = lancamento;
 	}
-
+	
 }

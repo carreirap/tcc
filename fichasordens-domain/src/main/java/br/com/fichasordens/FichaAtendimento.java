@@ -36,7 +36,7 @@ public class FichaAtendimento {
 	private String tipoServico;
 	private long id;
 	
-	private List<FichaAtendimentoLanc> fichaAtendimentoLancList;
+	private List<Lancamento> fichaAtendimentoLancList;
 	private List<PecaOutroServico> pecaOutroServicoList;
 	private List<Atendimento> atendimentoList;
 	
@@ -172,11 +172,11 @@ public class FichaAtendimento {
 		this.id = id;
 	}
 	
-	public List<FichaAtendimentoLanc> getFichaAtendimentoLancList() {
+	public List<Lancamento> getFichaAtendimentoLancList() {
 		return fichaAtendimentoLancList;
 	}
 
-	public void setFichaAtendimentoLancList(List<FichaAtendimentoLanc> fichaAtendimentoLanc) {
+	public void setFichaAtendimentoLancList(List<Lancamento> fichaAtendimentoLanc) {
 		this.fichaAtendimentoLancList = fichaAtendimentoLanc;
 	}
 

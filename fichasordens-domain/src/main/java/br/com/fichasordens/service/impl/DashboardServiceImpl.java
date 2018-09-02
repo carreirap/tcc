@@ -102,10 +102,10 @@ public class DashboardServiceImpl implements DashboardService {
 		for(StatusServicoEnum e: StatusServicoEnum.values()) {
 			if (e == StatusServicoEnum.FECHADO || e == StatusServicoEnum.CANCELADO) {
 				Map<String,Date> dateMap = DataUtil.getDataInicioDataFim();
-				List<OrdemServicoEntity> lst = this.ordemServico.buscarOrdensDeServicoPorSituacao(e.getValue(), dateMap.get(DataUtil.DATA_INICIO), dateMap.get(DataUtil.DATA_FIM));
+				List<OrdemServicoEntity> lst = this.ordemServico.buscarOrdensDeServicoPorSituacao(e, dateMap.get(DataUtil.DATA_INICIO), dateMap.get(DataUtil.DATA_FIM));
 				map.putAll(calcularTotaisOrdens(lst, e.getValue()));
 			} else {	
-				List<OrdemServicoEntity> lst = this.ordemServico.buscarOrdensDeServicoPorSituacao(e.getValue());
+				List<OrdemServicoEntity> lst = this.ordemServico.buscarOrdensDeServicoPorSituacao(e);
 				map.putAll(calcularTotaisOrdens(lst, e.getValue()));
 			}
 		}

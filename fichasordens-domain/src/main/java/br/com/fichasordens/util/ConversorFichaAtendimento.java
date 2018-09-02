@@ -6,7 +6,7 @@ import java.util.List;
 import br.com.fichasordens.Atendimento;
 import br.com.fichasordens.Cliente;
 import br.com.fichasordens.FichaAtendimento;
-import br.com.fichasordens.FichaAtendimentoLanc;
+import br.com.fichasordens.Lancamento;
 import br.com.fichasordens.PecaOutroServico;
 import br.com.fichasordens.Usuario;
 import br.com.fichasordens.entities.AtendimentoFichaEntity;
@@ -44,7 +44,7 @@ public class ConversorFichaAtendimento {
 		return ent;
 	}
 	
-	public static FichaAtendLancEntity converterFichaAtendLancParaEntity(final FichaAtendimentoLanc fichaAtendimentoLanc) {
+	public static FichaAtendLancEntity converterFichaAtendLancParaEntity(final Lancamento fichaAtendimentoLanc) {
 		FichaAtendLancEntity ent = new FichaAtendLancEntity();
 		ent.setData(fichaAtendimentoLanc.getData());
 		ent.setObservacao(fichaAtendimentoLanc.getObservacao());
@@ -61,20 +61,15 @@ public class ConversorFichaAtendimento {
 	}
 	
 	public static FichaAtendimento converterEntityParaFichaAtendimento(final FichaAtendimentoEntity entity) {
-		FichaAtendimento ficha = new FichaAtendimento();
+		final FichaAtendimento ficha = new FichaAtendimento();
 		ficha.setId(entity.getId());
 		ficha.setTipoServico(entity.getTipoServico());
-		Cliente cliente = new Cliente();
-		cliente.setId(entity.getCliente().getId());
-		cliente.setNome(entity.getCliente().getNome());
-		cliente.setCelular(entity.getCliente().getCelular());
-		cliente.setFone(entity.getCliente().getFone());
-		cliente.setCnpjCpf(entity.getCliente().getCnpjCpf());
+		final Cliente cliente = ConversorCliente.converterClienteEntityParaCliente(entity.getCliente());
 		ficha.setCliente(cliente);
-		if (entity.getFichaAtendLancs().size() > 0) {
-			ficha.setFichaAtendimentoLancList(new ArrayList<FichaAtendimentoLanc>());
+		if (!entity.getFichaAtendLancs().isEmpty()) {
+			ficha.setFichaAtendimentoLancList(new ArrayList<Lancamento>());
 			entity.getFichaAtendLancs().forEach(a-> {
-				FichaAtendimentoLanc lanc = new FichaAtendimentoLanc();
+				Lancamento lanc = new Lancamento();
 				lanc.setSequencia(a.getId().getSequencia());
 				lanc.setSituacao(a.getSituacao());
 				lanc.setData(a.getData());
@@ -87,30 +82,20 @@ public class ConversorFichaAtendimento {
 				ficha.getFichaAtendimentoLancList().add(lanc);
 			});
 		}
-		if (entity.getPecaServicoFichas().size() > 0) {
+		if (!entity.getPecaServicoFichas().isEmpty()) {
 			ficha.setPecaOutroServicoList(converterEntityParaPecaOutroServico(entity, ficha));
 		}
 		
-		if (entity.getAtendimentoFichas().size() > 0) {
+		if (!entity.getAtendimentoFichas().isEmpty()) {
 			ficha.setAtendimentoList(converterEntityParaAtendimentoFicha(entity, ficha));
 		}
-		/*if(entity.getAtendimentoFichas().size() > 0) {
-			List<Atendimento> atendimentoList = new ArrayList<Atendimento>();
-			for(AtendimentoFichaEntity p: entity.getAtendimentoFichas()) {
-				Atendimento atend = new Atendimento();
-				atend.setData(p.getDate());
-				atend.setDescricao(p.getDescricao());
-				atend.setDuracao(p.getDuracao());
-				atend.setSequencia(p.getId().getSequencia());
-				atend.setFichaAtendimento(ficha);
-				atendimentoList.add(atend);
-			}
-		}*/
 		return ficha;
 	}
 
+	
+
 	public static List<Atendimento> converterEntityParaAtendimentoFicha(final FichaAtendimentoEntity entity, FichaAtendimento ficha) {
-		List<Atendimento> list = new ArrayList<Atendimento>();
+		List<Atendimento> list = new ArrayList<>();
 		entity.getAtendimentoFichas().forEach(a-> {
 			Atendimento atend = new Atendimento();
 			atend.setData(a.getDate());
@@ -125,7 +110,7 @@ public class ConversorFichaAtendimento {
 	}
 
 	public static List<PecaOutroServico> converterEntityParaPecaOutroServico(final FichaAtendimentoEntity entity, final FichaAtendimento ficha) {
-		List<PecaOutroServico> list = new ArrayList<>();
+		final List<PecaOutroServico> list = new ArrayList<>();
 		for (PecaServicoFichaEntity a: entity.getPecaServicoFichas()) {
 			PecaOutroServico servico = new PecaOutroServico();
 			servico.setId(a.getId().getSequencia());

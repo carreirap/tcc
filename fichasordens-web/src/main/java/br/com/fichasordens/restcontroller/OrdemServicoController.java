@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fichasordens.Cliente;
-import br.com.fichasordens.FichaAtendimentoLanc;
+import br.com.fichasordens.Lancamento;
 import br.com.fichasordens.OrdemServico;
-import br.com.fichasordens.OrdemServicoLanc;
 import br.com.fichasordens.PecaOutroServico;
-import br.com.fichasordens.dto.FichaAtendimentoDto;
 import br.com.fichasordens.dto.LancamentoDto;
 import br.com.fichasordens.dto.ListagemDashboardDto;
 import br.com.fichasordens.dto.MensagemRetornoDto;
@@ -30,6 +28,7 @@ import br.com.fichasordens.util.ConverterCliente;
 import br.com.fichasordens.util.ConverterLancamentoDto;
 import br.com.fichasordens.util.ConverterPecaOutroServico;
 import br.com.fichasordens.util.DataUtil;
+import br.com.fichasordens.util.StatusServicoEnum;
 import br.com.fichasordens.util.TipoServicoEnum;
 
 @SuppressWarnings("rawtypes")
@@ -91,7 +90,7 @@ public class OrdemServicoController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity listaFichas(@RequestParam final String situacao) {
-		List<OrdemServico> ordemList = this.ordemServico.listarOrdens(situacao);
+		List<OrdemServico> ordemList = this.ordemServico.listarOrdens(StatusServicoEnum.valueOf(situacao.toUpperCase()));
 		List<ListagemDashboardDto> dtoList = new ArrayList<ListagemDashboardDto>();
 		ordemList.forEach(a->{
 			ListagemDashboardDto dto = new ListagemDashboardDto();
@@ -99,7 +98,7 @@ public class OrdemServicoController {
 			dto.setNomeCliente(a.getCliente().getNome());
 			dto.setSituacao(situacao);
 			dto.setTipoServico(ORDEM_DE_SERVICO);
-			for(OrdemServicoLanc lanc: a.getOrdemServicoLanc()) {
+			for(Lancamento lanc: a.getLancamento()) {
 				if (lanc.getSituacao().equals(situacao)) {
 					dto.setResponsavel(lanc.getUsuario().getNome());
 					dto.setDias((int)DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()));
@@ -138,9 +137,9 @@ public class OrdemServicoController {
 		final Cliente cliente = new Cliente();
 		cliente.setId(dto.getCliente().getId());
 		ent.setCliente(cliente);
-		ent.setOrdemServicoLanc(new ArrayList<OrdemServicoLanc>());
-		OrdemServicoLanc lanc = ConverterLancamentoDto.converterDtoParaOrdemServicoLanc(dto.getLancamento());
-		ent.getOrdemServicoLanc().add(lanc);
+		ent.setLancamento(new ArrayList<Lancamento>());
+		Lancamento lanc = ConverterLancamentoDto.converterDtoParaOrdemServicoLanc(dto.getLancamento());
+		ent.getLancamento().add(lanc);
 		return ent;
 	}
 	
@@ -158,8 +157,8 @@ public class OrdemServicoController {
 		dto.setCliente(ConverterCliente.converterClienteParaDto(ordem.getCliente()));
 	
 		dto.setLancamentoLst(new ArrayList<LancamentoDto>());
-		if (ordem.getOrdemServicoLanc() != null) {
-			for (OrdemServicoLanc lanc : ordem.getOrdemServicoLanc()) {
+		if (ordem.getLancamento() != null) {
+			for (Lancamento lanc : ordem.getLancamento()) {
 				final LancamentoDto lancDto = ConverterLancamentoDto.converterOrdemLancamentoParaDto(lanc);
 				dto.getLancamentoLst().add(lancDto);
 			}

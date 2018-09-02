@@ -32,16 +32,18 @@ public class CustomPage<T> extends PageImpl<T> {
 
 	@Override
 	public boolean equals(Object obj) {
+		boolean flag = false;
 		if (this == obj)
-			return true;
+			flag = true;
 		if (!super.equals(obj))
-			return false;
+			flag = false;
 		if (getClass() != obj.getClass())
-			return false;
+			flag = false;
 		CustomPage other = (CustomPage) obj;
-		if (totalPages != other.totalPages)
-			return false;
-		return true;
+		if (totalPages != other.totalPages) {
+			flag = false;
+		}
+		return flag;
 	}
 	
 }

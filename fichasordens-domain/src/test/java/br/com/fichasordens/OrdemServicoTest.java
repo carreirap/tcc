@@ -30,6 +30,7 @@ import br.com.fichasordens.repository.OrdemServicoLancRepository;
 import br.com.fichasordens.repository.OrdemServicoRepository;
 import br.com.fichasordens.repository.PecaServicoOrdemRepository;
 import br.com.fichasordens.util.DadosMockEntity;
+import br.com.fichasordens.util.StatusServicoEnum;
 
 public class OrdemServicoTest {
 	
@@ -118,7 +119,7 @@ public class OrdemServicoTest {
 	@Test
 	public void teste_listarOrdens_sucess() {
 		when(this.ordemServicoRepository.findAllOrdensByStatus("Aguardando")).thenReturn(Arrays.asList(createOrdemServicoEntity()));
-		List<?> lst = this.mockOrdemServico.listarOrdens("Aguardando");
+		List<?> lst = this.mockOrdemServico.listarOrdens(StatusServicoEnum.AGUARDANDO);
 		
 		assertEquals(1, lst.size());
 	}
@@ -128,7 +129,7 @@ public class OrdemServicoTest {
 		Date inicio = new Date();
 		Date fim = new Date();
 		when(this.ordemServicoRepository.findAllOrdensByStatusAndDataBetween("Aguardando", inicio, fim)).thenReturn(Arrays.asList(createOrdemServicoEntity()));
-		List<?> lst = this.mockOrdemServico.buscarOrdensDeServicoPorSituacao("Aguardando", inicio, fim);
+		List<?> lst = this.mockOrdemServico.buscarOrdensDeServicoPorSituacao(StatusServicoEnum.AGUARDANDO, inicio, fim);
 		
 		assertEquals(1, lst.size());
 	}
@@ -166,11 +167,11 @@ public class OrdemServicoTest {
 		ordem.setModelo("Vostro");
 		ordem.setSerie("111111");
 		ordem.setTipoServico("Manutencao");
-		ordem.setOrdemServicoLanc(Arrays.asList(createOrdemServicoLanc()));
+		ordem.setLancamento(Arrays.asList(createLancamento()));
 		return ordem;
 	}
 	
-	private OrdemServicoEntity createOrdemServicoEntity() {
+	public static OrdemServicoEntity createOrdemServicoEntity() {
 		OrdemServicoEntity ent = new OrdemServicoEntity();
 		ent.setCliente(DadosMockEntity.createClienteEntity());
 		ent.setDescDefeito("Teste defeito");
@@ -187,8 +188,8 @@ public class OrdemServicoTest {
 		return ent;
 	}
 	
-	private OrdemServicoLanc createOrdemServicoLanc() {
-		OrdemServicoLanc lanc = new OrdemServicoLanc();
+	private Lancamento createLancamento() {
+		Lancamento lanc = new Lancamento();
 		lanc.setData(new Date());
 		lanc.setObservacao("Teste");
 		lanc.setSituacao("Aberto");
@@ -200,7 +201,7 @@ public class OrdemServicoTest {
 		return lanc;
 	}
 	
-	private OrdemServicoLancEntity createOrdemServicoLancEntity() {
+	public static OrdemServicoLancEntity createOrdemServicoLancEntity() {
 		OrdemServicoLancEntity lanc = new OrdemServicoLancEntity();
 		lanc.setData(new Date());
 		lanc.setObservacao("Teste");
@@ -210,6 +211,7 @@ public class OrdemServicoTest {
 		lanc.getId().setOrdemServicoId(199);
 		lanc.setUsuario(new UsuarioEntity());
 		lanc.getUsuario().setId(10);
+		lanc.setAtualSituacao(true);
 		
 		return lanc;
 	}
@@ -226,7 +228,7 @@ public class OrdemServicoTest {
 		return peca;
 	}
 	
-	private PecaServicoOrdemEntity createPecaServicoOrdemEntity() {
+	public static PecaServicoOrdemEntity createPecaServicoOrdemEntity() {
 		PecaServicoOrdemEntity peca = new PecaServicoOrdemEntity();
 		peca.setDescricao("Teste");
 		peca.setQuantidade(10L);

@@ -124,7 +124,7 @@ public class FichaAtendimentoTest {
 		when(this.fichaAtendLancRepository.findBySituacaoAndFichaAtendimentoIdAndAtualSituacao(StatusServicoEnum.ABERTO.getValue(),ent.getId(), true)).thenReturn(lancEnt);
 		List<?> lst = this.ficha.listarFichas(StatusServicoEnum.ABERTO);
 		
-		assertEquals(lst.size(),1);
+		assertEquals(1, lst.size());
 	}
 	
 	@Test
@@ -144,7 +144,7 @@ public class FichaAtendimentoTest {
 		when(this.mockFichaRepository.findAllFichaByStatusAndDataInicioAndDataFim(StatusServicoEnum.AGUARDANDO.getValue(), inicio, fim)).thenReturn(Arrays.asList(new FichaAtendimentoEntity()));
 		List<?> lst = this.ficha.buscarFichaAtendimentoPorSituacao(StatusServicoEnum.AGUARDANDO, inicio, fim);
 		
-		assertEquals(lst.size(),1);
+		assertEquals(1, lst.size());
 	}
 	
 	@Test
@@ -182,14 +182,14 @@ public class FichaAtendimentoTest {
 		final Cliente cliente = new Cliente();
 		cliente.setId(200);
 		fichaA.setCliente(cliente);
-		fichaA.setFichaAtendimentoLancList(new ArrayList<FichaAtendimentoLanc>());
-		FichaAtendimentoLanc lanc = this.createFichaAtendimenLanctoMock();
+		fichaA.setFichaAtendimentoLancList(new ArrayList<Lancamento>());
+		Lancamento lanc = this.createFichaAtendimenLanctoMock();
 		fichaA.getFichaAtendimentoLancList().add(lanc);
 		return fichaA;
 	}
 	
-	private FichaAtendimentoLanc createFichaAtendimenLanctoMock() {
-		final FichaAtendimentoLanc lanc = new FichaAtendimentoLanc();
+	private Lancamento createFichaAtendimenLanctoMock() {
+		final Lancamento lanc = new Lancamento();
 		lanc.setData(new Date());
 		lanc.setObservacao("Test");
 		lanc.setSituacao("Aberto");
@@ -214,7 +214,7 @@ public class FichaAtendimentoTest {
 		return pecaServico;
 	}
 	
-	private PecaServicoFichaEntity createPecaServicoFichaEntity() {
+	private static PecaServicoFichaEntity createPecaServicoFichaEntity() {
 		PecaServicoFichaEntity pecaEnt = new PecaServicoFichaEntity();
 		pecaEnt.setId(new PecaServicoFichaIdEntity());
 		pecaEnt.getId().setFichaAtendId(19);
@@ -225,7 +225,7 @@ public class FichaAtendimentoTest {
 		return pecaEnt;
 	}
 	
-	private AtendimentoFichaEntity createAtendimentoFichaEntity() {
+	private static AtendimentoFichaEntity createAtendimentoFichaEntity() {
 		AtendimentoFichaEntity atendEnt = new AtendimentoFichaEntity();
 		atendEnt.setDate(new Date());
 		atendEnt.setDescricao("Test");
@@ -245,11 +245,14 @@ public class FichaAtendimentoTest {
 		return list;
 	}
 	
-	private FichaAtendimentoEntity createFichaAtendimentoEntity() {
+	public static FichaAtendimentoEntity createFichaAtendimentoEntity() {
 		FichaAtendimentoEntity ent = new FichaAtendimentoEntity();
 		ent.setId(199);
 		ent.setTipoServico("Instalacao");
 		ent.setCliente(DadosMockEntity.createClienteEntity());
+		ent.setFichaAtendLancs(Sets.newSet(createFichaAtendLancEntity()));
+		ent.setAtendimentoFichas(Sets.newSet(createAtendimentoFichaEntity()));
+		ent.setPecaServicoFichas(Sets.newSet(createPecaServicoFichaEntity()));
 		return ent;
 	}
 	
@@ -268,7 +271,7 @@ public class FichaAtendimentoTest {
 	
 	
 	
-	private FichaAtendLancEntity createFichaAtendLancEntity() {
+	private static FichaAtendLancEntity createFichaAtendLancEntity() {
 		FichaAtendLancEntity lanc = new FichaAtendLancEntity();
 		UsuarioEntity userEnt = new UsuarioEntity();
 		userEnt.setId(1);
