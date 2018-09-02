@@ -181,7 +181,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="formOrdem.numeroOrdem && formOrdem.dataSaida === '' || formOrdem.dataSaida === undefined">
+  <div *ngIf="formOrdem.numeroOrdem && (formOrdem.dataSaida === '' || formOrdem.dataSaida === undefined)">
     <div class="form-row">
       <div class="form-group col-md-5" [ngClass]="{'was-validated': !tecnico.valid  && (tecnico.dirty || tecnico.touched)}">
         <label for="cnpjcpf">Técnico</label>

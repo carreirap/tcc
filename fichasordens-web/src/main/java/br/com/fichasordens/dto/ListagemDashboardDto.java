@@ -7,6 +7,7 @@ public class ListagemDashboardDto {
 	private String nomeCliente;
 	private String tipoServico;
 	private Date dataAbertura;
+	private String alerta;
 	private String responsavel;
 	private int dias;
 	private String situacao;
@@ -52,5 +53,11 @@ public class ListagemDashboardDto {
 	}
 	public void setSituacao(String situacao) {
 		this.situacao = situacao;
+	}
+	public String getAlerta() {
+		return alerta;
+	}
+	public void setAlerta(String alerta) {
+		this.alerta = alerta;
 	}
 }

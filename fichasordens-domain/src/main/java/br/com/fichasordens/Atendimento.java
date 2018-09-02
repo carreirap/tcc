@@ -9,7 +9,7 @@ public class Atendimento {
 	private Date data;
 	private String descricao;
 	private BigDecimal valor;
-	private float duracao;
+	private BigDecimal duracao;
 	private FichaAtendimento fichaAtendimento;
 	
 	public int getSequencia() {
@@ -36,10 +36,11 @@ public class Atendimento {
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
 	}
-	public float getDuracao() {
+	
+	public BigDecimal getDuracao() {
 		return duracao;
 	}
-	public void setDuracao(float duracao) {
+	public void setDuracao(BigDecimal duracao) {
 		this.duracao = duracao;
 	}
 	public FichaAtendimento getFichaAtendimento() {

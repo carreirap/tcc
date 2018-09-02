@@ -2,12 +2,13 @@ package br.com.fichasordens;
 
 import java.util.Date;
 
-public class OrdemServicoLanc {
+public class Lancamento {
 	private int sequencia;
 	private Usuario usuario;
 	private Date data;
 	private String situacao;
 	private String observacao;
+	private FichaAtendimento fichaAtendimento;
 	private OrdemServico ordemServico;
 	
 	
@@ -40,6 +41,12 @@ public class OrdemServicoLanc {
 	}
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+	public FichaAtendimento getFichaAtendimento() {
+		return fichaAtendimento;
+	}
+	public void setFichaAtendimento(FichaAtendimento fichaAtendimento) {
+		this.fichaAtendimento = fichaAtendimento;
 	}
 	public OrdemServico getOrdemServico() {
 		return ordemServico;

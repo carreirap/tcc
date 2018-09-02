@@ -27,6 +27,10 @@
 			src/main/java/br/com/fichasordens/exception/*,
 			src/main/java/br/com/fichasordens/util/ValidadorCPF.java,
 			src/main/java/br/com/fichasordens/util/ValidadorCNPJ.java,
+			src/main/java/br/com/fichasordens/util/ResultadoPesquisaDto.java,
+			src/main/java/br/com/fichasordens/util/CustomPage.java,
+			src/main/java/br/com/fichasordens/util/StatusServicoEnum.java,
+			src/main/java/br/com/fichasordens/util/DashBoardDto.java
 		</sonar.exclusions>
 	</properties>
 

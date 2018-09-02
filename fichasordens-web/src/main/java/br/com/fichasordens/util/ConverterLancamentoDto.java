@@ -1,9 +1,8 @@
 package br.com.fichasordens.util;
 
 import br.com.fichasordens.FichaAtendimento;
-import br.com.fichasordens.FichaAtendimentoLanc;
+import br.com.fichasordens.Lancamento;
 import br.com.fichasordens.OrdemServico;
-import br.com.fichasordens.OrdemServicoLanc;
 import br.com.fichasordens.Usuario;
 import br.com.fichasordens.dto.LancamentoDto;
 
@@ -11,7 +10,7 @@ public class ConverterLancamentoDto {
 	
 	private ConverterLancamentoDto() {}
 	
-	public static LancamentoDto converterLancamentoParaDto(FichaAtendimentoLanc lanc) {
+	public static LancamentoDto converterLancamentoParaDto(Lancamento lanc) {
 		LancamentoDto lancDto = new LancamentoDto();
 		lancDto.setData(lanc.getData());
 		lancDto.setId(lanc.getFichaAtendimento().getId());
@@ -23,7 +22,7 @@ public class ConverterLancamentoDto {
 		return lancDto;
 	}
 	
-	public static LancamentoDto converterOrdemLancamentoParaDto(OrdemServicoLanc lanc) {
+	public static LancamentoDto converterOrdemLancamentoParaDto(Lancamento lanc) {
 		LancamentoDto lancDto = new LancamentoDto();
 		lancDto.setData(lanc.getData());
 		lancDto.setId(lanc.getOrdemServico().getId());
@@ -35,8 +34,8 @@ public class ConverterLancamentoDto {
 		return lancDto;
 	}
 	
-	public static FichaAtendimentoLanc converterDtoParaFichaAtendimentoLanc(final LancamentoDto dto) {
-		final FichaAtendimentoLanc lanc = new FichaAtendimentoLanc();
+	public static Lancamento converterDtoParaFichaAtendimentoLanc(final LancamentoDto dto) {
+		final Lancamento lanc = new Lancamento();
 		lanc.setData(dto.getData());
 		lanc.setObservacao(dto.getObservacao());
 		lanc.setSituacao(dto.getSituacao());
@@ -48,8 +47,8 @@ public class ConverterLancamentoDto {
 		return lanc;
 	}
 	
-	public static OrdemServicoLanc converterDtoParaOrdemServicoLanc(final LancamentoDto dto) {
-		final OrdemServicoLanc lanc = new OrdemServicoLanc();
+	public static Lancamento converterDtoParaOrdemServicoLanc(final LancamentoDto dto) {
+		final Lancamento lanc = new Lancamento();
 		lanc.setData(dto.getData());
 		lanc.setObservacao(dto.getObservacao());
 		lanc.setSituacao(dto.getSituacao());

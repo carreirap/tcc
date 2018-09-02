@@ -11,6 +11,7 @@ import { FichaAtendimentoComponentComponent } from './ficha-atendimento-componen
 import { ParametroComponent } from './parametro/parametro.component';
 import { OrdemServicoComponent } from './ordem-servico/ordem-servico.component';
 import { ListagemComponent } from './home/listagem.component';
+import { HistoricoComponent } from './historico/historico.component';
 
 const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -22,6 +23,7 @@ const appRoutes: Routes = [
     { path: 'dadosempresa', component: DadosempresaComponentComponent, canActivate: [AuthGuard]},
     { path: 'fichas/:id', component: FichaAtendimentoComponentComponent, canActivate: [AuthGuard]},
     { path: 'fichas', component: FichaAtendimentoComponentComponent, canActivate: [AuthGuard]},
+    { path: 'historico', component: HistoricoComponent, canActivate: [AuthGuard]},
     { path: 'ordem', component: OrdemServicoComponent, canActivate: [AuthGuard]},
     { path: 'ordem/:id', component: OrdemServicoComponent, canActivate: [AuthGuard]},
     { path: 'listaDashboard/:situacao/:tipo', component: ListagemComponent, canActivate: [AuthGuard]},

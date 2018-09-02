@@ -11,7 +11,9 @@
                 <p-header>
                     Abertas 
                 </p-header>
-                <a class="nav-link" [routerLink]="['/listaDashboard', 'Aberto','Ficha']">{{dashboadFicha.qtqAberta}} Abertas</a>
+                <a class="nav-link" [routerLink]="['/listaDashboard', 'Aberto','Ficha']">{{dashboadFicha.qtqAberta}} Abertas
+                    <span *ngIf="alertaFichaAberto" class="badge badge-pill badge-danger">!</span>
+                </a>
             </p-panel>
         </div>
         <div class="col-md-4 text-center">
@@ -19,8 +21,12 @@
                 <p-header>
                     Em andamento
                 </p-header>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Trabalhando','Ficha']">{{dashboadFicha.qtdTrabalhando}} Trabalhando</a>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Aguardando','Ficha']">{{dashboadFicha.qtdAguardando}} Aguardando</a>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Trabalhando','Ficha']">{{dashboadFicha.qtdTrabalhando}} Trabalhando
+                        <span *ngIf="alertaFichaTrabalhando" class="badge badge-pill badge-danger">!</span>
+                    </a>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Aguardando','Ficha']">{{dashboadFicha.qtdAguardando}} Aguardando
+                        <span *ngIf="alertaFichaAguardando" class="badge badge-pill badge-danger">!</span>
+                    </a>
                 <p-footer>
                     Total: {{totalFichaTrabalhando | currency:'BRL':true}}
                 </p-footer>
@@ -51,7 +57,9 @@
                 <p-header>
                     Ordem Abertas
                 </p-header>
-                <a class="nav-link" [routerLink]="['/listaDashboard', 'Aberto','Ordem']">{{dashboardOrdem.qtqAberta}} Abertas</a>
+                <a class="nav-link" [routerLink]="['/listaDashboard', 'Aberto','Ordem']">{{dashboardOrdem.qtqAberta}} Abertas
+                    <span *ngIf="alertaOrdemAberto" class="badge badge-pill badge-danger">!</span>
+                </a>
                 
             </p-panel>
         </div>
@@ -60,8 +68,12 @@
                 <p-header>
                     Em Andamento
                 </p-header>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Trabalhando','Ordem']">{{dashboardOrdem.qtdTrabalhando}} Trabalhando</a>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Aguardando','Ordem']">{{dashboardOrdem.qtdAguardando}} Aguardando</a>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Trabalhando','Ordem']">{{dashboardOrdem.qtdTrabalhando}} Trabalhando
+                        <span *ngIf="alertaOrdemTrabalhando" class="badge badge-pill badge-danger">!</span>
+                    </a>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Aguardando','Ordem']">{{dashboardOrdem.qtdAguardando}} Aguardando
+                        <span *ngIf="alertaOrdemAguardando" class="badge badge-pill badge-danger">!</span>
+                    </a>
                 <p-footer>
                     Total: {{totalOrdemTrabalhando | currency:'BRL':true}}
                 </p-footer>
@@ -92,8 +104,11 @@
                 <p-header>
                     Ordem/Fichas Finalizadas
                 </p-header>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Finalizado','Ordem']">{{dashboardOrdem.qtdFinalizado}} Finalizados (Ordem)</a>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Finalizado','Ficha']">{{dashboadFicha.qtdFinalizado}} Finalizados (Fichas)</a>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Finalizado','Ordem']">{{dashboardOrdem.qtdFinalizado}} Finalizados (Ordem)
+                        <span *ngIf="alertaOrdemFinalizado" class="badge badge-pill badge-danger">!</span></a>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Finalizado','Ficha']">{{dashboadFicha.qtdFinalizado}} Finalizados (Fichas)
+                        <span *ngIf="alertaFichaFinalizado" class="badge badge-pill badge-danger">!</span>
+                    </a>
                 <p-footer>
                     Total: {{(totalOrdemFinalizado + totalFichaFinalizado)  | currency:'BRL':true}}
                 </p-footer>
@@ -104,8 +119,12 @@
                 <p-header>
                     Ordem/Fichas Faturadas
                 </p-header>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Faturado','Ordem']">{{dashboardOrdem.qtdFaturado}} Faturado (Ordem)</a>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Faturado','Ficha']">{{dashboadFicha.qtdFaturado}} Faturado (Fichas)</a>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Faturado','Ordem']">{{dashboardOrdem.qtdFaturado}} Faturado (Ordem)
+                        <span *ngIf="alertaOrdemFaturado" class="badge badge-pill badge-danger">!</span>
+                    </a>
+                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Faturado','Ficha']">{{dashboadFicha.qtdFaturado}} Faturado (Fichas)
+                        <span *ngIf="alertaFichaFaturado" class="badge badge-pill badge-danger">!</span>
+                    </a>
                 <p-footer>
                     Total: {{totalOrdemFaturado + totalFichaFaturado | currency:'BRL':true}}
                 </p-footer>
