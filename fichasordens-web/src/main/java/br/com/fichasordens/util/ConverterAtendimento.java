@@ -6,6 +6,9 @@ import br.com.fichasordens.dto.AtendimentoDto;
 
 public class ConverterAtendimento {
 	
+	private ConverterAtendimento() {
+	}
+	
 	public static Atendimento converterAtendimentoDto(final AtendimentoDto dto) {
 		final Atendimento atend = new Atendimento();
 		atend.setData(dto.getDataAtendimento());

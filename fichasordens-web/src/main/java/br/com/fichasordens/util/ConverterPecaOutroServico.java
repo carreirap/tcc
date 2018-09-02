@@ -9,6 +9,8 @@ import br.com.fichasordens.dto.PecaOutroServicoDto;
 
 public class ConverterPecaOutroServico {
 	
+	private ConverterPecaOutroServico() {}
+	
 	public static PecaOutroServicoDto converterPecaOutroServicoParaDto(final PecaOutroServico p) {
 		final PecaOutroServicoDto pecaDto = new PecaOutroServicoDto();
 		pecaDto.setDescricao(p.getDescricao());

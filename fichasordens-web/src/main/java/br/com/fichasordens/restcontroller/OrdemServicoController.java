@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fichasordens.Cliente;
-import br.com.fichasordens.FichaAtendimentoLanc;
 import br.com.fichasordens.OrdemServico;
 import br.com.fichasordens.OrdemServicoLanc;
 import br.com.fichasordens.PecaOutroServico;
-import br.com.fichasordens.dto.FichaAtendimentoDto;
 import br.com.fichasordens.dto.LancamentoDto;
 import br.com.fichasordens.dto.ListagemDashboardDto;
 import br.com.fichasordens.dto.MensagemRetornoDto;

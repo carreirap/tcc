@@ -9,6 +9,8 @@ import br.com.fichasordens.dto.LancamentoDto;
 
 public class ConverterLancamentoDto {
 	
+	private ConverterLancamentoDto() {}
+	
 	public static LancamentoDto converterLancamentoParaDto(FichaAtendimentoLanc lanc) {
 		LancamentoDto lancDto = new LancamentoDto();
 		lancDto.setData(lanc.getData());

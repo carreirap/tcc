@@ -5,6 +5,8 @@ import br.com.fichasordens.dto.ClienteDto;
 
 public class ConverterCliente {
 	
+	private ConverterCliente() {}
+	
 	public static ClienteDto converterClienteParaDto(final Cliente cliente) {
 		final ClienteDto clienteDto = new ClienteDto();
 		clienteDto.setId(cliente.getId());
