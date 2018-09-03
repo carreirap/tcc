@@ -53,17 +53,17 @@ public class DashboardServiceImpl implements DashboardService {
 			if (e == StatusServicoEnum.FECHADO || e == StatusServicoEnum.CANCELADO) {
 				Map<String,Date> dateMap = DataUtil.getDataInicioDataFim();
 				List<FichaAtendimentoEntity> lst = this.fichaAtendimento.buscarFichaAtendimentoPorSituacao(e, dateMap.get(DataUtil.DATA_INICIO), dateMap.get(DataUtil.DATA_FIM));
-				map.putAll(calcularTotaisFichaAtendimento(lst, e.getValue()));
+				map.putAll(contarFichas(lst, e.getValue()));
 			} else {
 				List<FichaAtendimentoEntity> lst = this.fichaAtendimento.buscarFichaAtendimentoPorSituacao(e);
-				map.putAll(calcularTotaisFichaAtendimento(lst, e.getValue()));
+				map.putAll(contarFichas(lst, e.getValue()));
 			}
 			
 		}
 		return map;
 	}
 	
-	private Map<String,DashBoardDto> calcularTotaisFichaAtendimento(List<FichaAtendimentoEntity> lst, final String situacao) {
+	private Map<String,DashBoardDto> contarFichas(List<FichaAtendimentoEntity> lst, final String situacao) {
 		final int diasAlerta = Integer.parseInt(qtdDiasAlerta);
 		Map<String,DashBoardDto> map = new HashMap<>();
 		int qtdAberto = 0;
@@ -77,15 +77,20 @@ public class DashboardServiceImpl implements DashboardService {
 				if (lanc.getAtualSituacao()) {
 					qtdAberto = qtdAberto + 1; 
 					totalAberto = totalAberto.add(calcularTotalPecaServicos(a));
-					if (DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()) > diasAlerta ) {
-						alertaAberto = true;
-					}
+					alertaAberto = setAlertaFicha(diasAlerta, alertaAberto, lanc);
 				}
 			}
 		}
 		map.put(situacao, new DashBoardDto(qtdAberto, totalAberto, (alertaAberto ? 'S' : 'N')));
 		
 		return map;
+	}
+
+	private boolean setAlertaFicha(final int diasAlerta, boolean alertaAberto, FichaAtendLancEntity lanc) {
+		if (DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()) > diasAlerta ) {
+			alertaAberto = true;
+		}
+		return alertaAberto;
 	}
 	
 	private BigDecimal calcularTotalPecaServicos(FichaAtendimentoEntity ficha) {
@@ -103,16 +108,16 @@ public class DashboardServiceImpl implements DashboardService {
 			if (e == StatusServicoEnum.FECHADO || e == StatusServicoEnum.CANCELADO) {
 				Map<String,Date> dateMap = DataUtil.getDataInicioDataFim();
 				List<OrdemServicoEntity> lst = this.ordemServico.buscarOrdensDeServicoPorSituacao(e, dateMap.get(DataUtil.DATA_INICIO), dateMap.get(DataUtil.DATA_FIM));
-				map.putAll(calcularTotaisOrdens(lst, e.getValue()));
+				map.putAll(contarOrdens(lst, e.getValue()));
 			} else {	
 				List<OrdemServicoEntity> lst = this.ordemServico.buscarOrdensDeServicoPorSituacao(e);
-				map.putAll(calcularTotaisOrdens(lst, e.getValue()));
+				map.putAll(contarOrdens(lst, e.getValue()));
 			}
 		}
 		return map;
 	}
 
-	private Map<String,DashBoardDto> calcularTotaisOrdens(final List<OrdemServicoEntity> lst, final String situacao) {
+	private Map<String,DashBoardDto> contarOrdens(final List<OrdemServicoEntity> lst, final String situacao) {
 		Map<String,DashBoardDto> map = new HashMap<>();
 		int qtdAberto = 0;
 		BigDecimal totalAberto = new BigDecimal(0);
@@ -124,15 +129,20 @@ public class DashboardServiceImpl implements DashboardService {
 				if (lanc.getAtualSituacao()) {
 					qtdAberto = qtdAberto + 1; 
 					totalAberto = totalAberto.add(calcularTotalPecaServicos(a));
-					if (DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()) > 1 ) {
-						alerta = true;
-					}
+					alerta = setAlertaOrdem(alerta, lanc);
 				}
 			}
 		}
 		
 		map.put(situacao, new DashBoardDto(qtdAberto, totalAberto, (alerta ? 'S' : 'N')));
 		return map;
+	}
+
+	private boolean setAlertaOrdem(boolean alerta, OrdemServicoLancEntity lanc) {
+		if (DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()) > 1 ) {
+			alerta = true;
+		}
+		return alerta;
 	}
 	
 	private BigDecimal calcularTotalPecaServicos(OrdemServicoEntity ordem) {

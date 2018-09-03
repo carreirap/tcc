@@ -40,61 +40,80 @@ public class HistoricoServiceImpl implements HistoricoService {
 	
 	@Transactional
 	@Override
-	public Page<ResultadoPesquisaDto> pesquisar(final String tipo, final long numero, final String cnpjcpf, final long idUsuario,
+	public Page<ResultadoPesquisaDto> pesquisar(final String tipo, final long numero, final String cnpjcpf,
 			final String situacao, final Pageable pageable) {
 		if (tipo.equals("Ficha")) {
-			if (numero != 0 ) {
-				return pesquisarNumeroFicha(numero, pageable);
-			}
-			
-			if ((cnpjcpf != null && !cnpjcpf.equals("")) && idUsuario == 0) {
-				return pesquisarCnpfCpfFicha(cnpjcpf, situacao, pageable);
-			}
-			
-			if (situacao.equals(TODAS)) {
-				return pesquisarTodasSituacaoFicha(pageable);
-			}
-			
-			if ( (cnpjcpf == null || cnpjcpf.equals("")) && idUsuario == 0) {
-				return pesquisarPorSituacaoFicha(situacao, pageable);
-			}
-			
+			return this.pesquisarFichaPelosParametros(numero, cnpjcpf, situacao, pageable);
 		} else {
-			if (numero != 0 ) {
-				return pesquisarNumeroOrdem(numero, pageable);
-			}
-			
-			if ((cnpjcpf != null && !cnpjcpf.equals("")) && idUsuario == 0) {
-				Page<OrdemServicoEntity> paged = null;
-				if (situacao.equals(TODAS))
-					paged = this.ordemRepository.findAllOrdensByCnpfcpf(cnpjcpf, pageable);
-				else 
-					paged = this.ordemRepository.findAllOrdensByCnpfcpfAndSituacao(cnpjcpf, situacao, pageable);
-				final List<ResultadoPesquisaDto> lst = this.converterListaDeOrdensParaDto(paged.getContent());
-				final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
-				pages.setTotalPages(paged.getTotalPages());
-				
-				return pages;
-			}
-			
-			if (situacao.equals(TODAS)) {
-				final Page<OrdemServicoEntity> paged = this.ordemRepository.findAllOrdens(pageable); 
-				final List<ResultadoPesquisaDto> lst = this.converterListaDeOrdensParaDto(paged.getContent());
-				final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
-				pages.setTotalPages(paged.getTotalPages());
-				
-				return pages;
-			}
-			
-			
-			if ((cnpjcpf == null || cnpjcpf.equals("")) && idUsuario == 0) {
-				return pesquisarPorSituacaoOrdem(situacao, pageable);
-			}
-			
+			return this.pesquisarOrdemPelosParametros(numero, cnpjcpf, situacao, pageable);
+		}
+	}
+
+	private Page<ResultadoPesquisaDto> pesquisarTodasSituacaoOrdem(final Pageable pageable) {
+		final Page<OrdemServicoEntity> paged = this.ordemRepository.findAllOrdens(pageable); 
+		final List<ResultadoPesquisaDto> lst = this.converterListaDeOrdensParaDto(paged.getContent());
+		final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
+		pages.setTotalPages(paged.getTotalPages());
+		
+		return pages;
+	}
+
+	private Page<ResultadoPesquisaDto> pesquisarCnpfCpfOrdem(final String cnpjcpf, final String situacao,
+			final Pageable pageable) {
+		Page<OrdemServicoEntity> paged = null;
+		if (situacao.equals(TODAS))
+			paged = this.ordemRepository.findAllOrdensByCnpfcpf(cnpjcpf, pageable);
+		else 
+			paged = this.ordemRepository.findAllOrdensByCnpfcpfAndSituacao(cnpjcpf, situacao, pageable);
+		final List<ResultadoPesquisaDto> lst = this.converterListaDeOrdensParaDto(paged.getContent());
+		final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
+		pages.setTotalPages(paged.getTotalPages());
+		
+		return pages;
+	}
+	
+	public Page<ResultadoPesquisaDto> pesquisarFichaPelosParametros(final long numero, final String cnpjcpf,
+			final String situacao, final Pageable pageable) {
+		Page<ResultadoPesquisaDto> paged = null;
+		if (numero != 0 ) {
+			paged = pesquisarNumeroFicha(numero, pageable);
 		}
 		
-		return null;
+		if ((cnpjcpf != null && !cnpjcpf.equals(""))) {
+			paged = pesquisarCnpfCpfFicha(cnpjcpf, situacao, pageable);
+		}
+		
+		if (situacao.equals(TODAS)) {
+			paged = pesquisarTodasSituacaoFicha(pageable);
+		}
+		
+		if ( (cnpjcpf == null || cnpjcpf.equals(""))) {
+			paged = pesquisarPorSituacaoFicha(situacao, pageable);
+		}
+		return paged;
 	}
+	
+	public Page<ResultadoPesquisaDto> pesquisarOrdemPelosParametros(final long numero, final String cnpjcpf,
+			final String situacao, final Pageable pageable) {
+		Page<ResultadoPesquisaDto> paged = null;
+		if (numero != 0 ) {
+			paged = pesquisarNumeroOrdem(numero, pageable);
+		}
+		
+		if ((cnpjcpf != null && !cnpjcpf.equals(""))) {
+			paged = pesquisarCnpfCpfOrdem(cnpjcpf, situacao, pageable);
+		}
+		
+		if (situacao.equals(TODAS)) {
+			paged = pesquisarTodasSituacaoOrdem(pageable);
+		}
+		
+		if ((cnpjcpf == null || cnpjcpf.equals(""))) {
+			paged = pesquisarPorSituacaoOrdem(situacao, pageable);
+		}
+		return paged;
+	}
+
 
 	private Page<ResultadoPesquisaDto> pesquisarNumeroOrdem(final long numero, final Pageable pageable) {
 		final OrdemServicoEntity ent = this.ordemRepository.findOne(numero); 

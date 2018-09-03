@@ -25,7 +25,7 @@ public class HistoricoController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity pesquisar(@RequestBody final HistoricoPesquisaDto dto, final Pageable pageable) {
-		Page<ResultadoPesquisaDto> pages = this.historicoService.pesquisar(dto.getTipo(), dto.getNumero(), dto.getCnpjcpf(), dto.getIdResponsavel(), dto.getSituacao(), pageable);
+		Page<ResultadoPesquisaDto> pages = this.historicoService.pesquisar(dto.getTipo(), dto.getNumero(), dto.getCnpjcpf(), dto.getSituacao(), pageable);
 		return new ResponseEntity<>(pages, HttpStatus.OK);
 	}
 

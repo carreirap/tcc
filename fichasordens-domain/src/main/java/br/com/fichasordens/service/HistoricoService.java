@@ -7,7 +7,7 @@ import br.com.fichasordens.util.ResultadoPesquisaDto;
 
 public interface HistoricoService {
 	
-	Page<ResultadoPesquisaDto> pesquisar(final String tipo, final long numero, final String cnpjcpf, final long idUsuario, final String situacao, final Pageable page);
+	Page<ResultadoPesquisaDto> pesquisar(final String tipo, final long numero, final String cnpjcpf, final String situacao, final Pageable page);
 	
 
 }
