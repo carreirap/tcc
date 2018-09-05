@@ -46,7 +46,7 @@
     </div>
     <div class="form-group col-md-3">
       <label for="estado">Situação Ordem</label>
-      <input class="form-control" maxlength="50" type="text" [readonly]="true" id="situacao" name="situacao" [(ngModel)]="formOrdem.lancamento.situacao">
+      <input class="form-control" maxlength="50" type="text" [readonly]="true" id="situacao" name="situacao" [(ngModel)]="formOrdem.atualSituacao">
       <!--<select class="form-control custom-select" id="situacao" name="situacao" [(ngModel)]="formOrdem.lancamento.situacao">
         <option *ngFor="let title of situacao" [value]="title.value">
           {{title.label}}
@@ -176,12 +176,12 @@
           </tr>
         </ng-template>
       </p-table>
-      <div class="form-group col-md-11" style="text-align: right" *ngIf="formOrdem.lancamento.situacao !== 'Aberto'">
+      <div class="form-group col-md-11" style="text-align: right" *ngIf="formOrdem.atualSituacao !== 'Aberto'">
            <label><strong>Total=> {{totalPecaOutros | currency:'BRL':true}} </strong> </label>
       </div>
     </div>
   </div>
-  <div *ngIf="formOrdem.numeroOrdem && (formOrdem.dataSaida === '' || formOrdem.dataSaida === undefined)">
+  <div *ngIf="formOrdem.numeroOrdem && (formOrdem.dataSaida === '' || formOrdem.dataSaida === undefined && formOrdem.atualSituacao !== 'Cancelado')">
     <div class="form-row">
       <div class="form-group col-md-5" [ngClass]="{'was-validated': !tecnico.valid  && (tecnico.dirty || tecnico.touched)}">
         <label for="cnpjcpf">Técnico</label>

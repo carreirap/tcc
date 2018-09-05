@@ -72,6 +72,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     } else {
       this.formFicha.dataAbertura = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
       this.formFicha.lancamento.situacao = 'Aberto';
+      this.formFicha.atualSituacao = this.formFicha.lancamento.situacao;
       this.formFicha.tipoServico = 'Assitencia';
       this.formFicha.lancamento.data = this.formFicha.dataAbertura;
       this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formFicha.lancamento.situacao);
@@ -92,6 +93,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.setNumeroFicha(response);
       this.formFicha.lancamentoLst.push(this.formFicha.lancamento);
       this.toasterService.pop('success', 'Ficha de Atendimento', 'Ficha de Atendimento cadastrado com sucesso!');
+      this.formFicha.atualSituacao = this.formFicha.lancamento.situacao;
       this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formFicha.lancamento.situacao);
       if (this.formFicha.lancamento.situacao === 'Fechado') {
         this.formFicha.dataFechamento = this.formFicha.lancamento.data;
@@ -161,6 +163,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       data.lancamentoLst[i].data = this.datePipe.transform(data.lancamentoLst[i].data, 'dd/MM/yyyy');
       if (i + 1 === data.lancamentoLst.length) {
         this.formFicha.lancamento.situacao = data.lancamentoLst[i].situacao;
+        this.formFicha.atualSituacao = this.formFicha.lancamento.situacao;
         this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formFicha.lancamento.situacao);
       }
       this.formFicha.lancamentoLst.push(data.lancamentoLst[i]);
@@ -296,10 +299,11 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   }
 
   mostrarBotoes() {
-    if (this.formFicha.lancamento.situacao !== 'Aberto' && 
-    this.formFicha.lancamento.situacao !== 'Faturado' && 
-    this.formFicha.lancamento.situacao !== 'Fechado' && 
-    this.formFicha.lancamento.situacao !== 'Finalizado') {
+    if (this.formFicha.atualSituacao !== 'Aberto' && 
+    this.formFicha.atualSituacao !== 'Faturado' && 
+    this.formFicha.atualSituacao !== 'Fechado' && 
+    this.formFicha.atualSituacao !== 'Finalizado' && 
+    this.formFicha.atualSituacao !== 'Cancelado') {
       return true;
     } else {
       return false;
