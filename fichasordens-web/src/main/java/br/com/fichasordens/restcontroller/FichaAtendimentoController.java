@@ -57,26 +57,16 @@ public class FichaAtendimentoController {
 	
 	@RequestMapping(method = RequestMethod.POST,path="/pecaServico")
 	public ResponseEntity gravarPecaServicoFicha(@RequestBody final PecaOutroServicoDto dto) {
-		//try {
 			final PecaOutroServico peca = ConverterPecaOutroServico.converterDtoPecaServico(dto, TipoServicoEnum.FICHA_ATENDIMENTO);
 			this.fichaAtendimento.gravarPecaServicoFicha(peca);
-			//this.ordemServicoService.gravarPecaServicoOrdem(peca);
 			return new ResponseEntity( HttpStatus.OK);
-//		} catch (ExcecaoRetorno e) {
-//			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
-//		}
 	}
 	
 	@RequestMapping(method = RequestMethod.POST,path="/atendimento")
 	public ResponseEntity gravarAtendimento(@RequestBody final AtendimentoDto dto) {
-		//try {
 			final Atendimento atend = ConverterAtendimento.converterAtendimentoDto(dto);
 			this.fichaAtendimento.gravarAtendimento(atend);
-			//this.ordemServicoService.gravarPecaServicoOrdem(peca);
 			return new ResponseEntity( HttpStatus.OK);
-//		} catch (ExcecaoRetorno e) {
-//			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
-//		}
 	}
 		
 	@RequestMapping(method = RequestMethod.GET)
@@ -127,18 +117,6 @@ public class FichaAtendimentoController {
 		this.fichaAtendimento.excluirPecaOutroServico(idFicha, sequencia);
 		return new ResponseEntity(HttpStatus.OK);
 	}
-	
-	
-//	@RequestMapping(method = RequestMethod.POST,path="/lancamento")
-//	public ResponseEntity salvarLancamentoTecnico(@RequestBody final OrdemServicoLancDto dto) {
-//		try {
-//			OrdemServicoLanc peca = this.converterDtoOrdemServicoLanc(dto);
-//			//this.ordemServicoService.gravarOrdemServicoLanc(peca);
-//			return new ResponseEntity( HttpStatus.OK);
-//		} catch (ExcecaoRetorno e) {
-//			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
-//		}
-//	}
 	
 	private FichaAtendimentoDto converterParaDto(final FichaAtendimento ficha) {
 		final FichaAtendimentoDto dto = new FichaAtendimentoDto();

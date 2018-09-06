@@ -1,6 +1,7 @@
 package br.com.fichasordens.restcontroller;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -135,6 +136,21 @@ public class UsuarioControllerTest {
 		
 	}
 	
+	@Test
+	public void test_getUpdatedUser_success() throws ExcecaoRetorno {
+		
+		UsuarioDto dto = carregarUsuarioDto();
+		dto.setSituacao("true");
+		when(this.mockUsuario.listarUsuario(org.mockito.Mockito.any(String.class))).thenReturn(Arrays.asList(carregarUsuario()));
+		
+		ResponseEntity<?> response = this.usuarioController.getUpdatedUser(dto);
+		
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		
+		assertNotNull(response.getBody());
+		
+	}
+	
 	private Usuario carregarUsuario() {
 		Usuario user = new Usuario();
 		user.setNome("test");
@@ -152,6 +168,7 @@ public class UsuarioControllerTest {
 		dto.setNovaSenha("123456");
 		dto.setConfirmaSenha("1234567");
 		dto.setSituacao("1");
+		dto.setPapel("Admin");
 		return dto;
 	}
 	

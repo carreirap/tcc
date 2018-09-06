@@ -27,7 +27,6 @@ public class ConverterPecaOutroServico {
 	
 	public static PecaOutroServico converterDtoPecaServico(final PecaOutroServicoDto dto, final TipoServicoEnum type) {
 		final PecaOutroServico pecaServico = new PecaOutroServico();
-		//		pecaServico.setId(dto.getIdOrdem()...);
 		pecaServico.setDescricao(dto.getDescricao());
 		pecaServico.setQuantidade(dto.getQtde());
 		pecaServico.setValor(dto.getValor());

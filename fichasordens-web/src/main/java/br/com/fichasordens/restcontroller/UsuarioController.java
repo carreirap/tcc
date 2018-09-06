@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,7 +35,9 @@ public class UsuarioController {
 	
 	private static final String TRUE = "true";
 
-	 @RequestMapping(method = RequestMethod.POST)
+	 
+	 @SuppressWarnings("rawtypes")
+	@PostMapping
 	 public ResponseEntity adicionarUsuario(@RequestBody UsuarioDto dto) {
 		 Usuario newUsuario = this.convertToUsuario(dto);
 		 try {
@@ -45,8 +50,8 @@ public class UsuarioController {
 		}
 	 }
 	 
-	 @RequestMapping(method = RequestMethod.PUT)
-	 public ResponseEntity alterarSenha(@RequestBody UsuarioDto dto) {
+	 @PutMapping
+	 public ResponseEntity<?> alterarSenha(@RequestBody UsuarioDto dto) {
 		 Usuario newUsuario = this.convertToUsuario(dto);
 		 try {
 			newUsuario = usuario.alterarUsuario(newUsuario);
@@ -56,7 +61,7 @@ public class UsuarioController {
 		}
 	 }
 	 
-	 @RequestMapping(method = RequestMethod.GET)
+	 @GetMapping
 	 public ResponseEntity<List<UsuarioDto>> getUsuario(@RequestParam(required=false) final String user) {
 		 final List<Usuario> lst = usuario.listarUsuario(user);
 		 
@@ -64,7 +69,7 @@ public class UsuarioController {
 	 }
 	 
 	 @RequestMapping(value = "/getUpdatedUser", method = RequestMethod.POST)
-	 public ResponseEntity<UsuarioDto> login(@RequestBody UsuarioDto user) {
+	 public ResponseEntity<UsuarioDto> getUpdatedUser(@RequestBody UsuarioDto user) {
 		 final List<Usuario> lst = this.usuario.listarUsuario(user.getUsuario());
 		 return new ResponseEntity<>(convertToDto(lst).get(0),HttpStatus.OK);
 	 }

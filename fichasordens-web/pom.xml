@@ -12,7 +12,8 @@
 		<sonar.language>java</sonar.language>
 		<sonar.exclusions>
 			src/main/java/br/com/fichasordens/dto/*,
-			src/main/java/br/com/fichasordens/resourceserver/*
+			src/main/java/br/com/fichasordens/resourceserver/*,
+			src/main/java/br/com/fichasordens/util/CustomPage.java
 		</sonar.exclusions>
 	</properties>
 	<parent>

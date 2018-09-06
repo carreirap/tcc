@@ -9,18 +9,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fichasordens.Cliente;
-import br.com.fichasordens.Endereco;
 import br.com.fichasordens.dto.ClienteDto;
 import br.com.fichasordens.dto.MensagemRetornoDto;
 import br.com.fichasordens.entities.ClienteEntity;
 import br.com.fichasordens.exception.ExcecaoRetorno;
+import br.com.fichasordens.util.ConverterCliente;
 
 @RestController
 @RequestMapping("/cliente")
@@ -30,9 +31,10 @@ public class ClienteController {
 	@Autowired 
 	private Cliente cliente;
 
-	@RequestMapping(method = RequestMethod.POST)
+	
+	@PostMapping
 	public ResponseEntity salvarCliente(@RequestBody final ClienteDto clienteDto) {
-		final Cliente cliente = this.converterClienteDtoParaCliente(clienteDto); 
+		final Cliente cliente = ConverterCliente.converterClienteDtoParaCliente(clienteDto); 
 		try {
 			this.cliente.salvarCliente(cliente);
 		} catch (ExcecaoRetorno e) {
@@ -41,7 +43,8 @@ public class ClienteController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET)
+	
+	@GetMapping
 	public Page<ClienteDto> pesquisarCliente(@RequestParam(required=false) final String cnpjcpf, @RequestParam(required=false) final String nome, 
 			final Pageable page) {
 		Cliente cli = new Cliente();
@@ -71,34 +74,8 @@ public class ClienteController {
 		
 	}
 	
-	private Cliente converterClienteDtoParaCliente(final ClienteDto dto) { 
-		final Cliente cli = new Cliente();
-		cli.setFone(dto.getFone());
-		cli.setCnpjCpf(dto.getCnpj());
-		cli.setEmail(dto.getEmail());
-		cli.setNome(dto.getNome());
-		cli.setCelular(dto.getCelular());
-		if (dto.getId() != 0) {
-			cli.setId(dto.getId());
-		}
-		
-		cli.setEndereco(this.converteDtoParaEndereco(dto));
-		return cli;
-	}
 	
-	private Endereco converteDtoParaEndereco(ClienteDto dto) {
-		Endereco end = new Endereco();
-		end.setBairro(dto.getBairro());
-		end.setCep(dto.getCep());
-		end.setCidade(dto.getCidade());
-		end.setComplemento(dto.getComplemento());
-		end.setEstado(dto.getEstado());
-		end.setLogradouro(dto.getLogradouro());
-		end.setNumero(dto.getNumero());
-		if (dto.getIdEndereco() != 0) {
-			end.setId(dto.getIdEndereco());
-		}
-		return end;
-	}
+	
+	
 	
 }
