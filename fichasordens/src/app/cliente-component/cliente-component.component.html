@@ -1,11 +1,9 @@
 <toaster-container></toaster-container>
+<header class="col-md-12 text-center">
+  <h2>Cliente</h2>
+</header>
 <form (submit)="onSubmit()" class="container" #myform="ngForm" novalidate>
-    <div class="row align-items-center justify-content-center">
-        <div ><h2 style="align-content: center">
-            Cliente
-          </h2></div>
-    </div>
-  
+      
   <div class="form-row">
     <div class="form-group col-md-11" [ngClass]="{'was-validated': !name.valid  && (name.dirty || name.touched)}">
       <label for="nome">Nome   &nbsp;
