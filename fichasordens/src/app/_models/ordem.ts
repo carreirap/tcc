@@ -14,7 +14,7 @@ export class Ordem {
     fabricante: string;
     modelo: string;
     serie: string;
-    // situacao: string;
+    atualSituacao: string;
     dataAbertura: string;
     dataSaida: string;
     responsavel: string;

@@ -79,6 +79,7 @@ export class OrdemServicoComponent implements OnInit {
       this.formOrdem.lancamento = new Lancamento();
       this.formOrdem.tipoServico = 'Instalacao';
       this.formOrdem.lancamento.situacao = 'Aberto';
+      this.formOrdem.atualSituacao = this.formOrdem.lancamento.situacao;
       //this.situacao = this.situacaoTecnica.getSituacaoAbertura();
       this.formOrdem.dataAbertura = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
       //this.formOrdem.lancamento.data = this.formOrdem.dataAbertura;
@@ -110,6 +111,7 @@ export class OrdemServicoComponent implements OnInit {
     this.service.post('/ordem', this.formOrdem).subscribe(response => {
       console.log(response);
       this.setNumeroOrdem(response);
+      this.formOrdem.atualSituacao = this.formOrdem.lancamento.situacao;
       this.formOrdem.lancamentoLst.push(this.formOrdem.lancamento);
       this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
       this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formOrdem.lancamento.situacao);
@@ -239,6 +241,7 @@ export class OrdemServicoComponent implements OnInit {
     this.formOrdem.modelo = data.modelo;
     this.formOrdem.fabricante = data.fabricante;
     this.formOrdem.serie = data.serie;
+     
 
     
     this.calcularTotalTabela(data.pecaOutroServicoDto);
@@ -251,6 +254,7 @@ export class OrdemServicoComponent implements OnInit {
       data.lancamentoLst[i].data = this.datePipe.transform(data.lancamentoLst[i].data, 'dd/MM/yyyy');
       if (i + 1 === data.lancamentoLst.length) {
         this.formOrdem.lancamento.situacao = data.lancamentoLst[i].situacao;
+        this.formOrdem.atualSituacao = this.formOrdem.lancamento.situacao;
         this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formOrdem.lancamento.situacao);
       }
       // if (i + 1 <  data.lancamentoLst.length)
@@ -263,10 +267,11 @@ export class OrdemServicoComponent implements OnInit {
   }
 
   mostrarBotoes() {
-    if (this.formOrdem.lancamento.situacao !== 'Aberto' && 
-    this.formOrdem.lancamento.situacao !== 'Faturado' && 
-    this.formOrdem.lancamento.situacao !== 'Fechado' && 
-    this.formOrdem.lancamento.situacao !== 'Finalizado') {
+    if (this.formOrdem.atualSituacao !== 'Aberto' && 
+    this.formOrdem.atualSituacao !== 'Faturado' && 
+    this.formOrdem.atualSituacao !== 'Fechado' && 
+    this.formOrdem.atualSituacao !== 'Finalizado'&& 
+    this.formOrdem.atualSituacao !== 'Cancelado') {
       return true;
     } else {
       return false;

@@ -11,6 +11,7 @@ export class Ficha {
     pecaOutroServicoDto: Array<PecaServicoOrdem>;
     dataAbertura: string;
     dataFechamento: string;
+    atualSituacao: string;
     responsavel: string;
     lancamento:  Lancamento;
     lancamentoLst:  Array<Lancamento>;
