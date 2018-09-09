@@ -151,7 +151,7 @@ public class UsuarioControllerTest {
 		
 	}
 	
-	private Usuario carregarUsuario() {
+	public static Usuario carregarUsuario() {
 		Usuario user = new Usuario();
 		user.setNome("test");
 		user.setPapel("Admin");

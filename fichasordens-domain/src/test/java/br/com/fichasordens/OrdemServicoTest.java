@@ -188,7 +188,7 @@ public class OrdemServicoTest {
 		return ent;
 	}
 	
-	private Lancamento createLancamento() {
+	public static Lancamento createLancamento() {
 		Lancamento lanc = new Lancamento();
 		lanc.setData(new Date());
 		lanc.setObservacao("Teste");

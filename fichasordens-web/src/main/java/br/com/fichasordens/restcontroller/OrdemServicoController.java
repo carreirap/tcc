@@ -69,18 +69,6 @@ public class OrdemServicoController {
 		}
 	}
 	
-	/*@RequestMapping(method = RequestMethod.POST,path="/lancamento")
-	public ResponseEntity salvarLancamentoTecnico(@RequestBody final LancamentoDto dto) {
-		try {
-			OrdemServicoLanc peca = ConverterLancamentoDto.converterDtoParaOrdemServicoLanc(dto);
-			this.ordemServico.gravarOrdemServicoLanc(peca);
-			return new ResponseEntity( HttpStatus.OK);
-		} catch (ExcecaoRetorno e) {
-			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
-		}
-	}*/
-	
-	
 	@RequestMapping(method = RequestMethod.DELETE,path="/pecaServico")
 	public ResponseEntity deletarPecaServicoOrdem(@RequestParam final int id, @RequestParam final int sequencia) {
 		this.ordemServico.deletarPecaOutroServico(id, sequencia);
