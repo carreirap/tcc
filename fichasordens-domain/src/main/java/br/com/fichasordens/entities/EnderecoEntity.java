@@ -124,7 +124,7 @@ public class EnderecoEntity implements java.io.Serializable {
 		this.cep = cep;
 	}
 
-	@Column(name = "complemento", length = 15)
+	@Column(name = "complemento", length = 50)
 	public String getComplemento() {
 		return this.complemento;
 	}

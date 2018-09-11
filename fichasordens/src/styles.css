@@ -15,3 +15,8 @@ ul {margin-bottom: 0; }
 .btn {
    line-height: 0.8;
 }
+
+footer {
+    position: relative;
+    bottom: 0;
+  }
