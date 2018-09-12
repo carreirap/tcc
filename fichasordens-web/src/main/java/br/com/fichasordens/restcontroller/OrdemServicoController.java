@@ -1,13 +1,18 @@
 package br.com.fichasordens.restcontroller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +29,7 @@ import br.com.fichasordens.dto.MensagemRetornoDto;
 import br.com.fichasordens.dto.OrdemServicoDto;
 import br.com.fichasordens.dto.PecaOutroServicoDto;
 import br.com.fichasordens.exception.ExcecaoRetorno;
+import br.com.fichasordens.service.GeradorPdfService;
 import br.com.fichasordens.util.ConverterCliente;
 import br.com.fichasordens.util.ConverterLancamentoDto;
 import br.com.fichasordens.util.ConverterPecaOutroServico;
@@ -43,6 +49,9 @@ public class OrdemServicoController {
 	
 	@Value("${alerta.servico.parado.situacao}")
 	private int qtdDiasAlerta;
+	
+	@Autowired
+	private GeradorPdfService pdfService;
 	
 
 	
@@ -117,11 +126,31 @@ public class OrdemServicoController {
 		return new ResponseEntity<>(dtoList,HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET,path="/buscar")
+	@GetMapping(path="/buscar")
 	public OrdemServicoDto buscarOrdem(@RequestParam final long id) {
 		final OrdemServico ordem = this.ordemServico.buscarOrdem(id);
 		return this.converterOrdemServicoParaDto(ordem);
 	}
+	
+	@GetMapping(path="/pdf")
+	public void buscarPdfOrdem(@RequestParam final long id, HttpServletResponse response) throws Exception {
+		
+		final OrdemServico ordem = this.ordemServico.buscarOrdem(id);
+		ByteArrayOutputStream out = pdfService.generateOrdemServicoPdf(ordem);
+
+		// Set the content type and attachment header.
+		response.addHeader("Content-disposition", "attachment;filename=ordem-" + id + ".pdf");
+		 response.setHeader("Content-Length", String.valueOf(out.size()));
+		response.setContentType("application/pdf");
+
+		// Copy the stream to the response's output stream.
+		OutputStream responseOutputStream = response.getOutputStream();
+        responseOutputStream.write(out.toByteArray());
+        responseOutputStream.close();
+        out.close();
+		response.flushBuffer();
+	}
+	
 	
 	private OrdemServico converterDtoParaOrdemServico(final OrdemServicoDto dto) {
 		final OrdemServico ent = new OrdemServico();

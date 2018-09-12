@@ -1,7 +1,9 @@
 package br.com.fichasordens.util;
 
 import br.com.fichasordens.Cliente;
+import br.com.fichasordens.Endereco;
 import br.com.fichasordens.entities.ClienteEntity;
+import br.com.fichasordens.entities.EnderecoEntity;
 
 public class ConversorCliente {
 	
@@ -14,7 +16,22 @@ public class ConversorCliente {
 		cliente.setCelular(entity.getCelular());
 		cliente.setFone(entity.getFone());
 		cliente.setCnpjCpf(entity.getCnpjCpf());
+		cliente.setEndereco(converterEntityParaEndereco(entity.getEndereco()));
 		return cliente;
+	}
+	
+	private static Endereco converterEntityParaEndereco(EnderecoEntity ent) {
+		Endereco end = new Endereco();
+		end.setBairro(ent.getBairro());
+		end.setCep(ent.getCep());
+		end.setCidade(ent.getCidade());
+		end.setComplemento(ent.getComplemento());
+		end.setEstado(ent.getEstado());
+		end.setId(ent.getId());
+		end.setLogradouro(ent.getLogradouro());
+		end.setNumero(ent.getNumero());
+		
+		return end;
 	}
 
 }

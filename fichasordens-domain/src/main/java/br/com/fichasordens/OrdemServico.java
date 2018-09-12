@@ -80,6 +80,7 @@ public class OrdemServico {
 		ent.getOrdemServicoLancs();
 		ent.getPecaServicoOrdems();
 		ent.getCliente().getId();
+		ent.getCliente().getEndereco().getId();
 		return this.converterEntityParaOrdemServico(ent);
 	}
 	

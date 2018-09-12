@@ -249,7 +249,9 @@
   <div class="form-group row" *ngIf="formOrdem.dataSaida === '' || formOrdem.dataSaida === undefined">
     <div class="col-sm-10">
       <button type="submit" class="btn btn-primary" [disabled]="!myform.valid">Salvar</button>
-      {{formOrdem.dataSaida}}
+    </div>
+    <div class="col-sm-10">
+      <button type="button" class="btn btn-primary"  (click)="download()">Gerar PDF</button>
     </div>
   </div>
 </form>

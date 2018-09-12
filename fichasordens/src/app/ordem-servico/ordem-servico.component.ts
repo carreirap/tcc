@@ -15,6 +15,7 @@ import { Lancamento } from '../_models/lancamentosTecnicos';
 import { UsuarioLogado } from '../_models/usuario-logado';
 import { ActivatedRoute } from '../../../node_modules/@angular/router';
 import { SituacaoTecnica } from '../_models/situacao-tecnica';
+import { saveAs } from 'file-saver/FileSaver';
 // import { lancamento } from '../_models/lancamentosTecnicos';
 
 @Component({
@@ -98,7 +99,17 @@ export class OrdemServicoComponent implements OnInit {
         console.log('error in', error);
       });
   }
-  
+
+  download() {
+    this.service.getPdf('/ordem/pdf?id=' + this.formOrdem.numeroOrdem).subscribe(response => {
+      this.open(response);
+    }); 
+  }
+
+  private open(pdf) {
+    const blob = new Blob([pdf] , { type: 'application/pdf' });
+    saveAs(blob, "testData.pdf");
+  }
 
   onSubmit() {
     if (this.formOrdem.lancamento.situacao === 'Aberto') {
