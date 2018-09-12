@@ -18,13 +18,14 @@
     </tbody>
   </table>
 </div> -->
-<div class="table-responsive-sm">
+<div class="table-responsive-sm" style="text-align: center">
 <p-table [responsive]="true" [value]="user" [lazy]="true" [immutable]=false >
     <ng-template pTemplate="header">
       <tr>
         <th>Usuario</th>
         <th>Nome</th>
         <th>Papel</th>
+        <th></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-u>

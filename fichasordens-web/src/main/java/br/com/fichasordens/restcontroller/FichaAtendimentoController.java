@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,7 +44,7 @@ public class FichaAtendimentoController {
 	FichaAtendimento fichaAtendimento;
 
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@PostMapping
 	public ResponseEntity salvarFichaAtendimento(@RequestBody final FichaAtendimentoDto dto) {
 		try {
 			FichaAtendimento ficha = this.converterDto(dto);
@@ -55,21 +57,21 @@ public class FichaAtendimentoController {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.POST,path="/pecaServico")
+	@PostMapping(path="/pecaServico")
 	public ResponseEntity gravarPecaServicoFicha(@RequestBody final PecaOutroServicoDto dto) {
 			final PecaOutroServico peca = ConverterPecaOutroServico.converterDtoPecaServico(dto, TipoServicoEnum.FICHA_ATENDIMENTO);
 			this.fichaAtendimento.gravarPecaServicoFicha(peca);
 			return new ResponseEntity( HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST,path="/atendimento")
+	@PostMapping(path="/atendimento")
 	public ResponseEntity gravarAtendimento(@RequestBody final AtendimentoDto dto) {
 			final Atendimento atend = ConverterAtendimento.converterAtendimentoDto(dto);
 			this.fichaAtendimento.gravarAtendimento(atend);
 			return new ResponseEntity( HttpStatus.OK);
 	}
 		
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	public ResponseEntity listaFichas(@RequestParam final String situacao) {
 		List<FichaAtendimento> fichaList = this.fichaAtendimento.listarFichas(StatusServicoEnum.valueOf(situacao.toUpperCase()));
 		List<ListagemDashboardDto> dtoList = new ArrayList<ListagemDashboardDto>();
@@ -94,25 +96,25 @@ public class FichaAtendimentoController {
 		
 	}
 	
-	@RequestMapping(method = RequestMethod.GET,path="/buscar")
+	@GetMapping(path="/buscar")
 	public FichaAtendimentoDto buscarFicha(@RequestParam final long id) {
 		FichaAtendimento ficha = this.fichaAtendimento.buscarFicha(id);
 		return this.converterParaDto(ficha);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET,path="/calcAtendimento")
+	@GetMapping(path="/calcAtendimento")
 	public ResponseEntity calcularValorAtendimento(@RequestParam final int horas, @RequestParam final int tipo) {
 		return new ResponseEntity(this.fichaAtendimento.calcularValorAtendimento(horas, tipo), HttpStatus.OK);
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.DELETE,path="/atendimento")
+	@DeleteMapping(path="/atendimento")
 	public ResponseEntity excluirAtendimento(@RequestParam final int idFicha, @RequestParam final int sequencia) {
 		this.fichaAtendimento.excluirAtendimento(idFicha, sequencia);
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE,path="/pecaServico")
+	@DeleteMapping(path="/pecaServico")
 	public ResponseEntity excluirPecaOutroServico(@RequestParam final int idFicha, @RequestParam final int sequencia) {
 		this.fichaAtendimento.excluirPecaOutroServico(idFicha, sequencia);
 		return new ResponseEntity(HttpStatus.OK);

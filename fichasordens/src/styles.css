@@ -3,7 +3,8 @@ label {margin-bottom: 0; }
 ul {margin-bottom: 0; }
 .was-validated {margin-bottom: 8px; }
 /*.jumbotron  { min-height: 400px;} */
-.jumbotron {padding: 2rem 2rem;}
+/*.jumbotron {padding: 2rem 2rem;} */
+.jumbotron {padding: 1rem 1rem;}
 .no-border {
     border-left-width: 0px !important;
     border-right-width: 0px !important;
@@ -14,3 +15,8 @@ ul {margin-bottom: 0; }
 .btn {
    line-height: 0.8;
 }
+
+footer {
+    position: relative;
+    bottom: 0;
+  }
