@@ -16,7 +16,8 @@ public class ConversorCliente {
 		cliente.setCelular(entity.getCelular());
 		cliente.setFone(entity.getFone());
 		cliente.setCnpjCpf(entity.getCnpjCpf());
-		cliente.setEndereco(converterEntityParaEndereco(entity.getEndereco()));
+		if (entity.getEndereco() != null)
+			cliente.setEndereco(converterEntityParaEndereco(entity.getEndereco()));
 		return cliente;
 	}
 	

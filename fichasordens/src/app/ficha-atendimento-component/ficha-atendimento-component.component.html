@@ -92,7 +92,6 @@
   <br>
   <div class="form-row" *ngIf="formFicha.numeroFicha">
     <div class="form-group col-md-9">
-      Atendimento
     </div>
     <div class="form-group col-md-1">
      
@@ -103,6 +102,7 @@
     </div>
   </div>
   <div class="form-row" *ngIf="formFicha.numeroFicha">
+      <label style="padding-left: 6px;">Atendimentos</label>
     <div class="form-group col-md-11">
       <p-table [responsive]="true" [value]="formFicha.atendimento" [lazy]="true" 
       selectionMode="single" [(selection)]="selectedAtend"
@@ -143,6 +143,7 @@
     </div>
   </div>
   <div class="form-row">
+    <label style="padding-left: 6px;">Peças / Outro Serviços</label>
     <div class="form-group col-md-11">
       <p-table [responsive]="true" [value]="formFicha.pecaOutroServicoDto" [lazy]="true" [immutable]=false *ngIf="formFicha.numeroFicha"
         selectionMode="single" [(selection)]="selectedPecaServico">
@@ -242,8 +243,11 @@
     </div>
   </div>  
   <div class="form-group row" *ngIf="formFicha.dataFechamento === '' || formFicha.dataFechamento === undefined">
-    <div class="col-sm-10">
+    <div class="col-sm-6">
       <button type="submit" class="btn btn-primary"  [disabled]="!myform.valid">Salvar</button>
+    </div>
+    <div class="col-sm-6">
+      <button type="button" class="btn btn-primary"  (click)="download()">Gerar PDF</button>
     </div>
   </div>
 </form> 

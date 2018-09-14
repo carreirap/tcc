@@ -1,7 +1,11 @@
 package br.com.fichasordens.restcontroller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +23,7 @@ import br.com.fichasordens.Atendimento;
 import br.com.fichasordens.Cliente;
 import br.com.fichasordens.FichaAtendimento;
 import br.com.fichasordens.Lancamento;
+import br.com.fichasordens.OrdemServico;
 import br.com.fichasordens.PecaOutroServico;
 import br.com.fichasordens.dto.AtendimentoDto;
 import br.com.fichasordens.dto.FichaAtendimentoDto;
@@ -27,6 +32,7 @@ import br.com.fichasordens.dto.ListagemDashboardDto;
 import br.com.fichasordens.dto.MensagemRetornoDto;
 import br.com.fichasordens.dto.PecaOutroServicoDto;
 import br.com.fichasordens.exception.ExcecaoRetorno;
+import br.com.fichasordens.service.GeradorPdfService;
 import br.com.fichasordens.util.ConverterAtendimento;
 import br.com.fichasordens.util.ConverterCliente;
 import br.com.fichasordens.util.ConverterLancamentoDto;
@@ -41,7 +47,10 @@ public class FichaAtendimentoController {
 	
 	
 	@Autowired
-	FichaAtendimento fichaAtendimento;
+	private FichaAtendimento fichaAtendimento;
+	
+	@Autowired
+	private GeradorPdfService pdfService;
 
 	
 	@PostMapping
@@ -69,6 +78,25 @@ public class FichaAtendimentoController {
 			final Atendimento atend = ConverterAtendimento.converterAtendimentoDto(dto);
 			this.fichaAtendimento.gravarAtendimento(atend);
 			return new ResponseEntity( HttpStatus.OK);
+	}
+	
+	@GetMapping(path="/pdf")
+	public void buscarPdfOrdem(@RequestParam final long id, HttpServletResponse response) throws Exception {
+		
+		final FichaAtendimento ficha = this.fichaAtendimento.buscarFicha(id);
+		ByteArrayOutputStream out = pdfService.generateFichaPdf(ficha);
+
+		// Set the content type and attachment header.
+		response.addHeader("Content-disposition", "attachment;filename=ordem-" + id + ".pdf");
+		 response.setHeader("Content-Length", String.valueOf(out.size()));
+		response.setContentType("application/pdf");
+
+		// Copy the stream to the response's output stream.
+		OutputStream responseOutputStream = response.getOutputStream();
+        responseOutputStream.write(out.toByteArray());
+        responseOutputStream.close();
+        out.close();
+		response.flushBuffer();
 	}
 		
 	@GetMapping

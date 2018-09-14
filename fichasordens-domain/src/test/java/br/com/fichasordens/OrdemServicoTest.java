@@ -19,6 +19,7 @@ import org.mockito.internal.util.collections.Sets;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import br.com.fichasordens.entities.EnderecoEntity;
 import br.com.fichasordens.entities.OrdemServicoEntity;
 import br.com.fichasordens.entities.OrdemServicoLancEntity;
 import br.com.fichasordens.entities.OrdemServicoLancId;
@@ -187,6 +188,8 @@ public class OrdemServicoTest {
 		ent.setPecaServicoOrdems(Sets.newSet(createPecaServicoOrdemEntity()));
 		return ent;
 	}
+	
+	
 	
 	public static Lancamento createLancamento() {
 		Lancamento lanc = new Lancamento();

@@ -1,6 +1,7 @@
 package br.com.fichasordens.util;
 
 import br.com.fichasordens.entities.ClienteEntity;
+import br.com.fichasordens.entities.EnderecoEntity;
 import br.com.fichasordens.entities.UsuarioEntity;
 
 public class DadosMockEntity {
@@ -12,7 +13,16 @@ public class DadosMockEntity {
 		cliente.setCelular("1111111");
 		cliente.setFone("1111111");
 		cliente.setCnpjCpf("55555555");
+		cliente.setEndereco(createEnderecoEntity());
 		return cliente;
+	}
+	
+	private static EnderecoEntity createEnderecoEntity() {
+		EnderecoEntity ent = new EnderecoEntity();
+		ent.setBairro("Test");
+		ent.setId(2L);
+		ent.setLogradouro("Test");
+		return ent;
 	}
 
 	public static UsuarioEntity createUsuarioEntity() {

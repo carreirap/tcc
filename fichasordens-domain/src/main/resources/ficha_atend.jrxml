@@ -20,12 +20,11 @@
 	<parameter name="tipo" class="java.lang.String"/>
 	<parameter name="abertura" class="java.lang.String"/>
 	<parameter name="saida" class="java.lang.String"/>
-	<parameter name="fabricante" class="java.lang.String"/>
-	<parameter name="modelo" class="java.lang.String"/>
-	<parameter name="serie" class="java.lang.String"/>
-	<parameter name="descricaoEquip" class="java.lang.String"/>
-	<parameter name="defeito" class="java.lang.String"/>
-	<parameter name="estado" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\paulo'\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="listaPeca" class="java.lang.String"/>
+	<parameter name="mydatasource" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<field name="quantidade" class="java.lang.Long"/>
 	<field name="descricao" class="java.lang.String"/>
 	<field name="valor" class="java.math.BigDecimal"/>
@@ -36,11 +35,11 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="338" splitType="Stretch">
+		<band height="229" splitType="Stretch">
 			<staticText>
-				<reportElement style="Title" x="136" y="10" width="263" height="33" uuid="bd74020f-db3d-4152-9912-54b74344c9ac"/>
+				<reportElement style="Title" x="136" y="10" width="287" height="33" uuid="bd74020f-db3d-4152-9912-54b74344c9ac"/>
 				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Ordem de Serviço]]></text>
+				<text><![CDATA[Ficha de Atendimento]]></text>
 			</staticText>
 			<image>
 				<reportElement x="10" y="10" width="125" height="115" uuid="60705633-6a68-45c7-830e-d7bc03d90a27"/>
@@ -195,144 +194,31 @@
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{saida}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="6" y="229" width="169" height="20" uuid="a0adfbe9-ab41-41f3-955d-d26cbb42b1f5"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[EQUIPAMENTO:]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="64" y="253" width="72" height="13" uuid="3e3d4555-d6cf-47c0-961b-d389df8c9bb5"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{fabricante}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="6" y="253" width="55" height="13" uuid="63227209-8205-4781-b993-a952aadaf108"/>
-				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Fabricante:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="196" y="253" width="40" height="13" uuid="bc9ec252-c01c-4bd7-ba4c-cf94f476dc3f"/>
-				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Modelo:]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="238" y="253" width="78" height="13" uuid="dd02d4e8-f4fe-4698-ac37-fd7f194ad5b1"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{modelo}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="386" y="253" width="68" height="13" uuid="caf70110-c794-4a71-a01d-ae3e6bd6a214"/>
-				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Serie:]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="415" y="253" width="137" height="13" uuid="d9489b96-ee2d-4f13-b5e8-f19ace9b9eac"/>
-				<textFieldExpression><![CDATA[$P{serie}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="6" y="271" width="55" height="13" uuid="4def070c-ed2f-400f-b0e4-d5627a5d4132"/>
-				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Descrição:]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="61" y="271" width="491" height="13" uuid="82d3284d-be87-445d-acc2-7086f98a21af"/>
-				<textFieldExpression><![CDATA[$P{descricaoEquip}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="61" y="287" width="491" height="13" uuid="ef0a6af7-ec2b-4f57-99e3-14ada2eb67fa"/>
-				<textFieldExpression><![CDATA[$P{defeito}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="6" y="287" width="55" height="13" uuid="bd0a6fbc-3742-43b0-8ea5-e37b1370ca62"/>
-				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Defeito:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="6" y="307" width="130" height="13" uuid="b2d2bfe3-95b7-46ec-989b-914685ff08c3"/>
-				<textElement verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Estado/Itens Acompanha:]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="136" y="308" width="416" height="26" uuid="a3f213b1-439b-44fa-b8bf-ac0236612502"/>
-				<textElement verticalAlignment="Top"/>
-				<textFieldExpression><![CDATA[$P{defeito}]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement x="0" y="337" width="552" height="1" uuid="71e54c3f-a86b-466e-ae31-fcc0b0324094"/>
-			</line>
 		</band>
 	</title>
 	<pageHeader>
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="20" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="0" width="185" height="20" uuid="4c266e1a-edd1-4d2c-85ec-ad320e208272"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Quantidade]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="185" y="0" width="185" height="20" uuid="18d3c328-246e-42ef-9938-73a556cd370c"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Descrição]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="370" y="0" width="84" height="20" uuid="cbc9b2e7-d6f3-44b1-8351-05515b690686"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Valor]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="454" y="0" width="101" height="20" uuid="832ed3b5-599d-4aaa-bed4-08b4a00dad77"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Total]]></text>
-			</staticText>
-		</band>
+		<band height="20" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="22" splitType="Stretch">
-			<textField>
-				<reportElement x="0" y="0" width="185" height="20" uuid="a2e51cb3-e68e-4efb-8aad-fe35500e7d80"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[""+$F{quantidade}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="185" y="0" width="185" height="20" uuid="6dc99d23-9400-4b55-8c06-174fadf2e0fa"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="370" y="0" width="84" height="20" uuid="3ac56aa3-4361-4c2e-b889-a8904b69700f"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="454" y="0" width="101" height="20" uuid="a0dfbee5-38cc-49d4-9b16-f5e40c93794f"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{valor} .multiply(new BigDecimal($F{quantidade}))]]></textFieldExpression>
-			</textField>
+		<band height="42" splitType="Stretch">
+			<subreport runToBottom="false">
+				<reportElement x="0" y="0" width="555" height="42" uuid="a618c3e1-0cf5-4e86-b24e-d400edc1b600"/>
+				<dataSourceExpression><![CDATA[$P{mydatasource}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ficha_atend_atend.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="50">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="39" uuid="30154dc7-31e8-467e-8b28-641d6cc7236c"/>
+				<subreportParameter name="listaPeca">
+					<subreportParameterExpression><![CDATA[$P{listaPeca}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new JREmptyDataSource(4)]]></dataSourceExpression>
+				<subreportExpression><![CDATA["ficha_atend_peca.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 	<columnFooter>

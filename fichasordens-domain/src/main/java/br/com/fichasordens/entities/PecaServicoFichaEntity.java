@@ -69,7 +69,7 @@ public class PecaServicoFichaEntity implements java.io.Serializable {
 		this.descricao = descricao;
 	}
 
-	@Column(name = "quantidade", nullable = false)
+	@Column(name = "quantidade", precision = 3, scale = 0, nullable = false)
 	public long getQuantidade() {
 		return this.quantidade;
 	}

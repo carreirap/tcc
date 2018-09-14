@@ -59,11 +59,7 @@
 			<artifactId>mail</artifactId>
 			<version>1.4.7</version>
 		</dependency>
-		<dependency>
-			<groupid>javax.mail</groupid>
-			<artifactid>javax.mail-api</artifactid>
-			<version>1.5.5</version>
-		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/com.sun.mail/smtp -->
 		<dependency>
 			<groupId>com.sun.mail</groupId>

@@ -15,6 +15,7 @@ import { Cliente } from '../_models/cliente';
 import { FichaAtendimentoService } from './ficha-atendimento-service';
 import { Atendimento } from '../_models/atendimento';
 import { PecaServicoOrdem } from '../_models/peca-servico-ordem';
+import { saveAs } from 'file-saver/FileSaver';
 
 
 @Component({
@@ -102,6 +103,17 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       console.log('error in', error.error.mensagem);
       this.toasterService.pop('error', 'Ficha de Atendimento', error.error.mensagem);
     });
+  }
+
+  download() {
+    this.service.getPdf('/ficha/pdf?id=' + this.formFicha.numeroFicha).subscribe(response => {
+      this.open(response);
+    }); 
+  }
+
+  private open(pdf) {
+    const blob = new Blob([pdf] , { type: 'application/pdf' });
+    saveAs(blob, "testData.pdf");
   }
 
   getSequenciaLancamento() {
