@@ -9,7 +9,7 @@
     <div class="form-group col-md-11" [ngClass]="{'was-validated': !vlr.valid  && (vlr.dirty || vlr.touched)}">
       <label for="visita">Visita Técnica</label>
       <input type="hidden" id="id-vista" name="id-visita" [(ngModel)]="formValue.idVisita">
-      <input class="form-control" type="text" value="" id="visita" name="visita" [ngModel]="formValue.valorVisita | number:'1.2-2'" 
+      <input class="form-control" type="text" value="" id="visita" name="visita" [ngModel]="formValue.valorVisita" 
         (ngModelChange)="formValue.valorVisita=$event" #vlr="ngModel" required>
       <div class="invalid-feedback" *ngIf="vlr.errors && (vlr.dirty || vlr.touched)">
         <ul >
@@ -25,7 +25,7 @@
   <div class="form-row">
     <div class="form-group col-md-11" [ngClass]="{'was-validated': !custoHora.valid  && (custoHora.dirty || custoHora.touched)}">
       <label for="hora">Custo Hora Técnica</label>
-      <input class="form-control" type="text" value="" id="hora" name="hora" [ngModel]="formValue.valorHora | number:'1.2-2'" 
+      <input class="form-control" type="text" value="" id="hora" name="hora" [ngModel]="formValue.valorHora" 
       (ngModelChange)="formValue.valorHora=$event" #custoHora="ngModel" required>
       <input type="hidden" value="" id="id-hora" name="id-hora" [(ngModel)]="formValue.idHora">
       <div class="invalid-feedback" *ngIf="custoHora.errors && (custoHora.dirty || custoHora.touched)">

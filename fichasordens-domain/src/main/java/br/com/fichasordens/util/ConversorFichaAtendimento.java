@@ -1,6 +1,7 @@
 package br.com.fichasordens.util;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import br.com.fichasordens.Atendimento;
@@ -30,6 +31,7 @@ public class ConversorFichaAtendimento {
 		ent.setId(new PecaServicoFichaIdEntity());
 		ent.getId().setFichaAtendId(pecaServicoFicha.getFichaAtendimento().getId());
 		ent.getId().setSequencia(pecaServicoFicha.getId());
+		ent.setData(new Date());
 		return ent;
 	}
 	

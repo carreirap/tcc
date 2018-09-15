@@ -158,7 +158,7 @@
     </div>
   </div>
   <div class="form-row">
-    <label style="padding-left: 6px;">Peças / Outro Serviços</label>
+    <label style="padding-left: 6px;" *ngIf="formOrdem.numeroOrdem">Peças / Outro Serviços</label>
     <div class="form-group col-md-11">
       <p-table [responsive]="true" [value]="formOrdem.itemTables" [lazy]="true" [immutable]=false 
       selectionMode="single" [(selection)]="selectedPecaServico"

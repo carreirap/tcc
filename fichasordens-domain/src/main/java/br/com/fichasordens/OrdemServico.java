@@ -18,9 +18,9 @@ import br.com.fichasordens.exception.ExcecaoRetorno;
 import br.com.fichasordens.repository.OrdemServicoLancRepository;
 import br.com.fichasordens.repository.OrdemServicoRepository;
 import br.com.fichasordens.repository.PecaServicoOrdemRepository;
+import br.com.fichasordens.util.ConversorCliente;
 import br.com.fichasordens.util.ConversorOrdemServico;
 import br.com.fichasordens.util.StatusServicoEnum;
-import br.com.fichasordens.util.ConversorCliente;
 
 @Component
 public class OrdemServico {
@@ -77,10 +77,10 @@ public class OrdemServico {
 	@Transactional
 	public OrdemServico buscarOrdem(final long id) {
 		OrdemServicoEntity ent = this.ordemServicoRepository.findOne(id);
-		ent.getOrdemServicoLancs();
+		/*ent.getOrdemServicoLancs();
 		ent.getPecaServicoOrdems();
 		ent.getCliente().getId();
-		ent.getCliente().getEndereco().getId();
+		ent.getCliente().getEndereco().getId();*/
 		return this.converterEntityParaOrdemServico(ent);
 	}
 	
@@ -180,6 +180,7 @@ public class OrdemServico {
 		ent.setId(new PecaServicoOrdemEntityId());
 		ent.getId().setOrdemServicoId(pecaServicoOrdem.getOrdemServico().getId());
 		ent.getId().setSequencia(pecaServicoOrdem.getId());
+		ent.setData(new Date());
 		return ent;
 	}
 	

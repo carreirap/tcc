@@ -282,7 +282,8 @@ export class OrdemServicoComponent implements OnInit {
     this.formOrdem.atualSituacao !== 'Faturado' && 
     this.formOrdem.atualSituacao !== 'Fechado' && 
     this.formOrdem.atualSituacao !== 'Finalizado'&& 
-    this.formOrdem.atualSituacao !== 'Cancelado') {
+    this.formOrdem.atualSituacao !== 'Cancelado' && 
+    this.formOrdem.atualSituacao !== 'Aguardando') {
       return true;
     } else {
       return false;

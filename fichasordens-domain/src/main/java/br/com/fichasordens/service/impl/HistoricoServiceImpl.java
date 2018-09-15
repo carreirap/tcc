@@ -108,7 +108,7 @@ public class HistoricoServiceImpl implements HistoricoService {
 			paged = pesquisarTodasSituacaoOrdem(pageable);
 		}
 		
-		if ((cnpjcpf == null || cnpjcpf.equals(""))) {
+		if (numero == 0 && (cnpjcpf == null || cnpjcpf.equals(""))) {
 			paged = pesquisarPorSituacaoOrdem(situacao, pageable);
 		}
 		return paged;

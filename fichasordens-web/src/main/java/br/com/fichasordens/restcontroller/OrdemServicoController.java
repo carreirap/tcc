@@ -121,10 +121,10 @@ public class OrdemServicoController {
 	}
 	
 	@GetMapping(path="/pdf")
-	public void buscarPdfOrdem(@RequestParam final long id, HttpServletResponse response) throws Exception {
+	public void gerarPdf(@RequestParam final long id, HttpServletResponse response) throws Exception {
 		
 		final OrdemServico ordem = this.ordemServico.buscarOrdem(id);
-		ByteArrayOutputStream out = pdfService.generateOrdemServicoPdf(ordem);
+		ByteArrayOutputStream out = pdfService.gerarOrdemServicoPdf(ordem);
 
 		// Set the content type and attachment header.
 		response.addHeader("Content-disposition", "attachment;filename=ordem-" + id + ".pdf");

@@ -3,7 +3,7 @@ import { DataService, CustomInterceptor } from '../_services/http.service';
 import { ToasterService} from 'angular5-toaster';
 import { Cliente } from '../_models/cliente';
 import { Estados } from '../_models/TodosEstados';
-import { NgModel } from '@angular/forms';
+import { NgModel, NgForm } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
@@ -44,11 +44,13 @@ export class ClienteComponentComponent implements OnInit {
     );
   }
 
-  onSubmit() {
+  onSubmit(myForm: NgForm) {
     console.log(this.formCliente);
     this.service.post('/cliente', this.formCliente).subscribe(response => {
       console.log(response);
-      this.toasterService.pop('success', 'Cliente', 'Cliente cadastrado com sucesso!');
+      this.formCliente = new Cliente();
+      myForm.resetForm();
+      this.toasterService.pop('success', 'Cliente', 'Cliente gravdo com sucesso!');
     }, (error) => {
       console.log('error in', error.error.mensagem);
       this.toasterService.pop('error', 'Cliente', error.error.mensagem);

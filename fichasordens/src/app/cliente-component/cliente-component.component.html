@@ -2,7 +2,7 @@
 <header class="col-md-12 text-center">
   <h2>Cadastro de Cliente</h2>
 </header>
-<form (submit)="onSubmit()" class="container" #myform="ngForm" novalidate>
+<form (submit)="onSubmit(myform)" class="container" #myform="ngForm" novalidate>
       
   <div class="form-row">
     <div class="form-group col-md-11" [ngClass]="{'was-validated': !name.valid  && (name.dirty || name.touched)}">
@@ -31,7 +31,7 @@
       <div [hidden]="cpfcnpjvalidation.valid || cpfcnpjvalidation.pristine" class="alert-danger" >
         <ul >
           <li>
-            O campo CPF/CNPJ é invalido
+            O valor do CPF/CNPJ é invalido
           </li>
         </ul>
      </div>
@@ -57,7 +57,7 @@
             O campo email é obrigatório
           </li>
           <li *ngIf="emailVal.errors.email && !emailVal.errors.required">
-            Email inválido
+            O E-mail inválido
           </li>
         </ul>
       </div>
@@ -72,7 +72,7 @@
           <div class="invalid-feedback" *ngIf="cel.errors && (cel.dirty || cel.touched)">
             <ul >
               <li *ngIf="cel.errors.required">
-                Campo celular é obrigatório
+                O campo celular é obrigatório
               </li>
             </ul>
           </div>
@@ -99,7 +99,7 @@
       <div class="invalid-feedback" *ngIf="rua.errors && (rua.dirty || rua.touched)">
         <ul>
           <li *ngIf="rua.errors.required">
-            Rua é obrigatório
+            O campo rua é obrigatório
           </li>
         </ul>
       </div>
@@ -130,7 +130,7 @@
     <div class="invalid-feedback" *ngIf="bairro.errors && (bairro.dirty || bairro.touched)">
       <ul >
         <li *ngIf="bairro.errors.required">
-          Bairro é obrigatório
+          O Campo bairro é obrigatório
         </li>
       </ul>
     </div>
@@ -150,18 +150,25 @@
     <div class="invalid-feedback" *ngIf="cidade.errors && (cidade.dirty || cidade.touched)">
       <ul >
         <li *ngIf="cidade.errors.required">
-          Cidade é obrigatório
+          O Campo cidade é obrigatório
         </li>
       </ul>
     </div>
   </div>
-  <div class="form-group col-md-3">
+  <div class="form-group col-md-3" [ngClass]="{'was-validated': !estado.valid  && (estado.dirty || estado.touched)}">
       <label for="estado">Estado</label>
-      <select class="form-control custom-select" id="estado" name="estado" [(ngModel)]="formCliente.estado">
+      <select class="form-control custom-select" id="estado" name="estado" #estado="ngModel" [(ngModel)]="formCliente.estado" required>
           <option *ngFor="let title of optionsSelect" [value]="title.value">
               {{title.label}}             
             </option>
-        </select>
+      </select>
+      <div class="invalid-feedback" *ngIf="estado.errors && (estado.dirty || estado.touched)">
+        <ul >
+          <li *ngIf="estado.errors.required">
+            O Campo estado é obrigatório
+          </li>
+        </ul>
+      </div>
     </div>
 </div>
 <div class="form-group row">
@@ -169,65 +176,10 @@
       <button type="submit" class="btn btn-primary" [disabled]="!myform.valid">Salvar</button>
     </div>
 </div>
-<!-- <div class="row">
-    <div class="col">
-      <input type="text" class="form-control" placeholder="First name">
-    </div>
-    <div class="col">
-      <input type="text" class="form-control" placeholder="Last name">
-    </div>
-  </div> -->
- 
-
-
 
 </form>
 
 <ng-template #clienteModal let-c="close" let-d="dismiss">
     <app-modal-pesquisa-cliente [cClose]="c" [dClose]="d"></app-modal-pesquisa-cliente>
 </ng-template>
-
-<!-- <ng-template #clienteModal let-c="close" let-d="dismiss">
-  <div class="modal-header navbar-dark bg-dark">
-    <h5 class="modal-title" style="color:white;">Pesquisar Cliente</h5>
-    <button type="button"  style="color:white;" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-  </div>
-  <div class="modal-body">
-    <div class="modal-body">
-      <label for="modalcpf">CNPJ/CPF:</label>
-      <input class="form-control" maxlength="50" validarCnpjCpf pequisarCliente [pages]='page' [cnpj]='cnpjPesquisa' (onPressEnter)="pesquisarPage($event, this)" type="text" value="" 
-      id="nomeCnpjCpf" name="nomeCnpjCpf" [(ngModel)]='cnpjPesquisa'/>
-      <label for="modalNome">Nome:</label>
-      <input class="form-control" pequisarCliente [pages]='page' [nome]='nomePesquisa' (PressAnyKey)="pesquisarPage($event, this)" 
-      maxlength="50" type="text" value="" id="nomeModal" name="nomeModal" [(ngModel)]='nomePesquisa'/>
-      
-      <br>
-      <p-table [value]="content"
-      [lazy]="true"
-      (onLazyLoad)="loadData($event)"
-      [responsive]="true">
-        <ng-template pTemplate="header">
-            <tr>
-                <th>CNPJ/CPF</th>
-                <th>Nome</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-car>
-            <tr>
-                <td (click)="loadForm(car); c('Close')">{{car.cnpj}}</td>
-                <td (click)="loadForm(car); c('Close')">{{car.nome}}</td>
-            </tr>
-        </ng-template>
-    </p-table>
-    <p-paginator [rows]="1" [totalRecords]='pages' (onPageChange)="paginate($event)"></p-paginator>
-    </div>
-  </div>
-  <div class="modal-footer">
-      <button class="btn btn-primary" (click)="c('Close click')">Fechar</button>
-  </div>
-</ng-template> -->
-
-
-
+-

@@ -1,6 +1,7 @@
 package br.com.fichasordens.service.impl;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -27,16 +28,12 @@ public class GeradorPdfServiceImpl implements GeradorPdfService {
 	@Autowired
 	private Empresa empresa;
 	
-	@Autowired
-	private FichaAtendimento ficha; 
-	
-
 	@Override
-	public ByteArrayOutputStream generateOrdemServicoPdf(final OrdemServico ordem) throws Exception {
+	public ByteArrayOutputStream gerarOrdemServicoPdf(final OrdemServico ordem) throws Exception {
 
 		
 		Map<String, Object> parametros = new HashMap<>();
-		this.montarDadosEmpresa(parametros);
+		this.preencherDadosEmpresa(parametros);
 		
 		parametros.put("numero", String.valueOf(ordem.getId()));
 		parametros.put("nomeCliente", ordem.getCliente().getNome());
@@ -81,7 +78,7 @@ public class GeradorPdfServiceImpl implements GeradorPdfService {
 		return pdfReportStream;
 	}
 	
-	private Map<String, Object> montarDadosEmpresa(Map<String, Object> parametros) {
+	private Map<String, Object> preencherDadosEmpresa(Map<String, Object> parametros) {
 		final Empresa emp = this.empresa.buscarEmpresa();
 		
 		parametros.put("nomeEmpresa", emp.getNome());
@@ -100,9 +97,10 @@ public class GeradorPdfServiceImpl implements GeradorPdfService {
 	}
 
 	@Override
-	public ByteArrayOutputStream generateFichaPdf(final FichaAtendimento ficha) throws Exception {
+	public ByteArrayOutputStream gerarFichaAtendimentoPdf(final FichaAtendimento ficha) throws Exception {
 		Map<String, Object> parametros = new HashMap<>();
-		this.montarDadosEmpresa(parametros);
+		
+		this.preencherDadosEmpresa(parametros);
 		
 		parametros.put("numero", String.valueOf(ficha.getId()));
 		parametros.put("nomeCliente", ficha.getCliente().getNome());
@@ -124,17 +122,14 @@ public class GeradorPdfServiceImpl implements GeradorPdfService {
 		ficha.getFichaAtendimentoLancList().stream()
 			.filter(lanc -> lanc.getSituacao().equals(StatusServicoEnum.FECHADO.getValue()))
 			.forEach( a-> parametros.put("saida", form.format(a.getData())));
-		/*parametros.put("listaAtend", ficha.getAtendimentoList());
-		parametros.put("listaPeca", ficha.getPecaOutroServicoList());*/
 		
-		final ClassLoader classLoader = getClass().getClassLoader();
-		final InputStream input = classLoader.getResourceAsStream("ficha_atend.jasper");
-		//final InputStream inputAtend = classLoader.getResourceAsStream("ficha_atend_peca.jasper");
-		//final InputStream inputPeca = classLoader.getResourceAsStream("ficha_atend_subreport1.jasper");
+		//final ClassLoader classLoader = getClass().getClassLoader();
+		InputStream input = new FileInputStream("C:\\Users\\paulo\\ficha_atend.jasper");
+		
 		JRBeanCollectionDataSource jrDataSource = new JRBeanCollectionDataSource(ficha.getAtendimentoList());
-		
+		final JRBeanCollectionDataSource coll = new JRBeanCollectionDataSource(ficha.getPecaOutroServicoList());
 		parametros.put("mydatasource", jrDataSource);
-		
+		parametros.put("datasourcepeca", coll);
 		
 		final JasperPrint print = JasperFillManager.fillReport(input, parametros);
 

@@ -177,7 +177,6 @@ public class OrdemServicoTest {
 		ent.setCliente(DadosMockEntity.createClienteEntity());
 		ent.setDescDefeito("Teste defeito");
 		ent.setDescEquip("Notebook Dell Vostro");
-		ent.setDescServico("Nao liga a tela");
 		ent.setEstadoItensAcomp("Riscado tampa / Acompanha a fonte");
 		ent.setFrabricante("Dell");
 		ent.setId(199);

@@ -33,8 +33,7 @@ public class OrdemServicoEntity implements java.io.Serializable {
 	private String serie;
 	private String descEquip;
 	private String descDefeito;
-	private String estadoItensAcomp;
-	private String descServico;
+	private String estadoItensAcomp;;
 	private Set<OrdemServicoLancEntity> ordemServicoLancs = new HashSet<OrdemServicoLancEntity>(0);
 	private Set<PecaServicoOrdemEntity> pecaServicoOrdems = new HashSet<PecaServicoOrdemEntity>(0);
 
@@ -47,7 +46,7 @@ public class OrdemServicoEntity implements java.io.Serializable {
 	}
 
 	public OrdemServicoEntity(long id, ClienteEntity cliente, String tipoServico, String frabricante, String modelo, String serie,
-			String descEquip, String descDefeito, String estadoItensAcomp, String descServico) {
+			String descEquip, String descDefeito, String estadoItensAcomp) {
 		this.id = id;
 		this.cliente = cliente;
 		this.tipoServico = tipoServico;
@@ -57,7 +56,6 @@ public class OrdemServicoEntity implements java.io.Serializable {
 		this.descEquip = descEquip;
 		this.descDefeito = descDefeito;
 		this.estadoItensAcomp = estadoItensAcomp;
-		this.descServico = descServico;
 	}
 
 	@Id
@@ -143,15 +141,6 @@ public class OrdemServicoEntity implements java.io.Serializable {
 
 	public void setEstadoItensAcomp(String estadoItensAcomp) {
 		this.estadoItensAcomp = estadoItensAcomp;
-	}
-
-	@Column(name = "desc_servico")
-	public String getDescServico() {
-		return this.descServico;
-	}
-
-	public void setDescServico(String descServico) {
-		this.descServico = descServico;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ordemServico")

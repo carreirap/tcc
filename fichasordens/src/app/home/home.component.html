@@ -11,7 +11,7 @@
                 <p-header>
                     Abertas 
                 </p-header>
-                <a class="nav-link" [routerLink]="['/listaDashboard', 'Aberto','Ficha']">{{dashboadFicha.qtqAberta}} Abertas
+                <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Aberto','Ficha']">{{dashboadFicha.qtqAberta}} Abertas
                     <span *ngIf="alertaFichaAberto" class="badge badge-pill badge-danger">!</span>
                 </a>
             </p-panel>
@@ -21,10 +21,10 @@
                 <p-header>
                     Em andamento
                 </p-header>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Trabalhando','Ficha']">{{dashboadFicha.qtdTrabalhando}} Trabalhando
+                    <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Trabalhando','Ficha']">{{dashboadFicha.qtdTrabalhando}} Trabalhando
                         <span *ngIf="alertaFichaTrabalhando" class="badge badge-pill badge-danger">!</span>
                     </a>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Aguardando','Ficha']">{{dashboadFicha.qtdAguardando}} Aguardando
+                    <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Aguardando','Ficha']">{{dashboadFicha.qtdAguardando}} Aguardando
                         <span *ngIf="alertaFichaAguardando" class="badge badge-pill badge-danger">!</span>
                     </a>
                 <p-footer>
@@ -37,8 +37,8 @@
                 <p-header>
                     Fechadas
                 </p-header>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Fechado','Ficha']">{{dashboadFicha.qtdFechada}} Fechado</a>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Cancelado','Ficha']">{{dashboadFicha.qtdAguardando}} Cancelado</a>
+                    <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Fechado','Ficha']">{{dashboadFicha.qtdFechada}} Fechado</a>
+                    <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Cancelado','Ficha']">{{dashboadFicha.qtdAguardando}} Cancelado</a>
                 <p-footer>
                     Total: {{totalFichaFechado | currency:'BRL':true}}
                 </p-footer>
@@ -57,7 +57,7 @@
                 <p-header>
                     Ordem Abertas
                 </p-header>
-                <a class="nav-link" [routerLink]="['/listaDashboard', 'Aberto','Ordem']">{{dashboardOrdem.qtqAberta}} Abertas
+                <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Aberto','Ordem']">{{dashboardOrdem.qtqAberta}} Abertas
                     <span *ngIf="alertaOrdemAberto" class="badge badge-pill badge-danger">!</span>
                 </a>
                 
@@ -68,10 +68,10 @@
                 <p-header>
                     Em Andamento
                 </p-header>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Trabalhando','Ordem']">{{dashboardOrdem.qtdTrabalhando}} Trabalhando
+                    <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Trabalhando','Ordem']">{{dashboardOrdem.qtdTrabalhando}} Trabalhando
                         <span *ngIf="alertaOrdemTrabalhando" class="badge badge-pill badge-danger">!</span>
                     </a>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Aguardando','Ordem']">{{dashboardOrdem.qtdAguardando}} Aguardando
+                    <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Aguardando','Ordem']">{{dashboardOrdem.qtdAguardando}} Aguardando
                         <span *ngIf="alertaOrdemAguardando" class="badge badge-pill badge-danger">!</span>
                     </a>
                 <p-footer>
@@ -84,8 +84,8 @@
                 <p-header>
                     Fechado
                 </p-header>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Fechado','Ordem']">{{dashboardOrdem.qtdFechada}} Fechadas</a>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Cancelado','Ordem']">{{dashboardOrdem.qtdCancelado}} Canceladas</a>
+                    <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Fechado','Ordem']">{{dashboardOrdem.qtdFechada}} Fechadas</a>
+                    <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Cancelado','Ordem']">{{dashboardOrdem.qtdCancelado}} Canceladas</a>
                 <p-footer>
                     Total: {{totalOrdemFechado | currency:'BRL':true}}
                 </p-footer>
@@ -104,9 +104,9 @@
                 <p-header>
                     Ordem/Fichas Finalizadas
                 </p-header>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Finalizado','Ordem']">{{dashboardOrdem.qtdFinalizado}} Finalizados (Ordem)
+                    <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Finalizado','Ordem']">{{dashboardOrdem.qtdFinalizado}} Finalizados (Ordem)
                         <span *ngIf="alertaOrdemFinalizado" class="badge badge-pill badge-danger">!</span></a>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Finalizado','Ficha']">{{dashboadFicha.qtdFinalizado}} Finalizados (Fichas)
+                    <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Finalizado','Ficha']">{{dashboadFicha.qtdFinalizado}} Finalizados (Fichas)
                         <span *ngIf="alertaFichaFinalizado" class="badge badge-pill badge-danger">!</span>
                     </a>
                 <p-footer>
@@ -119,10 +119,10 @@
                 <p-header>
                     Ordem/Fichas Faturadas
                 </p-header>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Faturado','Ordem']">{{dashboardOrdem.qtdFaturado}} Faturado (Ordem)
+                    <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Faturado','Ordem']">{{dashboardOrdem.qtdFaturado}} Faturado (Ordem)
                         <span *ngIf="alertaOrdemFaturado" class="badge badge-pill badge-danger">!</span>
                     </a>
-                    <a class="nav-link" [routerLink]="['/listaDashboard', 'Faturado','Ficha']">{{dashboadFicha.qtdFaturado}} Faturado (Fichas)
+                    <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Faturado','Ficha']">{{dashboadFicha.qtdFaturado}} Faturado (Fichas)
                         <span *ngIf="alertaFichaFaturado" class="badge badge-pill badge-danger">!</span>
                     </a>
                 <p-footer>

@@ -143,7 +143,7 @@
     </div>
   </div>
   <div class="form-row">
-    <label style="padding-left: 6px;">Peças / Outro Serviços</label>
+    <label style="padding-left: 6px;" *ngIf="formFicha.numeroFicha">Peças / Outro Serviços</label>
     <div class="form-group col-md-11">
       <p-table [responsive]="true" [value]="formFicha.pecaOutroServicoDto" [lazy]="true" [immutable]=false *ngIf="formFicha.numeroFicha"
         selectionMode="single" [(selection)]="selectedPecaServico">
@@ -247,7 +247,7 @@
       <button type="submit" class="btn btn-primary"  [disabled]="!myform.valid">Salvar</button>
     </div>
     <div class="col-sm-6">
-      <button type="button" class="btn btn-primary"  (click)="download()">Gerar PDF</button>
+      <button type="button" class="btn btn-primary"  (click)="download()" *ngIf="formFicha.numeroFicha">Gerar PDF</button>
     </div>
   </div>
 </form> 

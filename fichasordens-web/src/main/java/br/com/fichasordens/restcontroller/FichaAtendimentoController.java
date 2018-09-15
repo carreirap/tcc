@@ -81,10 +81,10 @@ public class FichaAtendimentoController {
 	}
 	
 	@GetMapping(path="/pdf")
-	public void buscarPdfOrdem(@RequestParam final long id, HttpServletResponse response) throws Exception {
+	public void gerarPdf(@RequestParam final long id, HttpServletResponse response) throws Exception {
 		
 		final FichaAtendimento ficha = this.fichaAtendimento.buscarFicha(id);
-		ByteArrayOutputStream out = pdfService.generateFichaPdf(ficha);
+		ByteArrayOutputStream out = pdfService.gerarFichaAtendimentoPdf(ficha);
 
 		// Set the content type and attachment header.
 		response.addHeader("Content-disposition", "attachment;filename=ordem-" + id + ".pdf");

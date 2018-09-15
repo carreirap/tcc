@@ -93,7 +93,7 @@ public class OrdemServicoLancEntity implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "data", length = 13)
+	@Column(name = "data", length = 13, nullable = false)
 	public Date getData() {
 		return this.data;
 	}
@@ -102,7 +102,7 @@ public class OrdemServicoLancEntity implements java.io.Serializable {
 		this.data = data;
 	}
 
-	@Column(name = "observacao", length = 255)
+	@Column(name = "observacao", length = 255, nullable = false)
 	public String getObservacao() {
 		return this.observacao;
 	}

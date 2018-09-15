@@ -315,7 +315,9 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     this.formFicha.atualSituacao !== 'Faturado' && 
     this.formFicha.atualSituacao !== 'Fechado' && 
     this.formFicha.atualSituacao !== 'Finalizado' && 
-    this.formFicha.atualSituacao !== 'Cancelado') {
+    this.formFicha.atualSituacao !== 'Cancelado'&& 
+    this.formFicha.atualSituacao !== 'Aguardando') {
+
       return true;
     } else {
       return false;

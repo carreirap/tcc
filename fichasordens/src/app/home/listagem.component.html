@@ -47,11 +47,13 @@
                 </div>
             </div>
             <div class="ui-g-12 ui-md-1 search-icon">
-                <a class="nav-link" *ngIf="paramTipo == 'Ficha'" [routerLink]="['/fichas', ser.numero]" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                <a class="nav-link" *ngIf="paramTipo == 'Ficha'" [routerLink]="['/fichas', ser.numero]" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
+                ngbTooltip="Abrir Ficha de Atendimento">
                     <span aria-hidden="true" class="ui-button-icon-left ui-clickable pi pi-search"></span>
                     <span class="ui-button-text ui-clickable">ui-btn</span>
                 </a>
-                <a class="nav-link" *ngIf="paramTipo == 'Ordem'" [routerLink]="['/ordem', ser.numero]" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                <a class="nav-link" *ngIf="paramTipo == 'Ordem'" [routerLink]="['/ordem', ser.numero]" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
+                ngbTooltip="Abrir Ordem de Serviço">
                     <span aria-hidden="true" class="ui-button-icon-left ui-clickable pi pi-search"></span>
                     <span class="ui-button-text ui-clickable">ui-btn</span>
                 </a>
