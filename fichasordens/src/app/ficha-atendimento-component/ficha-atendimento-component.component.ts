@@ -74,7 +74,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.formFicha.dataAbertura = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
       this.formFicha.lancamento.situacao = 'Aberto';
       this.formFicha.atualSituacao = this.formFicha.lancamento.situacao;
-      this.formFicha.tipoServico = 'Assitencia';
+      this.formFicha.tipoServico = 'Assistencia';
       this.formFicha.lancamento.data = this.formFicha.dataAbertura;
       this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formFicha.lancamento.situacao);
     }

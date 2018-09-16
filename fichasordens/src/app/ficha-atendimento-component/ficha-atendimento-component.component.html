@@ -72,7 +72,7 @@
       <div class="panel panel-default">
         <div class="panel-body">
           <label for="celular">Tipo do Serviço &nbsp;&nbsp;</label>
-            <p-radioButton name="groupname" value="Assitencia" label="Assit. Técnica" [(ngModel)]="formFicha.tipoServico"></p-radioButton>
+            <p-radioButton name="groupname" value="Assistencia" label="Assist. Técnica" [(ngModel)]="formFicha.tipoServico"></p-radioButton>
             <p-radioButton name="groupname" value="Treinamento" label="Treinamento" [(ngModel)]="formFicha.tipoServico"></p-radioButton>
             <p-radioButton name="groupname" value="Suporte" label="Suporte" [(ngModel)]="formFicha.tipoServico"></p-radioButton>
         </div>
@@ -93,12 +93,11 @@
   <div class="form-row" *ngIf="formFicha.numeroFicha">
     <div class="form-group col-md-9">
     </div>
-    <div class="form-group col-md-1">
-     
-      <button type="submit" (click)="mostrarModalAtendimento(atendimento);" *ngIf="mostrarBotoes()" class="btn btn-primary">Incluir</button>
+    <div class="form-group col-md-1" *ngIf="mostrarBotoes()">
+      <button type="submit" (click)="mostrarModalAtendimento(atendimento);" class="btn btn-primary">Incluir</button>
     </div>
-    <div class="form-group col-md-1">
-      <button type="submit" class="btn btn-primary" (click)="remove()" *ngIf="mostrarBotoes()">Excluir</button>
+    <div class="form-group col-md-1" *ngIf="mostrarBotoes()">
+      <button type="submit" class="btn btn-primary" (click)="remove()">Excluir</button>
     </div>
   </div>
   <div class="form-row" *ngIf="formFicha.numeroFicha">
@@ -125,25 +124,25 @@
         </ng-template>
       </p-table>
     </div>
-    <div class="form-group col-md-11" style="text-align: right" *ngIf="formFicha.lancamento.situacao !== 'Aberto'">
+    <div class="form-group col-md-11" style="text-align: right" *ngIf="formFicha.atualSituacao !== 'Aberto'">
       <label><strong>Total=> {{totalAtendimentos | currency:'BRL':true}} </strong> </label>
     </div>
   </div>
   <br>
-  <div class="form-row">
+  <div class="form-row" *ngIf="mostrarBotoes()">
     <div class="form-group col-md-9">
 
     </div>
     <div class="form-group col-md-1">
       <!-- -->
-      <button type="submit" (click)="mostrarModalMaoObra(maoobra);" class="btn btn-primary" *ngIf="mostrarBotoes()">Incluir</button>
+      <button type="submit" (click)="mostrarModalMaoObra(maoobra);" class="btn btn-primary">Incluir</button>
     </div>
     <div class="form-group col-md-1">
       <button type="submit" class="btn btn-primary" (click)="removePecaOutroServico()" *ngIf="mostrarBotoes()">Excluir</button>
     </div>
   </div>
-  <div class="form-row">
-    <label style="padding-left: 6px;" *ngIf="formFicha.numeroFicha">Peças / Outro Serviços</label>
+  <div class="form-row" *ngIf="formFicha.numeroFicha">
+    <label style="padding-left: 6px;">Peças / Outro Serviços</label>
     <div class="form-group col-md-11">
       <p-table [responsive]="true" [value]="formFicha.pecaOutroServicoDto" [lazy]="true" [immutable]=false *ngIf="formFicha.numeroFicha"
         selectionMode="single" [(selection)]="selectedPecaServico">
@@ -165,10 +164,10 @@
         </ng-template>
       </p-table>
     </div>
-    <div class="form-group col-md-11" style="text-align: right" *ngIf="formFicha.lancamento.situacao !== 'Aberto'">
+    <div class="form-group col-md-11" style="text-align: right" *ngIf="formFicha.atualSituacao !== 'Aberto'">
       <label><strong>Total=> {{totalPecaOutros | currency:'BRL':true}} </strong> </label>
     </div>
-    <div class="form-group col-md-11" style="text-align: right" *ngIf="formFicha.lancamento.situacao !== 'Aberto'">
+    <div class="form-group col-md-11" style="text-align: right" *ngIf="formFicha.atualSituacao !== 'Aberto'">
       <label><strong>Total Ficha de Atendimento => {{totalFicha | currency:'BRL':true}} </strong> </label>
     </div>
   </div>
@@ -220,7 +219,7 @@
         <div class="invalid-feedback" *ngIf="obser.errors && (obser.dirty || obser.touched)">
           <ul >
             <li *ngIf="obser.errors.required">
-              Observação é obrigatória
+              O campo observação é obrigatório
             </li>
           </ul>
         </div>

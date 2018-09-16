@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fichasordens.Empresa;
@@ -24,7 +25,8 @@ public class EmpresaController {
 	
 	@Autowired private Empresa empresa;
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@SuppressWarnings("rawtypes")
+	@PostMapping
 	public ResponseEntity salvarEmpresa(@RequestBody final EmpresaDto dto	) {
 		LOGGER.info("Salvar dados da empresa");
 		final Empresa emp = this.empresa.salvarEmpresa(this.convertDtoParaEmpresa(dto));
@@ -32,7 +34,7 @@ public class EmpresaController {
 		return new ResponseEntity<>(this.convertEmpresaParaDto(emp), HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	 public ResponseEntity<EmpresaDto> getEmpresa() {
 		LOGGER.info("Buscar dados da empresa");
 				

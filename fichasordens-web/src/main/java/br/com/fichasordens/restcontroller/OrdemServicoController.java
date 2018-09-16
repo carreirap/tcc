@@ -12,10 +12,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,7 +56,7 @@ public class OrdemServicoController {
 	
 
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@PostMapping
 	public ResponseEntity salvarOrdemServico(@RequestBody final OrdemServicoDto dto) {
 		try {
 			OrdemServico ordemServico = this.converterDtoParaOrdemServico(dto);
@@ -67,7 +68,7 @@ public class OrdemServicoController {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.POST,path="/pecaServico")
+	@PostMapping(path="/pecaServico")
 	public ResponseEntity salvarItemOrdemServico(@RequestBody final PecaOutroServicoDto dto) {
 		try {
 			final PecaOutroServico peca = ConverterPecaOutroServico.converterDtoPecaServico(dto, TipoServicoEnum.ORDEM_SERVICO);
@@ -78,14 +79,14 @@ public class OrdemServicoController {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE,path="/pecaServico")
+	@DeleteMapping(path="/pecaServico")
 	public ResponseEntity deletarPecaServicoOrdem(@RequestParam final int id, @RequestParam final int sequencia) {
 		this.ordemServico.deletarPecaOutroServico(id, sequencia);
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	public ResponseEntity listaFichas(@RequestParam final String situacao) {
 		List<OrdemServico> ordemList = this.ordemServico.listarOrdens(StatusServicoEnum.valueOf(situacao.toUpperCase()));
 		List<ListagemDashboardDto> dtoList = new ArrayList<ListagemDashboardDto>();
@@ -120,25 +121,22 @@ public class OrdemServicoController {
 		return this.converterOrdemServicoParaDto(ordem);
 	}
 	
-	@GetMapping(path="/pdf")
+	@GetMapping(path = "/pdf")
 	public void gerarPdf(@RequestParam final long id, HttpServletResponse response) throws Exception {
-		
+
 		final OrdemServico ordem = this.ordemServico.buscarOrdem(id);
 		ByteArrayOutputStream out = pdfService.gerarOrdemServicoPdf(ordem);
 
-		// Set the content type and attachment header.
 		response.addHeader("Content-disposition", "attachment;filename=ordem-" + id + ".pdf");
-		 response.setHeader("Content-Length", String.valueOf(out.size()));
+		response.setHeader("Content-Length", String.valueOf(out.size()));
 		response.setContentType("application/pdf");
 
-		// Copy the stream to the response's output stream.
 		OutputStream responseOutputStream = response.getOutputStream();
-        responseOutputStream.write(out.toByteArray());
-        responseOutputStream.close();
-        out.close();
+		responseOutputStream.write(out.toByteArray());
+		responseOutputStream.close();
+		out.close();
 		response.flushBuffer();
-	}
-	
+	}	
 	
 	private OrdemServico converterDtoParaOrdemServico(final OrdemServicoDto dto) {
 		final OrdemServico ent = new OrdemServico();

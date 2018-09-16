@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +25,6 @@ import br.com.fichasordens.Atendimento;
 import br.com.fichasordens.Cliente;
 import br.com.fichasordens.FichaAtendimento;
 import br.com.fichasordens.Lancamento;
-import br.com.fichasordens.OrdemServico;
 import br.com.fichasordens.PecaOutroServico;
 import br.com.fichasordens.dto.AtendimentoDto;
 import br.com.fichasordens.dto.FichaAtendimentoDto;
@@ -44,7 +45,7 @@ import br.com.fichasordens.util.TipoServicoEnum;
 @RequestMapping("/ficha")
 @EnableResourceServer
 public class FichaAtendimentoController {
-	
+	private static final Logger LOGGER = LogManager.getLogger(FichaAtendimentoController.class);
 	
 	@Autowired
 	private FichaAtendimento fichaAtendimento;
@@ -56,21 +57,24 @@ public class FichaAtendimentoController {
 	@PostMapping
 	public ResponseEntity salvarFichaAtendimento(@RequestBody final FichaAtendimentoDto dto) {
 		try {
+			LOGGER.info("Salvar ficha de atendimento");
 			FichaAtendimento ficha = this.converterDto(dto);
 			ficha = this.fichaAtendimento.salvarFicha(ficha);
 			dto.setNumeroFicha(ficha.getId());
 			dto.getLancamento().setId(ficha.getId());
 			return new ResponseEntity<FichaAtendimentoDto>(dto, HttpStatus.OK);
 		} catch (ExcecaoRetorno e) {
+			LOGGER.error("Erro salvando ficha de atendimento", e);
 			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
 	
 	@PostMapping(path="/pecaServico")
 	public ResponseEntity gravarPecaServicoFicha(@RequestBody final PecaOutroServicoDto dto) {
-			final PecaOutroServico peca = ConverterPecaOutroServico.converterDtoPecaServico(dto, TipoServicoEnum.FICHA_ATENDIMENTO);
-			this.fichaAtendimento.gravarPecaServicoFicha(peca);
-			return new ResponseEntity( HttpStatus.OK);
+		LOGGER.info("Gravar peças / outro servico");
+		final PecaOutroServico peca = ConverterPecaOutroServico.converterDtoPecaServico(dto, TipoServicoEnum.FICHA_ATENDIMENTO);
+		this.fichaAtendimento.gravarPecaServicoFicha(peca);
+		return new ResponseEntity( HttpStatus.OK);
 	}
 	
 	@PostMapping(path="/atendimento")
@@ -79,23 +83,21 @@ public class FichaAtendimentoController {
 			this.fichaAtendimento.gravarAtendimento(atend);
 			return new ResponseEntity( HttpStatus.OK);
 	}
-	
-	@GetMapping(path="/pdf")
+
+	@GetMapping(path = "/pdf")
 	public void gerarPdf(@RequestParam final long id, HttpServletResponse response) throws Exception {
-		
+
 		final FichaAtendimento ficha = this.fichaAtendimento.buscarFicha(id);
 		ByteArrayOutputStream out = pdfService.gerarFichaAtendimentoPdf(ficha);
 
-		// Set the content type and attachment header.
 		response.addHeader("Content-disposition", "attachment;filename=ordem-" + id + ".pdf");
-		 response.setHeader("Content-Length", String.valueOf(out.size()));
+		response.setHeader("Content-Length", String.valueOf(out.size()));
 		response.setContentType("application/pdf");
 
-		// Copy the stream to the response's output stream.
 		OutputStream responseOutputStream = response.getOutputStream();
-        responseOutputStream.write(out.toByteArray());
-        responseOutputStream.close();
-        out.close();
+		responseOutputStream.write(out.toByteArray());
+		responseOutputStream.close();
+		out.close();
 		response.flushBuffer();
 	}
 		
@@ -188,11 +190,14 @@ public class FichaAtendimentoController {
 	}
 	
 	
-	private FichaAtendimento converterDto(final FichaAtendimentoDto dto) {
+	private FichaAtendimento converterDto(final FichaAtendimentoDto dto) throws ExcecaoRetorno {
 		final FichaAtendimento ficha = new FichaAtendimento();
 		ficha.setTipoServico(dto.getTipoServico());
 		ficha.setId(dto.getNumeroFicha());
 		final Cliente cliente = new Cliente();
+		if (dto.getCliente().getId() == 0) {
+			throw new ExcecaoRetorno("O Cliente não informado");
+		}
 		cliente.setId(dto.getCliente().getId());
 		ficha.setCliente(cliente);
 		ficha.setFichaAtendimentoLancList(new ArrayList<Lancamento>());
