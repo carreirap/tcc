@@ -65,7 +65,7 @@ public class GeradorPdfServiceImpl implements GeradorPdfService {
 		// onnection conexao = // obtem uma conexão jdbc...
 
 		final ClassLoader classLoader = getClass().getClassLoader();
-		final InputStream input = classLoader.getResourceAsStream("report2.jasper");
+		final InputStream input = classLoader.getResourceAsStream("ordemservico.jasper");
 		final JRBeanCollectionDataSource coll = new JRBeanCollectionDataSource(ordem.getPecaOutroServico());
 		final JasperPrint print = JasperFillManager.fillReport(input, parametros, coll);
 

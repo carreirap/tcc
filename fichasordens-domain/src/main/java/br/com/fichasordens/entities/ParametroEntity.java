@@ -42,7 +42,7 @@ public class ParametroEntity implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "descricao", length = 15)
+	@Column(name = "descricao", length = 15, nullable = false)
 	public String getDescricao() {
 		return this.descricao;
 	}
@@ -51,7 +51,7 @@ public class ParametroEntity implements java.io.Serializable {
 		this.descricao = descricao;
 	}
 
-	@Column(name = "valor", precision = 4)
+	@Column(name = "valor", precision = 4, nullable = false)
 	public BigDecimal getValor() {
 		return this.valor;
 	}

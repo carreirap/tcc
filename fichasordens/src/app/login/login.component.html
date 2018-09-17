@@ -1,27 +1,86 @@
-﻿<!--<div class="col-md-6 col-md-offset-3" style="align-content: center">
-    <--<div class="alert alert-info">
-        Username: test<br />
-        Password: test
-    </div> -->
-    <h2>Login</h2>
-    <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
-        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !usuario.valid }">
+﻿<div class="d-flex justify-content-center align-items-center container">
+    <div class="row">
+        
+    <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate style="min-width: 431px !important; text-align: center">
+            <p class="h4 mb-4">Login</p>
+        
             
-            <div class="form-group col-md-8">
-                <label for="username">Usuário</label>
-                <input type="text" class="form-control" name="usuario" [(ngModel)]="model.usuario" #usuario="ngModel" required />
+         
+                <input type="text" class="form-control mb-4" name="usuario" [(ngModel)]="model.usuario" #usuario="ngModel" required 
+                 placeholder="Usuário"/>
                 <div *ngIf="f.submitted && !usuario.valid" class="help-block">Username is required</div>
-            </div>
-        </div>
-        <div class="form-group col-md-8" [ngClass]="{ 'has-error': f.submitted && !senha.valid }">
-            <label for="password">Senha</label>
-            <input type="password" class="form-control" name="senha" [(ngModel)]="model.senha" #senha="ngModel" required />
+         
+        
+       
+            <input type="password" class="form-control mb-4" name="senha" [(ngModel)]="model.senha" #senha="ngModel" required 
+            placeholder="Senha"/>
             <div *ngIf="f.submitted && !senha.valid" class="help-block">Password is required</div>
-        </div>
-        <div class="form-group col-md-8">
-            <button [disabled]="loading" class="btn btn-primary">Login</button>
+        
+        
+            <button [disabled]="loading" class="btn btn-primary my-4">Login</button>
             <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-        </div>
-        <div *ngIf="error" class="alert alert-danger">{{error}}</div>
-    </form>
-<!--</div>-->
+        
+             <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+    </form> 
+    </div>
+ </div>   
+
+<!-- Default form login -->
+<!--<div class="d-flex justify-content-center align-items-center container">
+    <div class="row">
+      
+
+<form style="max-width: 431px !important">
+
+    <p class="h4 mb-4">Sign in</p>
+  
+    
+    <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
+  
+    
+    <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password">
+  
+    <div class="d-flex justify-content-around">
+      <div>
+    
+        <mdb-checkbox [default]="true">Remember me</mdb-checkbox>
+      </div>
+      <div>
+    
+        <a href="">Forgot password?</a>
+      </div>
+    </div>
+  
+    
+    <button mdbBtn color="info" block="true" class="my-4" type="submit">Sign in</button>
+  
+    
+    <p>Not a member?
+      <a href="">Register</a>
+    </p>
+  
+    
+    <p>or sign in with:</p>
+  
+    <a type="button" class="light-blue-text mx-2">
+    
+      <mdb-icon icon="facebook"></mdb-icon>
+    </a>
+    <a type="button" class="light-blue-text mx-2">
+    
+      <mdb-icon icon="twitter"></mdb-icon>
+    </a>
+    <a type="button" class="light-blue-text mx-2">
+    
+      <mdb-icon icon="linkedin"></mdb-icon>
+    </a>
+    <a type="button" class="light-blue-text mx-2">
+    
+      <mdb-icon icon="github"></mdb-icon>
+    </a>
+  
+  </form>
+  
+
+</div>
+</div> -->

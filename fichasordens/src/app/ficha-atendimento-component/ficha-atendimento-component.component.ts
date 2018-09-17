@@ -93,7 +93,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       console.log(response);
       this.setNumeroFicha(response);
       this.formFicha.lancamentoLst.push(this.formFicha.lancamento);
-      this.toasterService.pop('success', 'Ficha de Atendimento', 'Ficha de Atendimento cadastrado com sucesso!');
+      this.toasterService.pop('success', 'Ficha de Atendimento', this.montaMensagemAtualizacaoSituacao(this.formFicha.lancamento.situacao));
       this.formFicha.atualSituacao = this.formFicha.lancamento.situacao;
       this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formFicha.lancamento.situacao);
       if (this.formFicha.lancamento.situacao === 'Fechado') {
@@ -103,6 +103,19 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       console.log('error in', error.error.mensagem);
       this.toasterService.pop('error', 'Ficha de Atendimento', error.error.mensagem);
     });
+  }
+
+  montaMensagemAtualizacaoSituacao(situacao) {
+    let sit = ""
+    if (situacao === "Aberto")
+      sit = 'Ficha de Atendimento cadastrada com sucesso!'
+    if (situacao === "Cancelado") 
+      sit = 'Ficha de Atendimento cancelada com sucesso!'
+    if (situacao === "Aguardando" || situacao === "Trabalhando" || situacao === "Faturado" || situacao === "Finalizado")  
+      sit = 'Ficha de Atendimento alterada com sucesso!'
+    if (sit === "Fechado")  
+      sit = 'Ficha de Atendimento fechada com sucesso!'
+    return sit;  
   }
 
   download() {
@@ -117,7 +130,6 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   }
 
   getSequenciaLancamento() {
-    debugger;
     let x = 0;
     for (let i = 0; i < this.formFicha.lancamentoLst.length; i++) {
       x = this.formFicha.lancamentoLst[i].sequencia;

@@ -71,7 +71,7 @@ public class OrdemServicoEntity implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "cliente_id")
+	@JoinColumn(name = "cliente_id", nullable = false)
 	public ClienteEntity getCliente() {
 		return this.cliente;
 	}
@@ -116,7 +116,7 @@ public class OrdemServicoEntity implements java.io.Serializable {
 		this.serie = serie;
 	}
 
-	@Column(name = "desc_equip")
+	@Column(name = "desc_equip", nullable = false)
 	public String getDescEquip() {
 		return this.descEquip;
 	}
@@ -125,7 +125,7 @@ public class OrdemServicoEntity implements java.io.Serializable {
 		this.descEquip = descEquip;
 	}
 
-	@Column(name = "desc_defeito")
+	@Column(name = "desc_defeito", nullable = false)
 	public String getDescDefeito() {
 		return this.descDefeito;
 	}
@@ -134,7 +134,7 @@ public class OrdemServicoEntity implements java.io.Serializable {
 		this.descDefeito = descDefeito;
 	}
 
-	@Column(name = "estado_itens_acomp")
+	@Column(name = "estado_itens_acomp", nullable = false)
 	public String getEstadoItensAcomp() {
 		return this.estadoItensAcomp;
 	}

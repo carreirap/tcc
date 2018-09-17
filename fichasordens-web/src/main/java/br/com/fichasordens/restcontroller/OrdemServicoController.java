@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -138,19 +139,30 @@ public class OrdemServicoController {
 		response.flushBuffer();
 	}	
 	
-	private OrdemServico converterDtoParaOrdemServico(final OrdemServicoDto dto) {
+	private OrdemServico converterDtoParaOrdemServico(final OrdemServicoDto dto) throws ExcecaoRetorno {
 		final OrdemServico ent = new OrdemServico();
 		ent.setId(dto.getNumeroOrdem());
 		ent.setFabricante(dto.getFabricante());
+		if (StringUtils.isEmpty(dto.getDescDefeito())) {
+			throw new ExcecaoRetorno("O campo desc. defeito é obrigatório");
+		}
 		ent.setDescDefeito(dto.getDescDefeito());
+		if (StringUtils.isEmpty(dto.getDescEquip())) {
+			throw new ExcecaoRetorno("O campo desc. equipamento é obrigatório");
+		}
 		ent.setDescEquip(dto.getDescEquip());
-		//ent.setDescServico(dto.getDescServico());
+		if (StringUtils.isEmpty(dto.getEstadoItensAcomp())) {
+			throw new ExcecaoRetorno("O estado e os itens que acompanham são obrigatórios");
+		}
 		ent.setEstadoItensAcomp(dto.getEstadoItensAcomp());
 		ent.setModelo(dto.getModelo());
 		ent.setSerie(dto.getSerie());
 		ent.setTipoServico(dto.getTipoServico());
 		final Cliente cliente = new Cliente();
 		cliente.setId(dto.getCliente().getId());
+		if (dto.getCliente().getId() == 0) {
+			throw new ExcecaoRetorno("O Cliente não foi informado");
+		}
 		ent.setCliente(cliente);
 		ent.setLancamento(new ArrayList<Lancamento>());
 		Lancamento lanc = ConverterLancamentoDto.converterDtoParaOrdemServicoLanc(dto.getLancamento());

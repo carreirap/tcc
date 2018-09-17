@@ -108,7 +108,7 @@ export class OrdemServicoComponent implements OnInit {
 
   private open(pdf) {
     const blob = new Blob([pdf] , { type: 'application/pdf' });
-    saveAs(blob, "testData.pdf");
+    saveAs(blob, "ordem-servico" + this.formOrdem.numeroOrdem + ".pdf");
   }
 
   onSubmit() {
@@ -124,7 +124,7 @@ export class OrdemServicoComponent implements OnInit {
       this.setNumeroOrdem(response);
       this.formOrdem.atualSituacao = this.formOrdem.lancamento.situacao;
       this.formOrdem.lancamentoLst.push(this.formOrdem.lancamento);
-      this.toasterService.pop('success', 'Ordem de Serviço', 'Ordem de serviço cadastrado com sucesso!');
+      this.toasterService.pop('success', 'Ordem de Serviço', this.montaMensagemAtualizacaoSituacao(this.formOrdem.atualSituacao));
       this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formOrdem.lancamento.situacao);
       if (this.formOrdem.lancamento.situacao === 'Fechado') {
         this.formOrdem.dataSaida = this.formOrdem.lancamento.data;
@@ -134,6 +134,20 @@ export class OrdemServicoComponent implements OnInit {
       this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
     });
   }
+
+  montaMensagemAtualizacaoSituacao(situacao) {
+    let sit = ""
+    if (situacao === "Aberto")
+      sit = 'Ordem de serviço cadastrada com sucesso!'
+    if (situacao === "Cancelado") 
+      sit = 'Ordem de serviço cancelada com sucesso!'
+    if (situacao === "Aguardando" || situacao === "Trabalhando" || situacao === "Faturado" || situacao === "Finalizado")  
+      sit = 'Ordem de serviço alterada com sucesso!'
+    if (sit === "Fechado")  
+      sit = 'Ordem de serviço fechada com sucesso!'
+    return sit;  
+  }
+  
 
   getSequenciaLancamento() {
     let x = 0;

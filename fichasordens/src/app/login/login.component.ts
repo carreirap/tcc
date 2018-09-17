@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
                 this.router.navigateByUrl('/home');
             }, (error) => {
                 console.log('error in', error);
-                this.error = 'Usuario ou senha incorretos';
+                this.error = 'Usuário ou senha incorretos';
                 this.loading = false;
         });
     }

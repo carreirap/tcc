@@ -57,7 +57,7 @@ public class PecaServicoOrdemEntity implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "quantidade", precision = 3, scale = 0)
+	@Column(name = "quantidade", precision = 3, scale = 0, nullable = false)
 	public Long getQuantidade() {
 		return quantidade;
 	}
@@ -66,7 +66,7 @@ public class PecaServicoOrdemEntity implements java.io.Serializable {
 		this.quantidade = quantidade;
 	}
 
-	@Column(name = "valor", precision = 8)
+	@Column(name = "valor", precision = 8, nullable = false)
 	public BigDecimal getValor() {
 		return this.valor;
 	}

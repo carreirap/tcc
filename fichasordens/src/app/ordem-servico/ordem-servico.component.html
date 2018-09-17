@@ -110,7 +110,7 @@
       <div class="invalid-feedback" *ngIf="descEquip.errors && (descEquip.dirty || descEquip.touched)">
         <ul >
           <li *ngIf="descEquip.errors.required">
-            Descrição do equipamento é obrigatória.
+            O campo desc. do equipamento é obrigatório.
           </li>
         </ul>
       </div>
@@ -124,7 +124,7 @@
       <div class="invalid-feedback" *ngIf="descDefeito.errors && (descDefeito.dirty || descDefeito.touched)">
         <ul >
           <li *ngIf="descDefeito.errors.required">
-            Descrição do defeito é obrigatória.
+            O campo desc. do defeito é obrigatório.
           </li>
         </ul>
       </div>
@@ -158,7 +158,7 @@
     </div>
   </div>
   <div class="form-row">
-    <label style="padding-left: 6px;" *ngIf="formOrdem.numeroOrdem">Peças / Outro Serviços</label>
+    <label style="padding-left: 6px;" *ngIf="formOrdem.numeroOrdem">Peças / Outros Serviços</label>
     <div class="form-group col-md-11">
       <p-table [responsive]="true" [value]="formOrdem.itemTables" [lazy]="true" [immutable]=false 
       selectionMode="single" [(selection)]="selectedPecaServico"
@@ -194,7 +194,7 @@
           <div class="invalid-feedback" *ngIf="tecnico.errors && (tecnico.dirty || tecnico.touched)">
             <ul >
               <li *ngIf="tecnico.errors.required">
-                O técnico é obrigatório
+                O campo técnico é obrigatório
               </li>
             </ul>
           </div>
@@ -214,7 +214,7 @@
           <div class="invalid-feedback" *ngIf="dataAberturaLanc.errors && (dataAberturaLanc.dirty || dataAberturaLanc.touched)">
             <ul >
               <li *ngIf="dataAberturaLanc.errors.required">
-                Data é obrigatória
+                O campo data é obrigatória
               </li>
             </ul>
           </div>
@@ -228,7 +228,7 @@
         <div class="invalid-feedback" *ngIf="obser.errors && (obser.dirty || obser.touched)">
           <ul >
             <li *ngIf="obser.errors.required">
-              Observação é obrigatória
+              O campo oservação é obrigatório
             </li>
           </ul>
         </div>
@@ -240,10 +240,11 @@
       <p-accordion [multiple]="true">
         <p-accordionTab header="Ver Histórico de Lancamentos">
             <div *ngFor="let lanc of formOrdem.lancamentoLst">
-              <label>{{lanc.nomeUsuario}}</label><br>
-              <label>{{lanc.situacao}}</label><br>
-              <label>{{lanc.data}}</label><br>
-              <label>{{lanc.observacao}}</label>
+              <strong>Técnico:</strong>&nbsp;<label>{{lanc.nomeUsuario}}</label>&nbsp;&nbsp;
+              <strong>Situação:</strong>&nbsp;<label>{{lanc.situacao}}</label>&nbsp;&nbsp;
+              <strong>data:</strong>&nbsp;<label>{{lanc.data}}</label><br>
+              <strong>Obs:</strong>&nbsp;<label>{{lanc.observacao}}</label>
+              <br><br>
             </div>
         </p-accordionTab>
       </p-accordion>
