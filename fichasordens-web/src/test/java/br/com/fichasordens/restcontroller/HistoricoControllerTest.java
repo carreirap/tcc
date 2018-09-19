@@ -34,7 +34,7 @@ public class HistoricoControllerTest {
 	public void test_pesquisarHistorico_success() {
 		Pageable page = new PageRequest(0, 10);
 		Page<ResultadoPesquisaDto> paged = Mockito.mock(Page.class);
-		when(this.historicoService.pesquisar("Ficha", 199, "11111111111", "Aberto", page)).thenReturn(paged);
+		when(this.historicoService.pesquisar("Ficha", 199, "11111111111", "Aberto", null, null, page)).thenReturn(paged);
 		HistoricoPesquisaDto dto = new HistoricoPesquisaDto();
 		dto.setCnpjcpf("11111111111");
 		dto.setNumero(199);

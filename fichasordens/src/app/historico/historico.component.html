@@ -22,6 +22,16 @@
   </div>
   <div class="form-row">
     <div class="form-group col-md-3">
+          <label for="inicio">Início</label>
+          <p-calendar class="form-control" [(ngModel)]="inicio" dateFormat="dd/mm/yy"
+          inputStyleClass="no-border" [ngModelOptions]="{standalone: true}"></p-calendar>
+    </div>
+    <div class="form-group col-md-3">
+        <label for="fim">Fim</label>
+        <p-calendar class="form-control" [(ngModel)]="fim" dateFormat="dd/mm/yy"
+        inputStyleClass="no-border"  [ngModelOptions]="{standalone: true}"></p-calendar>
+  </div>
+    <div class="form-group col-md-3">
         <label for="situacao">Situação</label>
         <select class="form-control custom-select" id="situaco" name="situacao" [(ngModel)]="formHist.situacao">
             <option *ngFor="let title of situacao" [value]="title.value">

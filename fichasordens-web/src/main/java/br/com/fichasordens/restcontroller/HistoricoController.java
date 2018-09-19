@@ -26,7 +26,8 @@ public class HistoricoController {
 	@SuppressWarnings("rawtypes")
 	@PostMapping
 	public ResponseEntity pesquisar(@RequestBody final HistoricoPesquisaDto dto, final Pageable pageable) {
-		Page<ResultadoPesquisaDto> pages = this.historicoService.pesquisar(dto.getTipo(), dto.getNumero(), dto.getCnpjcpf(), dto.getSituacao(), pageable);
+		Page<ResultadoPesquisaDto> pages = this.historicoService.pesquisar(dto.getTipo(), dto.getNumero(), dto.getCnpjcpf(), dto.getSituacao(),
+				dto.getInicio(), dto.getFim(), pageable);
 		return new ResponseEntity<>(pages, HttpStatus.OK);
 	}
 

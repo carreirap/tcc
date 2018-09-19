@@ -5,4 +5,6 @@ export  class Historico {
     responsavel: string;
     idResponsavel: number;
     situacao: string;
+    inicio: string;
+    fim: string;
 }

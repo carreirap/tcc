@@ -1,5 +1,10 @@
 package br.com.fichasordens.dto;
 
+import java.util.Date;
+import java.util.Locale;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class HistoricoPesquisaDto {
 	private String tipo;
 	private long numero;
@@ -7,6 +12,12 @@ public class HistoricoPesquisaDto {
 	private String responsavel;
 	private int idResponsavel;
 	private String situacao;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
+	private Date inicio;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
+	private Date fim;
 
 	public String getTipo() {
 		return tipo;
@@ -56,4 +67,19 @@ public class HistoricoPesquisaDto {
 		this.situacao = situacao;
 	}
 
+	public Date getInicio() {
+		return inicio;
+	}
+
+	public void setInicio(Date inicio) {
+		this.inicio = inicio;
+	}
+
+	public Date getFim() {
+		return fim;
+	}
+
+	public void setFim(Date fim) {
+		this.fim = fim;
+	}
 }

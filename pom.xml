@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  
+  <groupId>flow</groupId>
+  <artifactId>flow</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <packaging>pom</packaging>
+  <modelVersion>4.0.0</modelVersion>
+
+  <name>Getting Started :: Aggregate POM</name>
+  <description>Getting Started example</description>
+
+  
+  <modules>
+    <module>fichasordens-domain</module>
+    <module>fichasordens-web</module>
+  </modules>
+</project>

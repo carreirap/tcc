@@ -3,6 +3,7 @@ package br.com.fichasordens.service.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,16 +42,20 @@ public class HistoricoServiceImpl implements HistoricoService {
 	@Transactional
 	@Override
 	public Page<ResultadoPesquisaDto> pesquisar(final String tipo, final long numero, final String cnpjcpf,
-			final String situacao, final Pageable pageable) {
+			 final String situacao, final Date inicio, final Date fim, final Pageable pageable) {
 		if (tipo.equals("Ficha")) {
-			return this.pesquisarFichaPelosParametros(numero, cnpjcpf, situacao, pageable);
+			return this.pesquisarFichaPelosParametros(numero, cnpjcpf, situacao, inicio, fim, pageable);
 		} else {
-			return this.pesquisarOrdemPelosParametros(numero, cnpjcpf, situacao, pageable);
+			return this.pesquisarOrdemPelosParametros(numero, cnpjcpf, situacao, inicio, fim, pageable);
 		}
 	}
 
-	private Page<ResultadoPesquisaDto> pesquisarTodasSituacaoOrdem(final Pageable pageable) {
-		final Page<OrdemServicoEntity> paged = this.ordemRepository.findAllOrdens(pageable); 
+	private Page<ResultadoPesquisaDto> pesquisarTodasSituacaoOrdem(final Date inicio, final Date fim, final Pageable pageable) {
+		Page<OrdemServicoEntity> paged = null;
+		if (inicio == null)
+			paged = this.ordemRepository.findAllOrdens(pageable);
+		else 
+			paged = this.ordemRepository.findAllOrdensByDatas(inicio, fim, pageable);
 		final List<ResultadoPesquisaDto> lst = this.converterListaDeOrdensParaDto(paged.getContent());
 		final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
 		pages.setTotalPages(paged.getTotalPages());
@@ -58,13 +63,29 @@ public class HistoricoServiceImpl implements HistoricoService {
 		return pages;
 	}
 
-	private Page<ResultadoPesquisaDto> pesquisarCnpfCpfOrdem(final String cnpjcpf, final String situacao,
+	private Page<ResultadoPesquisaDto> pesquisarCnpfCpfOrdem(final String cnpjcpf, final String situacao, final Date inicio, final Date fim,		
 			final Pageable pageable) {
 		Page<OrdemServicoEntity> paged = null;
-		if (situacao.equals(TODAS))
+		if (situacao.equals(TODAS) && inicio == null)
 			paged = this.ordemRepository.findAllOrdensByCnpfcpf(cnpjcpf, pageable);
-		else 
+		else if (!situacao.equals(TODAS) && inicio == null)
 			paged = this.ordemRepository.findAllOrdensByCnpfcpfAndSituacao(cnpjcpf, situacao, pageable);
+		else if (situacao.equals(TODAS) && inicio != null)
+			paged = this.ordemRepository.findAllOrdensByCnpfcpfAndDatas(cnpjcpf, inicio, fim, pageable);
+		else	
+			paged = this.ordemRepository.findAllOrdensByCnpfcpfAndSituacaoAndDatas(cnpjcpf, situacao, inicio, fim, pageable);
+		
+		/*
+		if (situacao.equals(TODAS) && inicio == null)
+			paged = this.repository.findAllFichaByCnpfcpf(cnpjcpf, pageable);
+		else if (situacao.equals(TODAS) && inicio != null)
+			paged = this.repository.findAllFichaByCnpfcpfAndDatas(cnpjcpf, inicio, fim, pageable);
+		else if (!situacao.equals(TODAS) && inicio == null) {
+			paged = this.repository.findAllFichaByCnpfcpfAndSituacao(cnpjcpf, situacao, pageable);
+		} else {
+			paged = this.repository.findAllFichaByCnpfcpfAndSituacaoAndDatas(cnpjcpf, situacao, inicio, fim, pageable);
+		}
+		 */
 		final List<ResultadoPesquisaDto> lst = this.converterListaDeOrdensParaDto(paged.getContent());
 		final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
 		pages.setTotalPages(paged.getTotalPages());
@@ -73,43 +94,31 @@ public class HistoricoServiceImpl implements HistoricoService {
 	}
 	
 	public Page<ResultadoPesquisaDto> pesquisarFichaPelosParametros(final long numero, final String cnpjcpf,
-			final String situacao, final Pageable pageable) {
+			final String situacao, final Date inicio, final Date fim, final Pageable pageable) {
 		Page<ResultadoPesquisaDto> paged = null;
 		if (numero != 0 ) {
 			paged = pesquisarNumeroFicha(numero, pageable);
-		}
-		
-		if ((cnpjcpf != null && !cnpjcpf.equals(""))) {
-			paged = pesquisarCnpfCpfFicha(cnpjcpf, situacao, pageable);
-		}
-		
-		if (situacao.equals(TODAS)) {
+		} else if ((cnpjcpf != null && !cnpjcpf.equals(""))) {
+			paged = pesquisarCnpfCpfFicha(cnpjcpf, situacao, inicio, fim, pageable);
+		} else if (situacao.equals(TODAS) && numero == 0 && inicio == null) {
 			paged = pesquisarTodasSituacaoFicha(pageable);
-		}
-		
-		if ( (cnpjcpf == null || cnpjcpf.equals(""))) {
-			paged = pesquisarPorSituacaoFicha(situacao, pageable);
+		} else if (cnpjcpf == null || cnpjcpf.equals("")) {
+			paged = pesquisarPorSituacaoFicha(situacao, inicio, fim,  pageable);
 		}
 		return paged;
 	}
 	
 	public Page<ResultadoPesquisaDto> pesquisarOrdemPelosParametros(final long numero, final String cnpjcpf,
-			final String situacao, final Pageable pageable) {
+			final String situacao, final Date inicio, final Date fim, final Pageable pageable) {
 		Page<ResultadoPesquisaDto> paged = null;
 		if (numero != 0 ) {
 			paged = pesquisarNumeroOrdem(numero, pageable);
-		}
-		
-		if ((cnpjcpf != null && !cnpjcpf.equals(""))) {
-			paged = pesquisarCnpfCpfOrdem(cnpjcpf, situacao, pageable);
-		}
-		
-		if (situacao.equals(TODAS)) {
-			paged = pesquisarTodasSituacaoOrdem(pageable);
-		}
-		
-		if (numero == 0 && (cnpjcpf == null || cnpjcpf.equals(""))) {
-			paged = pesquisarPorSituacaoOrdem(situacao, pageable);
+		} else if ((cnpjcpf != null && !cnpjcpf.equals(""))) {
+			paged = pesquisarCnpfCpfOrdem(cnpjcpf, situacao, inicio, fim, pageable);
+		}  else if (situacao.equals(TODAS) && numero == 0 && inicio == null) {
+			paged = pesquisarTodasSituacaoOrdem(inicio, fim, pageable);
+		} else if (cnpjcpf == null || cnpjcpf.equals("")) {
+			paged = pesquisarPorSituacaoOrdem(situacao, inicio, fim,  pageable);
 		}
 		return paged;
 	}
@@ -124,8 +133,12 @@ public class HistoricoServiceImpl implements HistoricoService {
 		return pages;
 	}
 
-	private Page<ResultadoPesquisaDto> pesquisarPorSituacaoFicha(final String situacao, final Pageable pageable) {
-		final Page<FichaAtendimentoEntity> paged = this.repository.findAllFichaByStatus(situacao, pageable); 
+	private Page<ResultadoPesquisaDto> pesquisarPorSituacaoFicha(final String situacao, final Date inicio, final Date fim, final Pageable pageable) {
+		Page<FichaAtendimentoEntity> paged = null;
+		if (inicio == null) 
+			paged = this.repository.findAllFichaByStatus(situacao, pageable);
+		else 
+			paged = this.repository.findAllFichaByDatas(inicio, fim, pageable);
 		final List<ResultadoPesquisaDto> lst = this.converterListaDeFichasParaDto(paged.getContent());
 		final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
 		pages.setTotalPages(paged.getTotalPages());
@@ -133,8 +146,12 @@ public class HistoricoServiceImpl implements HistoricoService {
 		return pages;
 	}
 
-	private Page<ResultadoPesquisaDto> pesquisarPorSituacaoOrdem(final String situacao, final Pageable pageable) {
-		final Page<OrdemServicoEntity> paged = this.ordemRepository.findAllOrdensByStatus(situacao, pageable); 
+	private Page<ResultadoPesquisaDto> pesquisarPorSituacaoOrdem(final String situacao, final Date inicio, final Date fim, final Pageable pageable) {
+		Page<OrdemServicoEntity> paged = null;
+		if (inicio == null)
+			paged = this.ordemRepository.findAllOrdensByStatus(situacao, pageable);
+		else
+			paged = this.ordemRepository.findAllOrdensByStatusAndDataBetween(situacao, inicio, fim, pageable);
 		final List<ResultadoPesquisaDto> lst = this.converterListaDeOrdensParaDto(paged.getContent());
 		final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
 		pages.setTotalPages(paged.getTotalPages());
@@ -152,12 +169,17 @@ public class HistoricoServiceImpl implements HistoricoService {
 	}
 
 	private Page<ResultadoPesquisaDto> pesquisarCnpfCpfFicha(final String cnpjcpf, final String situacao,
-			final Pageable pageable) {
+			final Date inicio, final Date fim, final Pageable pageable) {
 		Page<FichaAtendimentoEntity> paged = null;
-		if (situacao.equals(TODAS))
+		if (situacao.equals(TODAS) && inicio == null)
 			paged = this.repository.findAllFichaByCnpfcpf(cnpjcpf, pageable);
-		else 
+		else if (situacao.equals(TODAS) && inicio != null)
+			paged = this.repository.findAllFichaByCnpfcpfAndDatas(cnpjcpf, inicio, fim, pageable);
+		else if (!situacao.equals(TODAS) && inicio == null) {
 			paged = this.repository.findAllFichaByCnpfcpfAndSituacao(cnpjcpf, situacao, pageable);
+		} else {
+			paged = this.repository.findAllFichaByCnpfcpfAndSituacaoAndDatas(cnpjcpf, situacao, inicio, fim, pageable);
+		}
 		final List<ResultadoPesquisaDto> lst = this.converterListaDeFichasParaDto(paged.getContent());
 		final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
 		pages.setTotalPages(paged.getTotalPages());

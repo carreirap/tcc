@@ -5,6 +5,7 @@ export class SituacaoTecnica {
         { value: 'Trabalhando', label: 'Trabalhando' },
         { value: 'Aguardando', label: 'Aguardando' },
         { value: 'Finalizado', label: 'Finalizado' },
+        { value: 'Cancelado', label: 'Cancelado' },
         { value: 'Faturado', label: 'Faturado' }
     ];
 
@@ -12,6 +13,7 @@ export class SituacaoTecnica {
         { value: 'Todas', label: 'Todas' },
         { value: 'Aberto', label: 'Aberto' },
         { value: 'Aguardando', label: 'Aguardando' },
+        { value: 'Cancelado', label: 'Cancelado' },
         { value: 'Faturado', label: 'Faturado' },
         { value: 'Fechado', label: 'Fechado' },
         { value: 'Finalizado', label: 'Finalizado' },

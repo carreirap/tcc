@@ -36,4 +36,19 @@ public interface OrdemServicoRepository extends JpaRepository<OrdemServicoEntity
 	
 	@Query("SELECT a FROM OrdemServicoEntity a LEFT JOIN a.ordemServicoLancs b where b.atualSituacao = true and b.situacao = ?1 and b.data between ?2 and ?3")
 	public List<OrdemServicoEntity> findAllOrdensByStatusAndDataBetween(final String situacao, final Date inicio, final Date fim);
+	
+	@Query("SELECT a FROM OrdemServicoEntity a LEFT JOIN a.ordemServicoLancs b where b.atualSituacao = true and b.situacao = ?1 and b.data between ?2 and ?3")
+	public Page<OrdemServicoEntity> findAllOrdensByStatusAndDataBetween(final String situacao, final Date inicio, final Date fim, Pageable page);
+	
+	@Query("SELECT a FROM OrdemServicoEntity a LEFT JOIN a.cliente b LEFT join a.ordemServicoLancs c where b.id = a.cliente.id and b.cnpjCpf = ?1 and c.situacao = ?2 and c.atualSituacao = true and "
+			+ "c.data between ?3 and ?4")
+	public Page<OrdemServicoEntity> findAllOrdensByCnpfcpfAndSituacaoAndDatas(final String cnpjCpf, final String situacao, final Date inicio, final Date fim, Pageable page);
+	
+	@Query("SELECT a FROM OrdemServicoEntity a LEFT JOIN a.cliente b LEFT join a.ordemServicoLancs c where b.id = a.cliente.id and b.cnpjCpf = ?1 and c.atualSituacao = true and "
+			+ "c.data between ?2 and ?3")
+	public Page<OrdemServicoEntity> findAllOrdensByCnpfcpfAndDatas(final String cnpjCpf, final Date inicio, final Date fim, Pageable page);
+	
+	@Query("SELECT a FROM OrdemServicoEntity a LEFT JOIN a.cliente b LEFT join a.ordemServicoLancs c where b.id = a.cliente.id and c.atualSituacao = true and "
+			+ "c.data between ?1 and ?2")
+	public Page<OrdemServicoEntity> findAllOrdensByDatas(final Date inicio, final Date fim, Pageable page);
 }

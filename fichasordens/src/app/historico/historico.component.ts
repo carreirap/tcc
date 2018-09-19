@@ -4,6 +4,7 @@ import { SituacaoTecnica } from '../_models/situacao-tecnica';
 import { DataService } from '../_services';
 import { ToasterService} from 'angular5-toaster';
 import { TipoServico } from '../_models/tipoServico';
+import { DatePipe } from '../../../node_modules/@angular/common';
 
 @Component({
   selector: 'app-historico',
@@ -12,6 +13,8 @@ import { TipoServico } from '../_models/tipoServico';
 })
 export class HistoricoComponent implements OnInit {
   formHist: Historico;
+  inicio: Date;
+  fim: Date;
   situacaoTecnica: SituacaoTecnica;
   situacao: any;
   toasterService: ToasterService;
@@ -21,7 +24,7 @@ export class HistoricoComponent implements OnInit {
   page = 0;
   path = "";
 
-  constructor(private service: DataService, toasterService: ToasterService) {
+  constructor(private service: DataService, toasterService: ToasterService, private datePipe: DatePipe) {
     this.formHist = new Historico();
     this.situacaoTecnica = new SituacaoTecnica();
     
@@ -38,6 +41,16 @@ export class HistoricoComponent implements OnInit {
 
   onSubmit() {
     this.content = undefined;
+    if (this.inicio !== undefined) {
+      this.inicio.setMinutes( this.inicio.getMinutes() + this.inicio.getTimezoneOffset() );
+      this.formHist.inicio = this.datePipe.transform(this.inicio, 'dd/MM/yyyy');
+    }
+    if (this.fim !== undefined)  {
+      this.fim.setMinutes( this.fim.getMinutes() + this.fim.getTimezoneOffset() );
+      this.formHist.fim = this.datePipe.transform(this.fim, 'dd/MM/yyyy');
+    }
+    
+    
     this.service.post('/historico?page=' +
             this.page + '&size=3&sort=id,DESC', this.formHist).subscribe(response => {
               this.loadHistorico(response);

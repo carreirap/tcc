@@ -211,6 +211,10 @@ public class OrdemServicoControllerTest {
 		OrdemServicoDto ordem = new OrdemServicoDto();
 		ordem.setTipoServico("true");
 		ordem.setCliente(new ClienteDto());
+		ordem.getCliente().setId(10);
+		ordem.setDescDefeito("test");
+		ordem.setDescEquip("test");
+		ordem.setEstadoItensAcomp("test");
 		ordem.setLancamento(new LancamentoDto());
 		return ordem;
 	}
