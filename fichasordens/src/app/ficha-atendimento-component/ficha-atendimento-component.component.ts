@@ -106,16 +106,17 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   }
 
   montaMensagemAtualizacaoSituacao(situacao) {
-    let sit = ""
-    if (situacao === "Aberto")
-      sit = 'Ficha de Atendimento cadastrada com sucesso!'
-    if (situacao === "Cancelado") 
-      sit = 'Ficha de Atendimento cancelada com sucesso!'
-    if (situacao === "Aguardando" || situacao === "Trabalhando" || situacao === "Faturado" || situacao === "Finalizado")  
-      sit = 'Ficha de Atendimento alterada com sucesso!'
-    if (sit === "Fechado")  
-      sit = 'Ficha de Atendimento fechada com sucesso!'
-    return sit;  
+    let sit = '';
+    if (situacao === 'Aberto') {
+      sit = 'Ficha de Atendimento cadastrada com sucesso!';
+    } else if (situacao === 'Cancelado') {
+      sit = 'Ficha de Atendimento cancelada com sucesso!';
+    } else if (situacao === 'Aguardando' || situacao === 'Trabalhando' || situacao === 'Faturado' || situacao === 'Finalizado') {
+      sit = 'Ficha de Atendimento alterada com sucesso!';
+    } else if (sit === 'Fechado') {
+      sit = 'Ficha de Atendimento fechada com sucesso!';
+    }
+    return sit;
   }
 
   download() {
@@ -126,7 +127,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
 
   private open(pdf) {
     const blob = new Blob([pdf] , { type: 'application/pdf' });
-    saveAs(blob, "testData.pdf");
+    saveAs(blob, 'FichaAtendimento' + this.formFicha.numeroFicha + '.pdf');
   }
 
   getSequenciaLancamento() {
@@ -193,8 +194,8 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       this.formFicha.lancamentoLst.push(data.lancamentoLst[i]);
       if (data.lancamentoLst[i].situacao === 'Fechado') {
         this.formFicha.dataFechamento = data.lancamentoLst[i].data;
-      }  
-      
+      }
+
     }
     this.totalPecaOutros = this.calcularTotalTabelaPecaOutros(data.pecaOutroServicoDto)
     this.formFicha.pecaOutroServicoDto = data.pecaOutroServicoDto;
@@ -277,20 +278,20 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     });
 
   }
-  
+
   calcularTotalLinha(event) {
     event.total = (event.valor * event.qtde);
     event.total = this.roundNumber(event.total, 2);
-    
+
   }
 
   calcularTotalTabelaPecaOutros(table) {
     let total = 0;
-    for(let i=0; i < table.length; i++) {
+    for (let i = 0; i < table.length; i++) {
       total = total + table[i].total;
-      
+
     }
-    
+
     return this.roundNumber(total, 2);
 
   }
@@ -310,10 +311,10 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   }
 
   roundNumber(number, decimals) {
-    var newnumber = new Number(number+'').toFixed(parseInt(decimals));
-    return parseFloat(newnumber); 
+    const newnumber = new Number(number + '').toFixed(parseInt(decimals));
+    return parseFloat(newnumber);
   }
-        
+
   loadForm(data) {
     this.formFicha.cliente.cnpj = data.cnpj;
     this.formFicha.cliente.nome = data.nome;
@@ -323,11 +324,11 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   }
 
   mostrarBotoes() {
-    if (this.formFicha.atualSituacao !== 'Aberto' && 
-    this.formFicha.atualSituacao !== 'Faturado' && 
-    this.formFicha.atualSituacao !== 'Fechado' && 
-    this.formFicha.atualSituacao !== 'Finalizado' && 
-    this.formFicha.atualSituacao !== 'Cancelado'&& 
+    if (this.formFicha.atualSituacao !== 'Aberto' &&
+    this.formFicha.atualSituacao !== 'Faturado' &&
+    this.formFicha.atualSituacao !== 'Fechado' &&
+    this.formFicha.atualSituacao !== 'Finalizado' &&
+    this.formFicha.atualSituacao !== 'Cancelado'&&
     this.formFicha.atualSituacao !== 'Aguardando') {
 
       return true;

@@ -48,7 +48,7 @@ export class ModalPesquisaClienteComponent implements OnInit {
     this.typePesquisa = type;
     if (this.typePesquisa === 'cnpjcpf') {
         this.service.get('/cliente?cnpjcpf=' + this.cnpjPesquisa + '&page=' +
-        this.page + '&size=1&sort=nome,DESC').subscribe(response => {
+        this.page + '&size=5&sort=nome,DESC').subscribe(response => {
             console.log(response);
             this.loadClientes(response);
         }, (error) => {
@@ -57,7 +57,7 @@ export class ModalPesquisaClienteComponent implements OnInit {
     } else {
         if (this.nomePesquisa.length > 3 ) {
             this.service.get('/cliente?nome=' + this.nomePesquisa + '&page=' +
-            this.page + '&size=1&sort=nome,DESC').subscribe(response => {
+            this.page + '&size=5&sort=nome,DESC').subscribe(response => {
                 console.log(response);
                 this.loadClientes(response);
             }, (error) => {

@@ -22,18 +22,18 @@ export class HistoricoComponent implements OnInit {
   content: Array<any>;
   pages = 0;
   page = 0;
-  path = "";
+  path = '';
 
   constructor(private service: DataService, toasterService: ToasterService, private datePipe: DatePipe) {
     this.formHist = new Historico();
     this.situacaoTecnica = new SituacaoTecnica();
-    
+
     this.toasterService = toasterService;
    }
 
   ngOnInit() {
     this.tipoServico = new TipoServico();
-    this.formHist.situacao = "Todas"
+    this.formHist.situacao = 'Todas';
     this.formHist.tipo = 'Ficha';
     this.situacao = this.situacaoTecnica.getSituacoes_Todas();
     console.log(this.situacao);
@@ -49,8 +49,6 @@ export class HistoricoComponent implements OnInit {
       this.fim.setMinutes( this.fim.getMinutes() + this.fim.getTimezoneOffset() );
       this.formHist.fim = this.datePipe.transform(this.fim, 'dd/MM/yyyy');
     }
-    
-    
     this.service.post('/historico?page=' +
             this.page + '&size=3&sort=id,DESC', this.formHist).subscribe(response => {
               this.loadHistorico(response);
@@ -62,7 +60,7 @@ export class HistoricoComponent implements OnInit {
   }
 
   public loadHistorico(response: any) {
-    if (this.formHist.tipo == "Ficha") {
+    if (this.formHist.tipo === 'Ficha') {
       this.path = '/fichas';
     } else {
       this.path = '/ordem';
