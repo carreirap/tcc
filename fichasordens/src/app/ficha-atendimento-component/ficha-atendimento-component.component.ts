@@ -122,7 +122,16 @@ export class FichaAtendimentoComponentComponent implements OnInit {
   download() {
     this.service.getPdf('/ficha/pdf?id=' + this.formFicha.numeroFicha).subscribe(response => {
       this.open(response);
-    }); 
+    });
+  }
+
+  email() {
+    this.service.get('/ficha/email?id=' + this.formFicha.numeroFicha).subscribe(response => {
+      this.toasterService.pop('success', 'Ficha de Atendimento', 'Email enviado com sucesso!');
+    }, (error) => {
+      console.log('error in', error.error.mensagem);
+      this.toasterService.pop('error', 'Ficha de Atendimento', error.error.mensagem);
+    });
   }
 
   private open(pdf) {
