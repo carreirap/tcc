@@ -9,6 +9,7 @@ public class ResultadoPesquisaDto {
 	private String tipo;
 	private BigDecimal valor;
 	private Date data;
+	private String situacao;
 
 	public long getNumero() {
 		return numero;
@@ -50,4 +51,11 @@ public class ResultadoPesquisaDto {
 		this.data = data;
 	}
 
+	public String getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(String situacao) {
+		this.situacao = situacao;
+	}
 }
