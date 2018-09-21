@@ -24,7 +24,7 @@
 		<band height="20" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="185" height="20" uuid="b948f738-4a20-4dbc-8b07-496c5d58b2cd"/>
-				<box leftPadding="1">
+				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
@@ -38,7 +38,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="185" y="0" width="185" height="20" uuid="00df1816-9ad8-4cf5-9e1c-32b9adf7bcd1"/>
-				<box leftPadding="1">
+				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
@@ -51,8 +51,8 @@
 				<text><![CDATA[Descrição]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="370" y="0" width="185" height="20" uuid="4631167d-2bd5-4e76-87e3-4b2982d8db4a"/>
-				<box leftPadding="1">
+				<reportElement x="370" y="0" width="105" height="20" uuid="4631167d-2bd5-4e76-87e3-4b2982d8db4a"/>
+				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
@@ -64,13 +64,27 @@
 				</textElement>
 				<text><![CDATA[Valor]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="475" y="0" width="77" height="20" uuid="53e573e9-aaf7-40d4-b389-fb0a905baa5e"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="21" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="185" height="20" uuid="c507822e-2df1-4b63-9591-049c2a0b01df"/>
-				<box leftPadding="1">
+				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
@@ -82,7 +96,7 @@
 			</textField>
 			<textField>
 				<reportElement x="185" y="0" width="185" height="20" uuid="976e785f-ce59-410a-9791-0355a1d88568"/>
-				<box leftPadding="1">
+				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
@@ -92,9 +106,9 @@
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="370" y="0" width="185" height="20" uuid="e904bb98-b4f1-4820-9448-7e59a95f0725"/>
-				<box leftPadding="1">
+			<textField pattern="###0.00;###0.00-">
+				<reportElement x="370" y="0" width="105" height="20" uuid="e904bb98-b4f1-4820-9448-7e59a95f0725"/>
+				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
@@ -104,8 +118,15 @@
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="475" y="1" width="77" height="20" uuid="088454bb-71e5-455a-ba0a-00f0472c45c9"/>
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+				<reportElement x="475" y="0" width="77" height="20" uuid="088454bb-71e5-455a-ba0a-00f0472c45c9"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{valor} .multiply(new BigDecimal($F{quantidade}))]]></textFieldExpression>
 			</textField>
@@ -114,7 +135,14 @@
 	<columnFooter>
 		<band height="26" splitType="Stretch">
 			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement x="475" y="0" width="80" height="20" uuid="b9061db1-e050-4e55-a0f5-9f71130f613b"/>
+				<reportElement x="475" y="0" width="77" height="20" uuid="b9061db1-e050-4e55-a0f5-9f71130f613b"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
 			</textField>

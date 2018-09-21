@@ -38,6 +38,7 @@ import br.com.fichasordens.util.ConverterAtendimento;
 import br.com.fichasordens.util.ConverterCliente;
 import br.com.fichasordens.util.ConverterLancamentoDto;
 import br.com.fichasordens.util.ConverterPecaOutroServico;
+import br.com.fichasordens.util.Email;
 import br.com.fichasordens.util.StatusServicoEnum;
 import br.com.fichasordens.util.TipoServicoEnum;
 
@@ -52,6 +53,9 @@ public class FichaAtendimentoController {
 	
 	@Autowired
 	private GeradorPdfService pdfService;
+	
+	@Autowired
+	private Email email;
 
 	
 	@PostMapping
@@ -99,6 +103,25 @@ public class FichaAtendimentoController {
 		responseOutputStream.close();
 		out.close();
 		response.flushBuffer();
+	}
+	
+	@GetMapping(path = "/email")
+	public ResponseEntity enviarEmail(@RequestParam final long id, HttpServletResponse response) throws Exception {
+
+		final FichaAtendimento ficha = this.fichaAtendimento.buscarFicha(id);
+		try(ByteArrayOutputStream out = pdfService.gerarFichaAtendimentoPdf(ficha)) {
+		
+			this.email.enviarEmailComAnexo("Ficha de Atendimento - IslucNet", 
+				"Segue anexo ficha de atendimento para acompanhamento do servico", out,
+				"Ficha_de_Atendimento_" + ficha.getId());
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			LOGGER.error("Erro ao enviar email para {}" + ficha.getCliente().getNome(), e);
+			return new ResponseEntity<>( HttpStatus.OK);
+		}
+		
+		
+		
 	}
 		
 	@GetMapping

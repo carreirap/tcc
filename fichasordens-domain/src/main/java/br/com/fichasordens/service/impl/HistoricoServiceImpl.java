@@ -137,7 +137,9 @@ public class HistoricoServiceImpl implements HistoricoService {
 		Page<FichaAtendimentoEntity> paged = null;
 		if (inicio == null) 
 			paged = this.repository.findAllFichaByStatus(situacao, pageable);
-		else 
+		else if (!situacao.equals("Todas")) 
+			paged = this.repository.findAllFichaBySituacaoAndDatas(situacao, inicio, fim, pageable);
+		else
 			paged = this.repository.findAllFichaByDatas(inicio, fim, pageable);
 		final List<ResultadoPesquisaDto> lst = this.converterListaDeFichasParaDto(paged.getContent());
 		final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
@@ -210,6 +212,7 @@ public class HistoricoServiceImpl implements HistoricoService {
 			for(FichaAtendLancEntity b: a.getFichaAtendLancs()) {
 				if (b.getAtualSituacao()) {
 					dto.setData(b.getData());
+					dto.setSituacao(b.getSituacao());
 					break;
 				}
 			}
@@ -233,6 +236,7 @@ public class HistoricoServiceImpl implements HistoricoService {
 			for(OrdemServicoLancEntity b: a.getOrdemServicoLancs()) {
 				if (b.getAtualSituacao()) {
 					dto.setData(b.getData());
+					dto.setSituacao(b.getSituacao());
 					break;
 				}
 			}
