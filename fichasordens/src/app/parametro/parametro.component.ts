@@ -43,6 +43,9 @@ export class ParametroComponent implements OnInit {
     par2.id = this.formValue.idHora;
     par2.valor = this.formValue.valorHora;
     array.push(par2);
+    const par3: Parametro = new Parametro();
+    par2.id = this.formValue.idDiasAlerta;
+    par2.valor = this.formValue.diasAlerta;
 
     this.service.post('/parametro', array).subscribe(response => {
         console.log(response);
@@ -59,6 +62,8 @@ export class ParametroComponent implements OnInit {
     this.formValue.valorVisita = data[0].valor;
     this.formValue.idHora = data[1].id;
     this.formValue.valorHora = data[1].valor;
+    this.formValue.idDiasAlerta = data[2].id;
+    this.formValue.diasAlerta = data[2].valor;
   }
 
 }

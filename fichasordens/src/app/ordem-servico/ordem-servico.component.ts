@@ -148,6 +148,14 @@ export class OrdemServicoComponent implements OnInit {
     return sit;  
   }
   
+  email() {
+    this.service.get('/ordem/email?id=' + this.formOrdem.numeroOrdem).subscribe(response => {
+      this.toasterService.pop('success', 'Ordem de Serviço', 'Email enviado com sucesso!');
+    }, (error) => {
+      console.log('error in', error.error.mensagem);
+      this.toasterService.pop('error', 'Ordem de Serviço', error.error.mensagem);
+    });
+  }
 
   getSequenciaLancamento() {
     let x = 0;
