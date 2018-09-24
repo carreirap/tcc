@@ -7,8 +7,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +25,7 @@ import br.com.fichasordens.Atendimento;
 import br.com.fichasordens.Cliente;
 import br.com.fichasordens.FichaAtendimento;
 import br.com.fichasordens.Lancamento;
+import br.com.fichasordens.Parametro;
 import br.com.fichasordens.PecaOutroServico;
 import br.com.fichasordens.dto.AtendimentoDto;
 import br.com.fichasordens.dto.FichaAtendimentoDto;
@@ -38,6 +39,7 @@ import br.com.fichasordens.util.ConverterAtendimento;
 import br.com.fichasordens.util.ConverterCliente;
 import br.com.fichasordens.util.ConverterLancamentoDto;
 import br.com.fichasordens.util.ConverterPecaOutroServico;
+import br.com.fichasordens.util.DataUtil;
 import br.com.fichasordens.util.Email;
 import br.com.fichasordens.util.StatusServicoEnum;
 import br.com.fichasordens.util.TipoServicoEnum;
@@ -46,16 +48,24 @@ import br.com.fichasordens.util.TipoServicoEnum;
 @RequestMapping("/ficha")
 @EnableResourceServer
 public class FichaAtendimentoController {
-	private static final Logger LOGGER = LogManager.getLogger(FichaAtendimentoController.class);
-	
+	private static final Logger LOGGER = LoggerFactory.getLogger(FichaAtendimentoController.class);
 	@Autowired
 	private FichaAtendimento fichaAtendimento;
+	
+	@Autowired
+	private Atendimento atendimento;
+	
+	@Autowired 
+	private PecaOutroServico pecaOutroServico;
 	
 	@Autowired
 	private GeradorPdfService pdfService;
 	
 	@Autowired
 	private Email email;
+	
+	@Autowired
+	private Parametro parametro;
 
 	
 	@PostMapping
@@ -77,21 +87,21 @@ public class FichaAtendimentoController {
 	public ResponseEntity gravarPecaServicoFicha(@RequestBody final PecaOutroServicoDto dto) {
 		LOGGER.info("Gravar peças / outro servico");
 		final PecaOutroServico peca = ConverterPecaOutroServico.converterDtoPecaServico(dto, TipoServicoEnum.FICHA_ATENDIMENTO);
-		this.fichaAtendimento.gravarPecaServicoFicha(peca);
+		this.pecaOutroServico.gravarPecaServicoFicha(peca);
 		return new ResponseEntity( HttpStatus.OK);
 	}
 	
 	@PostMapping(path="/atendimento")
 	public ResponseEntity gravarAtendimento(@RequestBody final AtendimentoDto dto) {
 			final Atendimento atend = ConverterAtendimento.converterAtendimentoDto(dto);
-			this.fichaAtendimento.gravarAtendimento(atend);
+			this.atendimento.gravarAtendimento(atend);
 			return new ResponseEntity( HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/pdf")
 	public void gerarPdf(@RequestParam final long id, HttpServletResponse response) throws Exception {
 
-		final FichaAtendimento ficha = this.fichaAtendimento.buscarFicha(id);
+		final FichaAtendimento ficha = this.fichaAtendimento.buscarFichaAtendimento(id);
 		ByteArrayOutputStream out = pdfService.gerarFichaAtendimentoPdf(ficha);
 
 		response.addHeader("Content-disposition", "attachment;filename=ordem-" + id + ".pdf");
@@ -108,26 +118,26 @@ public class FichaAtendimentoController {
 	@GetMapping(path = "/email")
 	public ResponseEntity enviarEmail(@RequestParam final long id, HttpServletResponse response) throws Exception {
 
-		final FichaAtendimento ficha = this.fichaAtendimento.buscarFicha(id);
+		final FichaAtendimento ficha = this.fichaAtendimento.buscarFichaAtendimento(id);
 		try(ByteArrayOutputStream out = pdfService.gerarFichaAtendimentoPdf(ficha)) {
+			final String situacao = ficha.getFichaAtendimentoLancList().get(ficha.getFichaAtendimentoLancList().size() - 1).getSituacao();
 		
-			this.email.enviarEmailComAnexo("Ficha de Atendimento - IslucNet", 
-				"Segue anexo ficha de atendimento para acompanhamento do servico", out,
+			this.email.enviarEmailComAnexo(ficha.getCliente().getEmail(),"Ficha de Atendimento - IslucNet", 
+				"Segue anexo Ficha de Atendimento para acompanhamento do servico <br><br> Situação atual da ficha: <strong>" + situacao + "<strong>", out,
 				"Ficha_de_Atendimento_" + ficha.getId());
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			LOGGER.error("Erro ao enviar email para {}" + ficha.getCliente().getNome(), e);
-			return new ResponseEntity<>( HttpStatus.OK);
+			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
 		}
-		
-		
-		
 	}
 		
 	@GetMapping
 	public ResponseEntity listaFichas(@RequestParam final String situacao) {
 		List<FichaAtendimento> fichaList = this.fichaAtendimento.listarFichas(StatusServicoEnum.valueOf(situacao.toUpperCase()));
-		List<ListagemDashboardDto> dtoList = new ArrayList<ListagemDashboardDto>();
+		List<ListagemDashboardDto> dtoList = new ArrayList<>();
+		Parametro param = parametro.buscarValorParametroAlerta();
+		final int qtdDiasAlerta = param.getValor().intValue();
 		fichaList.forEach(a->{
 			ListagemDashboardDto dto = new ListagemDashboardDto();
 			dto.setId(a.getId());
@@ -137,7 +147,13 @@ public class FichaAtendimentoController {
 			for(Lancamento lanc:  a.getFichaAtendimentoLancList()) {
 				if (lanc.getSituacao().equals(situacao)) {
 					dto.setResponsavel(lanc.getUsuario().getNome());
+					dto.setDias((int) DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()));
+					if (dto.getDias() > qtdDiasAlerta) 
+						dto.setAlerta("S");
+					else
+						dto.setAlerta("N");
 				}
+				
 				if (lanc.getSituacao().equals("Aberto")) {
 					dto.setDataAbertura(lanc.getData());
 				}
@@ -151,25 +167,25 @@ public class FichaAtendimentoController {
 	
 	@GetMapping(path="/buscar")
 	public FichaAtendimentoDto buscarFicha(@RequestParam final long id) {
-		FichaAtendimento ficha = this.fichaAtendimento.buscarFicha(id);
+		FichaAtendimento ficha = this.fichaAtendimento.buscarFichaAtendimento(id);
 		return this.converterParaDto(ficha);
 	}
 	
 	@GetMapping(path="/calcAtendimento")
 	public ResponseEntity calcularValorAtendimento(@RequestParam final int horas, @RequestParam final int tipo) {
-		return new ResponseEntity(this.fichaAtendimento.calcularValorAtendimento(horas, tipo), HttpStatus.OK);
+		return new ResponseEntity(this.atendimento.calcularValorAtendimento(horas, tipo), HttpStatus.OK);
 	}
 	
 	
 	@DeleteMapping(path="/atendimento")
 	public ResponseEntity excluirAtendimento(@RequestParam final int idFicha, @RequestParam final int sequencia) {
-		this.fichaAtendimento.excluirAtendimento(idFicha, sequencia);
+		this.atendimento.excluirAtendimento(idFicha, sequencia);
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	
 	@DeleteMapping(path="/pecaServico")
 	public ResponseEntity excluirPecaOutroServico(@RequestParam final int idFicha, @RequestParam final int sequencia) {
-		this.fichaAtendimento.excluirPecaOutroServico(idFicha, sequencia);
+		this.pecaOutroServico.excluirPecaOutroServicoFicha(idFicha, sequencia);
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	

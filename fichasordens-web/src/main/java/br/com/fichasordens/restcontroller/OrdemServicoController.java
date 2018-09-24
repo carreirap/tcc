@@ -7,8 +7,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.fichasordens.Cliente;
 import br.com.fichasordens.Lancamento;
 import br.com.fichasordens.OrdemServico;
+import br.com.fichasordens.Parametro;
 import br.com.fichasordens.PecaOutroServico;
 import br.com.fichasordens.dto.LancamentoDto;
 import br.com.fichasordens.dto.ListagemDashboardDto;
@@ -36,6 +38,7 @@ import br.com.fichasordens.util.ConverterCliente;
 import br.com.fichasordens.util.ConverterLancamentoDto;
 import br.com.fichasordens.util.ConverterPecaOutroServico;
 import br.com.fichasordens.util.DataUtil;
+import br.com.fichasordens.util.Email;
 import br.com.fichasordens.util.StatusServicoEnum;
 import br.com.fichasordens.util.TipoServicoEnum;
 
@@ -45,16 +48,23 @@ import br.com.fichasordens.util.TipoServicoEnum;
 @EnableResourceServer
 public class OrdemServicoController {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(OrdemServicoController.class);
+	
 	private static final String ORDEM_DE_SERVICO = "Ordem de Servico";
 	@Autowired
 	private OrdemServico ordemServico;
 	
-	@Value("${alerta.servico.parado.situacao}")
-	private int qtdDiasAlerta;
-	
 	@Autowired
 	private GeradorPdfService pdfService;
 	
+	@Autowired
+	private Parametro parametro;
+	
+	@Autowired
+	private PecaOutroServico pecaOutroServico;
+	
+	@Autowired
+	private Email email;
 
 	
 	@PostMapping
@@ -63,6 +73,7 @@ public class OrdemServicoController {
 			OrdemServico ordemServico = this.converterDtoParaOrdemServico(dto);
 			ordemServico = this.ordemServico.salvarOrdem(ordemServico);
 			dto.setNumeroOrdem(ordemServico.getId());
+			LOGGER.info("Ordem de Serviço {} salva com sucesso", ordemServico.getId());
 			return new ResponseEntity<OrdemServicoDto>(dto, HttpStatus.OK);
 		} catch (ExcecaoRetorno e) {
 			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -73,7 +84,7 @@ public class OrdemServicoController {
 	public ResponseEntity salvarItemOrdemServico(@RequestBody final PecaOutroServicoDto dto) {
 		try {
 			final PecaOutroServico peca = ConverterPecaOutroServico.converterDtoPecaServico(dto, TipoServicoEnum.ORDEM_SERVICO);
-			this.ordemServico.gravarPecaServicoOrdem(peca);
+			this.pecaOutroServico.gravarPecaServicoOrdem(peca);
 			return new ResponseEntity( HttpStatus.OK);
 		} catch (ExcecaoRetorno e) {
 			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -82,7 +93,7 @@ public class OrdemServicoController {
 	
 	@DeleteMapping(path="/pecaServico")
 	public ResponseEntity deletarPecaServicoOrdem(@RequestParam final int id, @RequestParam final int sequencia) {
-		this.ordemServico.deletarPecaOutroServico(id, sequencia);
+		this.pecaOutroServico.excluirPecaOutroServicoOrdem(id, sequencia);
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	
@@ -90,7 +101,9 @@ public class OrdemServicoController {
 	@GetMapping
 	public ResponseEntity listaFichas(@RequestParam final String situacao) {
 		List<OrdemServico> ordemList = this.ordemServico.listarOrdens(StatusServicoEnum.valueOf(situacao.toUpperCase()));
-		List<ListagemDashboardDto> dtoList = new ArrayList<ListagemDashboardDto>();
+		List<ListagemDashboardDto> dtoList = new ArrayList<>();
+		Parametro param = parametro.buscarValorParametroAlerta();
+		final int qtdDiasAlerta = param.getValor().intValue();
 		ordemList.forEach(a->{
 			ListagemDashboardDto dto = new ListagemDashboardDto();
 			dto.setId(a.getId());
@@ -137,7 +150,24 @@ public class OrdemServicoController {
 		responseOutputStream.close();
 		out.close();
 		response.flushBuffer();
-	}	
+	}
+	
+	@GetMapping(path = "/email")
+	public ResponseEntity enviarEmail(@RequestParam final long id, HttpServletResponse response) throws Exception {
+
+		final OrdemServico ordem = this.ordemServico.buscarOrdem(id);
+		try(ByteArrayOutputStream out = pdfService.gerarOrdemServicoPdf(ordem)) {
+			final String situacao = ordem.getLancamento().get(ordem.getLancamento().size() - 1).getSituacao();
+		
+			this.email.enviarEmailComAnexo(ordem.getCliente().getEmail(),"Ordem de Serviço - IslucNet", 
+				"Segue anexo Ordem de Servico para acompanhamento <br><br> Situação atual da Ordem: <strong>" + situacao + "<strong>", out,
+				"Ordem_de_Servico_" + ordem.getId());
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			LOGGER.error("Erro ao enviar email para {}" + ordem.getCliente().getNome(), e);
+			return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 	private OrdemServico converterDtoParaOrdemServico(final OrdemServicoDto dto) throws ExcecaoRetorno {
 		final OrdemServico ent = new OrdemServico();
@@ -176,7 +206,6 @@ public class OrdemServicoController {
 		dto.setFabricante(ordem.getFabricante());
 		dto.setDescDefeito(ordem.getDescDefeito());
 		dto.setDescEquip(ordem.getDescEquip());
-		//ent.setDescServico(dto.getDescServico());
 		dto.setEstadoItensAcomp(ordem.getEstadoItensAcomp());
 		dto.setModelo(ordem.getModelo());
 		dto.setSerie(ordem.getSerie());

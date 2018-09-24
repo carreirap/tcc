@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -24,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import br.com.fichasordens.Cliente;
 import br.com.fichasordens.Lancamento;
 import br.com.fichasordens.OrdemServico;
+import br.com.fichasordens.Parametro;
 import br.com.fichasordens.PecaOutroServico;
 import br.com.fichasordens.dto.ClienteDto;
 import br.com.fichasordens.dto.LancamentoDto;
@@ -41,6 +43,17 @@ public class OrdemServicoControllerTest {
 	
 	@Mock 
 	OrdemServico ordemServico;
+	
+	@Mock
+	private Parametro parametro;
+	
+	@Mock
+	private PecaOutroServico pecaOutroServico;
+	
+	@Before
+	public void init() {
+		when(this.parametro.buscarValorParametroAlerta()).thenReturn(FichaAtendimentoControllerTest.createParametroAlerta());
+	}
 	
 	@Test
 	public void test_salvarOrdemServico_success() throws ExcecaoRetorno {
@@ -67,7 +80,7 @@ public class OrdemServicoControllerTest {
 	@Test
 	public void test_salvarItemOrdemServico_sucess() throws ExcecaoRetorno {
 		PecaOutroServicoDto dto = criarPecaOutroServicoDto();
-		doNothing().when(this.ordemServico).gravarPecaServicoOrdem(org.mockito.Mockito.any(PecaOutroServico.class));
+		doNothing().when(this.pecaOutroServico).gravarPecaServicoOrdem(org.mockito.Mockito.any(PecaOutroServico.class));
 		
 		ResponseEntity response = this.ordemServicoController.salvarItemOrdemServico(dto);
 		
@@ -78,7 +91,7 @@ public class OrdemServicoControllerTest {
 	@Test
 	public void test_salvarItemOrdemServico_fail() throws ExcecaoRetorno {
 		PecaOutroServicoDto dto = criarPecaOutroServicoDto();
-		doThrow(new ExcecaoRetorno()).when(this.ordemServico).gravarPecaServicoOrdem(org.mockito.Mockito.any(PecaOutroServico.class));
+		doThrow(new ExcecaoRetorno()).when(this.pecaOutroServico).gravarPecaServicoOrdem(org.mockito.Mockito.any(PecaOutroServico.class));
 		ResponseEntity response = this.ordemServicoController.salvarItemOrdemServico(dto);
 		
 		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -115,7 +128,7 @@ public class OrdemServicoControllerTest {
 	@Test
 	public void test_deletarPecaOutroServico_success() {
 		final OrdemServico ordem = criarOrdemServico();
-		doNothing().when(this.ordemServico).deletarPecaOutroServico(199,1);
+		doNothing().when(this.pecaOutroServico).excluirPecaOutroServicoOrdem(199,1);
 
 		ResponseEntity response = this.ordemServicoController.deletarPecaServicoOrdem(199, 1);
 		assertNotNull(response);
@@ -172,7 +185,6 @@ public class OrdemServicoControllerTest {
 		ordem.setCliente(loadCliente());
 		ordem.setDescDefeito("Test");
 		ordem.setDescEquip("Test");
-		ordem.setDescServico("Test");
 		ordem.setEstadoItensAcomp("mouse pad não funciona");
 		ordem.setFabricante("Samsung");
 		ordem.setId(199);

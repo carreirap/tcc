@@ -2,6 +2,7 @@ package br.com.fichasordens.service.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import br.com.fichasordens.FichaAtendimento;
 import br.com.fichasordens.OrdemServico;
 import br.com.fichasordens.service.GeradorPdfService;
 import br.com.fichasordens.util.StatusServicoEnum;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -29,7 +31,7 @@ public class GeradorPdfServiceImpl implements GeradorPdfService {
 	private Empresa empresa;
 	
 	@Override
-	public ByteArrayOutputStream gerarOrdemServicoPdf(final OrdemServico ordem) throws Exception {
+	public ByteArrayOutputStream gerarOrdemServicoPdf(final OrdemServico ordem) throws JRException {
 
 		
 		Map<String, Object> parametros = new HashMap<>();
@@ -97,7 +99,7 @@ public class GeradorPdfServiceImpl implements GeradorPdfService {
 	}
 
 	@Override
-	public ByteArrayOutputStream gerarFichaAtendimentoPdf(final FichaAtendimento ficha) throws Exception {
+	public ByteArrayOutputStream gerarFichaAtendimentoPdf(final FichaAtendimento ficha) throws JRException, FileNotFoundException {
 		Map<String, Object> parametros = new HashMap<>();
 		
 		this.preencherDadosEmpresa(parametros);
@@ -123,8 +125,8 @@ public class GeradorPdfServiceImpl implements GeradorPdfService {
 			.filter(lanc -> lanc.getSituacao().equals(StatusServicoEnum.FECHADO.getValue()))
 			.forEach( a-> parametros.put("saida", form.format(a.getData())));
 		
-		//final ClassLoader classLoader = getClass().getClassLoader();
-		InputStream input = new FileInputStream("C:\\Users\\paulo\\ficha_atend.jasper");
+		final ClassLoader classLoader = getClass().getClassLoader();
+		InputStream input = classLoader.getResourceAsStream("ficha_atend.jasper");
 		
 		JRBeanCollectionDataSource jrDataSource = new JRBeanCollectionDataSource(ficha.getAtendimentoList());
 		final JRBeanCollectionDataSource coll = new JRBeanCollectionDataSource(ficha.getPecaOutroServicoList());

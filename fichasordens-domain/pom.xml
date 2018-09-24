@@ -31,7 +31,8 @@
 			src/main/java/br/com/fichasordens/util/CustomPage.java,
 			src/main/java/br/com/fichasordens/util/StatusServicoEnum.java,
 			src/main/java/br/com/fichasordens/util/DashBoardDto.java,
-			src/main/java/br/com/fichasordens/service/impl/GeradorPdfServiceImpl.java
+			src/main/java/br/com/fichasordens/service/impl/GeradorPdfServiceImpl.java,
+			src/main/java/br/com/fichasordens/util/Email.java
 		</sonar.exclusions>
 	</properties>
 

@@ -21,6 +21,7 @@ import br.com.fichasordens.FichaAtendimento;
 import br.com.fichasordens.FichaAtendimentoTest;
 import br.com.fichasordens.OrdemServico;
 import br.com.fichasordens.OrdemServicoTest;
+import br.com.fichasordens.Parametro;
 import br.com.fichasordens.entities.FichaAtendimentoEntity;
 import br.com.fichasordens.entities.OrdemServicoEntity;
 import br.com.fichasordens.util.DashBoardDto;
@@ -40,11 +41,15 @@ public class DashboardServiceImplTest {
 	@Mock
 	private OrdemServico ordemServico;
 	
+	@Mock
+	private Parametro parametro;
+	
 	@Before
 	public void init() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-		Field field = DashboardServiceImpl.class.getDeclaredField( "qtdDiasAlerta" );
+		/*Field field = DashboardServiceImpl.class.getDeclaredField( "qtdDiasAlerta" );
 		field.setAccessible(true);
-		field.set(dash, "2");
+		field.set(dash, "2");*/
+		when(this.parametro.buscarValorParametroAlerta()).thenReturn(loadParametro());
 	}
 	
 	@Test
@@ -176,4 +181,10 @@ public class DashboardServiceImplTest {
 		
 	}
 
+	private Parametro loadParametro() {
+		Parametro p = new Parametro();
+		p.setId((byte)3);
+		p.setValor(new BigDecimal(2));
+		return p;
+	}
 }

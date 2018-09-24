@@ -25,14 +25,11 @@ import br.com.fichasordens.entities.AtendimentoFichaId;
 import br.com.fichasordens.entities.FichaAtendLancEntity;
 import br.com.fichasordens.entities.FichaAtendLancId;
 import br.com.fichasordens.entities.FichaAtendimentoEntity;
-import br.com.fichasordens.entities.PecaServicoFichaEntity;
-import br.com.fichasordens.entities.PecaServicoFichaIdEntity;
 import br.com.fichasordens.entities.UsuarioEntity;
 import br.com.fichasordens.exception.ExcecaoRetorno;
 import br.com.fichasordens.repository.AtendimentoFichaRepository;
 import br.com.fichasordens.repository.FichaAtendLancRepository;
 import br.com.fichasordens.repository.FichaAtendimentoRepository;
-import br.com.fichasordens.repository.PecaServicoFichaRepository;
 import br.com.fichasordens.util.DadosMockEntity;
 import br.com.fichasordens.util.StatusServicoEnum;
 
@@ -49,13 +46,7 @@ public class FichaAtendimentoTest {
 	@Mock 
 	FichaAtendLancRepository fichaAtendLancRepository;
 	
-	@Mock
-	private PecaServicoFichaRepository pecaServicoFichaRepository;
-
-	@Mock Parametro parametro;
 	
-	@Mock 
-	private AtendimentoFichaRepository atendimentoRepository;
 	
 	@Test
 	public void test_salvarFicha_success() throws ExcecaoRetorno {
@@ -86,37 +77,21 @@ public class FichaAtendimentoTest {
 		
 	}
 	
-	@Test
-	public void test_gravarPecaServico_success() throws ExcecaoRetorno {
-		PecaOutroServico peca = createPecaServico();
-		
-		when(this.pecaServicoFichaRepository.save(org.mockito.Mockito.any(PecaServicoFichaEntity.class))).thenReturn(new PecaServicoFichaEntity());
-		ficha.gravarPecaServicoFicha(peca);
-		
-		Mockito.verify(this.pecaServicoFichaRepository, Mockito.times(1)).save(org.mockito.Mockito.any(PecaServicoFichaEntity.class));
-		
-	}
 	
-	@Test
+	
+	/*@Test
 	public void test_buscarFichaDeAtendimento_success() {
 		when(this.mockFichaRepository.findAllFichas()).thenReturn(new ArrayList());
 		List lst = ficha.buscarFichasDeAtendimento();
 		assertNotNull(lst);
-	}
+	}*/
 	
-	@Test
-	public void test_calcularParametros_success() {
-		when(this.parametro.recuperarParametros()).thenReturn(this.loadParametros());
-		
-		BigDecimal r = this.ficha.calcularValorAtendimento(2, 0);
-		assertEquals(20, r.intValue());
-		
-	}
+	
 	
 	@Test 
 	public void test_listaFichas_success() {
 		FichaAtendimentoEntity ent = createFichaAtendimentoEntity();
-		ent.setPecaServicoFichas(Sets.newSet(createPecaServicoFichaEntity()));
+		ent.setPecaServicoFichas(Sets.newSet(PecaOutroServicoTest.createPecaServicoFichaEntity()));
 		ent.setAtendimentoFichas(Sets.newSet(createAtendimentoFichaEntity()));
 		FichaAtendLancEntity lancEnt = createFichaAtendLancEntity();
 		ent.setFichaAtendLancs(Sets.newSet(lancEnt));
@@ -127,15 +102,7 @@ public class FichaAtendimentoTest {
 		assertEquals(1, lst.size());
 	}
 	
-	@Test
-	public void test_gravarAtendimento_success() {
-		Atendimento atend = this.createAtendimento();
-		when(this.atendimentoRepository.save(org.mockito.Mockito.any(AtendimentoFichaEntity.class))).thenReturn(new AtendimentoFichaEntity());
-		this.ficha.gravarAtendimento(atend);
-		
-		Mockito.verify(this.atendimentoRepository, Mockito.times(1)).save(org.mockito.Mockito.any(AtendimentoFichaEntity.class));
-		
-	}
+	
 	
 	@Test
 	public void test_buscarFichaAtendimentoPorSituacao_success() {
@@ -151,30 +118,16 @@ public class FichaAtendimentoTest {
 	public void buscarFichaID_success() {
 		
 		when(this.mockFichaRepository.findOne(199L)).thenReturn(this.createFichaAtendimentoEntity());
-		FichaAtendimento fic = this.ficha.buscarFicha(199);
+		FichaAtendimento fic = this.ficha.buscarFichaAtendimento(199);
 		
 		assertNotNull(fic);
 	}
 	
-	@Test
-	public void excluirAtendimento_success() {
-		
-		doNothing().when(atendimentoRepository).delete(org.mockito.Mockito.any(AtendimentoFichaEntity.class));
-		this.ficha.excluirAtendimento(199, 0);
-		
-		Mockito.verify(this.atendimentoRepository, Mockito.times(1)).delete(org.mockito.Mockito.any(AtendimentoFichaEntity.class));
-	}
 	
-	@Test
-	public void excluirPecaOutroServico_success() {
-		
-		doNothing().when(pecaServicoFichaRepository).delete(org.mockito.Mockito.any(PecaServicoFichaEntity.class));
-		this.ficha.excluirPecaOutroServico(199, 0);
-		
-		Mockito.verify(this.pecaServicoFichaRepository, Mockito.times(1)).delete(org.mockito.Mockito.any(PecaServicoFichaEntity.class));
-	}
 	
-	private FichaAtendimento createFichaAtendimento() {
+	
+	
+	public static FichaAtendimento createFichaAtendimento() {
 				
 		final FichaAtendimento fichaA = new FichaAtendimento();
 		fichaA.setTipoServico("Test");
@@ -183,12 +136,12 @@ public class FichaAtendimentoTest {
 		cliente.setId(200);
 		fichaA.setCliente(cliente);
 		fichaA.setFichaAtendimentoLancList(new ArrayList<Lancamento>());
-		Lancamento lanc = this.createFichaAtendimenLanctoMock();
+		Lancamento lanc = createFichaAtendimenLanctoMock();
 		fichaA.getFichaAtendimentoLancList().add(lanc);
 		return fichaA;
 	}
 	
-	private Lancamento createFichaAtendimenLanctoMock() {
+	private static Lancamento createFichaAtendimenLanctoMock() {
 		final Lancamento lanc = new Lancamento();
 		lanc.setData(new Date());
 		lanc.setObservacao("Test");
@@ -201,29 +154,7 @@ public class FichaAtendimentoTest {
 		return lanc;
 	}
 	
-	public PecaOutroServico createPecaServico() {
-		final PecaOutroServico pecaServico = new PecaOutroServico();
-		pecaServico.setDescricao("Test");
-		pecaServico.setQuantidade(1);
-		pecaServico.setValor(new BigDecimal(10));
-		pecaServico.setId(1);
-		
-		pecaServico.setFichaAtendimento(new FichaAtendimento());
-		pecaServico.getFichaAtendimento().setId(199);
-		
-		return pecaServico;
-	}
 	
-	private static PecaServicoFichaEntity createPecaServicoFichaEntity() {
-		PecaServicoFichaEntity pecaEnt = new PecaServicoFichaEntity();
-		pecaEnt.setId(new PecaServicoFichaIdEntity());
-		pecaEnt.getId().setFichaAtendId(19);
-		pecaEnt.getId().setSequencia(1);
-		pecaEnt.setQuantidade(10);
-		pecaEnt.setValor(new BigDecimal(10));
-		pecaEnt.setDescricao("Teste");
-		return pecaEnt;
-	}
 	
 	private static AtendimentoFichaEntity createAtendimentoFichaEntity() {
 		AtendimentoFichaEntity atendEnt = new AtendimentoFichaEntity();
@@ -237,14 +168,6 @@ public class FichaAtendimentoTest {
 		return atendEnt;
 	}
 	
-	private List<Parametro> loadParametros() {
-		Parametro p = new Parametro();
-		p.setId((byte)1);
-		p.setValor(new BigDecimal(10));
-		List<Parametro> list = Arrays.asList(p);
-		return list;
-	}
-	
 	public static FichaAtendimentoEntity createFichaAtendimentoEntity() {
 		FichaAtendimentoEntity ent = new FichaAtendimentoEntity();
 		ent.setId(199);
@@ -252,24 +175,9 @@ public class FichaAtendimentoTest {
 		ent.setCliente(DadosMockEntity.createClienteEntity());
 		ent.setFichaAtendLancs(Sets.newSet(createFichaAtendLancEntity()));
 		ent.setAtendimentoFichas(Sets.newSet(createAtendimentoFichaEntity()));
-		ent.setPecaServicoFichas(Sets.newSet(createPecaServicoFichaEntity()));
+		ent.setPecaServicoFichas(Sets.newSet(PecaOutroServicoTest.createPecaServicoFichaEntity()));
 		return ent;
 	}
-	
-	
-	
-	private Atendimento createAtendimento() {
-		Atendimento atend = new Atendimento();
-		atend.setData(new Date());
-		atend.setDescricao("Test");
-		atend.setDuracao(new BigDecimal(10));
-		atend.setFichaAtendimento(this.createFichaAtendimento());
-		atend.setSequencia(1);
-		atend.setValor(new BigDecimal(10));
-		return atend;
-	}
-	
-	
 	
 	private static FichaAtendLancEntity createFichaAtendLancEntity() {
 		FichaAtendLancEntity lanc = new FichaAtendLancEntity();

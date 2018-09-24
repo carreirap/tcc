@@ -42,7 +42,6 @@ public class UsuarioControllerTest {
 		
 		assertNotNull(list);
 		
-		
 	}
 	
 	@Test

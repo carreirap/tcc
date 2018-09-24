@@ -32,7 +32,7 @@ public class OrdemServico {
 	private String descEquip;
 	private String descDefeito;
 	private String estadoItensAcomp;
-	private String descServico;
+	
 	private Cliente cliente;
 	
 	private List<Lancamento> lancamento;
@@ -42,19 +42,13 @@ public class OrdemServico {
 	private OrdemServicoRepository ordemServicoRepository;
 	
 	@Autowired
-	private PecaServicoOrdemRepository pecaServicoOrdemRepository;
-	
-	@Autowired
 	private OrdemServicoLancRepository ordemServicoLancRepository;
-	
-	@Autowired
-	private Usuario usuario;
-	
+			
 	@Transactional
 	public OrdemServico salvarOrdem(final OrdemServico ordemServico) throws ExcecaoRetorno {
-		OrdemServicoEntity ent = this.converterParaEntity(ordemServico);
+		OrdemServicoEntity ent = ConversorOrdemServico.converterParaEntity(ordemServico);
 		try {
-			OrdemServicoLancEntity lancEntity = this.converterOrdemServicoLancParaEntity(ordemServico.getLancamento().get(0));
+			OrdemServicoLancEntity lancEntity = ConversorOrdemServico.converterOrdemServicoLancParaEntity(ordemServico.getLancamento().get(0));
 			ent = this.ordemServicoRepository.save(ent);
 			lancEntity.setOrdemServico(new OrdemServicoEntity());
 			lancEntity.getId().setOrdemServicoId(ent.getId());
@@ -77,36 +71,16 @@ public class OrdemServico {
 	@Transactional
 	public OrdemServico buscarOrdem(final long id) {
 		OrdemServicoEntity ent = this.ordemServicoRepository.findOne(id);
-		/*ent.getOrdemServicoLancs();
-		ent.getPecaServicoOrdems();
-		ent.getCliente().getId();
-		ent.getCliente().getEndereco().getId();*/
-		return this.converterEntityParaOrdemServico(ent);
+		return ConversorOrdemServico.converterEntityParaOrdemServico(ent);
 	}
 	
-	public void gravarPecaServicoOrdem(PecaOutroServico pecaServicoOrdem) throws ExcecaoRetorno {
-		PecaServicoOrdemEntity entity = converterPecaServicoOrdemParaEntity(pecaServicoOrdem);
-		try {
-			this.pecaServicoOrdemRepository.save(entity);
-		} catch (Exception e) {
-			throw new ExcecaoRetorno("Erro ao tentar cadastrar peças/outro serviços");
-		}
-	}
 	
-	@Transactional
-	public void deletarPecaOutroServico(final int id, final int sequencia) {
-		final PecaServicoOrdemEntity ent = new PecaServicoOrdemEntity();
-		ent.setId(new PecaServicoOrdemEntityId());
-		ent.getId().setSequencia(sequencia);
-		ent.getId().setOrdemServicoId(id);
-		this.pecaServicoOrdemRepository.delete(ent);
-	}
 	
 	@Transactional
 	public List<OrdemServico> listarOrdens(final StatusServicoEnum situacao) {
 		List<OrdemServicoEntity> entityList = this.buscarOrdensDeServicoPorSituacao(situacao);
 		List<OrdemServico> ordemList = new ArrayList<>();
-		entityList.forEach(a-> ordemList.add(converterEntityParaOrdemServico(a)) );
+		entityList.forEach(a-> ordemList.add(ConversorOrdemServico.converterEntityParaOrdemServico(a)) );
 		return ordemList;
 	}
 
@@ -118,86 +92,6 @@ public class OrdemServico {
 	public List<OrdemServicoEntity> buscarOrdensDeServicoPorSituacao(final StatusServicoEnum situacao, final Date inicio, final Date fim) {
 		return  this.ordemServicoRepository.findAllOrdensByStatusAndDataBetween(situacao.getValue(), inicio, fim);
 	}
-	
-	private OrdemServicoEntity converterParaEntity(final OrdemServico ordemServico) {
-		final OrdemServicoEntity ent = new OrdemServicoEntity();
-		ent.setId(ordemServico.getId());
-		ent.setFrabricante(ordemServico.getFabricante());
-		ent.setDescDefeito(ordemServico.getDescDefeito());
-		ent.setDescEquip(ordemServico.getDescEquip());
-		ent.setEstadoItensAcomp(ordemServico.getEstadoItensAcomp());
-		ent.setModelo(ordemServico.getModelo());
-		ent.setSerie(ordemServico.getSerie());
-		ent.setTipoServico(ordemServico.getTipoServico());
-		final ClienteEntity cli = new ClienteEntity();
-		cli.setId(ordemServico.getCliente().getId());
-		ent.setCliente(cli);
-		
-		return ent;
-	}
-	
-	private OrdemServico converterEntityParaOrdemServico(final OrdemServicoEntity entity) {
-		final OrdemServico ordem = new OrdemServico();
-		ordem.setFabricante(entity.getFrabricante());
-		ordem.setDescDefeito(entity.getDescDefeito());
-		ordem.setDescEquip(entity.getDescEquip());
-		ordem.setId(entity.getId());
-		ordem.setEstadoItensAcomp(entity.getEstadoItensAcomp());
-		ordem.setModelo(entity.getModelo());
-		ordem.setSerie(entity.getSerie());
-		ordem.setTipoServico(entity.getTipoServico());
-		final Cliente cli = ConversorCliente.converterClienteEntityParaCliente(entity.getCliente());
-		ordem.setCliente(cli);
-		ordem.setLancamento(convertLancEntityParaOrdemServicoLanc(entity, ordem));
-		ordem.setPecaOutroServico(ConversorOrdemServico.converterPecaServicoEntityParaPecaOutroServico(entity, ordem));
-		return ordem;
-	}
-
-	private List<Lancamento> convertLancEntityParaOrdemServicoLanc(final OrdemServicoEntity entity, final OrdemServico ordemServico) {
-		List<Lancamento> lst = new ArrayList<>();
-		entity.getOrdemServicoLancs()		        
-			.forEach(a ->
-			{
-				Lancamento lanc = new Lancamento();
-				lanc.setData(a.getData());
-				lanc.setObservacao(a.getObservacao());
-				lanc.setSequencia((int)a.getId().getSequencia());
-				lanc.setSituacao(a.getSituacao());
-				lanc.setOrdemServico(ordemServico);
-				lanc.setUsuario(new Usuario());
-				lanc.getUsuario().setId(a.getUsuario().getId());
-				lanc.getUsuario().setNome(a.getUsuario().getNome());
-				lst.add(lanc);
-		});
-		return lst;
-	}
-	
-	private PecaServicoOrdemEntity converterPecaServicoOrdemParaEntity(PecaOutroServico pecaServicoOrdem) {
-		PecaServicoOrdemEntity ent = new PecaServicoOrdemEntity();
-		ent.setDescricao(pecaServicoOrdem.getDescricao());
-		ent.setQuantidade(pecaServicoOrdem.getQuantidade());
-		ent.setValor(pecaServicoOrdem.getValor());
-		ent.setId(new PecaServicoOrdemEntityId());
-		ent.getId().setOrdemServicoId(pecaServicoOrdem.getOrdemServico().getId());
-		ent.getId().setSequencia(pecaServicoOrdem.getId());
-		ent.setData(new Date());
-		return ent;
-	}
-	
-	private OrdemServicoLancEntity converterOrdemServicoLancParaEntity(final Lancamento lancamento) {
-		OrdemServicoLancEntity ent = new OrdemServicoLancEntity();
-		ent.setData(lancamento.getData());
-		ent.setObservacao(lancamento.getObservacao());
-		ent.setSituacao(lancamento.getSituacao());
-		ent.setOrdemServico(new OrdemServicoEntity());
-		ent.setId(new OrdemServicoLancId());
-		ent.getId().setUsuarioId(lancamento.getUsuario().getId());
-		ent.getId().setSequencia(lancamento.getSequencia());
-		ent.getOrdemServico().setId(lancamento.getOrdemServico().getId());
-		return ent;
-		
-	}
-
 
 	public long getId() {
 		return id;
@@ -261,14 +155,6 @@ public class OrdemServico {
 
 	public void setEstadoItensAcomp(String estadoItensAcomp) {
 		this.estadoItensAcomp = estadoItensAcomp;
-	}
-
-	public String getDescServico() {
-		return descServico;
-	}
-
-	public void setDescServico(String descServico) {
-		this.descServico = descServico;
 	}
 
 	public Cliente getCliente() {

@@ -67,6 +67,7 @@ public class HistoricoServiceImplTest {
 		when(this.ordemRepository.findAllOrdensByStatus("Aberto", pageable)).thenReturn(paged2);
 		when(this.ordemRepository.findAllOrdens(pageable)).thenReturn(paged2);
 		when(this.ordemRepository.findAllOrdensByDatas(inicio, fim, pageable)).thenReturn(paged2);
+		when(this.ordemRepository.findAllOrdensByStatusAndDataBetween("Todas", inicio, fim, pageable)).thenReturn(paged2);
 		//findAllOrdensByCnpfcpfAndSituacaoAndDatas
 	}
 	

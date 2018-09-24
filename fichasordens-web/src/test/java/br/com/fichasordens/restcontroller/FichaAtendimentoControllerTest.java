@@ -23,6 +23,7 @@ import br.com.fichasordens.Atendimento;
 import br.com.fichasordens.Cliente;
 import br.com.fichasordens.FichaAtendimento;
 import br.com.fichasordens.Lancamento;
+import br.com.fichasordens.Parametro;
 import br.com.fichasordens.PecaOutroServico;
 import br.com.fichasordens.dto.AtendimentoDto;
 import br.com.fichasordens.dto.ClienteDto;
@@ -40,7 +41,16 @@ public class FichaAtendimentoControllerTest {
 	private FichaAtendimentoController fichaAtendimentoController;
 	
 	@Mock 
-	FichaAtendimento fichaAtendimento;
+	private FichaAtendimento fichaAtendimento;
+	
+	@Mock 
+	private Atendimento Atendimento;
+	
+	@Mock
+	private PecaOutroServico pecaOutroServico;
+	
+	@Mock
+	private Parametro parametro;
 	
 	@Test
 	public void test_salvarFichaAtendimento_success() throws ExcecaoRetorno {
@@ -67,7 +77,7 @@ public class FichaAtendimentoControllerTest {
 	@Test
 	public void test_gravarPecaServicoFicha_success() {
 		PecaOutroServicoDto dto = criarPecaOutroServicoDto();
-		doNothing().when(this.fichaAtendimento).gravarPecaServicoFicha(org.mockito.Mockito.any(PecaOutroServico.class));
+		doNothing().when(this.pecaOutroServico).gravarPecaServicoFicha(org.mockito.Mockito.any(PecaOutroServico.class));
 		ResponseEntity response = this.fichaAtendimentoController.gravarPecaServicoFicha(dto);
 		
 		assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -75,7 +85,7 @@ public class FichaAtendimentoControllerTest {
 	
 	@Test
 	public void test_buscarFicha_success() {
-		when(this.fichaAtendimento.buscarFicha(199)).thenReturn(createFichaAtendimento());
+		when(this.fichaAtendimento.buscarFichaAtendimento(199)).thenReturn(createFichaAtendimento());
 		FichaAtendimentoDto response = this.fichaAtendimentoController.buscarFicha(199);
 		
 		assertNotNull(response);
@@ -88,7 +98,7 @@ public class FichaAtendimentoControllerTest {
 		ficha.setPecaOutroServicoList(null);
 		ficha.setAtendimentoList(null);
 		ficha.setFichaAtendimentoLancList(null);
-		when(this.fichaAtendimento.buscarFicha(199)).thenReturn(ficha);
+		when(this.fichaAtendimento.buscarFichaAtendimento(199)).thenReturn(ficha);
 		FichaAtendimentoDto response = this.fichaAtendimentoController.buscarFicha(199);
 		
 		assertNotNull(response);
@@ -99,7 +109,7 @@ public class FichaAtendimentoControllerTest {
 	@Test
 	public void test_gravarAtendimento_success() {
 		AtendimentoDto dto = createAtendimentoDto();
-		doNothing().when(this.fichaAtendimento).gravarAtendimento(org.mockito.Mockito.any(Atendimento.class));
+		doNothing().when(this.Atendimento).gravarAtendimento(org.mockito.Mockito.any(Atendimento.class));
 		ResponseEntity response = this.fichaAtendimentoController.gravarAtendimento(dto);
 		
 		assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -108,7 +118,7 @@ public class FichaAtendimentoControllerTest {
 	@Test
 	public void test_calcularValorAtendimento_success() {
 		
-		when(this.fichaAtendimento.calcularValorAtendimento(10, 5)).thenReturn(new BigDecimal(50));
+		when(this.Atendimento.calcularValorAtendimento(10, 5)).thenReturn(new BigDecimal(50));
 		ResponseEntity response = this.fichaAtendimentoController.calcularValorAtendimento(10, 5);
 		
 		assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -117,7 +127,7 @@ public class FichaAtendimentoControllerTest {
 	
 	@Test
 	public void test_excluirAtendimento_success() {
-		doNothing().when(this.fichaAtendimento).excluirAtendimento(199, 1);
+		doNothing().when(this.Atendimento).excluirAtendimento(199, 1);
 		ResponseEntity response = this.fichaAtendimentoController.excluirAtendimento(199, 1);
 		
 		assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -127,6 +137,7 @@ public class FichaAtendimentoControllerTest {
 	public void test_listaFichas_success() {
 		FichaAtendimento ficha = createFichaAtendimento();
 		when(this.fichaAtendimento.listarFichas(StatusServicoEnum.valueOf("Aberto".toUpperCase()))).thenReturn(Arrays.asList(ficha));
+		when(this.parametro.buscarValorParametroAlerta()).thenReturn(createParametroAlerta());
 		ResponseEntity response = this.fichaAtendimentoController.listaFichas("Aberto");
 		
 		assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -136,7 +147,7 @@ public class FichaAtendimentoControllerTest {
 	
 	@Test
 	public void test_excluirPecaOutroServico_success() {
-		doNothing().when(this.fichaAtendimento).excluirPecaOutroServico(199, 1);
+		doNothing().when(this.pecaOutroServico).excluirPecaOutroServicoFicha(199, 1);
 		ResponseEntity response = this.fichaAtendimentoController.excluirPecaOutroServico(199, 1);
 		
 		assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -229,6 +240,13 @@ public class FichaAtendimentoControllerTest {
 		cli.setFone("988888888");
 		cli.setNome("test");
 		return cli;
+	}
+	
+	public static Parametro createParametroAlerta() {
+		Parametro p = new Parametro();
+		p.setId((byte)3);
+		p.setValor(new BigDecimal(2));
+		return p;
 	}
 
 }
