@@ -29,7 +29,7 @@ export class DataService {
             'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token,
             'Accept': 'application/pdf'
         });
-        //this.options = new RequestOptions({});
+        // this.options = new RequestOptions({});
         return this.http.get(this._configuration.ServerService +
             path, {headers: this.header, responseType: 'blob'});
     }

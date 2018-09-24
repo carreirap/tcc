@@ -232,21 +232,25 @@
       <p-accordion [multiple]="true">
         <p-accordionTab header="Ver Histórico de lancamento">
             <div *ngFor="let lanc of formFicha.lancamentoLst">
-              <label>{{lanc.nomeUsuario}}</label><br>
-              <label>{{lanc.situacao}}</label><br>
-              <label>{{lanc.data}}</label><br>
-              <label>{{lanc.observacao}}</label>
+              <strong>Técnico:</strong>&nbsp;<label>{{lanc.nomeUsuario}}</label>&nbsp;&nbsp;
+              <strong>Situação:</strong>&nbsp;<label>{{lanc.situacao}}</label>&nbsp;&nbsp;
+              <strong>data:</strong>&nbsp;<label>{{lanc.data}}</label><br>
+              <strong>Obs:</strong>&nbsp;<label>{{lanc.observacao}}</label>
+              <br><br>
             </div>
         </p-accordionTab>
       </p-accordion>
     </div>
   </div>  
-  <div class="form-group row" *ngIf="formFicha.dataFechamento === '' || formFicha.dataFechamento === undefined">
-    <div class="col-sm-6">
-      <button type="submit" class="btn btn-primary"  [disabled]="!myform.valid">Salvar</button>
+  <div class="form-group row">
+    <div class="col-sm-5">
+      <button type="submit" class="btn btn-primary"  [disabled]="!myform.valid" *ngIf="formFicha.dataFechamento === '' || formFicha.dataFechamento === undefined">Salvar</button>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-4">
       <button type="button" class="btn btn-primary"  (click)="download()" *ngIf="formFicha.numeroFicha">Gerar PDF</button>
+    </div>
+    <div class="col-sm-3">
+      <button type="button" class="btn btn-primary"  (click)="email()" *ngIf="formFicha.numeroFicha">E-mail</button>
     </div>
   </div>
 </form> 

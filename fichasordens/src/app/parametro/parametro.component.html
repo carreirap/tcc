@@ -1,7 +1,7 @@
 <form (submit)="onSubmit()" class="container" #f="ngForm" novalidate>
   <div class="row align-items-center justify-content-center">
           <div ><h2 style="align-content: center">
-              Cadastro de Parametro
+              Cadastro de Parâmetros
             </h2></div>
       </div>
     
@@ -9,7 +9,7 @@
     <div class="form-group col-md-11" [ngClass]="{'was-validated': !vlr.valid  && (vlr.dirty || vlr.touched)}">
       <label for="visita">Visita Técnica</label>
       <input type="hidden" id="id-vista" name="id-visita" [(ngModel)]="formValue.idVisita">
-      <input class="form-control" type="text" value="" id="visita" name="visita" [ngModel]="formValue.valorVisita" 
+      <input class="form-control" type="number" step="2" value="" id="visita" name="visita" [ngModel]="formValue.valorVisita" 
         (ngModelChange)="formValue.valorVisita=$event" #vlr="ngModel" required>
       <div class="invalid-feedback" *ngIf="vlr.errors && (vlr.dirty || vlr.touched)">
         <ul >
@@ -25,12 +25,28 @@
   <div class="form-row">
     <div class="form-group col-md-11" [ngClass]="{'was-validated': !custoHora.valid  && (custoHora.dirty || custoHora.touched)}">
       <label for="hora">Custo Hora Técnica</label>
-      <input class="form-control" type="text" value="" id="hora" name="hora" [ngModel]="formValue.valorHora" 
+      <input class="form-control" type="number" step="2" value="" id="hora" name="hora" [ngModel]="formValue.valorHora" 
       (ngModelChange)="formValue.valorHora=$event" #custoHora="ngModel" required>
       <input type="hidden" value="" id="id-hora" name="id-hora" [(ngModel)]="formValue.idHora">
       <div class="invalid-feedback" *ngIf="custoHora.errors && (custoHora.dirty || custoHora.touched)">
         <ul >
           <li *ngIf="custoHora.errors.required">
+            Campo obrigatório não preenchido
+          </li>
+        </ul>
+      </div>
+    </div>  
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-11" [ngClass]="{'was-validated': !diasAlerta.valid  && (diasAlerta.dirty || diasAlerta.touched)}">
+      <label for="hora">Dias para alerta</label>
+      <input class="form-control" type="number" step="2" value="" id="diasAlerta" name="diasAlerta" [ngModel]="formValue.diasAlerta" 
+      (ngModelChange)="formValue.diasAlerta=$event" #diasAlerta="ngModel" required>
+      <input type="hidden" value="" id="id-diasAlerta" name="id-diasAlerta" [(ngModel)]="formValue.idDiasAlerta">
+      <div class="invalid-feedback" *ngIf="diasAlerta.errors && (diasAlerta.dirty || diasAlerta.touched)">
+        <ul >
+          <li *ngIf="diasAlerta.errors.required">
             Campo obrigatório não preenchido
           </li>
         </ul>
