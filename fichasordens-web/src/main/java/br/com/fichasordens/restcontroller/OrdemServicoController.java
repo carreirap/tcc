@@ -1,7 +1,7 @@
 package br.com.fichasordens.restcontroller;
 
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,10 +37,11 @@ import br.com.fichasordens.service.GeradorPdfService;
 import br.com.fichasordens.util.ConverterCliente;
 import br.com.fichasordens.util.ConverterLancamentoDto;
 import br.com.fichasordens.util.ConverterPecaOutroServico;
-import br.com.fichasordens.util.DataUtil;
+import br.com.fichasordens.util.Downloader;
 import br.com.fichasordens.util.Email;
 import br.com.fichasordens.util.StatusServicoEnum;
 import br.com.fichasordens.util.TipoServicoEnum;
+import net.sf.jasperreports.engine.JRException;
 
 @SuppressWarnings("rawtypes")
 @RestController
@@ -70,10 +71,10 @@ public class OrdemServicoController {
 	@PostMapping
 	public ResponseEntity salvarOrdemServico(@RequestBody final OrdemServicoDto dto) {
 		try {
-			OrdemServico ordemServico = this.converterDtoParaOrdemServico(dto);
-			ordemServico = this.ordemServico.salvarOrdem(ordemServico);
-			dto.setNumeroOrdem(ordemServico.getId());
-			LOGGER.info("Ordem de Serviço {} salva com sucesso", ordemServico.getId());
+			OrdemServico ordem = this.converterDtoParaOrdemServico(dto);
+			ordem = this.ordemServico.salvarOrdem(ordem);
+			dto.setNumeroOrdem(ordem.getId());
+			LOGGER.info("Ordem de Serviço {} salva com sucesso", ordem.getId());
 			return new ResponseEntity<OrdemServicoDto>(dto, HttpStatus.OK);
 		} catch (ExcecaoRetorno e) {
 			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -110,24 +111,14 @@ public class OrdemServicoController {
 			dto.setNomeCliente(a.getCliente().getNome());
 			dto.setSituacao(situacao);
 			dto.setTipoServico(ORDEM_DE_SERVICO);
-			for(Lancamento lanc: a.getLancamento()) {
-				if (lanc.getSituacao().equals(situacao)) {
-					dto.setResponsavel(lanc.getUsuario().getNome());
-					dto.setDias((int)DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()));
-					if (dto.getDias() > qtdDiasAlerta) 
-						dto.setAlerta("S");
-					else
-						dto.setAlerta("N");
-				}
-				if (lanc.getSituacao().equals("Aberto")) {
-					dto.setDataAbertura(lanc.getData());
-				}
-			}
+			ConverterLancamentoDto.converterLancamentoParaDto(situacao, qtdDiasAlerta, a.getLancamento(), dto);
 			dtoList.add(dto);
 		});
 		
 		return new ResponseEntity<>(dtoList,HttpStatus.OK);
 	}
+
+	
 	
 	@GetMapping(path="/buscar")
 	public OrdemServicoDto buscarOrdem(@RequestParam final long id) {
@@ -136,24 +127,16 @@ public class OrdemServicoController {
 	}
 	
 	@GetMapping(path = "/pdf")
-	public void gerarPdf(@RequestParam final long id, HttpServletResponse response) throws Exception {
+	public void gerarPdf(@RequestParam final long id, HttpServletResponse response) throws IOException, JRException {
 
 		final OrdemServico ordem = this.ordemServico.buscarOrdem(id);
 		ByteArrayOutputStream out = pdfService.gerarOrdemServicoPdf(ordem);
-
-		response.addHeader("Content-disposition", "attachment;filename=ordem-" + id + ".pdf");
-		response.setHeader("Content-Length", String.valueOf(out.size()));
-		response.setContentType("application/pdf");
-
-		OutputStream responseOutputStream = response.getOutputStream();
-		responseOutputStream.write(out.toByteArray());
-		responseOutputStream.close();
-		out.close();
-		response.flushBuffer();
+		
+		Downloader.retornarArquivoParaDownload(response, id, out);
 	}
 	
 	@GetMapping(path = "/email")
-	public ResponseEntity enviarEmail(@RequestParam final long id, HttpServletResponse response) throws Exception {
+	public ResponseEntity enviarEmail(@RequestParam final long id, HttpServletResponse response) {
 
 		final OrdemServico ordem = this.ordemServico.buscarOrdem(id);
 		try(ByteArrayOutputStream out = pdfService.gerarOrdemServicoPdf(ordem)) {

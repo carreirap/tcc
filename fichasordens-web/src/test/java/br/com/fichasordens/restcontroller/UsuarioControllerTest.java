@@ -73,6 +73,20 @@ public class UsuarioControllerTest {
 	}
 	
 	@Test
+	public void test_getUsuarioComParametroStatusZero_success() {
+		final Usuario usuario= carregarUsuario();
+		usuario.setSituacao(0);
+		String param = "test";
+		when(this.mockUsuario.listarUsuario(param)).thenReturn(Arrays.asList(usuario));
+		
+		ResponseEntity response = this.usuarioController.getUsuario(param);
+		
+		List<Usuario> list = (List) response.getBody();
+		
+		assertNotNull(list);
+	}
+	
+	@Test
 	public void test_alterarUsuario_success() throws ExcecaoRetorno {
 		Usuario usuario= carregarUsuario();
 		usuario.setNovaSenha("123456");

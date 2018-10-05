@@ -1,11 +1,11 @@
 package br.com.fichasordens.service.impl;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,8 @@ public class GeradorPdfServiceImpl implements GeradorPdfService {
 	@Autowired
 	private Empresa empresa;
 	
+	final Locale local = new Locale("pt","BR");
+	
 	@Override
 	public ByteArrayOutputStream gerarOrdemServicoPdf(final OrdemServico ordem) throws JRException {
 
@@ -52,7 +54,7 @@ public class GeradorPdfServiceImpl implements GeradorPdfService {
 				.append(ordem.getCliente().getEndereco().getEstado());
 		parametros.put("cepCliente", cep.toString());
 		parametros.put("tipo", ordem.getTipoServico());
-		SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy", local);
 		parametros.put("abertura", form.format(ordem.getLancamento().get(0).getData()));
 		ordem.getLancamento().stream()
 			.filter(lanc -> lanc.getSituacao().equals(StatusServicoEnum.FECHADO.getValue()))
@@ -119,7 +121,7 @@ public class GeradorPdfServiceImpl implements GeradorPdfService {
 				.append(ficha.getCliente().getEndereco().getEstado());
 		parametros.put("cepCliente", cep.toString());
 		parametros.put("tipo", ficha.getTipoServico());
-		SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy", local);
 		parametros.put("abertura", form.format(ficha.getFichaAtendimentoLancList().get(0).getData()));
 		ficha.getFichaAtendimentoLancList().stream()
 			.filter(lanc -> lanc.getSituacao().equals(StatusServicoEnum.FECHADO.getValue()))

@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.fichasordens.OrdemServico;
 import br.com.fichasordens.entities.FichaAtendLancEntity;
 import br.com.fichasordens.entities.FichaAtendimentoEntity;
 import br.com.fichasordens.entities.OrdemServicoEntity;
@@ -35,9 +34,7 @@ public class HistoricoServiceImpl implements HistoricoService {
 	
 	@Autowired
 	private OrdemServicoRepository ordemRepository;
-	
-	@Autowired
-	OrdemServico ordemServico;
+		
 	
 	@Transactional
 	@Override

@@ -34,9 +34,9 @@ public class ClienteController {
 	
 	@PostMapping
 	public ResponseEntity salvarCliente(@RequestBody final ClienteDto clienteDto) {
-		final Cliente cliente = ConverterCliente.converterClienteDtoParaCliente(clienteDto); 
+		final Cliente cli = ConverterCliente.converterClienteDtoParaCliente(clienteDto); 
 		try {
-			this.cliente.salvarCliente(cliente);
+			this.cliente.salvarCliente(cli);
 		} catch (ExcecaoRetorno e) {
 			return new ResponseEntity<>(new MensagemRetornoDto(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}

@@ -1,7 +1,7 @@
 package br.com.fichasordens.restcontroller;
 
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,10 +39,11 @@ import br.com.fichasordens.util.ConverterAtendimento;
 import br.com.fichasordens.util.ConverterCliente;
 import br.com.fichasordens.util.ConverterLancamentoDto;
 import br.com.fichasordens.util.ConverterPecaOutroServico;
-import br.com.fichasordens.util.DataUtil;
+import br.com.fichasordens.util.Downloader;
 import br.com.fichasordens.util.Email;
 import br.com.fichasordens.util.StatusServicoEnum;
 import br.com.fichasordens.util.TipoServicoEnum;
+import net.sf.jasperreports.engine.JRException;
 
 @RestController
 @RequestMapping("/ficha")
@@ -99,24 +100,16 @@ public class FichaAtendimentoController {
 	}
 
 	@GetMapping(path = "/pdf")
-	public void gerarPdf(@RequestParam final long id, HttpServletResponse response) throws Exception {
+	public void gerarPdf(@RequestParam final long id, final HttpServletResponse response) throws JRException, IOException {
 
 		final FichaAtendimento ficha = this.fichaAtendimento.buscarFichaAtendimento(id);
 		ByteArrayOutputStream out = pdfService.gerarFichaAtendimentoPdf(ficha);
 
-		response.addHeader("Content-disposition", "attachment;filename=ordem-" + id + ".pdf");
-		response.setHeader("Content-Length", String.valueOf(out.size()));
-		response.setContentType("application/pdf");
-
-		OutputStream responseOutputStream = response.getOutputStream();
-		responseOutputStream.write(out.toByteArray());
-		responseOutputStream.close();
-		out.close();
-		response.flushBuffer();
+		Downloader.retornarArquivoParaDownload(response, id, out);
 	}
 	
 	@GetMapping(path = "/email")
-	public ResponseEntity enviarEmail(@RequestParam final long id, HttpServletResponse response) throws Exception {
+	public ResponseEntity enviarEmail(@RequestParam final long id, HttpServletResponse response) {
 
 		final FichaAtendimento ficha = this.fichaAtendimento.buscarFichaAtendimento(id);
 		try(ByteArrayOutputStream out = pdfService.gerarFichaAtendimentoPdf(ficha)) {
@@ -144,20 +137,7 @@ public class FichaAtendimentoController {
 			dto.setNomeCliente(a.getCliente().getNome());
 			dto.setSituacao(situacao);
 			dto.setTipoServico("Ficha de Atendimento");
-			for(Lancamento lanc:  a.getFichaAtendimentoLancList()) {
-				if (lanc.getSituacao().equals(situacao)) {
-					dto.setResponsavel(lanc.getUsuario().getNome());
-					dto.setDias((int) DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()));
-					if (dto.getDias() > qtdDiasAlerta) 
-						dto.setAlerta("S");
-					else
-						dto.setAlerta("N");
-				}
-				
-				if (lanc.getSituacao().equals("Aberto")) {
-					dto.setDataAbertura(lanc.getData());
-				}
-			}
+			ConverterLancamentoDto.converterLancamentoParaDto(situacao, qtdDiasAlerta, a.getFichaAtendimentoLancList(), dto);
 			dtoList.add(dto);
 		});
 		

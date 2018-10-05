@@ -2,7 +2,6 @@ package br.com.fichasordens;
 
 
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,17 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.fichasordens.entities.AtendimentoFichaEntity;
-import br.com.fichasordens.entities.AtendimentoFichaId;
 import br.com.fichasordens.entities.FichaAtendLancEntity;
 import br.com.fichasordens.entities.FichaAtendimentoEntity;
-import br.com.fichasordens.entities.PecaServicoFichaEntity;
-import br.com.fichasordens.entities.PecaServicoFichaIdEntity;
 import br.com.fichasordens.exception.ExcecaoRetorno;
-import br.com.fichasordens.repository.AtendimentoFichaRepository;
 import br.com.fichasordens.repository.FichaAtendLancRepository;
 import br.com.fichasordens.repository.FichaAtendimentoRepository;
-import br.com.fichasordens.repository.PecaServicoFichaRepository;
 import br.com.fichasordens.util.ConversorFichaAtendimento;
 import br.com.fichasordens.util.StatusServicoEnum;
 

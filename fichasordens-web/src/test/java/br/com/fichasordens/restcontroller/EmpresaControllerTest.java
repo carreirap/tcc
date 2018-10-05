@@ -63,7 +63,7 @@ public class EmpresaControllerTest {
 		return dto;
 	}
 	
-	private Empresa carregarEmpresa() {
+	public static Empresa carregarEmpresa() {
 		Empresa empresa = new Empresa();
 		empresa.setCnpj("76189400000289");
 		empresa.setEmail("test@email.com");
