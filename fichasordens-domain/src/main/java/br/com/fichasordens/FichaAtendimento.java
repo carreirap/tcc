@@ -2,7 +2,6 @@ package br.com.fichasordens;
 
 
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,17 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.fichasordens.entities.AtendimentoFichaEntity;
-import br.com.fichasordens.entities.AtendimentoFichaId;
 import br.com.fichasordens.entities.FichaAtendLancEntity;
 import br.com.fichasordens.entities.FichaAtendimentoEntity;
-import br.com.fichasordens.entities.PecaServicoFichaEntity;
-import br.com.fichasordens.entities.PecaServicoFichaIdEntity;
 import br.com.fichasordens.exception.ExcecaoRetorno;
-import br.com.fichasordens.repository.AtendimentoFichaRepository;
 import br.com.fichasordens.repository.FichaAtendLancRepository;
 import br.com.fichasordens.repository.FichaAtendimentoRepository;
-import br.com.fichasordens.repository.PecaServicoFichaRepository;
 import br.com.fichasordens.util.ConversorFichaAtendimento;
 import br.com.fichasordens.util.StatusServicoEnum;
 
@@ -46,15 +39,6 @@ public class FichaAtendimento {
 	@Autowired 
 	FichaAtendLancRepository fichaAtendLancRepository;
 	
-	@Autowired
-	private PecaServicoFichaRepository pecaServicoFichaRepository;
-	
-	@Autowired
-	private AtendimentoFichaRepository atendimentoRepository;
-	
-	@Autowired
-	private Parametro parametro;
-	
 	@Transactional
 	public FichaAtendimento salvarFicha(final FichaAtendimento fichaAtendimento) throws ExcecaoRetorno {
 		try {
@@ -76,30 +60,11 @@ public class FichaAtendimento {
 		}
 	}
 	
-	@Transactional
-	public void gravarPecaServicoFicha(final PecaOutroServico pecaOutroServico) {
-		final PecaServicoFichaEntity ent = ConversorFichaAtendimento.converterPecaServicoFichaParaEntity(pecaOutroServico);
-		pecaServicoFichaRepository.save(ent);
-	}
-	
-	@Transactional
-	public void gravarAtendimento(final Atendimento atendimento) {
-		final AtendimentoFichaEntity ent = ConversorFichaAtendimento.converterAtendimentoParaEntity(atendimento);
-		atendimentoRepository.save(ent);
-	}
-	
-	public List<FichaAtendimentoEntity> buscarFichasDeAtendimento() {
+	/*public List<FichaAtendimentoEntity> buscarFichasDeAtendimento() {
 		return this.repository.findAllFichas();
-	}
+	}*/
 	
-	public BigDecimal calcularValorAtendimento(final int horas, final int tipo) {
-		Parametro param = this.parametro.recuperarParametros().get(tipo);
-		return calcular(horas, param);
-	}
-
-	private BigDecimal calcular(final int horas, final Parametro param) {
-		return new BigDecimal(horas).multiply(param.getValor());
-	}
+	
 	
 	@Transactional
 	public List<FichaAtendimento> listarFichas(final StatusServicoEnum situacao) {
@@ -124,32 +89,10 @@ public class FichaAtendimento {
 	}
 	
 	@Transactional
-	public FichaAtendimento buscarFicha(final long id) {
+	public FichaAtendimento buscarFichaAtendimento(final long id) {
 		final FichaAtendimentoEntity ent = this.repository.findOne(id);
 		return ConversorFichaAtendimento.converterEntityParaFichaAtendimento(ent);
 	}
-	
-	@Transactional
-	public void excluirAtendimento(final long idFicha, final int sequencia) {
-		AtendimentoFichaEntity ent = new AtendimentoFichaEntity();
-		ent.setId(new AtendimentoFichaId());
-		ent.getId().setSequencia(sequencia);
-		ent.getId().setFichaAtendimentoId(idFicha);
-		this.atendimentoRepository.delete(ent);
-	}
-	
-	@Transactional
-	public void excluirPecaOutroServico(final long idFicha, final int sequencia) {
-		PecaServicoFichaEntity ent = new PecaServicoFichaEntity();
-		ent.setId(new PecaServicoFichaIdEntity());
-		ent.getId().setSequencia(sequencia);
-		ent.getId().setFichaAtendId(idFicha);
-		this.pecaServicoFichaRepository.delete(ent);
-	}
-	
-	
-
-	
 	
 	public String getTipoServico() {
 		return tipoServico;

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.fichasordens.entities.EnderecoEntity;
 import br.com.fichasordens.repository.EnderecoRepository;
+import br.com.fichasordens.util.ConversorEndereco;
 
 @Component
 public class Endereco {
@@ -22,25 +23,10 @@ public class Endereco {
 	private EnderecoRepository repositoryEndereco;
 	
 	public Endereco salvarEndereco(final Endereco endereco) {
-		EnderecoEntity entity = converteParaEntity(endereco);
+		EnderecoEntity entity = ConversorEndereco.converteParaEntity(endereco);
 		entity = repositoryEndereco.save(entity);
 		endereco.setId(entity.getId().longValue());
 		return endereco;
-	}
-
-	private EnderecoEntity converteParaEntity(final Endereco endereco) {
-		final EnderecoEntity entity = new EnderecoEntity();
-		entity.setBairro(endereco.getBairro());
-		entity.setCep(endereco.getCep());
-		entity.setCidade(endereco.getCidade());
-		entity.setEstado(endereco.getEstado());
-		entity.setLogradouro(endereco.getLogradouro());
-		entity.setNumero(endereco.getNumero());
-		entity.setComplemento(endereco.getComplemento());
-		if ( endereco.getId() != 0 ) {
-			entity.setId(endereco.getId());
-		}
-		return entity;
 	}
 	
 	public long getId() {

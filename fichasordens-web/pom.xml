@@ -13,7 +13,7 @@
 		<sonar.exclusions>
 			src/main/java/br/com/fichasordens/dto/*,
 			src/main/java/br/com/fichasordens/resourceserver/*,
-			src/main/java/br/com/fichasordens/util/CustomPage.java
+			src/main/java/br/com/fichasordens/util/*
 		</sonar.exclusions>
 	</properties>
 	<parent>
@@ -48,18 +48,20 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.25</version>
 		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.7</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/com.sun.mail/smtp -->
 		<dependency>
 			<groupId>com.sun.mail</groupId>

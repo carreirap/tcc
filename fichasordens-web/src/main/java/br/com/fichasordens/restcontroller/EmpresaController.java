@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.fichasordens.Empresa;
 import br.com.fichasordens.Endereco;
 import br.com.fichasordens.dto.EmpresaDto;
+import br.com.fichasordens.util.ConversorEmpresa;
+import br.com.fichasordens.util.ConverterEndereco;
 
 @RestController
 @RequestMapping("/empresa")
@@ -31,7 +33,7 @@ public class EmpresaController {
 		LOGGER.info("Salvar dados da empresa");
 		final Empresa emp = this.empresa.salvarEmpresa(this.convertDtoParaEmpresa(dto));
 		
-		return new ResponseEntity<>(this.convertEmpresaParaDto(emp), HttpStatus.OK);
+		return new ResponseEntity<>(ConversorEmpresa.convertEmpresaParaDto(emp), HttpStatus.OK);
 	}
 	
 	@GetMapping
@@ -40,27 +42,10 @@ public class EmpresaController {
 				
 		final Empresa emp = this.empresa.buscarEmpresa();
 		 
-		return new ResponseEntity<>(this.convertEmpresaParaDto(emp),HttpStatus.OK);
+		return new ResponseEntity<>(ConversorEmpresa.convertEmpresaParaDto(emp),HttpStatus.OK);
 	 }
 	
-	private EmpresaDto convertEmpresaParaDto (final Empresa empresa) {
-		final EmpresaDto dto = new EmpresaDto();		
-		
-		dto.setNome(empresa.getNome());
-		dto.setCnpj(empresa.getCnpj());
-		dto.setBairro(empresa.getEndereco().getBairro());
-		dto.setCep(empresa.getEndereco().getCep());
-		dto.setCidade(empresa.getEndereco().getCidade());
-		dto.setComplemento(empresa.getEndereco().getComplemento());
-		dto.setEmail(empresa.getEmail());
-		dto.setEstado(empresa.getEndereco().getEstado());
-		dto.setFone(empresa.getFone());
-		dto.setLogradouro(empresa.getEndereco().getLogradouro());
-		dto.setNumero(empresa.getEndereco().getNumero());
-		dto.setSite(empresa.getSite());
-		dto.setIdEndereco(empresa.getEndereco().getId());
-		return dto;
-	}
+	
 	
 	private Empresa convertDtoParaEmpresa(EmpresaDto dto) {
 		final Empresa emp = new Empresa();
@@ -69,25 +54,12 @@ public class EmpresaController {
 		emp.setFone(dto.getFone());
 		emp.setNome(dto.getNome());
 		emp.setSite(dto.getSite());
-		Endereco end = converteDtoParaEndereco(dto);
+		Endereco end = ConverterEndereco.converteDtoParaEndereco(dto);
 		emp.setEndereco(end);
 		return emp;
 	}
 
-	private Endereco converteDtoParaEndereco(EmpresaDto dto) {
-		Endereco end = new Endereco();
-		end.setBairro(dto.getBairro());
-		end.setCep(dto.getCep());
-		end.setCidade(dto.getCidade());
-		end.setComplemento(dto.getComplemento());
-		end.setEstado(dto.getEstado());
-		end.setLogradouro(dto.getLogradouro());
-		end.setNumero(dto.getNumero());
-		if (dto.getIdEndereco() != 0) {
-			end.setId(dto.getIdEndereco());
-		}
-		return end;
-	}
+	
 	
 	
 }

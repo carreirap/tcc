@@ -1,10 +1,11 @@
 package br.com.fichasordens.service.impl;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import br.com.fichasordens.FichaAtendimento;
 import br.com.fichasordens.OrdemServico;
 import br.com.fichasordens.service.GeradorPdfService;
 import br.com.fichasordens.util.StatusServicoEnum;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -28,8 +30,10 @@ public class GeradorPdfServiceImpl implements GeradorPdfService {
 	@Autowired
 	private Empresa empresa;
 	
+	final Locale local = new Locale("pt","BR");
+	
 	@Override
-	public ByteArrayOutputStream gerarOrdemServicoPdf(final OrdemServico ordem) throws Exception {
+	public ByteArrayOutputStream gerarOrdemServicoPdf(final OrdemServico ordem) throws JRException {
 
 		
 		Map<String, Object> parametros = new HashMap<>();
@@ -50,7 +54,7 @@ public class GeradorPdfServiceImpl implements GeradorPdfService {
 				.append(ordem.getCliente().getEndereco().getEstado());
 		parametros.put("cepCliente", cep.toString());
 		parametros.put("tipo", ordem.getTipoServico());
-		SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy", local);
 		parametros.put("abertura", form.format(ordem.getLancamento().get(0).getData()));
 		ordem.getLancamento().stream()
 			.filter(lanc -> lanc.getSituacao().equals(StatusServicoEnum.FECHADO.getValue()))
@@ -97,7 +101,7 @@ public class GeradorPdfServiceImpl implements GeradorPdfService {
 	}
 
 	@Override
-	public ByteArrayOutputStream gerarFichaAtendimentoPdf(final FichaAtendimento ficha) throws Exception {
+	public ByteArrayOutputStream gerarFichaAtendimentoPdf(final FichaAtendimento ficha) throws JRException, FileNotFoundException {
 		Map<String, Object> parametros = new HashMap<>();
 		
 		this.preencherDadosEmpresa(parametros);
@@ -117,14 +121,14 @@ public class GeradorPdfServiceImpl implements GeradorPdfService {
 				.append(ficha.getCliente().getEndereco().getEstado());
 		parametros.put("cepCliente", cep.toString());
 		parametros.put("tipo", ficha.getTipoServico());
-		SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy", local);
 		parametros.put("abertura", form.format(ficha.getFichaAtendimentoLancList().get(0).getData()));
 		ficha.getFichaAtendimentoLancList().stream()
 			.filter(lanc -> lanc.getSituacao().equals(StatusServicoEnum.FECHADO.getValue()))
 			.forEach( a-> parametros.put("saida", form.format(a.getData())));
 		
-		//final ClassLoader classLoader = getClass().getClassLoader();
-		InputStream input = new FileInputStream("C:\\Users\\paulo\\ficha_atend.jasper");
+		final ClassLoader classLoader = getClass().getClassLoader();
+		InputStream input = classLoader.getResourceAsStream("ficha_atend.jasper");
 		
 		JRBeanCollectionDataSource jrDataSource = new JRBeanCollectionDataSource(ficha.getAtendimentoList());
 		final JRBeanCollectionDataSource coll = new JRBeanCollectionDataSource(ficha.getPecaOutroServicoList());

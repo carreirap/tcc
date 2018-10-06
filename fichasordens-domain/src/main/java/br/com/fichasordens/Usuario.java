@@ -2,7 +2,6 @@ package br.com.fichasordens;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Component;
 import br.com.fichasordens.entities.UsuarioEntity;
 import br.com.fichasordens.exception.ExcecaoRetorno;
 import br.com.fichasordens.repository.UsuarioRepository;
+import br.com.fichasordens.util.ConversorUsuario;
 
 @Component
 public class Usuario {
@@ -32,7 +32,7 @@ public class Usuario {
 				&& this.verificarSenhas(usuario.getNovaSenha(), usuario.getConfirmaSenha())) {
 			usuario.setSenha(usuario.getNovaSenha());
 
-			final UsuarioEntity entity = converterParaEntity(usuario);
+			final UsuarioEntity entity = ConversorUsuario.converterParaEntity(usuario);
 			try {
 				usuarioRepository.save(entity);
 				usuario.setId(entity.getId());
@@ -43,23 +43,12 @@ public class Usuario {
 
 		return usuario;
 	}
-
-	private UsuarioEntity converterParaEntity(final Usuario usuario) {
-		final UsuarioEntity entity = new UsuarioEntity();
-		entity.setNome(usuario.nome);
-		entity.setSenha(usuario.senha);
-		entity.setUsuario(usuario.getNomeUsuario());
-		entity.setSituacao(1);
-		entity.setPapel(usuario.getPapel());
-		entity.setDataCad(new Date());
-		return entity;
-	}
 	
 	public Usuario alterarUsuario (final Usuario usuario) throws ExcecaoRetorno {
 		
 		UsuarioEntity entity = usuarioRepository.findOne(usuario.getId());
 		if (usuario.getSenha() != null && entity.getSenha().equals(usuario.getSenha())) {
-			setNovaSenhaSeNovaSenhaEConfirmeSenhaBatem(usuario, entity);
+			setNovaSenhaSeConfirmacaoBater(usuario, entity);
 		}
 		
 		entity.setNome(usuario.nome);
@@ -78,7 +67,7 @@ public class Usuario {
 		return usuario;
 	}
 
-	private void setNovaSenhaSeNovaSenhaEConfirmeSenhaBatem(final Usuario usuario, UsuarioEntity entity) {
+	private void setNovaSenhaSeConfirmacaoBater(final Usuario usuario, UsuarioEntity entity) {
 		if (!usuario.confirmaSenha.equals("") && this.verificarSenhas(usuario.getNovaSenha(), usuario.getConfirmaSenha())) {
 				entity.setSenha(usuario.getNovaSenha());
 		}
@@ -91,27 +80,13 @@ public class Usuario {
 		} else {
 			usuarios = Arrays.asList(usuarioRepository.findByUsuario(usuario[0]));
 		}
-		return convert(usuarios);
+		return ConversorUsuario.converter(usuarios);
 	}
 	
 	private boolean verificarSenhas(final String senha, final String confirmaSenha) {
 		return (senha.equals(confirmaSenha));
 	}
 	
-	private List<Usuario> convert(final List<UsuarioEntity> user) {
-		List<Usuario> lst = new ArrayList<>();
-		for(UsuarioEntity e: user) {
-			Usuario u = new Usuario();
-			u.setNomeUsuario(e.getUsuario());
-			u.setSenha(e.getSenha());
-			u.setNome(e.getNome());
-			u.setPapel(e.getPapel());
-			u.setId(e.getId());
-			u.setSituacao(e.getSituacao());
-			lst.add(u);
-		}
-		return lst;
-	}
 
 	public long getId() {
 		return id;

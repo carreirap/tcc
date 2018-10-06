@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.fichasordens.OrdemServico;
 import br.com.fichasordens.entities.FichaAtendLancEntity;
 import br.com.fichasordens.entities.FichaAtendimentoEntity;
 import br.com.fichasordens.entities.OrdemServicoEntity;
@@ -35,9 +34,7 @@ public class HistoricoServiceImpl implements HistoricoService {
 	
 	@Autowired
 	private OrdemServicoRepository ordemRepository;
-	
-	@Autowired
-	OrdemServico ordemServico;
+		
 	
 	@Transactional
 	@Override
@@ -70,22 +67,11 @@ public class HistoricoServiceImpl implements HistoricoService {
 			paged = this.ordemRepository.findAllOrdensByCnpfcpf(cnpjcpf, pageable);
 		else if (!situacao.equals(TODAS) && inicio == null)
 			paged = this.ordemRepository.findAllOrdensByCnpfcpfAndSituacao(cnpjcpf, situacao, pageable);
-		else if (situacao.equals(TODAS) && inicio != null)
+		else if (situacao.equals(TODAS))
 			paged = this.ordemRepository.findAllOrdensByCnpfcpfAndDatas(cnpjcpf, inicio, fim, pageable);
 		else	
 			paged = this.ordemRepository.findAllOrdensByCnpfcpfAndSituacaoAndDatas(cnpjcpf, situacao, inicio, fim, pageable);
 		
-		/*
-		if (situacao.equals(TODAS) && inicio == null)
-			paged = this.repository.findAllFichaByCnpfcpf(cnpjcpf, pageable);
-		else if (situacao.equals(TODAS) && inicio != null)
-			paged = this.repository.findAllFichaByCnpfcpfAndDatas(cnpjcpf, inicio, fim, pageable);
-		else if (!situacao.equals(TODAS) && inicio == null) {
-			paged = this.repository.findAllFichaByCnpfcpfAndSituacao(cnpjcpf, situacao, pageable);
-		} else {
-			paged = this.repository.findAllFichaByCnpfcpfAndSituacaoAndDatas(cnpjcpf, situacao, inicio, fim, pageable);
-		}
-		 */
 		final List<ResultadoPesquisaDto> lst = this.converterListaDeOrdensParaDto(paged.getContent());
 		final CustomPage<ResultadoPesquisaDto> pages = new CustomPage<>(lst, pageable, lst.size());
 		pages.setTotalPages(paged.getTotalPages());
@@ -100,7 +86,7 @@ public class HistoricoServiceImpl implements HistoricoService {
 			paged = pesquisarNumeroFicha(numero, pageable);
 		} else if ((cnpjcpf != null && !cnpjcpf.equals(""))) {
 			paged = pesquisarCnpfCpfFicha(cnpjcpf, situacao, inicio, fim, pageable);
-		} else if (situacao.equals(TODAS) && numero == 0 && inicio == null) {
+		} else if (situacao.equals(TODAS) && inicio == null) {
 			paged = pesquisarTodasSituacaoFicha(pageable);
 		} else if (cnpjcpf == null || cnpjcpf.equals("")) {
 			paged = pesquisarPorSituacaoFicha(situacao, inicio, fim,  pageable);
@@ -115,7 +101,7 @@ public class HistoricoServiceImpl implements HistoricoService {
 			paged = pesquisarNumeroOrdem(numero, pageable);
 		} else if ((cnpjcpf != null && !cnpjcpf.equals(""))) {
 			paged = pesquisarCnpfCpfOrdem(cnpjcpf, situacao, inicio, fim, pageable);
-		}  else if (situacao.equals(TODAS) && numero == 0 && inicio == null) {
+		}  else if (situacao.equals(TODAS) && inicio == null) {
 			paged = pesquisarTodasSituacaoOrdem(inicio, fim, pageable);
 		} else if (cnpjcpf == null || cnpjcpf.equals("")) {
 			paged = pesquisarPorSituacaoOrdem(situacao, inicio, fim,  pageable);
@@ -137,7 +123,7 @@ public class HistoricoServiceImpl implements HistoricoService {
 		Page<FichaAtendimentoEntity> paged = null;
 		if (inicio == null) 
 			paged = this.repository.findAllFichaByStatus(situacao, pageable);
-		else if (!situacao.equals("Todas")) 
+		else if (!situacao.equals(TODAS)) 
 			paged = this.repository.findAllFichaBySituacaoAndDatas(situacao, inicio, fim, pageable);
 		else
 			paged = this.repository.findAllFichaByDatas(inicio, fim, pageable);
@@ -175,9 +161,9 @@ public class HistoricoServiceImpl implements HistoricoService {
 		Page<FichaAtendimentoEntity> paged = null;
 		if (situacao.equals(TODAS) && inicio == null)
 			paged = this.repository.findAllFichaByCnpfcpf(cnpjcpf, pageable);
-		else if (situacao.equals(TODAS) && inicio != null)
+		else if (situacao.equals(TODAS))
 			paged = this.repository.findAllFichaByCnpfcpfAndDatas(cnpjcpf, inicio, fim, pageable);
-		else if (!situacao.equals(TODAS) && inicio == null) {
+		else if (inicio == null) {
 			paged = this.repository.findAllFichaByCnpfcpfAndSituacao(cnpjcpf, situacao, pageable);
 		} else {
 			paged = this.repository.findAllFichaByCnpfcpfAndSituacaoAndDatas(cnpjcpf, situacao, inicio, fim, pageable);

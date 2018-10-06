@@ -2,6 +2,9 @@ package br.com.fichasordens.dto;
 
 import java.util.Date;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class LancamentoDto {
@@ -11,7 +14,8 @@ public class LancamentoDto {
 	private String nomeUsuario;
     private String situacao;
     
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
     private Date data;
     private String observacao;
     

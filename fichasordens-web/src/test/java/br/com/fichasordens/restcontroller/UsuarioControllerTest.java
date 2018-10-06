@@ -42,7 +42,6 @@ public class UsuarioControllerTest {
 		
 		assertNotNull(list);
 		
-		
 	}
 	
 	@Test
@@ -63,6 +62,20 @@ public class UsuarioControllerTest {
 	public void test_getUsuarioComParametro_success() {
 		Usuario usuario= carregarUsuario();
 		usuario.setSituacao(1);
+		String param = "test";
+		when(this.mockUsuario.listarUsuario(param)).thenReturn(Arrays.asList(usuario));
+		
+		ResponseEntity response = this.usuarioController.getUsuario(param);
+		
+		List<Usuario> list = (List) response.getBody();
+		
+		assertNotNull(list);
+	}
+	
+	@Test
+	public void test_getUsuarioComParametroStatusZero_success() {
+		final Usuario usuario= carregarUsuario();
+		usuario.setSituacao(0);
 		String param = "test";
 		when(this.mockUsuario.listarUsuario(param)).thenReturn(Arrays.asList(usuario));
 		

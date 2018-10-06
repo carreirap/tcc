@@ -97,7 +97,7 @@
 				</textElement>
 				<text><![CDATA[ATENDIMENTO AO CLIENTE]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="43" y="175" width="156" height="13" uuid="a4b4ab27-febd-47c5-8b9a-87a75dcf46b6"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{nomeCliente}]]></textFieldExpression>
@@ -178,7 +178,7 @@
 				</textElement>
 				<text><![CDATA[Abertura:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="406" y="201" width="52" height="20" uuid="029cc2ff-4966-4016-bed9-816b1c20abcc"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{abertura}]]></textFieldExpression>

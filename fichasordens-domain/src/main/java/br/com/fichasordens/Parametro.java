@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.fichasordens.entities.ParametroEntity;
 import br.com.fichasordens.repository.ParametroRepository;
+import br.com.fichasordens.util.ConversorParametro;
 
 @Component
 public class Parametro {
@@ -24,19 +25,17 @@ public class Parametro {
 	
 	@Transactional
 	public List<Parametro> recuperarParametros() {
-		
 		List<ParametroEntity> list = parametroRepository.findAll(new Sort(Sort.Direction.ASC, "id"));
 		List<Parametro> lstParametro = new ArrayList<>();
-		list.forEach(p-> {
-			Parametro param = new Parametro();
-			param.setDescricao(p.getDescricao());
-			param.setId(p.getId());
-			param.setValor(p.getValor());
-			lstParametro.add(param);
-		});
+		list.forEach(p-> lstParametro.add(ConversorParametro.converterEntity(p)) );
 		
 		return lstParametro;
 		
+	}
+	
+	public Parametro buscarValorParametroAlerta() {
+		ParametroEntity ent = this.parametroRepository.findOne(ParametroRepository.ID_DIAS_VALOR);
+		return ConversorParametro.converterEntity(ent);
 	}
 	
 	public void salvarParametro(List<Parametro> parametrosList) {

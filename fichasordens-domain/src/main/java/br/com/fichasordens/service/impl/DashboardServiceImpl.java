@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import br.com.fichasordens.FichaAtendimento;
 import br.com.fichasordens.OrdemServico;
+import br.com.fichasordens.Parametro;
 import br.com.fichasordens.entities.FichaAtendLancEntity;
 import br.com.fichasordens.entities.FichaAtendimentoEntity;
 import br.com.fichasordens.entities.OrdemServicoEntity;
@@ -34,8 +34,8 @@ public class DashboardServiceImpl implements DashboardService {
 	@Autowired
 	private OrdemServico ordemServico;
 	
-	@Value("${alerta.servico.parado.situacao}")
-	private String qtdDiasAlerta;
+	@Autowired
+	private Parametro parametro;
 
 	@Override
 	public Map<String,DashBoardDto> contarFichasAtendimento() {
@@ -64,7 +64,8 @@ public class DashboardServiceImpl implements DashboardService {
 	}
 	
 	private Map<String,DashBoardDto> contarFichas(List<FichaAtendimentoEntity> lst, final String situacao) {
-		final int diasAlerta = Integer.parseInt(qtdDiasAlerta);
+		final Parametro param = parametro.buscarValorParametroAlerta();
+		final int diasAlerta = param.getValor().intValue();
 		Map<String,DashBoardDto> map = new HashMap<>();
 		int qtdAberto = 0;
 		
@@ -77,7 +78,7 @@ public class DashboardServiceImpl implements DashboardService {
 				if (lanc.getAtualSituacao()) {
 					qtdAberto = qtdAberto + 1; 
 					totalAberto = totalAberto.add(calcularTotalPecaServicos(a));
-					alertaAberto = setAlertaFicha(diasAlerta, alertaAberto, lanc);
+					alertaAberto = setAlertaFicha(diasAlerta, lanc);
 				}
 			}
 		}
@@ -86,11 +87,8 @@ public class DashboardServiceImpl implements DashboardService {
 		return map;
 	}
 
-	private boolean setAlertaFicha(final int diasAlerta, boolean alertaAberto, FichaAtendLancEntity lanc) {
-		if (DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()) > diasAlerta ) {
-			alertaAberto = true;
-		}
-		return alertaAberto;
+	private boolean setAlertaFicha(final int diasAlerta, FichaAtendLancEntity lanc) {
+		return DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()) > diasAlerta;
 	}
 	
 	private BigDecimal calcularTotalPecaServicos(FichaAtendimentoEntity ficha) {
@@ -118,6 +116,8 @@ public class DashboardServiceImpl implements DashboardService {
 	}
 
 	private Map<String,DashBoardDto> contarOrdens(final List<OrdemServicoEntity> lst, final String situacao) {
+		final Parametro param = parametro.buscarValorParametroAlerta();
+		final int diasAlerta = param.getValor().intValue();
 		Map<String,DashBoardDto> map = new HashMap<>();
 		int qtdAberto = 0;
 		BigDecimal totalAberto = new BigDecimal(0);
@@ -129,7 +129,7 @@ public class DashboardServiceImpl implements DashboardService {
 				if (lanc.getAtualSituacao()) {
 					qtdAberto = qtdAberto + 1; 
 					totalAberto = totalAberto.add(calcularTotalPecaServicos(a));
-					alerta = setAlertaOrdem(alerta, lanc);
+					alerta = setAlertaOrdem(diasAlerta, lanc);
 				}
 			}
 		}
@@ -138,11 +138,8 @@ public class DashboardServiceImpl implements DashboardService {
 		return map;
 	}
 
-	private boolean setAlertaOrdem(boolean alerta, OrdemServicoLancEntity lanc) {
-		if (DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()) > 1 ) {
-			alerta = true;
-		}
-		return alerta;
+	private boolean setAlertaOrdem(final int diasAlerta, final OrdemServicoLancEntity lanc) {
+		return DataUtil.calcularDiferencaDiasEntreUmaDataEAgora(lanc.getData()) > diasAlerta;
 	}
 	
 	private BigDecimal calcularTotalPecaServicos(OrdemServicoEntity ordem) {

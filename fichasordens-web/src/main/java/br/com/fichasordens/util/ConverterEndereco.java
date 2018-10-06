@@ -1,13 +1,13 @@
 package br.com.fichasordens.util;
 
 import br.com.fichasordens.Endereco;
-import br.com.fichasordens.dto.ClienteDto;
+import br.com.fichasordens.dto.PessoaDto;
 
 public class ConverterEndereco {
 	
 	private ConverterEndereco() {}
 	
-	public static Endereco converteDtoParaEndereco(ClienteDto dto) {
+	public static Endereco converteDtoParaEndereco(PessoaDto dto) {
 		Endereco end = new Endereco();
 		end.setBairro(dto.getBairro());
 		end.setCep(dto.getCep());

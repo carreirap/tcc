@@ -48,9 +48,6 @@ public class OrdemServicoTest {
 	private OrdemServicoLancRepository ordemServicoLancRepository;
 	
 	@Mock
-	private PecaServicoOrdemRepository pecaServicoOrdemRepository;
-	
-	@Mock
 	private Usuario usuario;
 	
 	@Test
@@ -100,22 +97,7 @@ public class OrdemServicoTest {
 		
 	}
 	
-	@Test
-	public void teste_gravarPecaServicoOrdem_success() throws ExcecaoRetorno {
-		PecaOutroServico peca = createPecaOutroServico();
-		when(pecaServicoOrdemRepository.save(org.mockito.Mockito.any(PecaServicoOrdemEntity.class))).thenReturn(null);
-		this.mockOrdemServico.gravarPecaServicoOrdem(peca);
-		
-		Mockito.verify(this.pecaServicoOrdemRepository, Mockito.times(1)).save(org.mockito.Mockito.any(PecaServicoOrdemEntity.class));
-		
-	}
 	
-	@Test(expected=ExcecaoRetorno.class)
-	public void teste_gravarPecaServicoOrdem_Exception() throws ExcecaoRetorno {
-		PecaOutroServico peca = createPecaOutroServico();
-		when(pecaServicoOrdemRepository.save(org.mockito.Mockito.any(PecaServicoOrdemEntity.class))).thenThrow(new RuntimeException("DB exception"));
-		this.mockOrdemServico.gravarPecaServicoOrdem(peca);
-	}
 	
 	@Test
 	public void teste_listarOrdens_sucess() {
@@ -136,13 +118,7 @@ public class OrdemServicoTest {
 	}
 	
 	
-	@Test
-	public void teste_deletarPecaOutroServico_success() {
-		doNothing().when(pecaServicoOrdemRepository).delete(org.mockito.Mockito.any(PecaServicoOrdemEntity.class));
-		this.mockOrdemServico.deletarPecaOutroServico(199, 1);
-		
-		Mockito.verify(this.pecaServicoOrdemRepository, Mockito.times(1)).delete(org.mockito.Mockito.any(PecaServicoOrdemEntity.class));
-	}
+	
 	
 	/*@Test(expected=ExcecaoRetorno.class)
 	public void teste_gravarOrdemServicoLanc_success() throws ExcecaoRetorno {
@@ -161,7 +137,6 @@ public class OrdemServicoTest {
 		ordem.setCliente(ClienteTest.loadCliente());
 		ordem.setDescDefeito("Teste defeito");
 		ordem.setDescEquip("Notebook Dell Vostro");
-		ordem.setDescServico("Nao liga a tela");
 		ordem.setEstadoItensAcomp("Riscado tampa / Acompanha a fonte");
 		ordem.setFabricante("Dell");
 		ordem.setId(199);
@@ -218,17 +193,7 @@ public class OrdemServicoTest {
 		return lanc;
 	}
 	
-	private PecaOutroServico createPecaOutroServico() {
-		PecaOutroServico peca = new PecaOutroServico();
-		peca.setDescricao("Teste");
-		peca.setId(1);
-		peca.setQuantidade(10);
-		peca.setValor(new BigDecimal(10));
-		peca.setOrdemServico(new OrdemServico());
-		peca.getOrdemServico().setId(199);
-		
-		return peca;
-	}
+	
 	
 	public static PecaServicoOrdemEntity createPecaServicoOrdemEntity() {
 		PecaServicoOrdemEntity peca = new PecaServicoOrdemEntity();
