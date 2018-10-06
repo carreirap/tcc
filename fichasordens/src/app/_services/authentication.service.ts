@@ -31,7 +31,8 @@ export class AuthenticationService {
     }
 
     authenticate(user: UsuarioLogado) {
-        this.url = 'http://localhost:8080/auth/oauth/token';
+        // this.url = 'http://localhost:8080/auth/oauth/token';
+        this.url = 'http://192.168.100.33:8080/auth/oauth/token';
         this.headers = new Headers({
           'Content-Type': 'application/x-www-form-urlencoded',
           'Authorization': 'Basic ' + Base64.encode(user.usuario + ':' + user.senha)
@@ -91,7 +92,7 @@ export class AuthenticationService {
 
 
     public getUpdatedUser(user: UsuarioLogado): Observable<UsuarioLogado> {
-        this.url = 'http://localhost:9090/usuario/getUpdatedUser';
+        this.url = 'http://192.168.100.33:9090/usuario/getUpdatedUser';
         this.headers = new Headers({
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token
