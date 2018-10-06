@@ -15,7 +15,7 @@ import { Dashboard } from '../_models/dashboad';
 })
 
 export class HomeComponent implements OnInit {
-    // users: User[] = [];
+    timer: any;
     dashboadFicha: Dashboard;
     dashboardOrdem: Dashboard;
 
@@ -27,19 +27,19 @@ export class HomeComponent implements OnInit {
     totalFichaTrabalhando: number;
     totalFichaFechado: number;
     totalFichaFaturado: number;
-    totalFichaFinalizado
+    totalFichaFinalizado: number;
 
-    alertaOrdemAberto: boolean = false;
-    alertaOrdemTrabalhando: boolean = false; 
-	alertaOrdemAguardando: boolean = false;
-	alertaOrdemFinalizado: boolean = false; 
-    alertaOrdemFaturado: boolean = false;
-    
-    alertaFichaAberto: boolean = false;
-    alertaFichaTrabalhando: boolean = false; 
-	alertaFichaAguardando: boolean = false;
-	alertaFichaFinalizado: boolean = false; 
-	alertaFichaFaturado: boolean = false;
+    alertaOrdemAberto: Boolean = false;
+    alertaOrdemTrabalhando: Boolean = false;
+    alertaOrdemAguardando: Boolean = false;
+    alertaOrdemFinalizado: Boolean = false;
+    alertaOrdemFaturado: Boolean = false;
+
+    alertaFichaAberto: Boolean = false;
+    alertaFichaTrabalhando: Boolean = false;
+    alertaFichaAguardando: Boolean = false;
+    alertaFichaFinalizado: Boolean = false;
+    alertaFichaFaturado: Boolean = false;
 
     user = new UsuarioLogado();
     // tslint:disable-next-line:no-input-rename
@@ -50,19 +50,33 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.service.get('/dashboard/allFichas').subscribe(response => {
-            // console.log(response);
-            this.setValues(response);
-        }, (error) => {
-            console.log('error in', error.error.mensagem);
-        });
+        this.timer = 1;
+        this.refreshData();
+        setInterval(() => {
+            this.refreshData();
+        }, 30000);
+    }
 
-        this.service.get('/dashboard/allOrdens').subscribe(response => {
-            // console.log(response);
-            this.setValuesOrdem(response);
-        }, (error) => {
-            console.log('error in', error.error.mensagem);
-        });
+    // tslint:disable-next-line:use-life-cycle-interface
+    ngOnDestroy() {
+        this.timer = undefined;
+    }
+    refreshData() {
+        if (this.timer !== undefined) {
+            this.service.get('/dashboard/allFichas').subscribe(response => {
+                // console.log(response);
+                this.setValues(response);
+            }, (error) => {
+                console.log('error in', error.error.mensagem);
+            });
+
+            this.service.get('/dashboard/allOrdens').subscribe(response => {
+                // console.log(response);
+                this.setValuesOrdem(response);
+            }, (error) => {
+                console.log('error in', error.error.mensagem);
+            });
+        }
     }
 
 

@@ -40,7 +40,7 @@
 
   <div class="form-row">
     <div class="form-group col-md-11" [ngClass]="{'was-validated': !diasAlerta.valid  && (diasAlerta.dirty || diasAlerta.touched)}">
-      <label for="hora">Dias para alerta</label>
+      <label for="hora">Dias para Alertas</label>
       <input class="form-control" type="number" step="2" value="" id="diasAlerta" name="diasAlerta" [ngModel]="formValue.diasAlerta" 
       (ngModelChange)="formValue.diasAlerta=$event" #diasAlerta="ngModel" required>
       <input type="hidden" value="" id="id-diasAlerta" name="id-diasAlerta" [(ngModel)]="formValue.idDiasAlerta">

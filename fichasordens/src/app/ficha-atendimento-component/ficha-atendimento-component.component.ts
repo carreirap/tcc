@@ -113,7 +113,7 @@ export class FichaAtendimentoComponentComponent implements OnInit {
       sit = 'Ficha de Atendimento cancelada com sucesso!';
     } else if (situacao === 'Aguardando' || situacao === 'Trabalhando' || situacao === 'Faturado' || situacao === 'Finalizado') {
       sit = 'Ficha de Atendimento alterada com sucesso!';
-    } else if (sit === 'Fechado') {
+    } else {
       sit = 'Ficha de Atendimento fechada com sucesso!';
     }
     return sit;

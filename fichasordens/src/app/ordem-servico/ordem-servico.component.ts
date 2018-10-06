@@ -136,18 +136,19 @@ export class OrdemServicoComponent implements OnInit {
   }
 
   montaMensagemAtualizacaoSituacao(situacao) {
-    let sit = ""
-    if (situacao === "Aberto")
-      sit = 'Ordem de serviço cadastrada com sucesso!'
-    if (situacao === "Cancelado") 
-      sit = 'Ordem de serviço cancelada com sucesso!'
-    if (situacao === "Aguardando" || situacao === "Trabalhando" || situacao === "Faturado" || situacao === "Finalizado")  
-      sit = 'Ordem de serviço alterada com sucesso!'
-    if (sit === "Fechado")  
-      sit = 'Ordem de serviço fechada com sucesso!'
-    return sit;  
+    let sit = '';
+    if (situacao === 'Aberto') {
+      sit = 'Ordem de serviço cadastrada com sucesso!';
+    } else if (situacao === 'Cancelado') {
+      sit = 'Ordem de serviço cancelada com sucesso!';
+    } else if (situacao === 'Aguardando' || situacao === 'Trabalhando' || situacao === 'Faturado' || situacao === 'Finalizado') {
+       sit = 'Ordem de serviço alterada com sucesso!';
+    } else {
+      sit = 'Ordem de serviço fechada com sucesso!';
+    }
+    return sit;
   }
-  
+
   email() {
     this.service.get('/ordem/email?id=' + this.formOrdem.numeroOrdem).subscribe(response => {
       this.toasterService.pop('success', 'Ordem de Serviço', 'Email enviado com sucesso!');
