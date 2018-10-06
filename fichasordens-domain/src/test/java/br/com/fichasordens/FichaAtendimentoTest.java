@@ -52,7 +52,7 @@ public class FichaAtendimentoTest {
 	public void test_salvarFicha_success() throws ExcecaoRetorno {
 		final FichaAtendimento fichaAtendimento = createFichaAtendimento();
 		FichaAtendimentoEntity ent = new FichaAtendimentoEntity();
-		ent.setId(199);
+		ent.setId(299);
 		FichaAtendLancEntity lanc = new FichaAtendLancEntity();
 		FichaAtendLancEntity lancA = new FichaAtendLancEntity();
 		

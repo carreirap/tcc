@@ -19,6 +19,7 @@ import br.com.fichasordens.repository.FichaAtendLancRepository;
 import br.com.fichasordens.repository.FichaAtendimentoRepository;
 import br.com.fichasordens.util.ConversorFichaAtendimento;
 import br.com.fichasordens.util.StatusServicoEnum;
+import br.com.fichasordens.util.ValidadorSituacao;
 
 @Component
 public class FichaAtendimento {
@@ -50,6 +51,7 @@ public class FichaAtendimento {
 			FichaAtendLancEntity lancEntityAnterior = this.fichaAtendLancRepository.findByFichaAtendimentoIdAndAtualSituacao(ent.getId(), true);
 			if (lancEntityAnterior != null) {
 				lancEntityAnterior.setAtualSituacao(false);
+				ValidadorSituacao.validarTrocaSituacao(lancEntityAnterior.getSituacao(), lancEntity.getSituacao());
 				this.fichaAtendLancRepository.save(lancEntityAnterior);
 			}
 			fichaAtendLancRepository.save(lancEntity);
@@ -59,12 +61,6 @@ public class FichaAtendimento {
 			throw new ExcecaoRetorno("Erro ao tentar cadastrar Ficha de Atendimento");
 		}
 	}
-	
-	/*public List<FichaAtendimentoEntity> buscarFichasDeAtendimento() {
-		return this.repository.findAllFichas();
-	}*/
-	
-	
 	
 	@Transactional
 	public List<FichaAtendimento> listarFichas(final StatusServicoEnum situacao) {

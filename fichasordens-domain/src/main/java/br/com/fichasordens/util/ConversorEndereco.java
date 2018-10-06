@@ -5,6 +5,8 @@ import br.com.fichasordens.entities.EnderecoEntity;
 
 public class ConversorEndereco {
 	
+	private ConversorEndereco() {}
+	
 	public static EnderecoEntity converteParaEntity(final Endereco endereco) {
 		final EnderecoEntity entity = new EnderecoEntity();
 		entity.setBairro(endereco.getBairro());

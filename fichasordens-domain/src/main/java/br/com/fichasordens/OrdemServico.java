@@ -8,17 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.fichasordens.entities.ClienteEntity;
 import br.com.fichasordens.entities.OrdemServicoEntity;
 import br.com.fichasordens.entities.OrdemServicoLancEntity;
-import br.com.fichasordens.entities.OrdemServicoLancId;
-import br.com.fichasordens.entities.PecaServicoOrdemEntity;
-import br.com.fichasordens.entities.PecaServicoOrdemEntityId;
 import br.com.fichasordens.exception.ExcecaoRetorno;
 import br.com.fichasordens.repository.OrdemServicoLancRepository;
 import br.com.fichasordens.repository.OrdemServicoRepository;
-import br.com.fichasordens.repository.PecaServicoOrdemRepository;
-import br.com.fichasordens.util.ConversorCliente;
 import br.com.fichasordens.util.ConversorOrdemServico;
 import br.com.fichasordens.util.StatusServicoEnum;
 

@@ -6,6 +6,8 @@ import br.com.fichasordens.entities.EmpresaEntity;
 
 public class ConversorEmpresa {
 	
+	private ConversorEmpresa() {}
+	
 	public static Empresa converter(EmpresaEntity entity) {
 		Empresa empresa = new Empresa();
 		empresa.setCnpj(entity.getCnpj());
