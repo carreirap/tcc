@@ -12,7 +12,6 @@ public class ConversorEmpresa {
 		Empresa empresa = new Empresa();
 		empresa.setCnpj(entity.getCnpj());
 		empresa.setEmail(entity.getEmai());
-		
 		empresa.setEndereco(new Endereco());
 		empresa.getEndereco().setBairro(entity.getEndereco().getBairro());
 		empresa.getEndereco().setCep(entity.getEndereco().getCep());

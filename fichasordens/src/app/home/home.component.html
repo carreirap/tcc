@@ -9,7 +9,7 @@
         <div class="col-md-4 text-center">
             <p-panel>
                 <p-header>
-                    Abertas 
+                    <strong>Abertas</strong>
                 </p-header>
                 <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Aberto','Ficha']">{{dashboadFicha.qtqAberta}} Abertas
                     <span *ngIf="alertaFichaAberto" class="badge badge-pill badge-danger">!</span>
@@ -19,7 +19,7 @@
         <div class="col-md-4 text-center">
             <p-panel>
                 <p-header>
-                    Em andamento
+                    <strong>Em andamento</strong>
                 </p-header>
                     <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Trabalhando','Ficha']">{{dashboadFicha.qtdTrabalhando}} Trabalhando
                         <span *ngIf="alertaFichaTrabalhando" class="badge badge-pill badge-danger">!</span>
@@ -35,7 +35,7 @@
         <div class="col-md-4 text-center">
             <p-panel>
                 <p-header>
-                    Fechadas
+                <strong>Fechadas</strong>
                 </p-header>
                     <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Fechado','Ficha']">{{dashboadFicha.qtdFechada}} Fechado</a>
                     <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Cancelado','Ficha']">{{dashboadFicha.qtdAguardando}} Cancelado</a>
@@ -55,7 +55,7 @@
         <div class="col-md-4 text-center">
             <p-panel>
                 <p-header>
-                    Ordem Abertas
+                    <strong>Ordem Abertas</strong>
                 </p-header>
                 <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Aberto','Ordem']">{{dashboardOrdem.qtqAberta}} Abertas
                     <span *ngIf="alertaOrdemAberto" class="badge badge-pill badge-danger">!</span>
@@ -66,7 +66,7 @@
         <div class="col-md-4 text-center">
             <p-panel>
                 <p-header>
-                    Em Andamento
+                <strong>Em Andamento</strong>
                 </p-header>
                     <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Trabalhando','Ordem']">{{dashboardOrdem.qtdTrabalhando}} Trabalhando
                         <span *ngIf="alertaOrdemTrabalhando" class="badge badge-pill badge-danger">!</span>
@@ -82,7 +82,7 @@
         <div class="col-md-4 text-center">
             <p-panel>
                 <p-header>
-                    Fechado
+                <strong>Fechado</strong>
                 </p-header>
                     <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Fechado','Ordem']">{{dashboardOrdem.qtdFechada}} Fechadas</a>
                     <a class="nav-link" ngbTooltip="Visualizar lista detalhada" [routerLink]="['/listaDashboard', 'Cancelado','Ordem']">{{dashboardOrdem.qtdCancelado}} Canceladas</a>

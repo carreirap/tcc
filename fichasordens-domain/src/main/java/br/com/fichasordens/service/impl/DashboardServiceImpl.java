@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import br.com.fichasordens.FichaAtendimento;
 import br.com.fichasordens.OrdemServico;
 import br.com.fichasordens.Parametro;
+import br.com.fichasordens.entities.AtendimentoFichaEntity;
 import br.com.fichasordens.entities.FichaAtendLancEntity;
 import br.com.fichasordens.entities.FichaAtendimentoEntity;
 import br.com.fichasordens.entities.OrdemServicoEntity;
@@ -78,6 +79,7 @@ public class DashboardServiceImpl implements DashboardService {
 				if (lanc.getAtualSituacao()) {
 					qtdAberto = qtdAberto + 1; 
 					totalAberto = totalAberto.add(calcularTotalPecaServicos(a));
+					totalAberto = totalAberto.add(calcularAtendimentoFicha(a));
 					alertaAberto = setAlertaFicha(diasAlerta, lanc);
 				}
 			}
@@ -98,6 +100,15 @@ public class DashboardServiceImpl implements DashboardService {
 			totalPecaServico = resultado;
 		}
 		return totalPecaServico;
+	}
+	
+	private BigDecimal calcularAtendimentoFicha(FichaAtendimentoEntity ficha) {
+		BigDecimal totalAtendimento = new BigDecimal(0);
+		for (AtendimentoFichaEntity lanc : ficha.getAtendimentoFichas()) {
+			BigDecimal resultado = totalAtendimento.add(lanc.getValor());
+			totalAtendimento = resultado;
+		}
+		return totalAtendimento;
 	}
 	
 	private Map<String,DashBoardDto> contarOrdensPorSituacao() {

@@ -50,7 +50,7 @@ export class ClienteComponentComponent implements OnInit {
       console.log(response);
       this.formCliente = new Cliente();
       myForm.resetForm();
-      this.toasterService.pop('success', 'Cliente', 'Cliente gravdo com sucesso!');
+      this.toasterService.pop('success', 'Cliente', 'Cliente gravado com sucesso!');
     }, (error) => {
       console.log('error in', error.error.mensagem);
       this.toasterService.pop('error', 'Cliente', error.error.mensagem);
