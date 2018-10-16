@@ -6,6 +6,7 @@ import { Base64 } from 'js-base64';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { UsuarioLogado } from '../_models/usuario-logado';
+import { Configuration } from '../app.constants';
 
 
 @Injectable()
@@ -19,7 +20,8 @@ export class AuthenticationService {
     updatedUser: string;
     user: UsuarioLogado;
 
-    constructor(private http: Http, private router: Router) {
+    constructor(private http: Http, private router: Router, private configuration: Configuration) {
+        // this.url = 'http://192.168.100.33:8080/auth/oauth/token';
         // constructor(private http: DataService) {
         // set token if saved in local storage
         // const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -31,8 +33,7 @@ export class AuthenticationService {
     }
 
     authenticate(user: UsuarioLogado) {
-        // this.url = 'http://localhost:8080/auth/oauth/token';
-        this.url = 'http://192.168.100.33:8080/auth/oauth/token';
+        this.url = this.configuration.Server + 'auth/oauth/token';
         this.headers = new Headers({
           'Content-Type': 'application/x-www-form-urlencoded',
           'Authorization': 'Basic ' + Base64.encode(user.usuario + ':' + user.senha)
@@ -92,7 +93,7 @@ export class AuthenticationService {
 
 
     public getUpdatedUser(user: UsuarioLogado): Observable<UsuarioLogado> {
-        this.url = 'http://192.168.100.33:9090/usuario/getUpdatedUser';
+        this.url = this.configuration.Server + 'usuario/getUpdatedUser';
         this.headers = new Headers({
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token
