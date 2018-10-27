@@ -21,7 +21,7 @@ import br.com.fichasordens.dto.ClienteDto;
 import br.com.fichasordens.dto.MensagemRetornoDto;
 import br.com.fichasordens.entities.ClienteEntity;
 import br.com.fichasordens.exception.ExcecaoRetorno;
-import br.com.fichasordens.util.ConverterCliente;
+import br.com.fichasordens.web.util.ConverterCliente;
 
 @RestController
 @RequestMapping("/cliente")

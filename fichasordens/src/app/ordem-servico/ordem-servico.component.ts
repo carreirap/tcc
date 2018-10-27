@@ -123,7 +123,8 @@ export class OrdemServicoComponent implements OnInit {
       console.log(response);
       this.setNumeroOrdem(response);
       this.formOrdem.atualSituacao = this.formOrdem.lancamento.situacao;
-      this.formOrdem.lancamentoLst.push(this.formOrdem.lancamento);
+      let copy = Object.assign({}, this.formOrdem.lancamento);
+      this.formOrdem.lancamentoLst.push(copy);
       this.toasterService.pop('success', 'Ordem de Serviço', this.montaMensagemAtualizacaoSituacao(this.formOrdem.atualSituacao));
       this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formOrdem.lancamento.situacao);
       if (this.formOrdem.lancamento.situacao === 'Fechado') {

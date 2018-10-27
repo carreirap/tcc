@@ -8,7 +8,7 @@ public class ConversorEmpresa {
 	
 	private ConversorEmpresa() {}
 	
-	public static Empresa converter(EmpresaEntity entity) {
+	public static Empresa converterEntity(final EmpresaEntity entity) {
 		Empresa empresa = new Empresa();
 		empresa.setCnpj(entity.getCnpj());
 		empresa.setEmail(entity.getEmai());

@@ -93,7 +93,7 @@ export class AuthenticationService {
 
 
     public getUpdatedUser(user: UsuarioLogado): Observable<UsuarioLogado> {
-        this.url = this.configuration.Server + 'usuario/getUpdatedUser';
+        this.url = this.configuration.ServerService + '/usuario/getUpdatedUser';
         this.headers = new Headers({
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token

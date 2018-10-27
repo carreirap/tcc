@@ -26,7 +26,7 @@ public class Empresa extends Pessoa{
 	@Transactional
 	public Empresa buscarEmpresa() {
 		EmpresaEntity entity = this.repository.findOne(Empresa.ID_EMPRESA);
-		return ConversorEmpresa.converter(entity);
+		return br.com.fichasordens.util.ConversorEmpresa.converterEntity(entity);
 	}
 	
 	@Transactional

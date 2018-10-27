@@ -34,13 +34,13 @@ import br.com.fichasordens.dto.OrdemServicoDto;
 import br.com.fichasordens.dto.PecaOutroServicoDto;
 import br.com.fichasordens.exception.ExcecaoRetorno;
 import br.com.fichasordens.service.GeradorPdfService;
-import br.com.fichasordens.util.ConverterCliente;
-import br.com.fichasordens.util.ConverterLancamentoDto;
-import br.com.fichasordens.util.ConverterPecaOutroServico;
-import br.com.fichasordens.util.Downloader;
 import br.com.fichasordens.util.Email;
 import br.com.fichasordens.util.StatusServicoEnum;
-import br.com.fichasordens.util.TipoServicoEnum;
+import br.com.fichasordens.web.util.ConverterCliente;
+import br.com.fichasordens.web.util.ConverterLancamentoDto;
+import br.com.fichasordens.web.util.ConverterPecaOutroServico;
+import br.com.fichasordens.web.util.Downloader;
+import br.com.fichasordens.web.util.TipoServicoEnum;
 import net.sf.jasperreports.engine.JRException;
 
 @SuppressWarnings("rawtypes")

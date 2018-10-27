@@ -52,9 +52,9 @@ export class HistoricoComponent implements OnInit {
     this.service.post('/historico?page=' +
             this.page + '&size=3&sort=id,DESC', this.formHist).subscribe(response => {
               this.loadHistorico(response);
-    this.toasterService.pop('success', 'Pesquisa Historico', 'Pesquisa Realizado com sucesso!');
+    this.toasterService.pop('success', 'Pesquisa Historico', 'Pesquisa realizada com sucesso!');
     }, (error) => {
-      console.log('error in', error.error.mensagem);
+      console.log('error in', error.error.mensagem);-
       this.toasterService.pop('error', 'Pesquisa Historico', error.error.mensagem);
     });
   }

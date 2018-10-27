@@ -72,6 +72,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToasterModule, ToasterService} from 'angular5-toaster';
 import { ParametroComponent } from './parametro/parametro.component';
 import { CpfCnpjDirective } from './util/cnpj-cpf-validator';
+import { CepDirective } from './util/cep-formatter';
 import { PesquisarDirective } from './util/cliente-search';
 import {TableModule} from 'primeng/table';
 import {PaginatorModule} from 'primeng/paginator';
@@ -115,6 +116,7 @@ registerLocaleData(ptBr)
     FichaAtendimentoComponentComponent,
     ParametroComponent,
     CpfCnpjDirective,
+    CepDirective,
     PesquisarDirective,
     CalcularAtendimento,
     OrdemServicoComponent,

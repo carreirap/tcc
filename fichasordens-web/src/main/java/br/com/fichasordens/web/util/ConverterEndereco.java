@@ -1,4 +1,4 @@
-package br.com.fichasordens.util;
+package br.com.fichasordens.web.util;
 
 import br.com.fichasordens.Endereco;
 import br.com.fichasordens.dto.PessoaDto;

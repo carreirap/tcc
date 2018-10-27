@@ -1,4 +1,4 @@
-package br.com.fichasordens.util;
+package br.com.fichasordens.web.util;
 
 import br.com.fichasordens.Cliente;
 import br.com.fichasordens.dto.ClienteDto;

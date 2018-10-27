@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.fichasordens.Empresa;
 import br.com.fichasordens.Endereco;
 import br.com.fichasordens.dto.EmpresaDto;
-import br.com.fichasordens.util.ConversorEmpresa;
-import br.com.fichasordens.util.ConverterEndereco;
+import br.com.fichasordens.web.util.ConversorEmpresa;
+import br.com.fichasordens.web.util.ConverterEndereco;
 
 @RestController
 @RequestMapping("/empresa")

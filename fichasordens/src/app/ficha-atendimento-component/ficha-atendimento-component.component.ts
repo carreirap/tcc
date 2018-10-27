@@ -92,7 +92,8 @@ export class FichaAtendimentoComponentComponent implements OnInit {
     this.service.post('/ficha', this.formFicha).subscribe(response => {
       console.log(response);
       this.setNumeroFicha(response);
-      this.formFicha.lancamentoLst.push(this.formFicha.lancamento);
+      let copy = Object.assign({}, this.formFicha.lancamento);
+      this.formFicha.lancamentoLst.push(copy);
       this.toasterService.pop('success', 'Ficha de Atendimento', this.montaMensagemAtualizacaoSituacao(this.formFicha.lancamento.situacao));
       this.formFicha.atualSituacao = this.formFicha.lancamento.situacao;
       this.situacao = this.situacaoTecnica.getSituacoesBaseadoNoAtual(this.formFicha.lancamento.situacao);

@@ -1,4 +1,4 @@
-package br.com.fichasordens.util;
+package br.com.fichasordens.web.util;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import br.com.fichasordens.OrdemServico;
 import br.com.fichasordens.Usuario;
 import br.com.fichasordens.dto.LancamentoDto;
 import br.com.fichasordens.dto.ListagemDashboardDto;
+import br.com.fichasordens.util.DataUtil;
 
 public class ConverterLancamentoDto {
 	

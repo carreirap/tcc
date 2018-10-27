@@ -58,7 +58,8 @@ export class ListagemComponent implements OnInit {
            l.responsavel = data[i].responsavel;
            l.situacao = data[i].situacao;
            l.tipo = data[i].tipoServico;
-           l.alerta = data[i].alerta;
+           if (data[i].situacao !== 'Fechado')
+                l.alerta = data[i].alerta;
            this.lista.push(l) 
         }
     }  
