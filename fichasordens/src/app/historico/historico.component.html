@@ -84,5 +84,8 @@
   
     </div>
   </div>
+  <div class="form-group col-md-11" style="text-align: right" *ngIf="total !== 0">
+    <label><strong>Total=> {{total | currency:'BRL':true}} </strong> </label>
+ </div>
 
 </form>  

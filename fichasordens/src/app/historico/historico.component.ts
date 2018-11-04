@@ -23,6 +23,7 @@ export class HistoricoComponent implements OnInit {
   pages = 0;
   page = 0;
   path = '';
+  total = 0;
 
   constructor(private service: DataService, toasterService: ToasterService, private datePipe: DatePipe) {
     this.formHist = new Historico();
@@ -65,9 +66,13 @@ export class HistoricoComponent implements OnInit {
     } else {
       this.path = '/ordem';
     }
-
+    this.total = 0;
+    debugger;
     this.content = response.content;
     this.pages = response['totalPages'];
+    for (let i = 0; i < response.content.length; i++) {
+      this.total = this.total + response.content[i].valor;
+    }
   }
 
   public paginate(event) {
